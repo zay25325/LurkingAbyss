@@ -1,2 +1,17 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="MainContainer" style="flex-grow: 1; flex-direction: row; flex-wrap: nowrap;">
+        <ui:VisualElement name="Header" style="flex-grow: 1;">
+            <ui:VisualElement name="Title" style="flex-grow: 1;">
+                <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" style="margin-top: 90%; -unity-text-align: upper-center; bottom: 0; top: 35%;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="SettingsButton" style="flex-grow: 1;" />
+        <ui:VisualElement style="flex-grow: 1; justify-content: center; align-self: stretch; flex-direction: row;" />
+        <ui:VisualElement name="Buttons" style="flex-grow: 1; bottom: 0; top: 50%;">
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PlayBtn" style="top: 15%;" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="LogsBtn" style="top: 15%;" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SettingsBtn" style="top: 15%;" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitBtn" style="top: 15%;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
 </ui:UXML>
