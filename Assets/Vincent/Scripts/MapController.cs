@@ -22,7 +22,7 @@ public class MapController : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        startRoomGen(1, Vector2.zero);
+        StartRoomGen(1);
     }
 
     // Update is called once per frame
@@ -30,7 +30,8 @@ public class MapController : MonoBehaviour {
 
         // perform one gen cycle
         if(genPoints > 0 && isGenerating == true && genQueue.Count > 0) {
-            var currentroom = genQueue.Dequeue();
+            var index = genQueue.Dequeue();
+            roomGrid.TryGetValue(index, out var currentroom);
             
             // select random directions to connect to
             int r = Random.Range(1,16);
@@ -41,9 +42,9 @@ public class MapController : MonoBehaviour {
                 (r >> 3) & 1
             };
 
-            foreach(int c in connections) {
-                if(c == 1 && currentroom.connections[c] == 0) { //make sure there isn't already a connection there
-                    var result = TryCreateFromRoom(currentroom)
+            for(int c = 0; c < connections.Length; c++) {
+                if(connections[c] == 1 && currentroom.connections[c] == 0) { //make sure there isn't already a connection there
+                    bool result = TryCreateFromRoom(index, Caridnals.intToCard[c], out var newIndex);
                 }
             }
 
@@ -51,13 +52,12 @@ public class MapController : MonoBehaviour {
         }
     }
 
-    public void startRoomGen(int roomcount, Vector2 origin) {
+    public void StartRoomGen(int roomcount) {
 
         this.genPoints = roomcount;
-        var startroom = Instantiate(roomPrefab, origin, Quaternion.identity);
-        var startroomcontroller = startroom.GetComponent<RoomController>();
+        var startroom = PlaceRoom(Vector2.zero, Vector2.zero, defaultRoomSize, defaultRoomSize);
 
-        genQueue.Enqueue(startroomcontroller);
+        genQueue.Enqueue(Vector2.zero);
         isGenerating = true;
         genPoints --;
     } 
@@ -83,7 +83,7 @@ public class MapController : MonoBehaviour {
             var newroomcontroller = PlaceRoom(newroomindex, newroomindex*defaultRoomSize, defaultRoomSize, defaultRoomSize);
 
             //add the new room to our dictionary
-            
+            roomGrid.Add(newroomindex, newroomcontroller);
 
             //open connections on the rooms
             roomGrid[src].SetConnectionByDir(dir,1); //current direction in the old room
