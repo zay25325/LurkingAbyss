@@ -12,7 +12,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float playerSpeed = 5f;    // Speed of the player
+    [SerializeField] 
+    private float playerSpeed = 5f;    // Speed of the player
+    [SerializeField] 
+    private float sneakSpeed = 2.5f;    // Speed of the player when sneaking
+
+    private float originalSpeed = playerSpeed;    // Original speed of the player
     private Vector2 movementInput = Vector2.zero;   // Input from the player
     private Rigidbody2D playerRigidBody;    // Rigidbody2D component of the player
     private PlayerInputControls playerInputControls;    // Input system controls
@@ -34,10 +39,13 @@ public class PlayerController : MonoBehaviour
         mainCamera = Camera.main;
 
         // Subscribe to input events
-        playerInputControls.Player.Move.performed += ctx => Move(ctx.ReadValue<Vector2>());
-        playerInputControls.Player.Move.canceled += ctx => StopMoving();
-        playerInputControls.Player.Look.performed += ctx => Look(ctx.ReadValue<Vector2>());
+        playerInputControls.Player.Move.performed += ctx => Move(ctx.ReadValue<Vector2>()); // Subscribe to move event
+        playerInputControls.Player.Move.canceled += ctx => StopMoving();                    // Subscribe to stop moving event
+        playerInputControls.Player.Look.performed += ctx => Look(ctx.ReadValue<Vector2>()); // Subscribe to look event
+        playerInputControls.Player.Sneak.performed += ctx => OnSneak(ctx);                  // Subscribe to sneak event
+        playerInputControls.Player.Sneak.canceled += ctx => OnSneak(ctx);                   // Subscribe to stop sneaking event
     }
+
     /*
         FUNCTION : OnEnable()
         DESCRIPTION : called when the object becomes enabled and active. Currently handles enabling input controls
@@ -48,6 +56,7 @@ public class PlayerController : MonoBehaviour
     {
         playerInputControls.Enable();
     }
+
     /*
         FUNCTION : OnDisable()
         DESCRIPTION : called when the behaviour becomes disabled. Currently handles disabling input controls
@@ -58,6 +67,7 @@ public class PlayerController : MonoBehaviour
     {
         playerInputControls.Disable();
     }
+
     /*
         FUNCTION : Start
         DESCRIPTION : called before the first frame update. Currently handles Rigidbody2D component initialization and configuration
@@ -82,6 +92,7 @@ public class PlayerController : MonoBehaviour
             playerRigidBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         }
     }
+
     /*
         FUNCTION : FixedUpdate()
         DESCRIPTION : called once per frame. Currently handles player movement
@@ -93,6 +104,7 @@ public class PlayerController : MonoBehaviour
         // Update velocity based on input
         playerRigidBody.velocity = movementInput * playerSpeed;
     }
+
     /*
         FUNCTION : Move
         DESCRIPTION : Move the player in a direction
@@ -136,5 +148,26 @@ public class PlayerController : MonoBehaviour
 
         // Apply rotation
         transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    /*
+        FUNCTION : OnSneak
+        DESCRIPTION : Adjusts player speed for sneaking
+        PARAMETERS : InputAction.CallbackContext context - Input context for the sneak action. Easy to check if the action was performed or canceled
+        RETURNS : NONE
+    */
+    private void OnSneak(InputAction.CallbackContext context)
+    {
+        //While the sneak action is performed, reduce the player speed
+        if (context.performed)
+        {
+            playerSpeed = sneakSpeed; // Reduce speed for sneaking
+        }
+
+        //When the sneak action is canceled, reset the player speed
+        else if (context.canceled)
+        {
+            playerSpeed = originalSpeed; // Reset speed when not sneaking
+        }
     }
 }
