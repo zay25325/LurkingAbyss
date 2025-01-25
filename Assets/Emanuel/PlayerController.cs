@@ -1,7 +1,7 @@
 /*
 Class Name: PlayerController
 Description: This class is responsible for handling player controls and interactions. 
-             Currently has impleemnented movement and rotation of player.It uses the new Input System to get input from the player and move the player accordingly. 
+             Currently has implemented movement and rotation of player. It uses the new Input System to get input from the player and move the player accordingly. 
              The player can move in any direction and rotate towards the mouse position.
 */
 
@@ -9,7 +9,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 
 public class PlayerController : MonoBehaviour
 {
@@ -36,6 +35,10 @@ public class PlayerController : MonoBehaviour
 
     private bool canDash = true; // Flag to check if player can dash
 
+    //inventory
+    //subject to change, this is to test around player interacting/dropping item functionality
+    private List<GameObject> inventory = new List<GameObject>();
+
     /*
         FUNCTION : Awake()
         DESCRIPTION : called when the script instance is being loaded. Currently handles input control initialization, camera reference and input event subscription
@@ -49,6 +52,10 @@ public class PlayerController : MonoBehaviour
         
         // Get main camera
         mainCamera = Camera.main;
+        if (mainCamera == null)
+        {
+            Debug.LogError("Main camera not found!");
+        }
 
         // Subscribe to input events
         playerInputControls.Player.Move.performed += ctx => Move(ctx.ReadValue<Vector2>()); // Subscribe to move event
@@ -56,7 +63,8 @@ public class PlayerController : MonoBehaviour
         playerInputControls.Player.Look.performed += ctx => Look(ctx.ReadValue<Vector2>()); // Subscribe to look event
         playerInputControls.Player.Sneak.performed += ctx => OnSneak(ctx);                  // Subscribe to sneak event
         playerInputControls.Player.Sneak.canceled += ctx => OnSneak(ctx);                   // Subscribe to stop sneaking event
-        playerInputControls.Player.Dash.performed += ctx => Dash(ctx);                  // Subscribe to dash event
+        playerInputControls.Player.Dash.performed += ctx => Dash(ctx);                      // Subscribe to dash event
+        playerInputControls.Player.Interact.performed += ctx => DoInteraction(ctx);      // Subscribe to interact event
     }
 
     /*
@@ -67,7 +75,10 @@ public class PlayerController : MonoBehaviour
     */
     private void OnEnable()
     {
-        playerInputControls.Enable();
+        if (playerInputControls != null)
+        {
+            playerInputControls.Enable();
+        }
     }
 
     /*
@@ -78,7 +89,10 @@ public class PlayerController : MonoBehaviour
     */
     private void OnDisable()
     {
-        playerInputControls.Disable();
+        if (playerInputControls != null)
+        {
+            playerInputControls.Disable();
+        }
     }
 
     /*
@@ -218,5 +232,68 @@ public class PlayerController : MonoBehaviour
         playerSpeed = originalSpeed; // Reset speed after dashing
         yield return new WaitForSeconds(DASH_COOLDOWN); // Cooldown duration
         canDash = true; // Allow dashing again
+    }
+
+    //adding items
+    //functionality is subject to change when inventory & item system is implemented
+
+
+
+
+    // Method to add an item to the inventory
+    public bool AddItem(GameObject item)
+    {
+        if (inventory.Count < 3 && item.CompareTag("item"))
+        {
+            Debug.Log("Item added to inventory");
+            inventory.Add(item);
+            item.SetActive(false); // Deactivate the item so it is removed from the scene
+            return true; // Item added successfully           
+        }
+        Debug.Log("Item not added to inventory");
+        return false; // Inventory full or item not tagged as "item"
+    }
+
+    // Method to remove an item from the inventory
+    public bool RemoveItem(GameObject item)
+    {
+        return inventory.Remove(item); // Returns true if item was removed, false otherwise
+    }
+
+    // Method to get the current inventory
+    public List<GameObject> GetInventory()
+    {
+        return inventory;
+    }
+
+
+    //thought process behind DoInteraction
+    //can seperate objects of interests through tags OR based on what sccript is attached to the object
+    //for example, if the player is interacting with an item, the item will have a tag "item" and the player will have a script that interacts with objects with the tag "item"
+    //this is a simple way to handle interactions, but can be expanded upon when more complex interactions are needed
+    private void DoInteraction(InputAction.CallbackContext context)
+    {
+        // Check for collision with an item or object with ItemSystem script
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 1f);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.CompareTag("item"))
+            {
+                AddItem(hitCollider.gameObject);
+                break;
+            }
+            //added a potential else if statement to handle interactions with objects that have the ItemSystem script (when it is created)
+            //and has its own functions related to adding to inventory
+
+            
+            // else if (hitCollider.GetComponent<ItemSystem>() != null)
+            // {
+            //     // Do something with the object that has the ItemSystem script
+            //     Debug.Log("Interacted with object having ItemSystem script");
+            //     // Example: Call a method from the ItemSystem script
+            //     hitCollider.GetComponent<ItemSystem>().Interact();
+            //     break;
+            // }
+        }
     }
 }
