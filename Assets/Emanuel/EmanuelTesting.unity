@@ -221,6 +221,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 5
+  sneakSpeed: 2.5
+  dashSpeed: 15
 --- !u!50 &260749154
 Rigidbody2D:
   serializedVersion: 4

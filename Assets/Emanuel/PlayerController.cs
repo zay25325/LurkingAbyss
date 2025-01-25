@@ -10,19 +10,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class PlayerController : MonoBehaviour
 {
+    //constants
+    const float DASH_DURATION = 0.2f; // Duration of the dash
+    const float DASH_COOLDOWN = 0.5f; // Cooldown of the dash
+
+    //serialized fields variables
     [SerializeField] 
     private float playerSpeed = 5f;    // Speed of the player
+
     [SerializeField] 
     private float sneakSpeed = 2.5f;    // Speed of the player when sneaking
 
-    private float originalSpeed = playerSpeed;    // Original speed of the player
+    [SerializeField]
+    private float dashSpeed = 7.5f;    // Speed of the player rotation
+
+    //private variables
+    private float originalSpeed = 0f;    // Original speed of the player
     private Vector2 movementInput = Vector2.zero;   // Input from the player
     private Rigidbody2D playerRigidBody;    // Rigidbody2D component of the player
     private PlayerInputControls playerInputControls;    // Input system controls
     private Camera mainCamera; // Main camera for screen-to-world calculations
 
+    private bool canDash = true; // Flag to check if player can dash
 
     /*
         FUNCTION : Awake()
@@ -44,6 +56,7 @@ public class PlayerController : MonoBehaviour
         playerInputControls.Player.Look.performed += ctx => Look(ctx.ReadValue<Vector2>()); // Subscribe to look event
         playerInputControls.Player.Sneak.performed += ctx => OnSneak(ctx);                  // Subscribe to sneak event
         playerInputControls.Player.Sneak.canceled += ctx => OnSneak(ctx);                   // Subscribe to stop sneaking event
+        playerInputControls.Player.Dash.performed += ctx => Dash(ctx);                  // Subscribe to dash event
     }
 
     /*
@@ -76,6 +89,7 @@ public class PlayerController : MonoBehaviour
     */
     private void Start()
     {
+        originalSpeed = playerSpeed;    // Original speed of the player
         playerRigidBody = GetComponent<Rigidbody2D>();
 
         // Check if Rigidbody2D component is missing
@@ -169,5 +183,40 @@ public class PlayerController : MonoBehaviour
         {
             playerSpeed = originalSpeed; // Reset speed when not sneaking
         }
+    }
+
+    /*
+        FUNCTION : Dash
+        DESCRIPTION : This function is called when the player performs the dash action. 
+                      It checks if the player can dash and then starts the DashCoroutine. A couroutine was chosen to do 
+                      because it allows for a delay between the dash and the cooldown. Additionally, it prevents the player from dashing multiple times.
+                      As well, the player speed is increased for a short duration and then reset after a cooldown. 
+        PARAMETERS : InputAction.CallbackContext context - Input context for the dash action. Easy to check if the action was performed
+        RETURNS : NONE
+    */
+    private void Dash(InputAction.CallbackContext context)
+    {
+        // Dash action is performed once upon button press
+        if (context.performed && canDash)
+        {
+            StartCoroutine(DashCoroutine());
+        }
+    }
+
+    /*
+        FUNCTION : DashCoroutine
+        DESCRIPTION : This coroutine is responsible for handling the dash action. 
+                      It increases the player speed for a short duration and then resets it after a cooldown
+        PARAMETERS : NONE
+        RETURNS : NONE
+    */
+    private IEnumerator DashCoroutine()
+    {
+        canDash = false; // Prevent dashing multiple times
+        playerSpeed = dashSpeed; // Increase speed for dashing
+        yield return new WaitForSeconds(DASH_DURATION); // Dash duration
+        playerSpeed = originalSpeed; // Reset speed after dashing
+        yield return new WaitForSeconds(DASH_COOLDOWN); // Cooldown duration
+        canDash = true; // Allow dashing again
     }
 }
