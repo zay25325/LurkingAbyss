@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
         playerInputControls.Player.Sneak.canceled += ctx => OnSneak(ctx);                   // Subscribe to stop sneaking event
         playerInputControls.Player.Dash.performed += ctx => Dash(ctx);                      // Subscribe to dash event
         playerInputControls.Player.Interact.performed += ctx => DoInteraction(ctx);      // Subscribe to interact event
+        playerInputControls.Player.Drop.performed += ctx => DropItem(ctx);      // Subscribe to Drop event
     }
 
     /*
@@ -240,7 +241,14 @@ public class PlayerController : MonoBehaviour
 
 
 
-    // Method to add an item to the inventory
+    /*
+        FUNCTION : AddItem
+        DESCRIPTION : This function is responsible for adding an item to the player's inventory. 
+                      It checks if the inventory is full and if the item is tagged as an item. 
+                      If the inventory is not full and the item is tagged as an item, the item is added to the inventory and deactivated in the scene.
+        PARAMETERS : gameobject item - The item to add to the inventory
+        RETURNS : bool - Returns true if the item was added successfully, false otherwise
+    */
     public bool AddItem(GameObject item)
     {
         if (inventory.Count < 3 && item.CompareTag("item"))
@@ -254,12 +262,35 @@ public class PlayerController : MonoBehaviour
         return false; // Inventory full or item not tagged as "item"
     }
 
-    // Method to remove an item from the inventory
+    /*
+        FUNCTION : RemoveItem
+        DESCRIPTION : This function is responsible for removing an item from the player's inventory and placing it in the game world. 
+                      It checks if the item is in the inventory and if it is, the item is removed from the inventory and placed in front of the player.
+        PARAMETERS : gameobject item - The item to remove from the inventory
+        RETURNS : bool - Returns true if the item was removed successfully, false otherwise
+    */
     public bool RemoveItem(GameObject item)
     {
-        return inventory.Remove(item); // Returns true if item was removed, false otherwise
+        if (inventory.Remove(item)) // Returns true if item was removed
+        {
+            item.SetActive(true); // Reactivate the item
+            // Place the item in front of the player
+            Vector3 dropPosition = transform.position + transform.right; // Adjust this vector as needed
+            item.transform.position = dropPosition;
+            Debug.Log("Item removed from inventory and placed in the game world");
+            return true;
+        }
+        Debug.Log("Item not found in inventory");
+        return false; // Item not found in inventory
     }
 
+    /*
+        FUNCTION : GetInventory
+        DESCRIPTION : This function is responsible for returning the player's inventory. 
+                      It returns the list of items in the player's inventory.
+        PARAMETERS : NONE
+        RETURNS : inventory - List of items in the player's inventory
+    */
     // Method to get the current inventory
     public List<GameObject> GetInventory()
     {
@@ -271,6 +302,15 @@ public class PlayerController : MonoBehaviour
     //can seperate objects of interests through tags OR based on what sccript is attached to the object
     //for example, if the player is interacting with an item, the item will have a tag "item" and the player will have a script that interacts with objects with the tag "item"
     //this is a simple way to handle interactions, but can be expanded upon when more complex interactions are needed
+    
+        /*
+        FUNCTION : DoInteraction
+        DESCRIPTION : This function is responsible for handling player interactions with items or objects. 
+                      It checks for collisions with items or objects with the "item" tag. 
+                      If the player collides with an item, the item is added to the player's inventory.
+        PARAMETERS : InputAction.CallbackContext context - Input context for the interaction action.
+        RETURNS : NONE
+    */
     private void DoInteraction(InputAction.CallbackContext context)
     {
         // Check for collision with an item or object with ItemSystem script
@@ -285,7 +325,7 @@ public class PlayerController : MonoBehaviour
             //added a potential else if statement to handle interactions with objects that have the ItemSystem script (when it is created)
             //and has its own functions related to adding to inventory
 
-            
+
             // else if (hitCollider.GetComponent<ItemSystem>() != null)
             // {
             //     // Do something with the object that has the ItemSystem script
@@ -294,6 +334,22 @@ public class PlayerController : MonoBehaviour
             //     hitCollider.GetComponent<ItemSystem>().Interact();
             //     break;
             // }
+        }
+    }
+
+    /*
+        FUNCTION : DropItem
+        DESCRIPTION : This function is responsible for handling player dropping items from the inventory. 
+                      It checks if the inventory is not empty and if it is not, the last item in the inventory is removed.
+        PARAMETERS : InputAction.CallbackContext context - Input context for the drop action.
+        RETURNS : NONE
+    */
+    private void DropItem(InputAction.CallbackContext context)
+    {
+        if (inventory.Count > 0)
+        {
+            GameObject item = inventory[inventory.Count - 1];
+            RemoveItem(item);
         }
     }
 }
