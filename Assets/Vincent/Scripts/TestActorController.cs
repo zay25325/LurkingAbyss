@@ -9,7 +9,7 @@ using TMPro;
 // controls player movement
 // as well as a bunch of other game state
 
-public class PlayerController:MonoBehaviour {
+public class TestActorController:MonoBehaviour {
     // Rigidbody of the player.
     private Rigidbody2D rb;
 

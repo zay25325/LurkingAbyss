@@ -9,11 +9,11 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour {
 
-    private Queue<Vector2> genQueue;
+    private Queue<Vector2> genQueue = new();
     private Dictionary<Vector2, RoomController> roomGrid = new();
 
     //width and height of the rooms in tiles
-    private int defaultRoomSize = 7;
+    private int defaultRoomSize = 3;
 
     private bool isGenerating = false;
     private int genPoints = 0;
@@ -22,7 +22,7 @@ public class MapController : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        StartRoomGen(1);
+        StartRoomGen(3);
     }
 
     // Update is called once per frame
@@ -34,6 +34,8 @@ public class MapController : MonoBehaviour {
             roomGrid.TryGetValue(index, out var currentroom);
             
             // select random directions to connect to
+            // we always choose at least one direction
+            // TODO make it only include unconnected walls so we don't get too many deadend rooms
             int r = Random.Range(1,16);
             int[] connections = {
                 (r >> 0) & 1,
@@ -43,8 +45,18 @@ public class MapController : MonoBehaviour {
             };
 
             for(int c = 0; c < connections.Length; c++) {
+                if(genPoints <= 0) break;
+
                 if(connections[c] == 1 && currentroom.connections[c] == 0) { //make sure there isn't already a connection there
-                    bool result = TryCreateFromRoom(index, Caridnals.intToCard[c], out var newIndex);
+                    bool roomCreated = TryCreateFromRoom(index, Caridnals.intToCard[c], out var newIndex);
+                    
+                    // if we were able to make a room, subtract points and add it to the generation queue
+                    if(roomCreated) {
+                        genPoints --;
+                        genQueue.Enqueue(newIndex);
+                    } else {
+                        // nothing happens
+                    }
                 }
             }
 
@@ -62,9 +74,14 @@ public class MapController : MonoBehaviour {
         genPoints --;
     } 
 
+    //
+    // Takes a start index, and checks the index in specified direction for a room
+    // returns whether a room could be created
+    // do not reference the createdroom index if it returns false.
+    //
     public bool TryCreateFromRoom(Vector2 src, Vector2 dir, out Vector2 createdroomindex) {
         
-        if(!roomGrid.TryGetValue(src, out _)) {
+        if(!roomGrid.ContainsKey(src)) {
             Debug.Log("Source Room Doesn't Exist");
             createdroomindex = Vector2.zero;
             return false;
@@ -74,18 +91,15 @@ public class MapController : MonoBehaviour {
         var newroomindex = src+dir;
 
         // check if there's already a room
-        if(roomGrid.TryGetValue(newroomindex, out var existingroomcontroller)) {
+        if(roomGrid.ContainsKey(newroomindex)) {
             // either connect to returned room or abort
             createdroomindex = Vector2.zero;
             return false;
         } else {
-            //multiply position by the room scale to place it in the world properly;
+            // multiply position by the room scale;
             var newroomcontroller = PlaceRoom(newroomindex, newroomindex*defaultRoomSize, defaultRoomSize, defaultRoomSize);
 
-            //add the new room to our dictionary
-            roomGrid.Add(newroomindex, newroomcontroller);
-
-            //open connections on the rooms
+            // sync the connections on the rooms
             roomGrid[src].SetConnectionByDir(dir,1); //current direction in the old room
             newroomcontroller.SetConnectionByDir(-dir, 1); //opposite direction in the new room
             roomGrid[newroomindex] = newroomcontroller;
@@ -95,12 +109,23 @@ public class MapController : MonoBehaviour {
 
     }
 
+
+    //
+    // Makes the room, doesn't do any checks
+    //
     public RoomController PlaceRoom(Vector2 index, Vector2 position, int width, int height) {
-        var go = Instantiate(roomPrefab, position, Quaternion.identity);
+        
+        // Game Object
+        var go = Instantiate(roomPrefab, this.gameObject.transform,false);
+        go.transform.Translate(position.x,position.y,0);
         var rc = go.GetComponent<RoomController>();
 
+        // Set Members
         rc.width = width;
         rc.height = height;
+
+        // Add to data structure
+        roomGrid.Add(index, rc);
 
         return rc;
     }
