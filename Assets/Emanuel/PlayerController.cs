@@ -39,6 +39,12 @@ public class PlayerController : MonoBehaviour
     //subject to change, this is to test around player interacting/dropping item functionality
     private List<GameObject> inventory = new List<GameObject>();
 
+    //this code will become from the item system script but for now it will be basic
+    private GameObject activeItem; // Item to add to the inventory
+
+    private int currentActiveIndex = 0;
+
+
     /*
         FUNCTION : Awake()
         DESCRIPTION : called when the script instance is being loaded. Currently handles input control initialization, camera reference and input event subscription
@@ -66,6 +72,10 @@ public class PlayerController : MonoBehaviour
         playerInputControls.Player.Dash.performed += ctx => Dash(ctx);                      // Subscribe to dash event
         playerInputControls.Player.Interact.performed += ctx => DoInteraction(ctx);      // Subscribe to interact event
         playerInputControls.Player.Drop.performed += ctx => DropItem(ctx);      // Subscribe to Drop event
+        playerInputControls.Player.Scroll.performed += OnScroll;
+        playerInputControls.Player.Slot1.performed += OnSlot1Pressed;
+        playerInputControls.Player.Slot2.performed += OnSlot2Pressed;
+        playerInputControls.Player.Slot3.performed += OnSlot3Pressed;
     }
 
     /*
@@ -256,6 +266,13 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Item added to inventory");
             inventory.Add(item);
             item.SetActive(false); // Deactivate the item so it is removed from the scene
+
+            // Set the first instance of the new item to be the active item
+            if (inventory.Count == 1)
+            {
+                ActiveItem(0);
+            }
+
             return true; // Item added successfully           
         }
         Debug.Log("Item not added to inventory");
@@ -277,10 +294,8 @@ public class PlayerController : MonoBehaviour
             // Place the item in front of the player
             Vector3 dropPosition = transform.position + transform.right; // Adjust this vector as needed
             item.transform.position = dropPosition;
-            Debug.Log("Item removed from inventory and placed in the game world");
             return true;
         }
-        Debug.Log("Item not found in inventory");
         return false; // Item not found in inventory
     }
 
@@ -346,10 +361,147 @@ public class PlayerController : MonoBehaviour
     */
     private void DropItem(InputAction.CallbackContext context)
     {
+        // Check if the inventory is not empty
+        if (activeItem != null)
+        {
+            // Remove the last item in the inventory
+            RemoveItem(activeItem);
+            // Set the active item to null
+            activeItem = null;
+
+            // Set the active item to the first item in the inventory
+            if (inventory.Count > 0)
+            {
+                currentActiveIndex = 0;
+                ActiveItem(currentActiveIndex);
+            }
+        }
+    }
+
+    /*
+        FUNCTION : OnScroll
+        DESCRIPTION : This function is responsible for handling player scrolling through the inventory. 
+                      It checks if the inventory is not empty and if it is not, the player can 
+                      scroll through the inventory.
+        PARAMETERS : InputAction.CallbackContext context - Input context for the scroll action.
+        RETURNS :  NONE
+    */
+    private void OnScroll(InputAction.CallbackContext context)
+    {
+        // Get the scroll value
+        float scrollValue = context.ReadValue<float>();
+
+        // Check if the inventory is not empty
         if (inventory.Count > 0)
         {
-            GameObject item = inventory[inventory.Count - 1];
-            RemoveItem(item);
+            // Scroll through the inventory. Check if the scroll value is positive or negative
+
+            // If positive, increment the current active index
+            if (scrollValue > 0)
+            {
+                currentActiveIndex = (currentActiveIndex + 1) % inventory.Count;
+            }
+
+            // If negative, decrement the current active index
+            else if (scrollValue < 0)
+            {
+                currentActiveIndex = (currentActiveIndex - 1 + inventory.Count) % inventory.Count;
+            }
+
+            // Set the active item based on the current active index
+            ActiveItem(currentActiveIndex);
+        }
+    }
+
+    /*
+        FUNCTION : OnSlot1Pressed
+        DESCRIPTION : This function is responsible for handling player selecting items based on the slot. 
+                      It checks if the player has an item in the first slot and if it does, the item is selected.
+        PARAMETERS : InputAction.CallbackContext context - Input context for the slot 1 action.
+        RETURNS : NONE
+    */
+    // Functions to select items based on the slot
+    private void OnSlot1Pressed(InputAction.CallbackContext context)
+    {
+        // set the active item to the first item in the inventory
+        currentActiveIndex = 0; // Slot 1
+        ActiveItem(currentActiveIndex);
+    }
+
+    /*
+        FUNCTION : OnSlot2Pressed
+        DESCRIPTION : This function is responsible for handling player selecting items based on the slot. 
+                      It checks if the player has an item in the second slot and if it does, the item is selected.
+        PARAMETERS : InputAction.CallbackContext context - Input context for the slot 2 action.
+        RETURNS : NONE
+    */
+    private void OnSlot2Pressed(InputAction.CallbackContext context)
+    {
+        // set the active item to the second item in the inventory
+        currentActiveIndex = 1; // Slot 2
+        ActiveItem(currentActiveIndex);
+    }
+
+    /*
+        FUNCTION : OnSlot3Pressed
+        DESCRIPTION : This function is responsible for handling player selecting items based on the slot. 
+                      It checks if the player has an item in the third slot and if it does, the item is selected.
+        PARAMETERS : InputAction.CallbackContext context - Input context for the slot 3 action.
+        RETURNS : NONE
+    */
+    private void OnSlot3Pressed(InputAction.CallbackContext context)
+    {
+        // set the active item to the third item in the inventory
+        currentActiveIndex = 2; // Slot 3
+        ActiveItem(currentActiveIndex);
+    }
+
+    /*
+        FUNCTION : ActiveItem
+        DESCRIPTION : This function is responsible for activating the selected item. 
+                      It checks if the item is in the inventory and if it is, the item is activated.
+        PARAMETERS : int index - Index of the item in the inventory
+        RETURNS : NONE
+    */
+    private void ActiveItem(int index)
+    {
+        // Check if the index is within the inventory range
+        if (index >= 0 && index < inventory.Count)
+        {
+            // Check if the active item is not null
+            if (activeItem != null)
+            {
+                // Deactivate the current active item
+                activeItem.SetActive(false);
+            }
+
+            // Activate the new item
+            activeItem = inventory[index];
+            checkActiveItemState();
+        }
+    }
+
+    /*
+        FUNCTION : checkActiveItemState
+        DESCRIPTION : Just for debugging purposes to check if the active item is active or not
+        PARAMETERS : NONE
+        RETURNS : NONE
+    */
+    private void checkActiveItemState()
+    {
+        if (activeItem != null)
+        {
+            // Check if the item is active
+            if (activeItem.activeSelf)
+            {
+                // Do something with the active item
+                Debug.Log($"Active item is active: {activeItem.name}");
+            }
+            else
+            {
+                // Do something if the item is not active
+                Debug.Log($"Active item is not active: {activeItem.name}");
+            }
         }
     }
 }
