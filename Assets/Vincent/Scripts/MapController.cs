@@ -44,18 +44,18 @@ public class MapController : MonoBehaviour {
                 (r >> 3) & 1
             };
 
+            // For each wall, check if we generate a connection there
             for(int c = 0; c < connections.Length; c++) {
                 if(genPoints <= 0) break;
 
-                if(connections[c] == 1 && currentroom.connections[c] == 0) { //make sure there isn't already a connection there
-                    bool roomCreated = TryCreateFromRoom(index, Caridnals.intToCard[c], out var newIndex);
+                // only try to make a room if there is no connection on that wall
+                if(connections[c] == 1 && currentroom.GetConnectionByIndex(c) == 0) {
+                    bool roomCreated = TryCreateFromRoom(index, Directions.IntToVec(c), out var newIndex);
                     
                     // if we were able to make a room, subtract points and add it to the generation queue
                     if(roomCreated) {
                         genPoints --;
                         genQueue.Enqueue(newIndex);
-                    } else {
-                        // nothing happens
                     }
                 }
             }
@@ -116,7 +116,7 @@ public class MapController : MonoBehaviour {
     public RoomController PlaceRoom(Vector2 index, Vector2 position, int width, int height) {
         
         // Game Object
-        var go = Instantiate(roomPrefab, this.gameObject.transform,false);
+        var go = Instantiate(roomPrefab, position, Quaternion.identity);
         go.transform.Translate(position.x,position.y,0);
         var rc = go.GetComponent<RoomController>();
 
