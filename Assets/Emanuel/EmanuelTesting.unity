@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 5570939}
   - component: {fileID: 5570941}
   - component: {fileID: 5570942}
+  - component: {fileID: 5570943}
   m_Layer: 0
   m_Name: Purple
   m_TagString: item
@@ -280,6 +281,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5570943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5570938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cac8c198cf4eb44badd31a10963273e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  throwForce: 10
+  rockIcon: {fileID: 0}
+  rockPrefab: {fileID: 0}
 --- !u!1 &151541146
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,6 +308,7 @@ GameObject:
   - component: {fileID: 151541147}
   - component: {fileID: 151541149}
   - component: {fileID: 151541150}
+  - component: {fileID: 151541151}
   m_Layer: 0
   m_Name: Green
   m_TagString: item
@@ -438,6 +455,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &151541151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151541146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cac8c198cf4eb44badd31a10963273e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  throwForce: 10
+  rockIcon: {fileID: 0}
+  rockPrefab: {fileID: 0}
 --- !u!1 &260749150
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,6 +909,7 @@ GameObject:
   - component: {fileID: 1411191252}
   - component: {fileID: 1411191254}
   - component: {fileID: 1411191255}
+  - component: {fileID: 1411191256}
   m_Layer: 0
   m_Name: Blue
   m_TagString: item
@@ -1023,6 +1056,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1411191256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411191251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cac8c198cf4eb44badd31a10963273e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  throwForce: 10
+  rockIcon: {fileID: 0}
+  rockPrefab: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

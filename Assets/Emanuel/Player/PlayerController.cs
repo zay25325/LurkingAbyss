@@ -64,12 +64,12 @@ public class PlayerController : MonoBehaviour
         playerInputControls.Player.Sneak.performed += ctx => OnSneak(ctx);                  // Subscribe to sneak event
         playerInputControls.Player.Sneak.canceled += ctx => OnSneak(ctx);                   // Subscribe to stop sneaking event
         playerInputControls.Player.Dash.performed += ctx => Dash(ctx);                      // Subscribe to dash event
-        playerInputControls.Player.Interact.performed += ctx => DoInteraction(ctx);      // Subscribe to interact event
-        playerInputControls.Player.Drop.performed += ctx => DropItem(ctx);      // Subscribe to Drop event
-        playerInputControls.Player.Scroll.performed += OnScroll;
-        playerInputControls.Player.Slot1.performed += OnSlot1Pressed;
-        playerInputControls.Player.Slot2.performed += OnSlot2Pressed;
-        playerInputControls.Player.Slot3.performed += OnSlot3Pressed;
+        playerInputControls.Player.Interact.performed += ctx => DoInteraction(ctx);         // Subscribe to interact event
+        playerInputControls.Player.Drop.performed += ctx => DropItem(ctx);                  // Subscribe to Drop event
+        playerInputControls.Player.Scroll.performed += OnScroll;                            // Subscribe to scroll event                         
+        playerInputControls.Player.Slot1.performed += OnSlot1Pressed;                       // Subscribe to slot 1 event
+        playerInputControls.Player.Slot2.performed += OnSlot2Pressed;                       // Subscribe to slot 2 event
+        playerInputControls.Player.Slot3.performed += OnSlot3Pressed;                       // Subscribe to slot 3 event
     }
 
     /*
@@ -116,6 +116,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("Rigidbody2D component is missing!");
         }
+
         else
         {
             // Ensure drag is zero
@@ -126,6 +127,7 @@ public class PlayerController : MonoBehaviour
 
 
         }
+
         // Get the Inventory component
         inventory = GetComponent<Inventory>();
         if (inventory == null)
@@ -247,110 +249,31 @@ public class PlayerController : MonoBehaviour
         canDash = true; // Allow dashing again
     }
 
-    //adding items
-    //functionality is subject to change when inventory & item system is implemented
-
-
-
-
-    // /*
-    //     FUNCTION : AddItem
-    //     DESCRIPTION : This function is responsible for adding an item to the player's inventory. 
-    //                   It checks if the inventory is full and if the item is tagged as an item. 
-    //                   If the inventory is not full and the item is tagged as an item, the item is added to the inventory and deactivated in the scene.
-    //     PARAMETERS : gameobject item - The item to add to the inventory
-    //     RETURNS : bool - Returns true if the item was added successfully, false otherwise
-    // */
-    // public bool AddItem(GameObject item)
-    // {
-    //     if (inventory.Count < 3 && item.CompareTag("item"))
-    //     {
-    //         Debug.Log("Item added to inventory");
-    //         inventory.Add(item);
-    //         item.SetActive(false); // Deactivate the item so it is removed from the scene
-
-    //         // Set the first instance of the new item to be the active item
-    //         if (inventory.Count == 1)
-    //         {
-    //             ActiveItem(0);
-    //         }
-
-    //         return true; // Item added successfully           
-    //     }
-    //     Debug.Log("Item not added to inventory");
-    //     return false; // Inventory full or item not tagged as "item"
-    // }
-
-    // /*
-    //     FUNCTION : RemoveItem
-    //     DESCRIPTION : This function is responsible for removing an item from the player's inventory and placing it in the game world. 
-    //                   It checks if the item is in the inventory and if it is, the item is removed from the inventory and placed in front of the player.
-    //     PARAMETERS : gameobject item - The item to remove from the inventory
-    //     RETURNS : bool - Returns true if the item was removed successfully, false otherwise
-    // */
-    // public bool RemoveItem(GameObject item)
-    // {
-    //     if (inventory.Remove(item)) // Returns true if item was removed
-    //     {
-    //         item.SetActive(true); // Reactivate the item
-    //         // Place the item in front of the player
-    //         Vector3 dropPosition = transform.position + transform.right; // Adjust this vector as needed
-    //         item.transform.position = dropPosition;
-    //         return true;
-    //     }
-    //     return false; // Item not found in inventory
-    // }
-
-    // /*
-    //     FUNCTION : GetInventory
-    //     DESCRIPTION : This function is responsible for returning the player's inventory. 
-    //                   It returns the list of items in the player's inventory.
-    //     PARAMETERS : NONE
-    //     RETURNS : inventory - List of items in the player's inventory
-    // */
-    // // Method to get the current inventory
-    // public List<GameObject> GetInventory()
-    // {
-    //     return inventory;
-    // }
-
 
     //thought process behind DoInteraction
-    //can seperate objects of interests through tags OR based on what sccript is attached to the object
-    //for example, if the player is interacting with an item, the item will have a tag "item" and the player will have a script that interacts with objects with the tag "item"
-    //this is a simple way to handle interactions, but can be expanded upon when more complex interactions are needed
+    //can seperate objects of interests based on what script is attached to the object
+    //for example, If interacting with a potential item, it needs to have a children class script derived from Items
     
-        /*
+    /*
         FUNCTION : DoInteraction
         DESCRIPTION : This function is responsible for handling player interactions with items or objects. 
-                      It checks for collisions with items or objects with the "item" tag. 
-                      If the player collides with an item, the item is added to the player's inventory.
+                        It checks for collisions with items or objects with the "item" tag. 
+                        If the player collides with an item, the item is added to the player's inventory.
         PARAMETERS : InputAction.CallbackContext context - Input context for the interaction action.
         RETURNS : NONE
     */
     private void DoInteraction(InputAction.CallbackContext context)
     {
-        // Check for collision with an item or object with ItemSystem script
+        // Check for collision with an item or object with Item script
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 1f);
         foreach (var hitCollider in hitColliders)
         {
-            if (hitCollider.CompareTag("item"))
+            Item item = hitCollider.GetComponentInChildren<Item>();
+            if (item != null)
             {
                 inventory.AddItem(hitCollider.gameObject);
                 break;
             }
-            //added a potential else if statement to handle interactions with objects that have the ItemSystem script (when it is created)
-            //and has its own functions related to adding to inventory
-
-
-            // else if (hitCollider.GetComponent<ItemSystem>() != null)
-            // {
-            //     // Do something with the object that has the ItemSystem script
-            //     Debug.Log("Interacted with object having ItemSystem script");
-            //     // Example: Call a method from the ItemSystem script
-            //     hitCollider.GetComponent<ItemSystem>().Interact();
-            //     break;
-            // }
         }
     }
 

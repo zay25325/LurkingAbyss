@@ -1,3 +1,9 @@
+/*
+Class Name: Inventory
+Description: This class is responsible for managing the player's inventory. 
+             It contains the properties and methods to add, remove, and select items in the inventory.
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +11,9 @@ using UnityEngine.InputSystem;
 
 public class Inventory : MonoBehaviour
 {
-    private List<GameObject> items = new List<GameObject>(); // List to store all items
+    private List<Item> items = new List<Item>(); // List to store all items
     private const int maxItems = 3; // Maximum number of items
-    private GameObject activeItem; // Currently active item
+    private Item activeItem; // Currently active item
     private int currentActiveIndex = 0;
 
     /*
@@ -18,24 +24,32 @@ public class Inventory : MonoBehaviour
         PARAMETERS : gameobject item - The item to add to the inventory
         RETURNS : bool - Returns true if the item was added successfully, false otherwise
     */
-    public bool AddItem(GameObject item)
+    public bool AddItem(GameObject itemObject)
     {
-        if (items.Count < maxItems && item.CompareTag("item"))
+        Item item = itemObject.GetComponent<Item>();
+        Debug.Log("Item Script: " + itemObject.GetComponent<Item>());
+
+        item.DebuggingChildInfo(itemObject);
+
+        if (item != null)
         {
-            Debug.Log("Item added to inventory");
-            items.Add(item);
-            item.SetActive(false); // Deactivate the item so it is removed from the scene
-
-            // Set the first instance of the new item to be the active item
-            if (items.Count == 1)
+            if (items.Count < maxItems)
             {
-                ActiveItem(0);
-            }
+                Debug.Log("Item added to inventory");
+                items.Add(item);
+                itemObject.SetActive(false); // Deactivate the item so it is removed from the scene
 
-            return true; // Item added successfully           
+                // Set the first instance of the new item to be the active item
+                if (items.Count == 1)
+                {
+                    ActiveItem(0);
+                }
+
+                return true; // Item added successfully
+            }
         }
         Debug.Log("Item not added to inventory");
-        return false; // Inventory full or item not tagged as "item"
+        return false; // Inventory full or item does not have an Item component
     }
 
 
@@ -46,17 +60,100 @@ public class Inventory : MonoBehaviour
         PARAMETERS : gameobject item - The item to remove from the inventory
         RETURNS : bool - Returns true if the item was removed successfully, false otherwise
     */
-    public bool RemoveItem(GameObject item)
+    public bool RemoveItem(Item item)
     {
-        if (items.Remove(item)) // Returns true if item was removed
+        if (items.Contains(item))
         {
-            item.SetActive(true); // Reactivate the item
             // Place the item in front of the player
-            Vector3 dropPosition = transform.position + transform.right; // Adjust this vector as needed
-            item.transform.position = dropPosition;
+            items.Remove(item);
+            if (item.ItemObject != null)
+            {
+                item.ItemObject.SetActive(true); // Activate the item so it is added back to the scene
+            }
+            // Update the active item if necessary
+            if (activeItem == item)
+            {
+                activeItem = null;
+                if (items.Count > 0)
+                {
+                    ActiveItem(0);
+                }
+            }
             return true;
         }
         return false; // Item not found in inventory
+    }
+
+    /*
+        FUNCTION : DropActiveItem
+        DESCRIPTION : This function is responsible for dropping the active item from the player's inventory. 
+                      It checks if the inventory is not empty and if it is not, the active item is dropped in front of the player.
+        PARAMETERS : InputAction.CallbackContext context - Input context for the drop action.
+        RETURNS : NONE
+    */
+    public void DropActiveItem(InputAction.CallbackContext context)
+    {
+        // Check if the inventory is not empty
+        if (activeItem != null)
+        {
+            // Place the item in front of the player
+            Vector3 dropPosition = transform.position + transform.forward;
+            activeItem.ItemObject.transform.position = dropPosition;
+            activeItem.ItemObject.SetActive(true);
+
+            // Remove the item from the inventory
+            RemoveItem(activeItem);
+            // Set the active item to null
+            activeItem = null;
+
+            // Set the active item to the first item in the inventory
+            if (items.Count > 0)
+            {
+                currentActiveIndex = 0;
+                ActiveItem(currentActiveIndex);
+            }
+        }
+    }
+
+
+    /*
+        FUNCTION : ActiveItem
+        DESCRIPTION : This function is responsible for activating the selected item. 
+                      It checks if the item is in the inventory and if it is, the item is activated.
+        PARAMETERS : int index - Index of the item in the inventory
+        RETURNS : NONE
+    */
+    private void ActiveItem(int index)
+    {
+        // Check if the index is within the inventory range
+        if (index >= 0 && index < items.Count)
+        {
+            // // Check if the active item is not null
+            // if (activeItem != null)
+            // {
+            //     // Deactivate the current active item
+            //     activeItem.SetActive(false);
+            // }
+
+            // Activate the new item
+            activeItem = items[index];
+            currentActiveIndex = index;
+            checkActiveItemState();
+        }
+    }
+    
+    /*
+        FUNCTION : checkActiveItemState
+        DESCRIPTION : Just for debugging purposes to check if the active item is active or not
+        PARAMETERS : NONE
+        RETURNS : NONE
+    */
+    private void checkActiveItemState()
+    {
+        if (activeItem != null)
+        {
+            Debug.Log($"Active item is: {activeItem.ItemName}");
+        }
     }
 
     // /*
@@ -66,7 +163,7 @@ public class Inventory : MonoBehaviour
     //     PARAMETERS : NONE
     //     RETURNS : items - List of items in the player's inventory
     // */
-    public List<GameObject> GetItems()
+    public List<Item> GetItems()
     {
         return items;
     }
@@ -103,6 +200,9 @@ public class Inventory : MonoBehaviour
 
             // Set the active item based on the current active index
             ActiveItem(currentActiveIndex);
+
+            Debug.Log($"Current active index: {currentActiveIndex}");
+            Debug.Log($"Current active item: {activeItem.ItemName}");
         }
     }
 
@@ -146,64 +246,5 @@ public class Inventory : MonoBehaviour
         // set the active item to the third item in the inventory
         currentActiveIndex = 2; // Slot 3
         ActiveItem(currentActiveIndex);
-    }
-
-    public void DropActiveItem(InputAction.CallbackContext context)
-    {
-        // Check if the inventory is not empty
-        if (activeItem != null)
-        {
-            // Remove the last item in the inventory
-            RemoveItem(activeItem);
-            // Set the active item to null
-            activeItem = null;
-
-            // Set the active item to the first item in the inventory
-            if (items.Count > 0)
-            {
-                currentActiveIndex = 0;
-                ActiveItem(currentActiveIndex);
-            }
-        }
-    }
-
-
-    /*
-        FUNCTION : ActiveItem
-        DESCRIPTION : This function is responsible for activating the selected item. 
-                      It checks if the item is in the inventory and if it is, the item is activated.
-        PARAMETERS : int index - Index of the item in the inventory
-        RETURNS : NONE
-    */
-    private void ActiveItem(int index)
-    {
-        // Check if the index is within the inventory range
-        if (index >= 0 && index < items.Count)
-        {
-            // Check if the active item is not null
-            if (activeItem != null)
-            {
-                // Deactivate the current active item
-                activeItem.SetActive(false);
-            }
-
-            // Activate the new item
-            activeItem = items[index];
-            checkActiveItemState();
-        }
-    }
-    
-    /*
-        FUNCTION : checkActiveItemState
-        DESCRIPTION : Just for debugging purposes to check if the active item is active or not
-        PARAMETERS : NONE
-        RETURNS : NONE
-    */
-    private void checkActiveItemState()
-    {
-        if (activeItem != null)
-        {
-            Debug.Log($"Active item is: {activeItem.name}");
-        }
     }
 }
