@@ -37,7 +37,7 @@ public class RoomController : MonoBehaviour
 
     private void OnDrawGizmos() {
         Gizmos.color = new Color(0.5f,0.5f,0.2f,0.5f);
-        Gizmos.DrawCube(transform.position, new Vector3(width-0.5f,height-0.5f,0));
+        Gizmos.DrawCube(transform.position, new Vector3(width-1f,height-1f,0));
 
         for(int i = 0; i < connections.Length; i++) {
             if(connections[i] == 1) {

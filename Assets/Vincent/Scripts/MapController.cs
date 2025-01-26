@@ -13,7 +13,7 @@ public class MapController : MonoBehaviour {
     private Dictionary<Vector2, RoomController> roomGrid = new();
 
     //width and height of the rooms in tiles
-    private int defaultRoomSize = 3;
+    private Vector2Int defaultRoomSize = new Vector2Int(7,7);
 
     private bool isGenerating = false;
     private int genPoints = 0;
@@ -22,7 +22,7 @@ public class MapController : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        StartRoomGen(3);
+        StartRoomGen(10);
     }
 
     // Update is called once per frame
@@ -67,7 +67,7 @@ public class MapController : MonoBehaviour {
     public void StartRoomGen(int roomcount) {
 
         this.genPoints = roomcount;
-        var startroom = PlaceRoom(Vector2.zero, Vector2.zero, defaultRoomSize, defaultRoomSize);
+        var startroom = PlaceRoom(Vector2.zero, Vector2.zero, defaultRoomSize.x, defaultRoomSize.y);
 
         genQueue.Enqueue(Vector2.zero);
         isGenerating = true;
@@ -97,7 +97,7 @@ public class MapController : MonoBehaviour {
             return false;
         } else {
             // multiply position by the room scale;
-            var newroomcontroller = PlaceRoom(newroomindex, newroomindex*defaultRoomSize, defaultRoomSize, defaultRoomSize);
+            var newroomcontroller = PlaceRoom(newroomindex, new Vector2(newroomindex.x*(defaultRoomSize.x-1),newroomindex.y*(defaultRoomSize.y-1)), defaultRoomSize.x, defaultRoomSize.y);
 
             // sync the connections on the rooms
             roomGrid[src].SetConnectionByDir(dir,1); //current direction in the old room
@@ -116,13 +116,18 @@ public class MapController : MonoBehaviour {
     public RoomController PlaceRoom(Vector2 index, Vector2 position, int width, int height) {
         
         // Game Object
-        var go = Instantiate(roomPrefab, position, Quaternion.identity);
+        var go = Instantiate(roomPrefab, gameObject.transform, false); //subtract half a unit to align to tile grid
         go.transform.Translate(position.x,position.y,0);
         var rc = go.GetComponent<RoomController>();
+        var box = go.GetComponent<BoxCollider2D>();
+
+        box.size = new Vector2(width,height);
+
 
         // Set Members
         rc.width = width;
         rc.height = height;
+
 
         // Add to data structure
         roomGrid.Add(index, rc);
@@ -132,5 +137,12 @@ public class MapController : MonoBehaviour {
 
     public void ClearRoomGrid() {
         //todo, implement logic to wipe the room grid
+    }
+
+
+
+    private void OnDrawGizmosSelected() {
+        Gizmos.color = new Color(1,0,1,0.2f);
+        Gizmos.DrawCube(gameObject.transform.position, new Vector3(defaultRoomSize.x,defaultRoomSize.y,0));
     }
 }
