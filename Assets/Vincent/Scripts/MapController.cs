@@ -50,7 +50,7 @@ public class MapController : MonoBehaviour {
                 if(genPoints <= 0) break;
 
                 // only try to make a room if there is no connection on that wall
-                if(connections[c] == 1 && currentroom.GetConnectionByIndex(c) == 0) {
+                if(connections[c] != 0 && currentroom.GetConnectionByIndex(c) == 0) {
                     bool roomCreated = TryCreateFromRoom(index, Directions.IntToVec(c), out var newIndex);
                     
                     // if we were able to make a room, subtract points and add it to the generation queue
@@ -95,9 +95,14 @@ public class MapController : MonoBehaviour {
         //roomgrid location of new room
         var newroomindex = src+dir;
 
+        //int connectiontype = Random.Range((int)2,3); //choose either door or open
+        int connectiontype = 1;
+
         // check if there's already a room
         if(roomGrid.ContainsKey(newroomindex)) {
-            // either connect to returned room or abort
+            // connect to the existing room without making a new room
+            roomGrid[src].SetConnectionByDir(dir,connectiontype); //current direction in the old room
+            roomGrid[newroomindex].SetConnectionByDir(-dir, connectiontype); //opposite direction in the new room
             createdroomindex = Vector2.zero;
             return false;
         } else {
@@ -105,8 +110,8 @@ public class MapController : MonoBehaviour {
             var newroomcontroller = PlaceRoom(newroomindex, new Vector2(newroomindex.x*(defaultRoomSize.x-1),newroomindex.y*(defaultRoomSize.y-1)), defaultRoomSize.x, defaultRoomSize.y);
 
             // sync the connections on the rooms
-            roomGrid[src].SetConnectionByDir(dir,1); //current direction in the old room
-            newroomcontroller.SetConnectionByDir(-dir, 1); //opposite direction in the new room
+            roomGrid[src].SetConnectionByDir(dir,connectiontype); //current direction in the old room
+            newroomcontroller.SetConnectionByDir(-dir, connectiontype); //opposite direction in the new room
             roomGrid[newroomindex] = newroomcontroller;
             createdroomindex = newroomindex;
             return true;
@@ -141,7 +146,12 @@ public class MapController : MonoBehaviour {
     }
 
     public void ClearRoomGrid() {
-        //todo, implement logic to wipe the room grid
+        //simply destroy the entire map
+        foreach(var pair in RoomGrid) {
+            Destroy(pair.Value.gameObject);
+        }
+        RoomGrid.Clear();
+        Debug.Log("Map Destroyed!");
     }
 
 

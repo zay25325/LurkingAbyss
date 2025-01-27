@@ -9,7 +9,7 @@ public class RoomController : MonoBehaviour
     [SerializeField] public int height = 0;
    
     // this must not be serialized, or it fails to initialize properly
-    [System.NonSerialized] private int[] connections = new int[4] {0,0,0,0};
+    [System.NonSerialized] public int[] connections = new int[4] {0,0,0,0};
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +44,13 @@ public class RoomController : MonoBehaviour
                 Vector2 dir = Directions.IntToVec(i);
                 Vector2 pos = new Vector2(transform.position.x,transform.position.y);
                 Gizmos.color = new Color(0.2f,1f,0.2f,0.5f);
+                Gizmos.DrawRay(new Ray( pos+(dir*(width/2-0.5f)), dir) );
+            }
+
+            if(connections[i] == 2) {
+                Vector2 dir = Directions.IntToVec(i);
+                Vector2 pos = new Vector2(transform.position.x,transform.position.y);
+                Gizmos.color = new Color(1f,0.2f,0.2f,0.5f);
                 Gizmos.DrawRay(new Ray( pos+(dir*(width/2-0.5f)), dir) );
             }
         }

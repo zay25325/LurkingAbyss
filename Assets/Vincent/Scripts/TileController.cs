@@ -25,9 +25,34 @@ public class TileController : MonoBehaviour
         
     }
 
-    public void SetTile(string layer, Vector2Int pos, TileBase ?tile) {
+    public void SetTile(string layer, Vector2Int pos, TileBase tile) {
         var tileMap = layers[layer];
         tileMap.SetTile(new Vector3Int(pos.x,pos.y,0), tile);
+    }
+
+    public TileBase PickTile(string layer, Vector2Int pos) {
+        var tileMap = layers[layer];
+        return tileMap.GetTile(new Vector3Int(pos.x,pos.y,0));
+    }
+
+    public void SetRect(string layer, Vector2Int pos, Vector2Int end, TileBase tile) {
+        var tileMap = layers[layer];
+        tileMap.BoxFill(new Vector3Int(pos.x,pos.y,0), tile, pos.x, pos.y, end.x, end.y);
+    }
+    
+    public void ClearTile(string layer, Vector2Int pos) {
+        var tileMap = layers[layer];
+        tileMap.SetTile(new Vector3Int(pos.x,pos.y,0), null);
+    }
+
+    public void ClearRect(string layer, Vector2Int pos, Vector2Int size) {
+        var tileMap = layers[layer];
+
+        BoundsInt area = new BoundsInt(pos.x,pos.y,0,size.x,size.y,1);
+
+        foreach(var position in area.allPositionsWithin) {
+            ClearTile(layer, ((Vector2Int)position));
+        }
     }
 
     public void ClearLayer(string layer) {

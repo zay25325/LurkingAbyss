@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEditor;
 
+// TODO:
+// add logic for player start and exit
+// add logic for generating items
+// add logic for placing monster spawns
+// add logic for placing interactibles
+
 public class LevelController : MonoBehaviour
 {
     [SerializeField] TileController tileManager;
@@ -24,6 +30,7 @@ public class LevelController : MonoBehaviour
     }
 
     public void BuildLevelFromMap() {
+
         foreach(var pair in levelMap.RoomGrid) {
             RoomController room = pair.Value;
             Vector2Int roompos = (Vector2Int)tileManager.grid.WorldToCell(room.transform.position);
@@ -36,11 +43,48 @@ public class LevelController : MonoBehaviour
                 new Vector2Int(room.width, room.height),
                 "Walls",
                 roompos-(roomsize/2));
+
+            // place doors
+            for(int i = 0; i < room.connections.Length; i++) {
+                
+                var dir = Directions.IntToVec(i);
+                var perp = Vector2.Perpendicular(dir);
+                var halfwidth = Mathf.Floor(room.width/2);
+
+                switch(room.GetConnectionByIndex(i)) {
+                    case 0: // closed
+                        break;
+                    case 1: // door
+                        //selects a random spot for the opening to appear
+                        var doorpos = Random.Range(-(halfwidth-1),halfwidth-1); //this just uses room width. we don't plan on having oblong rooms do we?
+
+                        // this is a really confusing string of math, but basically:
+                        // roompos points to the center of the room
+                        // then pos points to a wall
+                        // then perp points to a spot on that wall
+                        tileManager.ClearTile("Walls", (Vector2Int)tileManager.grid.WorldToCell(roompos+dir*(halfwidth)+perp*doorpos));
+
+                        break;
+                }
+            }
+
+            // place floor
+            tileManager.CloneRect(
+                "Prefabs",
+                new Vector2Int(9,-7),
+                new Vector2Int(room.width, room.height),
+                "Floor",
+                roompos-(roomsize/2)
+            );
         }
     }
 
     public void GenerateLevel() {
         levelMap.StartRoomGen(mapGenRoomCount);
+    }
+
+    public void DestroyLevel() {
+        levelMap.ClearRoomGrid();
     }
 }
 
@@ -61,6 +105,11 @@ public class LevelControllerEditor : Editor
         if(GUILayout.Button("Place Tiles"))
         {
             myScript.BuildLevelFromMap();
+        }
+
+        if(GUILayout.Button("Destroy Map"))
+        {
+            myScript.DestroyLevel();
         }
     }
 }
