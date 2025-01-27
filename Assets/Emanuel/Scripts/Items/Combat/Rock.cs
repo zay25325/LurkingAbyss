@@ -12,7 +12,7 @@ public class Rock : Item
 {
     public float throwForce = 10f;  // Force to throw the rock
     public Sprite rockIcon = null;  // Icon for the rock
-    public GameObject rockPrefab = null;    // Prefab for the rock
+    private GameObject rockPrefab = null;    // Prefab for the rock
 
     /*
         FUNCTION : Awake()
