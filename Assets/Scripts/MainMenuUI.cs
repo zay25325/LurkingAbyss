@@ -46,8 +46,8 @@ public class MainMenuUI : MonoBehaviour
 
         SettingsButton.clicked += () =>
         {
-            Debug.Log("Settings Button Clicked");
-            //UnityEngine.SceneManagement.SceneManager.LoadScene("SettingsScene");
+            //Debug.Log("Settings Button Clicked");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("SettingsMenu");
         };
 
         AboutButton.clicked += () =>
