@@ -7,11 +7,12 @@ public class TileController : MonoBehaviour
 {
     [SerializeField] Dictionary<string, Tilemap> layers = new();
 
-
+    [SerializeField] public Grid grid;
 
     // reference the tilemaps in our layers dict
     void Start()
     {
+        this.grid = GetComponent<Grid>();
         Tilemap[] getTilemaps = GetComponentsInChildren<Tilemap>();
         foreach(var item in getTilemaps) {
             this.layers.Add(item.gameObject.name, item);
@@ -24,7 +25,7 @@ public class TileController : MonoBehaviour
         
     }
 
-    public void setTile(string layer, Vector2Int pos, Tile tile) {
+    public void SetTile(string layer, Vector2Int pos, TileBase ?tile) {
         var tileMap = layers[layer];
         tileMap.SetTile(new Vector3Int(pos.x,pos.y,0), tile);
     }
@@ -47,11 +48,15 @@ public class TileController : MonoBehaviour
     //
     // Clones an area of tiles from one layer to another
     //
-    public void CloneRect(string srcLayer, Vector2Int srcpos, Vector2Int srcSize, string destLayer, Vector2Int destpos) {
-    
-        //todo: use get tile block
+    public void CloneRect(string srcLayer, Vector2Int srcPos, Vector2Int srcSize, string destLayer, Vector2Int destPos) {    
 
         var source = layers[srcLayer].GetComponent<Tilemap>();
         var destination = layers[destLayer].GetComponent<Tilemap>();
+
+        BoundsInt sourceArea = new BoundsInt(srcPos.x,srcPos.y,0,srcSize.x,srcSize.y,1);
+        BoundsInt destinationArea = new BoundsInt(destPos.x,destPos.y,0,srcSize.x,srcSize.y,1);
+
+        TileBase[] sourceBlock = source.GetTilesBlock(sourceArea);
+        destination.SetTilesBlock(destinationArea, sourceBlock);
     }
 }

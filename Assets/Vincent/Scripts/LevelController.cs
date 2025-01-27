@@ -24,12 +24,18 @@ public class LevelController : MonoBehaviour
     }
 
     public void BuildLevelFromMap() {
-        foreach(var room in levelMap.RoomGrid) {
-            Vector2 roompos = room.Value.transform.position;
+        foreach(var pair in levelMap.RoomGrid) {
+            RoomController room = pair.Value;
+            Vector2Int roompos = (Vector2Int)tileManager.grid.WorldToCell(room.transform.position);
+            Vector2Int roomsize = new(room.width, room.height);
 
-            // make the walls
-
-
+            // clone room prefab
+            tileManager.CloneRect(
+                "Prefabs",
+                new Vector2Int(2,-7),
+                new Vector2Int(room.width, room.height),
+                "Walls",
+                roompos-(roomsize/2));
         }
     }
 
@@ -37,4 +43,26 @@ public class LevelController : MonoBehaviour
         levelMap.StartRoomGen(mapGenRoomCount);
     }
 }
+
+
+[CustomEditor(typeof(LevelController))]
+public class LevelControllerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        LevelController myScript = (LevelController)target;
+        if(GUILayout.Button("Start Level Gen"))
+        {
+            myScript.GenerateLevel();
+        }
+
+        if(GUILayout.Button("Place Tiles"))
+        {
+            myScript.BuildLevelFromMap();
+        }
+    }
+}
+
 
