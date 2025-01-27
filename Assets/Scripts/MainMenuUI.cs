@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -26,8 +27,10 @@ public class MainMenuUI : MonoBehaviour
         var SettingsButton = rootElement.Q<Button>("SettingsBtn");
         var QuitButton = rootElement.Q<Button>("QuitBtn");
         var AboutButton = rootElement.Q<Button>("AboutBtn");
-
-        MainMenuButtons(StartButton, LogsButton, SettingsButton, AboutButton, QuitButton);
+        Thread thread = new Thread(() => MainMenuButtons(StartButton, LogsButton, SettingsButton, AboutButton, QuitButton));
+        thread.Start();
+        thread.Join();
+        //MainMenuButtons(StartButton, LogsButton, SettingsButton, AboutButton, QuitButton);
     }
 
     private void MainMenuButtons(Button StartButton, Button LogsButton, Button SettingsButton, Button AboutButton, Button QuitButton)
@@ -40,8 +43,8 @@ public class MainMenuUI : MonoBehaviour
 
         LogsButton.clicked += () =>
         {
-            Debug.Log("Logs Button Clicked");
-            //UnityEngine.SceneManagement.SceneManager.LoadScene("LogsScene");
+            //Debug.Log("Logs Button Clicked");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("LogsMenu");
         };
 
         SettingsButton.clicked += () =>

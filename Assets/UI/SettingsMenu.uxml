@@ -2,8 +2,12 @@
     <ui:VisualElement name="LeftSide" style="flex-grow: 1; flex-direction: row; flex-wrap: nowrap; justify-content: space-around; align-self: flex-start; left: 5%; top: 5%;">
         <ui:Label tabindex="-1" text="Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 72px; left: auto; -unity-font-style: normal; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/CompassFont.asset?fileID=11400000&amp;guid=f93d08faae5745c4fa4cc83cac21f974&amp;type=2#CompassFont&quot;);" />
     </ui:VisualElement>
-    <ui:VisualElement style="flex-grow: 1;" />
-    <ui:VisualElement style="flex-grow: 1;" />
+    <ui:VisualElement name="SettingsArea1" style="flex-grow: 1; justify-content: space-between;">
+        <ui:Label tabindex="-1" text="Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 48px; left: 5%; -unity-font-style: normal; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/CompassFont.asset?fileID=11400000&amp;guid=f93d08faae5745c4fa4cc83cac21f974&amp;type=2#CompassFont&quot;); bottom: 35%;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="SettingsArea2" style="flex-grow: 1; justify-content: flex-start; align-items: auto; align-self: stretch;">
+        <ui:Label tabindex="-1" text="Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 72px; left: auto; -unity-font-style: normal; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/CompassFont.asset?fileID=11400000&amp;guid=f93d08faae5745c4fa4cc83cac21f974&amp;type=2#CompassFont&quot;); text-overflow: ellipsis;" />
+    </ui:VisualElement>
     <ui:VisualElement name="RightSide" style="flex-grow: 1; bottom: auto; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/CompassFont.asset?fileID=11400000&amp;guid=f93d08faae5745c4fa4cc83cac21f974&amp;type=2#CompassFont&quot;); justify-content: space-around; align-self: flex-start; left: 5%;">
         <ui:Button text="Back" parse-escape-sequences="true" display-tooltip-when-elided="true" name="BackBtn" style="align-items: center; align-self: center; justify-content: flex-start; flex-wrap: nowrap; left: auto; right: auto; height: 45px; width: 280px; top: auto; font-size: 28px;" />
     </ui:VisualElement>
