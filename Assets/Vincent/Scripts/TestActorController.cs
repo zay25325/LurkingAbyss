@@ -23,7 +23,6 @@ public class TestActorController:MonoBehaviour {
     public float speed = 0;
     public Transform t;
 
-
     // Start is called before the first frame update.
     void Start() {
         // Get and store the Rigidbody component attached to the player.
@@ -41,8 +40,6 @@ public class TestActorController:MonoBehaviour {
 
     // FixedUpdate is called once per fixed frame-rate frame.
     private void FixedUpdate() {
-        
-
 
         // Create a 3D movement vector using the X and Y inputs.
         Vector2 movement = new Vector2(movementX,movementY);

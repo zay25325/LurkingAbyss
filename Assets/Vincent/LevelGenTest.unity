@@ -325,6 +325,14 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 323597786}
+    - target: {fileID: 4470983403991136940, guid: 6b1ddd18d8c55d849876ae95c66d176b, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4470983403991136940, guid: 6b1ddd18d8c55d849876ae95c66d176b, type: 3}
+      propertyPath: m_LinearDrag
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6124047114197868271, guid: 6b1ddd18d8c55d849876ae95c66d176b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.25
