@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2099343294700790668}
   - component: {fileID: 458441258873774714}
+  - component: {fileID: 4826919957104855705}
   m_Layer: 0
   m_Name: LevelGrid
   m_TagString: Untagged
@@ -32,6 +33,7 @@ Transform:
   m_Children:
   - {fileID: 4793923921361062472}
   - {fileID: 3282705662050537041}
+  - {fileID: 7530646839483819827}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!156049354 &458441258873774714
@@ -46,6 +48,82 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!114 &4826919957104855705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8331499609758845365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 064a93705b7da9b409ad9eecd16b36f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layers:
+  - {fileID: 0}
+--- !u!1001 &1916444556672676772
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2099343294700790668}
+    m_Modifications:
+    - target: {fileID: 5049940527528459825, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: m_Name
+      value: Basic
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.7192556
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.8057654
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.009900027
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+--- !u!4 &7530646839483819827 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+  m_PrefabInstance: {fileID: 1916444556672676772}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3503201436522782431
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -802,7 +880,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5049940527528459825, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
       propertyPath: m_Name
-      value: TileMapLayer
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 5049940527528459825, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
       propertyPath: m_IsActive

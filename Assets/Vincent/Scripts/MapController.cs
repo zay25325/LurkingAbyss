@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 /// <summary>
 /// When generating rooms, places them in the world at-scale
@@ -11,25 +12,25 @@ public class MapController : MonoBehaviour {
 
     private Queue<Vector2> genQueue = new();
     private Dictionary<Vector2, RoomController> roomGrid = new();
+    public Dictionary<Vector2, RoomController> RoomGrid {get => roomGrid;}
 
     //width and height of the rooms in tiles
     private Vector2Int defaultRoomSize = new Vector2Int(7,7);
 
-    private bool isGenerating = false;
+    public bool IsGenerating {get; private set;} = false;
     private int genPoints = 0;
 
     [SerializeField] GameObject roomPrefab;
 
     // Start is called before the first frame update
     void Start() {
-        StartRoomGen(10);
     }
 
     // Update is called once per frame
     void Update() {
 
         // perform one gen cycle
-        if(genPoints > 0 && isGenerating == true && genQueue.Count > 0) {
+        if(genPoints > 0 && IsGenerating == true && genQueue.Count > 0) {
             var index = genQueue.Dequeue();
             roomGrid.TryGetValue(index, out var currentroom);
             
@@ -60,7 +61,11 @@ public class MapController : MonoBehaviour {
                 }
             }
 
-
+            // make sure to filp the state when we are done
+            if(genPoints <= 0) {
+                IsGenerating = false;
+                Debug.Log("Finished Generating Rooms");
+            }
         }
     }
 
@@ -70,7 +75,7 @@ public class MapController : MonoBehaviour {
         var startroom = PlaceRoom(Vector2.zero, Vector2.zero, defaultRoomSize.x, defaultRoomSize.y);
 
         genQueue.Enqueue(Vector2.zero);
-        isGenerating = true;
+        IsGenerating = true;
         genPoints --;
     } 
 
