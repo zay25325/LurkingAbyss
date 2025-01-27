@@ -1,5 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="Title" style="flex-grow: 1;" />
+    <ui:VisualElement name="LeftSide" style="flex-grow: 1; flex-direction: row; flex-wrap: nowrap; justify-content: space-around; align-self: flex-start; left: 5%; top: 5%;">
+        <ui:Label tabindex="-1" text="Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 72px; left: auto; -unity-font-style: normal; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/CompassFont.asset?fileID=11400000&amp;guid=f93d08faae5745c4fa4cc83cac21f974&amp;type=2#CompassFont&quot;);" />
+    </ui:VisualElement>
     <ui:VisualElement style="flex-grow: 1;" />
     <ui:VisualElement style="flex-grow: 1;" />
     <ui:VisualElement name="RightSide" style="flex-grow: 1; bottom: auto; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/CompassFont.asset?fileID=11400000&amp;guid=f93d08faae5745c4fa4cc83cac21f974&amp;type=2#CompassFont&quot;); justify-content: space-around; align-self: flex-start; left: 5%;">
