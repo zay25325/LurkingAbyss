@@ -2,38 +2,86 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Followed a tutorial for properly making the FOV cone
-/*
-* TITLE : “FieldOfView.cs” source code
-* AUTHOR : Code Monkey
-* DATE : 1/22/2025
-* AVAILABIILTY : https://www.youtube.com/watch?v=CSeUMTaNFYk
-*/
+
 
 public class SightMeshController : MonoBehaviour
 {
-    Mesh mesh;
+    MeshFilter meshFilter;
     [SerializeField] Transform origin;
     [SerializeField] [Range(0, 360)] float fov = 90;
     [SerializeField] [Range(0, 10)] float visionRange = 5;
     [SerializeField] [Range(0,50)] int rayCount = 16;
+    [SerializeField] LayerMask visionLayers;
+    [SerializeField] PolygonCollider2D polyCollider;
+
+    SortedList<float, Vector3> raycasts = new SortedList<float, Vector3>();
 
     // Start is called before the first frame update
     void Start()
     {
-        mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
+        meshFilter = GetComponent<MeshFilter>();
+        transform.parent = null;
+        transform.rotation = Quaternion.identity;
+        transform.position = new Vector3(0,0,1);
     }
 
     private void LateUpdate()
     {
-        transform.position = origin.position;
         float angle = GetAngleFromVectorFloat(origin.up) - fov / 2;
         float angleIncrease = fov / rayCount;
 
-        Vector3[] vertices = new Vector3[rayCount + 2];
+        raycasts.Clear();
+        for (int i = 0; i <= rayCount; i++)
+        {
+            Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.green);
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, GetVectorFromAngle(angle), visionRange, visionLayers);
+            if (raycastHit2D.collider == null)
+            {
+                raycasts.Add(angle, GetVectorFromAngle(angle) * visionRange);
+            }
+            else
+            {
+                raycasts.Add(angle, raycastHit2D.point - (Vector2)origin.position);
+                if (raycastHit2D.collider.tag == "Walls")
+                {
+                    RaycastTilemapCorners(raycastHit2D);
+                }
+            }
+
+            angle -= angleIncrease;
+        }
+
+        List<Vector3> sortedRaycasts = new List<Vector3>(raycasts.Values);
+        sortedRaycasts.Reverse();
+
+        for (int i = 0; i < sortedRaycasts.Count; i++)
+        {
+            if (i == 0)
+            {
+                Debug.DrawLine(origin.position, sortedRaycasts[i] + origin.position, Color.blue);
+            }
+            else if (i == sortedRaycasts.Count-1)
+            {
+                Debug.DrawLine(sortedRaycasts[i] + origin.position, origin.position, Color.blue);
+            }
+            else
+            {
+                Debug.DrawLine(sortedRaycasts[i] + origin.position, sortedRaycasts[i+1] + origin.position, Color.blue);
+            }
+        }
+
+
+        // create mesh
+        // Followed a tutorial for properly making the FOV cone
+        /*
+        * TITLE : “FieldOfView.cs” source code
+        * AUTHOR : Code Monkey
+        * DATE : 1/22/2025
+        * AVAILABIILTY : https://www.youtube.com/watch?v=CSeUMTaNFYk
+        */
+        /*Vector3[] vertices = new Vector3[raycasts.Count + 2];
         Vector2[] uv = new Vector2[vertices.Length];
-        int[] triangles = new int[rayCount * 3];
+        int[] triangles = new int[raycasts.Count * 3];
 
         vertices[0] = Vector3.zero;
 
@@ -41,19 +89,9 @@ public class SightMeshController : MonoBehaviour
         int triangleIndex = 0;
         for (int i = 0; i <= rayCount; i++)
         {
-            Vector3 vertex;
-            RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, GetVectorFromAngle(angle), visionRange); //layermask
-            if (raycastHit2D.collider == null)
-            {
-                vertex = GetVectorFromAngle(angle) * visionRange;
-            }
-            else
-            {
-                vertex = raycastHit2D.point - (Vector2)origin.position;
-            }
-            vertices[vertexIndex] = vertex;
+            vertices[vertexIndex] = sortedRaycasts[i];
 
-            if (i > 0)
+            if (i > 0) // to make a triangle we need 3 points, i starts at vertex index 1, so i 2 = vertex index 3
             {
                 triangles[triangleIndex + 0] = 0;
                 triangles[triangleIndex + 1] = vertexIndex - 1;
@@ -68,7 +106,19 @@ public class SightMeshController : MonoBehaviour
 
         mesh.vertices = vertices;
         mesh.uv = uv;
-        mesh.triangles = triangles;
+        mesh.triangles = triangles;*/
+
+
+        Vector2[] points = new Vector2[sortedRaycasts.Count + 2];
+        points[0] = Vector2.zero;
+        for (int i = 0; i < sortedRaycasts.Count; i++)
+        {
+            points[i + 1] = sortedRaycasts[i];
+        }
+        points[sortedRaycasts.Count + 1] = Vector2.zero;
+        polyCollider.points = points;
+        polyCollider.offset = origin.position;
+        meshFilter.mesh = polyCollider.CreateMesh(false, false);
     }
 
     public static Vector3 GetVectorFromAngle(float angle)
@@ -84,5 +134,50 @@ public class SightMeshController : MonoBehaviour
         if (n < 0)
             n += 360;
         return n;
+    }
+
+    private void RaycastTilemapCorners(RaycastHit2D originalRaycast)
+    {
+        Vector2 bottomLeftCorner = new Vector2(Mathf.Floor(originalRaycast.point.x), Mathf.Floor(originalRaycast.point.y));
+        float cornerOffset = 0.01f; // covering corner (1,1) we want to send out 2 raycasts to (1.01,1) (0.99,1)
+        // since we are always using position relative to the bottom left corner, we do not care if the normal is positive or negative, only if we hit the side or the top/bottom
+        Vector2 absNormal = new Vector2(Mathf.Abs(originalRaycast.normal.x), Mathf.Abs(originalRaycast.normal.y));
+
+        // bottom left corner
+        AddAdditionalRaycasts(bottomLeftCorner - new Vector2(absNormal.y, absNormal.x) * cornerOffset);
+        AddAdditionalRaycasts(bottomLeftCorner + new Vector2(absNormal.y, absNormal.x) * cornerOffset);
+
+        // opposite corner
+        AddAdditionalRaycasts(bottomLeftCorner + new Vector2(absNormal.y, absNormal.x) * (1 - cornerOffset));
+        AddAdditionalRaycasts(bottomLeftCorner + new Vector2(absNormal.y, absNormal.x) * (1 + cornerOffset));
+    }
+
+    private void AddAdditionalRaycasts(Vector2 raycastTo)
+    {
+        Vector3 relativeDirection = (Vector3)raycastTo - origin.position;
+        float angle = GetAngleFromVectorFloat(relativeDirection);
+        float startAngle = GetAngleFromVectorFloat(origin.up) - fov / 2;
+
+        if (angle > startAngle - fov + 360)
+        {
+            angle -= 360;
+        }
+
+        if (angle > startAngle || angle < startAngle - fov || raycasts.ContainsKey(angle))
+        {
+            return;
+        }
+
+        Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.yellow);
+
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, GetVectorFromAngle(angle), visionRange, visionLayers);
+        if (raycastHit2D.collider == null)
+        {
+            raycasts.Add(angle, GetVectorFromAngle(angle) * visionRange);
+        }
+        else
+        {
+            raycasts.Add(angle, raycastHit2D.point - (Vector2)origin.position);
+        }
     }
 }
