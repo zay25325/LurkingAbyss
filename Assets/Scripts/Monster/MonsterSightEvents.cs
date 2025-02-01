@@ -1,40 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MonsterSightEvents : MonoBehaviour
 {
-    List<Collider> colliders = new List<Collider>();
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public UnityEvent<Collider2D> OnSeeingEntityEnterEvent = new UnityEvent<Collider2D>();
+    public UnityEvent<Collider2D> OnSeeingEntityExitEvent = new UnityEvent<Collider2D>();
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log($"new trigger entered: {collision.name}");
+        OnSeeingEntityEnterEvent.Invoke(collision);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log($"new trigger exited: {collision.name}");
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log($"new trigger entered: {other.name}");
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        Debug.Log($"new trigger exited: {other.name}");
+        OnSeeingEntityExitEvent.Invoke(collision);
     }
 }

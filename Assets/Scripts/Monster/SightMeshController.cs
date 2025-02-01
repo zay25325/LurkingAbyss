@@ -41,10 +41,13 @@ public class SightMeshController : MonoBehaviour
             }
             else
             {
-                raycasts.Add(angle, raycastHit2D.point - (Vector2)origin.position);
-                if (raycastHit2D.collider.tag == "Walls")
+                if (raycasts.ContainsKey(angle) == false)
                 {
-                    RaycastTilemapCorners(raycastHit2D);
+                    raycasts.Add(angle, raycastHit2D.point - (Vector2)origin.position);
+                    if (raycastHit2D.collider.tag == "Walls")
+                    {
+                        RaycastTilemapCorners(raycastHit2D);
+                    }
                 }
             }
 
@@ -72,43 +75,6 @@ public class SightMeshController : MonoBehaviour
 
 
         // create mesh
-        // Followed a tutorial for properly making the FOV cone
-        /*
-        * TITLE : “FieldOfView.cs” source code
-        * AUTHOR : Code Monkey
-        * DATE : 1/22/2025
-        * AVAILABIILTY : https://www.youtube.com/watch?v=CSeUMTaNFYk
-        */
-        /*Vector3[] vertices = new Vector3[raycasts.Count + 2];
-        Vector2[] uv = new Vector2[vertices.Length];
-        int[] triangles = new int[raycasts.Count * 3];
-
-        vertices[0] = Vector3.zero;
-
-        int vertexIndex = 1;
-        int triangleIndex = 0;
-        for (int i = 0; i <= rayCount; i++)
-        {
-            vertices[vertexIndex] = sortedRaycasts[i];
-
-            if (i > 0) // to make a triangle we need 3 points, i starts at vertex index 1, so i 2 = vertex index 3
-            {
-                triangles[triangleIndex + 0] = 0;
-                triangles[triangleIndex + 1] = vertexIndex - 1;
-                triangles[triangleIndex + 2] = vertexIndex;
-
-                triangleIndex += 3;
-            }
-
-            vertexIndex++;
-            angle -= angleIncrease;
-        }
-
-        mesh.vertices = vertices;
-        mesh.uv = uv;
-        mesh.triangles = triangles;*/
-
-
         Vector2[] points = new Vector2[sortedRaycasts.Count + 2];
         points[0] = Vector2.zero;
         for (int i = 0; i < sortedRaycasts.Count; i++)
@@ -121,6 +87,12 @@ public class SightMeshController : MonoBehaviour
         meshFilter.mesh = polyCollider.CreateMesh(false, false);
     }
 
+    /*
+    * TITLE : “FieldOfView.cs” source code
+    * AUTHOR : Code Monkey
+    * DATE : 1/22/2025
+    * AVAILABIILTY : https://www.youtube.com/watch?v=CSeUMTaNFYk
+    */
     public static Vector3 GetVectorFromAngle(float angle)
     {
         float angleRad = angle * Mathf.Deg2Rad;
@@ -135,6 +107,7 @@ public class SightMeshController : MonoBehaviour
             n += 360;
         return n;
     }
+    // End Citation
 
     private void RaycastTilemapCorners(RaycastHit2D originalRaycast)
     {
