@@ -49,9 +49,16 @@ public class Rock : Item
     */
     public override void Use()
     {
-        // Implement rock-specific functionality
-        Debug.Log("Rock used: " + ItemName);
-        Throw();
+        if (CanUseItem())
+        {
+            Throw();
+            ReduceItemCharge();
+            DestroyItem(ItemObject);
+        }
+        else
+        {
+            Debug.Log("Not enough charges to use " + ItemName);
+        }
     }
 
     /*

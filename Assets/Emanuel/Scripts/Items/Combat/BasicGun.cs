@@ -28,9 +28,16 @@ public class BasicGun : Item
 
     public override void Use()
     {
-        // Implement gun-specific functionality
-        Debug.Log("Gun used: " + ItemName);
-        //Shoot();
+        if (CanUseItem())
+        {
+            Shoot();
+            ReduceItemCharge();
+            DestroyItem(ItemObject);
+        }
+        else
+        {
+            Debug.Log("Not enough charges to use " + ItemName);
+        }
     }
 
     private void Shoot()

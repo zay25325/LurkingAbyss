@@ -27,9 +27,16 @@ public class DashBooster : Item
 
     public override void Use()
     {
-        // Implement dash booster-specific functionality
-        Debug.Log("Dash Booster used: " + ItemName);
-        //BoostDash();
+        if (CanUseItem())
+        {
+            BoostDash();
+            ReduceItemCharge();
+            DestroyItem(ItemObject);
+        }
+        else
+        {
+            Debug.Log("Not enough charges to use " + ItemName);
+        }
     }
 
     private void BoostDash()
