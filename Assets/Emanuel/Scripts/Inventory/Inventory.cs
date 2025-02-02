@@ -105,29 +105,33 @@ public class Inventory : MonoBehaviour
         PARAMETERS : InputAction.CallbackContext context - Input context for the drop action.
         RETURNS : NONE
     */
-    public void DropActiveItem(InputAction.CallbackContext context)
+public void DropActiveItem(InputAction.CallbackContext context)
+{
+    if (activeItem != null)
     {
-        // Check if the inventory is not empty
-        if (activeItem != null)
+        // Get the player's facing direction from rotation
+        Vector2 dropDirection = (Vector2)(Quaternion.Euler(0, 0, transform.eulerAngles.z) * Vector2.right);
+
+        // Set the drop position in front of the player
+        Vector3 dropPosition = transform.position + (Vector3)dropDirection;
+
+        // Move and activate the item
+        activeItem.ItemObject.transform.position = dropPosition;
+        activeItem.ItemObject.SetActive(true);
+
+        // Remove the item from inventory
+        RemoveItem(activeItem);
+        activeItem = null;
+
+        // Set next active item if available
+        if (items.Count > 0)
         {
-            // Place the item in front of the player
-            Vector3 dropPosition = transform.position + transform.forward;
-            activeItem.ItemObject.transform.position = dropPosition;
-            activeItem.ItemObject.SetActive(true);
-
-            // Remove the item from the inventory
-            RemoveItem(activeItem);
-            // Set the active item to null
-            activeItem = null;
-
-            // Set the active item to the first item in the inventory
-            if (items.Count > 0)
-            {
-                currentActiveIndex = 0;
-                ActiveItem(currentActiveIndex);
-            }
+            currentActiveIndex = 0;
+            ActiveItem(currentActiveIndex);
         }
     }
+}
+
 
 
     /*
