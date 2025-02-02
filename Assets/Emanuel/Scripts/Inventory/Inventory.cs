@@ -47,6 +47,20 @@ public class Inventory : MonoBehaviour
 
                 return true; // Item added successfully
             }
+            else
+            {
+                // Drop the currently held item
+                DropActiveItem(new InputAction.CallbackContext());
+
+                // Add the new item to the inventory
+                items.Add(item);
+                itemObject.SetActive(false); // Deactivate the item so it is removed from the scene
+
+                // Set the new item as the active item
+                ActiveItem(items.Count - 1);
+
+                return true; // Item added successfully after dropping the held item
+            }
         }
         Debug.Log("Item not added to inventory");
         return false; // Inventory full or item does not have an Item component
