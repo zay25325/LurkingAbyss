@@ -29,14 +29,14 @@ public class Rock : Item
 
         // Set the properties of the rock item
         ItemName = "Default Rock";
-        ItemDescription = "A simple rock";
+        ItemDescription = "Can be thrown, making noise on-hit or end of flight. Deals minor damage. ";
         ItemIcon = rockIcon; 
         ItemID = 0;
         ItemCharge = 1;
         ItemRarity = Rarity.Common;
         ItemValue = 0;
         CanItemDestroy = true;
-        ItemSubtype = Subtype.Combat;
+        ItemSubtype = Subtype.Environment;
         ItemObject = rockPrefab;
     }
 
