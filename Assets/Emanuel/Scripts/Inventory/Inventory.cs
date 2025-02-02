@@ -115,6 +115,7 @@ public void DropActiveItem(InputAction.CallbackContext context)
         // Set the drop position in front of the player
         Vector3 dropPosition = transform.position + (Vector3)dropDirection;
 
+
         // Move and activate the item
         activeItem.ItemObject.transform.position = dropPosition;
         activeItem.ItemObject.SetActive(true);
@@ -264,5 +265,10 @@ public void DropActiveItem(InputAction.CallbackContext context)
         // set the active item to the third item in the inventory
         currentActiveIndex = 2; // Slot 3
         ActiveItem(currentActiveIndex);
+    }
+
+    public Item GetActiveItem()
+    {
+        return activeItem;
     }
 }

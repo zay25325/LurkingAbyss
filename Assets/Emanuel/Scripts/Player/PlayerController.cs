@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     //inventory
     private Inventory inventory;
+    private Item activeItem;
 
 
     /*
@@ -70,6 +71,7 @@ public class PlayerController : MonoBehaviour
         playerInputControls.Player.Slot1.performed += OnSlot1Pressed;                       // Subscribe to slot 1 event
         playerInputControls.Player.Slot2.performed += OnSlot2Pressed;                       // Subscribe to slot 2 event
         playerInputControls.Player.Slot3.performed += OnSlot3Pressed;                       // Subscribe to slot 3 event
+        playerInputControls.Player.Fire.performed += Fire;                                  // Subscribe to fire event  
     }
 
     /*
@@ -337,5 +339,11 @@ public class PlayerController : MonoBehaviour
     private void OnSlot3Pressed(InputAction.CallbackContext context)
     {
         inventory.Slot3Pressed(context);
+    }
+
+    private void Fire(InputAction.CallbackContext context)
+    {
+        activeItem = inventory.GetActiveItem();
+        activeItem.Use();
     }
 }
