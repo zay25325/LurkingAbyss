@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MonsterController : MonoBehaviour
 {
     [SerializeField] MonsterSightEvents sightEvents;
+    [SerializeField] SightMeshController sightController;
+    [SerializeField] NavMeshAgent agent;
 
     public float HearingAmplificaiton = 1f;
 
@@ -12,27 +15,34 @@ public class MonsterController : MonoBehaviour
     protected float stunDuration;
     protected List<GameObject> ObjectsInView = new List<GameObject>();
 
+    protected bool overrideSightDirection = false;
+
+    public NavMeshAgent Agent { get => agent; }
 
     // Start is called before the first frame update
     private void Start()
     {
+        // prevent agent from messing with 2d visuals
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
+
+
         state.controller = this;
-        sightEvents.OnSeeingEntityEnterEvent.AddListener(OnSeeingEntityEnter);
-        sightEvents.OnSeeingEntityExitEvent.AddListener(OnSeeingEntityExit);
+        if (sightEvents != null)
+        {
+            sightEvents.OnSeeingEntityEnterEvent.AddListener(OnSeeingEntityEnter);
+            sightEvents.OnSeeingEntityExitEvent.AddListener(OnSeeingEntityExit);
+        }
         NoiseDetectionManager.Instance.NoiseEvent.AddListener(OnNoiseDetection);
     }
 
     // Update is called once per frame
     private void Update()
     {
-        // update stun timer
-        if (stunDuration > 0)
+        UpdateStunDuration();
+        if (overrideSightDirection == false)
         {
-            stunDuration -= Time.deltaTime;
-            if (stunDuration < 0) // clear negative stun durations
-            {
-                stunDuration = 0;
-            }
+            LookTowardsPath();
         }
     }
 
@@ -90,5 +100,27 @@ public class MonsterController : MonoBehaviour
         state = stateComponent as MonsterState;
         state.controller = this;
         state.enabled = true;
+    }
+
+    protected void UpdateStunDuration()
+    {
+        if (stunDuration > 0)
+        {
+            stunDuration -= Time.deltaTime;
+            if (stunDuration < 0) // clear negative stun durations
+            {
+                stunDuration = 0;
+            }
+        }
+    }
+
+    protected void LookTowardsPath()
+    {
+        // look at the next point in the navigation path, which is index 1
+        if (agent.path.corners.Length > 1) 
+        {
+            Vector3 direction = agent.path.corners[1] - transform.position;
+            sightController.LookDirection = SightMeshController.GetAngleFromVectorFloat(direction) + 90f;
+        }
     }
 }

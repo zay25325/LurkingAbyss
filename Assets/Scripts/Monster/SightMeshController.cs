@@ -16,18 +16,21 @@ public class SightMeshController : MonoBehaviour
 
     SortedList<float, Vector3> raycasts = new SortedList<float, Vector3>();
 
+    public float LookDirection { get => lookDirection; set => lookDirection = value; }
+    [SerializeField] private float lookDirection = 0;
+
     // Start is called before the first frame update
     void Start()
     {
         meshFilter = GetComponent<MeshFilter>();
         transform.parent = null;
         transform.rotation = Quaternion.identity;
-        transform.position = new Vector3(0,0,1);
+        transform.position = new Vector3(0,0,-1);
     }
 
     private void LateUpdate()
     {
-        float angle = GetAngleFromVectorFloat(origin.up) - fov / 2;
+        float angle = lookDirection - fov / 2;
         float angleIncrease = fov / rayCount;
 
         raycasts.Clear();
@@ -35,7 +38,7 @@ public class SightMeshController : MonoBehaviour
         {
             Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.green);
             RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, GetVectorFromAngle(angle), visionRange, visionLayers);
-            if (raycastHit2D.collider == null)
+            if (raycastHit2D.collider == null && raycasts.ContainsKey(angle) == false)
             {
                 raycasts.Add(angle, GetVectorFromAngle(angle) * visionRange);
             }
@@ -127,10 +130,11 @@ public class SightMeshController : MonoBehaviour
 
     private void AddAdditionalRaycasts(Vector2 raycastTo)
     {
+        float startAngle = LookDirection - fov / 2;
         Vector3 relativeDirection = (Vector3)raycastTo - origin.position;
         float angle = GetAngleFromVectorFloat(relativeDirection);
-        float startAngle = GetAngleFromVectorFloat(origin.up) - fov / 2;
 
+        // convert angle to 0-360 (for example 400 -> 40)
         if (angle > startAngle - fov + 360)
         {
             angle -= 360;
