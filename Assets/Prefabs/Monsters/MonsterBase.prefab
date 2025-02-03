@@ -117,8 +117,8 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 1
-  m_BaseOffset: 0.5
+  m_Height: 0.00001
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &1410002626277024882
@@ -194,6 +194,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   polyCollider: {fileID: 4305838858216756762}
+  lookDirection: 0
 --- !u!114 &4733366595748055650
 MonoBehaviour:
   m_ObjectHideFlags: 0

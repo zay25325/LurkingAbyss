@@ -114,7 +114,16 @@ public class SightMeshController : MonoBehaviour
 
     private void RaycastTilemapCorners(RaycastHit2D originalRaycast)
     {
-        Vector2 bottomLeftCorner = new Vector2(Mathf.Floor(originalRaycast.point.x), Mathf.Floor(originalRaycast.point.y));
+        // we want to Floor the point of collision to the bottom corner
+        // A value of 5.86 should be floored to 5, however due to the nature of colliders, values like 4.99996 should be floored to 5 and not 4
+
+        float RoundAmount = 1000f; 
+        Vector2 bottomLeftCorner = new Vector2(
+            Mathf.Floor(Mathf.Round(originalRaycast.point.x * RoundAmount) / RoundAmount),
+            Mathf.Floor(Mathf.Round(originalRaycast.point.y * RoundAmount) / RoundAmount)
+            );
+
+
         float cornerOffset = 0.01f; // covering corner (1,1) we want to send out 2 raycasts to (1.01,1) (0.99,1)
         // since we are always using position relative to the bottom left corner, we do not care if the normal is positive or negative, only if we hit the side or the top/bottom
         Vector2 absNormal = new Vector2(Mathf.Abs(originalRaycast.normal.x), Mathf.Abs(originalRaycast.normal.y));
@@ -126,6 +135,8 @@ public class SightMeshController : MonoBehaviour
         // opposite corner
         AddAdditionalRaycasts(bottomLeftCorner + new Vector2(absNormal.y, absNormal.x) * (1 - cornerOffset));
         AddAdditionalRaycasts(bottomLeftCorner + new Vector2(absNormal.y, absNormal.x) * (1 + cornerOffset));
+
+        // AddAdditionalRaycasts(PointToMaxVision(origin.position, originalRaycast));
     }
 
     private void AddAdditionalRaycasts(Vector2 raycastTo)
@@ -156,5 +167,20 @@ public class SightMeshController : MonoBehaviour
         {
             raycasts.Add(angle, raycastHit2D.point - (Vector2)origin.position);
         }
+    }
+
+    private Vector2 PointToMaxVision(Vector2 origin, RaycastHit2D raycast)
+    {
+        // NOT IMPLIMENTED
+
+        // Determin if we are moving vertically or horizontally
+        Vector2 absoluteNormalVectorInverse = new Vector2(Mathf.Abs(raycast.normal.y), Mathf.Abs(raycast.normal.x));
+        // Math I just don't know
+        /*
+        Vector2 raycastDirection = raycast.point - origin; // get the direction of the
+        Vector2 lineDirection = raycastDirection * absoluteNormalVectorInverse; // get the perpendicular line of the normal direction going away from the origin
+        // Get the intersection point of a circle (p = origin, r = visionRange) and a line (starts at p = raycast.point, direction = lineDirection)
+        */
+        return Vector2.zero;
     }
 }
