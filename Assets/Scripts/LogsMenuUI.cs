@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using UnityEditor.Compilation;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,14 +17,20 @@ enum ItemType
 
 public class LogsMenuUI : MonoBehaviour
 {
+    private enum ItemType
+    {
+        Item,
+        Monster
+    }
+
     private class LogItem
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool isDiscovered { get; set; }
-        public ItemType itemType { get; set; }
+        private string Name { get; set; }
+        private string Description { get; set; }
+        private bool isDiscovered { get; set; }
+        private ItemType itemType { get; set; }
 
-        private LogItem(string name, string description, ItemType itemType)
+        public LogItem(string name, string description, ItemType itemType)
         {
             this.Name = name;
             this.Description = description;
@@ -32,14 +41,18 @@ public class LogsMenuUI : MonoBehaviour
 
     // list so we can store the info of the logged items
     private List<LogItem> loggedItems = new();
+    private ItemType currentItemType = ItemType.Item;
 
     // Visual Unity UI Toolkit variabels
     private VisualElement rootElement;
     private VisualElement container;
 
+    private string dataFilePath;
+
 
     void OnEnable()
     {
+        #region UI Toolkit
         rootElement = GetComponent<UIDocument>().rootVisualElement;
 
         var BackButton = rootElement.Q<Button>("BackBtn");
@@ -49,20 +62,63 @@ public class LogsMenuUI : MonoBehaviour
         };
 
         container = rootElement.Q<VisualElement>("Logs-Container");
+        var monstersTab = rootElement.Q<Button>("MonstersTab");
+        #endregion
 
 
+        #region Data Initialization
+        if (!InitializeLogItems())
+            Debug.Log("Failed to Initialize Log items");
 
-        InitializeLogItems();
+        switch (currentItemType)
+        {
+            case ItemType.Item:
+                ShowItems();
+                break;
+            case ItemType.Monster:
+                ShowMonsters();
+                break;
+        }
+        #endregion
+
+        #region Data Saving
+        dataFilePath = "logs_data.dat";
+        if (!LoadDiscoveredItems())
+            Debug.Log("Unable to load discovered items");
+        #endregion
     }
 
     private bool InitializeLogItems()
     {
         try
         {
-            // log items here
+            // manually logging right now
+            loggedItems.Add(new LogItem("Rock", "Small and hard. Mostly useless. May be able to attract attention when thrown.", ItemType.Item));
             return true;
         }
-        catch (System.Exception error)
+        catch (Exception error)
+        {
+            Debug.Log(error.Message);
+            return false;
+        }
+    }
+
+    private bool LoadDiscoveredItems()
+    {
+        try
+        {
+            if (File.Exists(dataFilePath))
+            {
+
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception error)
         {
             Debug.Log(error.Message);
             return false;
@@ -70,8 +126,13 @@ public class LogsMenuUI : MonoBehaviour
     }
 
 
-    private void ShowDescription()
+    private void ShowItems()
     {
         
+    }
+
+    private void ShowMonsters()
+    {
+
     }
 }
