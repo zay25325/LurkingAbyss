@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using UnityEditor.Compilation;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -37,6 +34,12 @@ public class LogsMenuUI : MonoBehaviour
             this.isDiscovered = false;
             this.itemType = itemType;
         }
+
+        public string GetName() { return Name; }
+        public string GetDesc() { return Description; }
+        public bool IsDiscovered() { return isDiscovered; }
+        public ItemType ItemType() { return itemType; }
+
     }
 
     // list so we can store the info of the logged items
@@ -70,21 +73,27 @@ public class LogsMenuUI : MonoBehaviour
         if (!InitializeLogItems())
             Debug.Log("Failed to Initialize Log items");
 
-        switch (currentItemType)
-        {
-            case ItemType.Item:
-                ShowItems();
-                break;
-            case ItemType.Monster:
-                ShowMonsters();
-                break;
-        }
+        //switch (currentItemType)
+        //{
+        //    case ItemType.Item:
+        //        ShowItems();
+        //        break;
+        //    case ItemType.Monster:
+        //        ShowMonsters();
+        //        break;
+        //}
+
         #endregion
 
         #region Data Saving
-        dataFilePath = "logs_data.dat";
-        if (!LoadDiscoveredItems())
-            Debug.Log("Unable to load discovered items");
+        dataFilePath = "Assets\\items.dat";
+        if (File.Exists(dataFilePath))
+        {
+            if (!LoadDiscoveredItems())
+                Debug.Log("Cannot load discovered items/monsters");
+        }
+        else { SaveDiscoveredItems(); }
+
         #endregion
     }
 
@@ -94,6 +103,7 @@ public class LogsMenuUI : MonoBehaviour
         {
             // manually logging right now
             loggedItems.Add(new LogItem("Rock", "Small and hard. Mostly useless. May be able to attract attention when thrown.", ItemType.Item));
+            loggedItems.Add(new LogItem("Bruh", "Small and hard", ItemType.Monster));
             return true;
         }
         catch (Exception error)
@@ -109,9 +119,23 @@ public class LogsMenuUI : MonoBehaviour
         {
             if (File.Exists(dataFilePath))
             {
+                using var write = new FileStream(dataFilePath, FileMode.Open);
+                using (var read = new BinaryReader(write))
+                {
+                    int itemCount = read.ReadInt32();
 
+                    Debug.Log($"Loading {itemCount} discovered items");
+                    for (int i = 0; i < itemCount; i++)
+                    {
+                        string name = read.ReadString();
+                        string description = read.ReadString();
+                        ItemType itemType = (ItemType)read.ReadInt32();
+                        bool isDiscovered = read.ReadBoolean();
 
-                return true;
+                        //loggedItems.Add(new LogItem(name, description, itemType) { isDiscovered = isDiscovered });
+                    };
+                    return true;
+                }
             }
             else
             {
@@ -123,6 +147,36 @@ public class LogsMenuUI : MonoBehaviour
             Debug.Log(error.Message);
             return false;
         }
+    }
+
+    private bool SaveDiscoveredItems()
+    {
+        try
+        {
+            using var write = new FileStream(dataFilePath, FileMode.Create);
+            using (var binaryWriter = new BinaryWriter(write))
+            {
+                binaryWriter.Write(loggedItems.Count);
+                foreach (var item in loggedItems)
+                {
+                    binaryWriter.Write(item.GetName());
+                    binaryWriter.Write(item.GetDesc());
+                    binaryWriter.Write(item.IsDiscovered());
+                    binaryWriter.Write((int)item.ItemType());
+                }
+            }
+            return true;
+        }
+        catch (Exception error)
+        {
+            Debug.Log(error.Message);
+            return false;
+        }
+    }
+
+    private void DiscoverLogItem(string LogName, ItemType LogType)
+    {
+
     }
 
 
