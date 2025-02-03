@@ -6,6 +6,9 @@ public class DashBooster : Item
 {
     public Sprite dashBoosterIcon = null;  // Icon for the dash booster
     private GameObject dashBoosterPrefab = null;    // Prefab for the dash booster
+
+    private PlayerController playerMovement = null;
+
     private void Awake()
     {
         // Set the prefab reference here
@@ -43,5 +46,33 @@ public class DashBooster : Item
     {
         // Implement dash boosting functionality
         Debug.Log("Boosting dash with: " + ItemName);
+        float playerBoost = 2.0f;
+        float originalSpeed = 0.0f;
+
+        // Get the player's movement script
+        playerMovement = GameObject.FindObjectOfType<PlayerController>();
+
+        originalSpeed = playerMovement.GetSpeed();
+        if (playerMovement != null)
+        {
+            originalSpeed = playerMovement.GetSpeed();
+            StartCoroutine(TemporaryBoost(playerMovement, originalSpeed, playerBoost));
+        }
+        else
+        {
+            Debug.Log("Player movement script not found");
+        }
+    }
+
+    private IEnumerator TemporaryBoost(PlayerController playerMovement, float originalSpeed, float boost)
+    {
+        float playerSpeed = playerMovement.GetSpeed();
+        playerSpeed = playerSpeed * boost;
+        playerMovement.SetSpeed(playerSpeed);
+
+        yield return new WaitForSeconds(1.0f);
+        
+        playerMovement.ReturnSpeed();
+
     }
 }

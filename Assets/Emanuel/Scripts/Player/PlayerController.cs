@@ -344,6 +344,42 @@ public class PlayerController : MonoBehaviour
     private void Fire(InputAction.CallbackContext context)
     {
         activeItem = inventory.GetActiveItem();
-        activeItem.Use();
+        if (activeItem != null)
+        {
+            activeItem.Use();
+        }
+    }
+
+    /*
+        FUNCTION : GetSpeed
+        DESCRIPTION : This function returns the speed of the player
+        PARAMETERS : NONE
+        RETURNS : playerSpeed - The speed of the player
+    */
+    public float GetSpeed()
+    {
+        return playerSpeed;
+    }
+
+    /*
+        FUNCTION : SetSpeed
+        DESCRIPTION : This function sets the speed of the player based on the new speed value passed as a parameter
+        PARAMETERS : float newSpeed - The new speed value to set
+        RETURNS : NONE
+    */
+    public void SetSpeed(float newSpeed)
+    {
+        playerSpeed = newSpeed;
+    }
+
+    /*
+        FUNCTION : ReturnSpeed
+        DESCRIPTION : This function resets the speed of the player to the original speed
+        PARAMETERS : NONE
+        RETURNS : NONE
+    */
+    public void ReturnSpeed()
+    {
+        playerSpeed = originalSpeed;
     }
 }

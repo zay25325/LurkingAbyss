@@ -147,17 +147,18 @@ public void DropActiveItem(InputAction.CallbackContext context)
         // Check if the index is within the inventory range
         if (index >= 0 && index < items.Count)
         {
-            // // Check if the active item is not null
-            // if (activeItem != null)
-            // {
-            //     // Deactivate the current active item
-            //     activeItem.SetActive(false);
-            // }
+            // Deactivate all items
+            foreach (var item in items)
+            {
+                item.ItemObject.SetActive(false);
+            }
 
             // Activate the new item
             activeItem = items[index];
             currentActiveIndex = index;
             checkActiveItemState();
+
+            activeItem.ItemObject.SetActive(true);
         }
     }
     
