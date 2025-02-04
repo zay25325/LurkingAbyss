@@ -22,6 +22,7 @@ public abstract class Item : MonoBehaviour
     public int ItemValue { get; set; }
     public bool CanItemDestroy { get; set; }
     public GameObject ItemObject { get; set; }  
+    public bool isDiscovered { get; set; }
 
     // Constructor for the item
     public Item(string name, string description, Sprite icon, int id, int charge, Rarity rarity, int value, bool destroyable, Subtype subtype, GameObject itemObject)
@@ -154,5 +155,15 @@ public abstract class Item : MonoBehaviour
         Debug.Log("Item destroyable: " + CanItemDestroy);
         Debug.Log("Item subtype: " + ItemSubtype);
         Debug.Log("Item object: " + ItemObject);
+    }
+
+    public bool ItemDiscovered()
+    {
+        return isDiscovered;
+    }
+
+    public void DiscoverItem()
+    {
+        isDiscovered = true;
     }
 }

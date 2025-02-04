@@ -343,9 +343,11 @@ public class PlayerController : MonoBehaviour
 
     private void Fire(InputAction.CallbackContext context)
     {
-        activeItem = inventory.GetActiveItem();
-        if (activeItem != null)
+        // activeItem = inventory.GetActiveItem();
+        // activeItem.Use();
+        if (inventory.GetActiveItem() != null)
         {
+            activeItem = inventory.GetActiveItem();
             activeItem.Use();
         }
     }
