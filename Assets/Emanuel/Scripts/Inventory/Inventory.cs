@@ -144,6 +144,9 @@ public void DropActiveItem(InputAction.CallbackContext context)
     */
     private void ActiveItem(int index)
     {
+        // Remove any destroyed items from the inventory
+        items.RemoveAll(i => i == null);
+
         // Check if the index is within the inventory range
         if (index >= 0 && index < items.Count)
         {
