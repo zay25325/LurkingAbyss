@@ -84,4 +84,10 @@ public class TileController : MonoBehaviour
         TileBase[] sourceBlock = source.GetTilesBlock(sourceArea);
         destination.SetTilesBlock(destinationArea, sourceBlock);
     }
+
+
+    private void OnDrawGizmos() {
+        Gizmos.color = new Color(1,0,1,0.5f);
+        Gizmos.DrawCube(Vector3.zero, Vector3.one);
+    }
 }
