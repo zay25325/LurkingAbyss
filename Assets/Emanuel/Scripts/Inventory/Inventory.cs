@@ -144,9 +144,6 @@ public void DropActiveItem(InputAction.CallbackContext context)
     */
     private void ActiveItem(int index)
     {
-        // Remove any destroyed items from the inventory
-        items.RemoveAll(i => i == null);
-
         // Check if the index is within the inventory range
         if (index >= 0 && index < items.Count)
         {
@@ -201,6 +198,8 @@ public void DropActiveItem(InputAction.CallbackContext context)
     */
     public void Scrolling(InputAction.CallbackContext context)
     {
+        // Remove any destroyed items from the inventory
+        items.RemoveAll(i => i == null);
         // Get the scroll value
         float scrollValue = context.ReadValue<float>();
 
@@ -238,6 +237,8 @@ public void DropActiveItem(InputAction.CallbackContext context)
     */
     public void Slot1Pressed(InputAction.CallbackContext context)
     {
+        // Remove any destroyed items from the inventory
+        items.RemoveAll(i => i == null);
         // set the active item to the first item in the inventory
         currentActiveIndex = 0; // Slot 1
         ActiveItem(currentActiveIndex);
@@ -252,6 +253,8 @@ public void DropActiveItem(InputAction.CallbackContext context)
     */
     public void Slot2Pressed(InputAction.CallbackContext context)
     {
+        // Remove any destroyed items from the inventory
+        items.RemoveAll(i => i == null);
         // set the active item to the second item in the inventory
         currentActiveIndex = 1; // Slot 2
         ActiveItem(currentActiveIndex);
@@ -266,6 +269,8 @@ public void DropActiveItem(InputAction.CallbackContext context)
     */
     public void Slot3Pressed(InputAction.CallbackContext context)
     {
+        // Remove any destroyed items from the inventory
+        items.RemoveAll(i => i == null);
         // set the active item to the third item in the inventory
         currentActiveIndex = 2; // Slot 3
         ActiveItem(currentActiveIndex);
