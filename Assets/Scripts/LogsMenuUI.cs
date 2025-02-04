@@ -27,10 +27,10 @@ public class LogsMenuUI : MonoBehaviour
         private bool isDiscovered { get; set; }
         private ItemType itemType { get; set; }
 
-        public LogItem(string name, string description, ItemType itemType)
+        public LogItem(string Name, string Description, ItemType itemType)
         {
-            this.Name = name;
-            this.Description = description;
+            this.Name = Name;
+            this.Description = Description;
             this.isDiscovered = false;
             this.itemType = itemType;
         }
@@ -131,8 +131,6 @@ public class LogsMenuUI : MonoBehaviour
                         string description = read.ReadString();
                         ItemType itemType = (ItemType)read.ReadInt32();
                         bool isDiscovered = read.ReadBoolean();
-
-                        //loggedItems.Add(new LogItem(name, description, itemType) { isDiscovered = isDiscovered });
                     };
                     return true;
                 }
