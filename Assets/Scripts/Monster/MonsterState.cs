@@ -1,0 +1,22 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public abstract class MonsterState : MonoBehaviour
+{
+    [HideInInspector] public MonsterController controller;
+
+    // For completeness: The full list of events that a monsters are suppose to react to also includes these 4 MonoBehaviour events
+    /* Events from MonoBehavior
+    Start()
+    Update()
+    OnEnable()
+    OnDisable()
+    */
+
+    public abstract void OnTouchEnter(Collision2D collision);
+    public abstract void OnTouchExit(Collision2D collision);
+    public abstract void OnSeeingEntityEnter(Collider2D collider);
+    public abstract void OnSeeingEntityExit(Collider2D collider);
+    public abstract void OnNoiseDetection(Vector2 pos, float volume);
+}
