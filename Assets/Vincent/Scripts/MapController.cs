@@ -15,7 +15,7 @@ public class MapController : MonoBehaviour {
     public Dictionary<Vector2, RoomController> RoomGrid {get => roomGrid;}
 
     //width and height of the rooms in tiles
-    private Vector2Int defaultRoomSize = new Vector2Int(7,7);
+    private Vector2Int defaultRoomSize = new Vector2Int(9,9);
 
     public bool IsGenerating {get; private set;} = false;
     private int genPoints = 0;

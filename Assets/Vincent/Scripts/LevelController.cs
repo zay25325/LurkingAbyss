@@ -17,6 +17,8 @@ public class LevelController : MonoBehaviour
 
     [SerializeField] int mapGenRoomCount;
 
+    const int STATIC_ROOM_SIZE = 9;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,18 +40,19 @@ public class LevelController : MonoBehaviour
 
             // clone room prefab
             tileManager.CloneRect(
-                "Prefabs",
-                new Vector2Int(2,-7),
-                new Vector2Int(room.width, room.height),
-                "Walls",
-                roompos-(roomsize/2));
+                TileMapLayer.LayerClass.Palette,
+                new Vector2Int(-4,-4),
+                new Vector2Int(STATIC_ROOM_SIZE, STATIC_ROOM_SIZE),
+                TileMapLayer.LayerClass.Wall,
+                roompos-(roomsize/2)
+            );
 
             // place doors
             for(int i = 0; i < room.connections.Length; i++) {
                 
                 var dir = Directions.IntToVec(i);
                 var perp = Vector2.Perpendicular(dir);
-                var halfwidth = Mathf.Floor(room.width/2);
+                var halfwidth = Mathf.Floor(STATIC_ROOM_SIZE/2);
 
                 switch(room.GetConnectionByIndex(i)) {
                     case 0: // closed
@@ -62,20 +65,23 @@ public class LevelController : MonoBehaviour
                         // roompos points to the center of the room
                         // then pos points to a wall
                         // then perp points to a spot on that wall
-                        tileManager.ClearTile("Walls", (Vector2Int)tileManager.grid.WorldToCell(roompos+dir*(halfwidth)+perp*doorpos));
+                        tileManager.ClearTile(TileMapLayer.LayerClass.Wall, (Vector2Int)tileManager.grid.WorldToCell(roompos+dir*(halfwidth)+perp*doorpos));
 
                         break;
+                    case 2: // open
+                        break;
+                        
                 }
             }
 
             // place floor
-            tileManager.CloneRect(
-                "Prefabs",
-                new Vector2Int(9,-7),
-                new Vector2Int(room.width, room.height),
-                "Floor",
-                roompos-(roomsize/2)
-            );
+            //tileManager.CloneRect(
+            //    "Prefabs",
+            //    new Vector2Int(9,-7),
+            //    new Vector2Int(room.width, room.height),
+            //    "Floor",
+            //    roompos-(roomsize/2)
+            //);
         }
     }
 
