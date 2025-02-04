@@ -31,7 +31,7 @@ public class LogsMenuUI : MonoBehaviour
         {
             this.Name = Name;
             this.Description = Description;
-            this.isDiscovered = false;
+            isDiscovered = false;
             this.itemType = itemType;
         }
 
@@ -50,6 +50,7 @@ public class LogsMenuUI : MonoBehaviour
     private VisualElement rootElement;
     private VisualElement container;
 
+    // File Saving Data
     private string dataFilePath;
 
 
@@ -67,7 +68,6 @@ public class LogsMenuUI : MonoBehaviour
         container = rootElement.Q<VisualElement>("Logs-Container");
         var monstersTab = rootElement.Q<Button>("MonstersTab");
         #endregion
-
 
         #region Data Initialization
         if (!InitializeLogItems())
@@ -122,7 +122,7 @@ public class LogsMenuUI : MonoBehaviour
                 using var write = new FileStream(dataFilePath, FileMode.Open);
                 using (var read = new BinaryReader(write))
                 {
-                    int itemCount = read.ReadInt32();
+                    int itemCount = read.ReadInt16();
 
                     Debug.Log($"Loading {itemCount} discovered items");
                     for (int i = 0; i < itemCount; i++)
@@ -131,7 +131,8 @@ public class LogsMenuUI : MonoBehaviour
                         string description = read.ReadString();
                         ItemType itemType = (ItemType)read.ReadInt32();
                         bool isDiscovered = read.ReadBoolean();
-                    };
+                        Debug.Log($"{name}, {description}, {itemType}, {isDiscovered}")
+;                    };
                     return true;
                 }
             }
@@ -172,9 +173,9 @@ public class LogsMenuUI : MonoBehaviour
         }
     }
 
-    private void DiscoverLogItem(string LogName, ItemType LogType)
+    private void DiscoverLogItem(Item item)
     {
-
+        
     }
 
 
