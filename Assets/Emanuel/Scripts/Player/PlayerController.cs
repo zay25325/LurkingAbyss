@@ -266,8 +266,11 @@ public class PlayerController : MonoBehaviour
     */
     private void DoInteraction(InputAction.CallbackContext context)
     {
+        //maybe a static hitbox so an interactable object can tell if it is being hovered
+        
         // Check for collision with an item or object with Item script
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 1f);
+        
         foreach (var hitCollider in hitColliders)
         {
             Item item = hitCollider.GetComponentInChildren<Item>();

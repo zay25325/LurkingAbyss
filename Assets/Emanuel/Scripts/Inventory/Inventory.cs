@@ -82,6 +82,7 @@ public class Inventory : MonoBehaviour
             items.Remove(item);
             if (item.ItemObject != null)
             {
+                AddRemoveGameworld(activeItem, true);
                 item.ItemObject.SetActive(true); // Activate the item so it is added back to the scene
             }
             // Update the active item if necessary
@@ -144,6 +145,7 @@ public void DropActiveItem(InputAction.CallbackContext context)
     */
     private void ActiveItem(int index)
     {
+        items.RemoveAll(i => i == null);
         // Check if the index is within the inventory range
         if (index >= 0 && index < items.Count)
         {
@@ -159,6 +161,9 @@ public void DropActiveItem(InputAction.CallbackContext context)
             checkActiveItemState();
 
             activeItem.ItemObject.SetActive(true);
+            AddRemoveGameworld(activeItem, false);
+
+        // Add any other components you want to disable here
         }
     }
     
@@ -279,5 +284,24 @@ public void DropActiveItem(InputAction.CallbackContext context)
     public Item GetActiveItem()
     {
         return activeItem;
+    }
+
+    public Item AddRemoveGameworld(Item itemAddRemove, bool yesNo)
+    {
+        itemAddRemove.ItemObject.GetComponent<Renderer>().enabled = yesNo;
+        // Disable all components of the active item
+        Collider2D collider = itemAddRemove.ItemObject.GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            collider.enabled = yesNo;
+        }
+
+        Rigidbody2D rigidbody = itemAddRemove.ItemObject.GetComponent<Rigidbody2D>();
+        if (rigidbody != null)
+        {
+            rigidbody.simulated = yesNo;
+        }
+
+        return itemAddRemove;
     }
 }
