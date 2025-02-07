@@ -212,6 +212,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff29efa4e52b31046ab0350e57e3dfb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  batteryIcon: {fileID: 0}
+--- !u!1 &400648063 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8786005308923651583, guid: 043f49fcf5a6ab0438c81946366556e5, type: 3}
+  m_PrefabInstance: {fileID: 1082420571}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &400648069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400648063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9395cb386608e2540b9f1dcd5bf1ece0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  revivorIcon: {fileID: 0}
 --- !u!1001 &568184385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -349,10 +368,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Green Test
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6386562194984417603, guid: 043f49fcf5a6ab0438c81946366556e5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8786005308923651583, guid: 043f49fcf5a6ab0438c81946366556e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 400648069}
   m_SourcePrefab: {fileID: 100100000, guid: 043f49fcf5a6ab0438c81946366556e5, type: 3}
 --- !u!1 &1317859061 stripped
 GameObject:

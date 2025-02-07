@@ -305,9 +305,4 @@ public void DropActiveItem(InputAction.CallbackContext context)
 
         return itemAddRemove;
     }
-
-    public List<Item> GetCurrentItemList()
-    {
-        return items;
-    }
 }

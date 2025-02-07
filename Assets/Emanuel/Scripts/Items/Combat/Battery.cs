@@ -80,7 +80,7 @@ public class Battery : Item
         Inventory inventory = FindObjectOfType<Inventory>();
         if (inventory != null)
         {
-            List<Item> items = inventory.GetCurrentItemList();
+            List<Item> items = inventory.GetItems();
             bool allItemsFull = true;
 
             // Check if all items are full
