@@ -7,7 +7,7 @@ public class DashBooster : Item
     public Sprite dashBoosterIcon = null;  // Icon for the dash booster
     private GameObject dashBoosterPrefab = null;    // Prefab for the dash booster
 
-    private PlayerController playerMovement = null;
+    private PlayerStats playerMovement = null;
 
     private void Awake()
     {
@@ -51,13 +51,13 @@ public class DashBooster : Item
         float originalSpeed = 0.0f;
 
         // Get the player's movement script
-        playerMovement = GameObject.FindObjectOfType<PlayerController>();
+        playerMovement = GameObject.FindObjectOfType<PlayerStats>();
 
-        originalSpeed = playerMovement.GetSpeed();
+        playerMovement.OriginalSpeed = playerMovement.PlayerSpeed;
         if (playerMovement != null)
         {
-            originalSpeed = playerMovement.GetSpeed();
-            StartCoroutine(TemporaryBoost(playerMovement, originalSpeed, playerBoost));
+            //originalSpeed = playerMovement.GetSpeed();
+            StartCoroutine(TemporaryBoost(playerMovement, playerBoost));
         }
         else
         {
@@ -65,15 +65,14 @@ public class DashBooster : Item
         }
     }
 
-    private IEnumerator TemporaryBoost(PlayerController playerMovement, float originalSpeed, float boost)
+    private IEnumerator TemporaryBoost(PlayerStats playerMovement, float boost)
     {
-        float playerSpeed = playerMovement.GetSpeed();
-        playerSpeed = playerSpeed * boost;
-        playerMovement.SetSpeed(playerSpeed);
+        playerMovement.PlayerSpeed = playerMovement.PlayerSpeed * boost;
 
         yield return new WaitForSeconds(1.0f);
         
-        playerMovement.ReturnSpeed();
+
+        playerMovement.PlayerSpeed = playerMovement.OriginalSpeed;
 
     }
 }

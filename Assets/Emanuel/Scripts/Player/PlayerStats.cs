@@ -13,6 +13,19 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private float health = 1f;
     [SerializeField] private float shields = 4f;
 
+    [SerializeField] 
+    private float playerSpeed = 5f;    // Speed of the player
+
+    [SerializeField] 
+    private float sneakSpeed = 2f;    // Speed of the player when sneaking
+
+    [SerializeField]
+    private float dashSpeed = 2f;    // Speed of the player rotation
+
+    //private variables
+    [SerializeField]
+    private float originalSpeed = 0f;    // Original speed of the player
+
     public float Health 
     { 
         get => health; 
@@ -22,6 +35,30 @@ public class PlayerStats : MonoBehaviour
     { 
         get => shields; 
         set => shields = value; 
+    }
+
+    public float PlayerSpeed 
+    { 
+        get => playerSpeed; 
+        set => playerSpeed = value; 
+    }
+
+    public float SneakSpeed 
+    { 
+        get => sneakSpeed; 
+        set => sneakSpeed = value; 
+    }
+
+    public float DashSpeed 
+    { 
+        get => dashSpeed; 
+        set => dashSpeed = value; 
+    }
+
+    public float OriginalSpeed 
+    { 
+        get => originalSpeed; 
+        set => originalSpeed = value; 
     }
 
     private void RevivePlayer()

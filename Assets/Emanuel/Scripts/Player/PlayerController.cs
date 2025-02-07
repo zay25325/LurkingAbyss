@@ -16,18 +16,19 @@ public class PlayerController : MonoBehaviour
     const float DASH_DURATION = 0.2f; // Duration of the dash
     const float DASH_COOLDOWN = 0.5f; // Cooldown of the dash
 
-    //serialized fields variables
-    [SerializeField] 
-    private float playerSpeed = 5f;    // Speed of the player
+    private PlayerStats playerStats; // Player stats component
+    // //serialized fields variables
+    // [SerializeField] 
+    // private float playerSpeed = 5f;    // Speed of the player
 
-    [SerializeField] 
-    private float sneakSpeed = 2.5f;    // Speed of the player when sneaking
+    // [SerializeField] 
+    // private float sneakSpeed = 2.5f;    // Speed of the player when sneaking
 
-    [SerializeField]
-    private float dashSpeed = 7.5f;    // Speed of the player rotation
+    // [SerializeField]
+    // private float dashSpeed = 7.5f;    // Speed of the player rotation
 
-    //private variables
-    private float originalSpeed = 0f;    // Original speed of the player
+    // //private variables
+    // private float originalSpeed = 0f;    // Original speed of the player
     private Vector2 movementInput = Vector2.zero;   // Input from the player
     private Rigidbody2D playerRigidBody;    // Rigidbody2D component of the player
     private PlayerInputControls playerInputControls;    // Input system controls
@@ -110,7 +111,16 @@ public class PlayerController : MonoBehaviour
     */
     private void Start()
     {
-        originalSpeed = playerSpeed;    // Original speed of the player
+
+        playerStats = GetComponent<PlayerStats>();
+        if (playerStats == null)
+        {
+            Debug.LogError("PlayerStats component is missing!");
+        }
+        else
+        {
+            playerStats.OriginalSpeed = playerStats.PlayerSpeed;   // Original speed of the player
+        }
         playerRigidBody = GetComponent<Rigidbody2D>();
 
         // Check if Rigidbody2D component is missing
@@ -147,7 +157,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         // Update velocity based on input
-        playerRigidBody.velocity = movementInput * playerSpeed;
+        playerRigidBody.velocity = movementInput * playerStats.PlayerSpeed;
     }
 
     /*
@@ -206,13 +216,13 @@ public class PlayerController : MonoBehaviour
         //While the sneak action is performed, reduce the player speed
         if (context.performed)
         {
-            playerSpeed = sneakSpeed; // Reduce speed for sneaking
+            playerStats.PlayerSpeed = playerStats.PlayerSpeed / playerStats.SneakSpeed; // Reduce speed for sneaking
         }
 
         //When the sneak action is canceled, reset the player speed
         else if (context.canceled)
         {
-            playerSpeed = originalSpeed; // Reset speed when not sneaking
+            playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed when not sneaking
         }
     }
 
@@ -244,9 +254,9 @@ public class PlayerController : MonoBehaviour
     private IEnumerator DashCoroutine()
     {
         canDash = false; // Prevent dashing multiple times
-        playerSpeed = dashSpeed; // Increase speed for dashing
+        playerStats.PlayerSpeed = playerStats.PlayerSpeed * playerStats.DashSpeed; // Increase speed for dashing
         yield return new WaitForSeconds(DASH_DURATION); // Dash duration
-        playerSpeed = originalSpeed; // Reset speed after dashing
+        playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed after dashing
         yield return new WaitForSeconds(DASH_COOLDOWN); // Cooldown duration
         canDash = true; // Allow dashing again
     }
@@ -353,38 +363,5 @@ public class PlayerController : MonoBehaviour
             activeItem = inventory.GetActiveItem();
             activeItem.Use();
         }
-    }
-
-    /*
-        FUNCTION : GetSpeed
-        DESCRIPTION : This function returns the speed of the player
-        PARAMETERS : NONE
-        RETURNS : playerSpeed - The speed of the player
-    */
-    public float GetSpeed()
-    {
-        return playerSpeed;
-    }
-
-    /*
-        FUNCTION : SetSpeed
-        DESCRIPTION : This function sets the speed of the player based on the new speed value passed as a parameter
-        PARAMETERS : float newSpeed - The new speed value to set
-        RETURNS : NONE
-    */
-    public void SetSpeed(float newSpeed)
-    {
-        playerSpeed = newSpeed;
-    }
-
-    /*
-        FUNCTION : ReturnSpeed
-        DESCRIPTION : This function resets the speed of the player to the original speed
-        PARAMETERS : NONE
-        RETURNS : NONE
-    */
-    public void ReturnSpeed()
-    {
-        playerSpeed = originalSpeed;
     }
 }
