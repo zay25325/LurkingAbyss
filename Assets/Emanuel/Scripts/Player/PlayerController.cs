@@ -17,18 +17,7 @@ public class PlayerController : MonoBehaviour
     const float DASH_COOLDOWN = 0.5f; // Cooldown of the dash
 
     private PlayerStats playerStats; // Player stats component
-    // //serialized fields variables
-    // [SerializeField] 
-    // private float playerSpeed = 5f;    // Speed of the player
 
-    // [SerializeField] 
-    // private float sneakSpeed = 2.5f;    // Speed of the player when sneaking
-
-    // [SerializeField]
-    // private float dashSpeed = 7.5f;    // Speed of the player rotation
-
-    // //private variables
-    // private float originalSpeed = 0f;    // Original speed of the player
     private Vector2 movementInput = Vector2.zero;   // Input from the player
     private Rigidbody2D playerRigidBody;    // Rigidbody2D component of the player
     private PlayerInputControls playerInputControls;    // Input system controls
@@ -169,6 +158,7 @@ public class PlayerController : MonoBehaviour
     private void Move(Vector2 direction)
     {
         movementInput = direction;
+        MovingNoise();
     }
 
     /*
@@ -180,6 +170,7 @@ public class PlayerController : MonoBehaviour
     private void StopMoving()
     {
         movementInput = Vector2.zero;
+        MovingNoise();
     }
 
     /*
@@ -224,6 +215,7 @@ public class PlayerController : MonoBehaviour
         {
             playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed when not sneaking
         }
+        //MovingNoise();
     }
 
     /*
@@ -255,8 +247,10 @@ public class PlayerController : MonoBehaviour
     {
         canDash = false; // Prevent dashing multiple times
         playerStats.PlayerSpeed = playerStats.PlayerSpeed * playerStats.DashSpeed; // Increase speed for dashing
+        MovingNoise();
         yield return new WaitForSeconds(DASH_DURATION); // Dash duration
         playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed after dashing
+        MovingNoise();
         yield return new WaitForSeconds(DASH_COOLDOWN); // Cooldown duration
         canDash = true; // Allow dashing again
     }
@@ -363,5 +357,13 @@ public class PlayerController : MonoBehaviour
             activeItem = inventory.GetActiveItem();
             activeItem.Use();
         }
+    }
+
+    private void MovingNoise()
+    {
+        playerStats.PlayerNoise = (int)(movementInput.magnitude * playerStats.PlayerSpeed); // Calculate noise level based on movement and speed
+        NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise);
+
+        Debug.Log("Player noise level: " + playerStats.PlayerNoise);
     }
 }

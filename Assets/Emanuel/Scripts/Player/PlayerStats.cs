@@ -26,6 +26,8 @@ public class PlayerStats : MonoBehaviour
     [SerializeField]
     private float originalSpeed = 0f;    // Original speed of the player
 
+    private int playerNoise = 0;    // Noise level of the player
+
     public float Health 
     { 
         get => health; 
@@ -59,6 +61,12 @@ public class PlayerStats : MonoBehaviour
     { 
         get => originalSpeed; 
         set => originalSpeed = value; 
+    }
+
+    public int PlayerNoise 
+    { 
+        get => playerNoise; 
+        set => playerNoise = value; 
     }
 
     private void RevivePlayer()
