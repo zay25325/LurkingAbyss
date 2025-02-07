@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2194229061092642432}
   - component: {fileID: 3888434749788218859}
   - component: {fileID: 2027305539459633839}
+  - component: {fileID: 3904007107555255114}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -100,9 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fecb27fd860370546afad35480139189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeed: 5
-  sneakSpeed: 2.5
-  dashSpeed: 15
 --- !u!50 &2194229061092642432
 Rigidbody2D:
   serializedVersion: 4
@@ -177,3 +175,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6868392bfc36fc49943c0cd27f519e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3904007107555255114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7419464304183977446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b898de9f7d1a81a48b18bc339b5b5116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1
+  shields: 4
+  playerSpeed: 5
+  sneakSpeed: 2
+  dashSpeed: 3
+  originalSpeed: 0

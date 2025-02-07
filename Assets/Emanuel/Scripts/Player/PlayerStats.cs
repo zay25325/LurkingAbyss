@@ -20,7 +20,7 @@ public class PlayerStats : MonoBehaviour
     private float sneakSpeed = 2f;    // Speed of the player when sneaking
 
     [SerializeField]
-    private float dashSpeed = 2f;    // Speed of the player rotation
+    private float dashSpeed = 3f;    // Speed of the player rotation
 
     //private variables
     [SerializeField]

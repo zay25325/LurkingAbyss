@@ -48,7 +48,6 @@ public class DashBooster : Item
         // Implement dash boosting functionality
         Debug.Log("Boosting dash with: " + ItemName);
         float playerBoost = 2.0f;
-        float originalSpeed = 0.0f;
 
         // Get the player's movement script
         playerMovement = GameObject.FindObjectOfType<PlayerStats>();
