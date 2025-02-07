@@ -15,6 +15,7 @@ public abstract class Item : MonoBehaviour
     public string ItemDescription { get; set; }
     public Sprite ItemIcon { get; set; }
     public int ItemID { get; set; }
+    public int maxItemCharge { get; set; }
     public int ItemCharge { get; set; }
     public Rarity ItemRarity { get; set; }
 
@@ -25,12 +26,13 @@ public abstract class Item : MonoBehaviour
     public bool isDiscovered { get; set; }
 
     // Constructor for the item
-    public Item(string name, string description, Sprite icon, int id, int charge, Rarity rarity, int value, bool destroyable, Subtype subtype, GameObject itemObject)
+    public Item(string name, string description, Sprite icon, int id, int maxCharge, int charge, Rarity rarity, int value, bool destroyable, Subtype subtype, GameObject itemObject)
     {
         ItemName = name;
         ItemDescription = description;
         ItemIcon = icon;
         ItemID = id;
+        maxItemCharge = maxCharge;
         ItemCharge = charge;
         ItemRarity = rarity;
         ItemValue = value;
@@ -46,6 +48,7 @@ public abstract class Item : MonoBehaviour
         ItemDescription = null;
         ItemIcon = null;
         ItemID = 0;
+        maxItemCharge = 1;
         ItemCharge = 1;
         ItemRarity = Rarity.Common;
         ItemValue = 0;

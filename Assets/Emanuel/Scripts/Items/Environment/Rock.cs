@@ -32,6 +32,7 @@ public class Rock : Item
         ItemDescription = "Can be thrown, making noise on-hit or end of flight. Deals minor damage. ";
         ItemIcon = rockIcon; 
         ItemID = 0;
+        maxItemCharge = 1;
         ItemCharge = 1;
         ItemRarity = Rarity.Common;
         ItemValue = 0;

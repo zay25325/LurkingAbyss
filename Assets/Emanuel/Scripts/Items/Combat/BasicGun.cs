@@ -17,7 +17,8 @@ public class BasicGun : Item
         ItemDescription = "Harms monsters at a distance, makes a lot of noise";
         ItemIcon = gunIcon;
         ItemID = 0;
-        ItemCharge = 1;
+        maxItemCharge = 3;
+        ItemCharge = 3;
         ItemRarity = Rarity.Common;
         ItemValue = 0;
         CanItemDestroy = false;

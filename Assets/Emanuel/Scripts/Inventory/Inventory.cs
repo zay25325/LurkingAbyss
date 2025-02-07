@@ -1,5 +1,6 @@
 /*
 Class Name: Inventory
+
 Description: This class is responsible for managing the player's inventory. 
              It contains the properties and methods to add, remove, and select items in the inventory.
 */
@@ -303,5 +304,10 @@ public void DropActiveItem(InputAction.CallbackContext context)
         }
 
         return itemAddRemove;
+    }
+
+    public List<Item> GetCurrentItemList()
+    {
+        return items;
     }
 }

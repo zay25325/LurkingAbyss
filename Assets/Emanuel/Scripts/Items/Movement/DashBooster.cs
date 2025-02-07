@@ -20,6 +20,7 @@ public class DashBooster : Item
         ItemDescription = "Allows the player a quick burst of movement";
         ItemIcon = null;
         ItemID = 0;
+        maxItemCharge = 4;
         ItemCharge = 4;
         ItemRarity = Rarity.Common;
         ItemValue = 0;
