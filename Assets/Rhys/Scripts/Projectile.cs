@@ -14,7 +14,7 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        transform.position += transform.right * speed * Time.deltaTime;
 
         if (Vector3.Distance(startPosition, transform.position) >= maxDistance)
         {
