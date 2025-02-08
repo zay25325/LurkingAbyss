@@ -13,6 +13,9 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private float health = 1f;
     [SerializeField] private float shields = 4f;
 
+    private float maxHealth = 1f;
+    private float maxShields = 4f;
+
     [SerializeField] 
     private float playerSpeed = 5f;    // Speed of the player
 
@@ -40,6 +43,18 @@ public class PlayerStats : MonoBehaviour
     { 
         get => shields; 
         set => shields = value; 
+    }
+
+    public float MaxHealth 
+    { 
+        get => maxHealth; 
+        set => maxHealth = value; 
+    }
+
+    public float MaxShields 
+    { 
+        get => maxShields; 
+        set => maxShields = value; 
     }
 
     public float PlayerSpeed 

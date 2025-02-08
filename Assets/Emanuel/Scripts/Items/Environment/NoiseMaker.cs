@@ -8,6 +8,7 @@ Description: This class is a component of the noise maker game object and repres
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class NoiseMaker : Item
 {
@@ -79,7 +80,7 @@ public class NoiseMaker : Item
 
         if (inventoryManager != null)
         {
-            inventoryManager.RemoveItem(this);
+            inventoryManager.DropActiveItem(new InputAction.CallbackContext());
             
             StartCoroutine(GenerateNoise());
 
@@ -99,6 +100,7 @@ public class NoiseMaker : Item
         int currentNoiseLevel = noiseLevel;
         while (currentNoiseLevel > 0)
         {
+            NoiseDetectionManager.Instance.NoiseEvent.Invoke(this. transform.position, currentNoiseLevel);
             currentNoiseLevel--;
             Debug.Log("Generating noise: " + currentNoiseLevel);
             yield return new WaitForSeconds(1f);
