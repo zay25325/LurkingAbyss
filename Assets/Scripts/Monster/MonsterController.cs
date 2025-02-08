@@ -19,15 +19,18 @@ public class MonsterController : MonoBehaviour
 
     public NavMeshAgent Agent { get => agent; }
 
+    protected void Awake()
+    {
+        state.controller = this;
+    }
+
     // Start is called before the first frame update
-    private void Start()
+    protected void Start()
     {
         // prevent agent from messing with 2d visuals
         agent.updateRotation = false;
         agent.updateUpAxis = false;
 
-
-        state.controller = this;
         if (sightEvents != null)
         {
             sightEvents.OnSeeingEntityEnterEvent.AddListener(OnSeeingEntityEnter);
@@ -37,7 +40,7 @@ public class MonsterController : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void Update()
+    protected void Update()
     {
         UpdateStunDuration();
         if (overrideSightDirection == false)
@@ -117,7 +120,7 @@ public class MonsterController : MonoBehaviour
     protected void LookTowardsPath()
     {
         // look at the next point in the navigation path, which is index 1
-        if (agent.path.corners.Length > 1) 
+        if (sightController != null && agent.path.corners.Length > 1) 
         {
             Vector3 direction = agent.path.corners[1] - transform.position;
             sightController.LookDirection = SightMeshController.GetAngleFromVectorFloat(direction) + 90f;
