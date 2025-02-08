@@ -25,6 +25,8 @@ public abstract class Item : MonoBehaviour
     public GameObject ItemObject { get; set; }  
     public bool isDiscovered { get; set; }
 
+    public bool IsInUse { get; set; } = false;
+
     // Constructor for the item
     public Item(string name, string description, Sprite icon, int id, int maxCharge, int charge, Rarity rarity, int value, bool destroyable, Subtype subtype, GameObject itemObject)
     {

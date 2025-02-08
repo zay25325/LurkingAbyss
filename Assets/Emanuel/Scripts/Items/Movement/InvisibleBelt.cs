@@ -53,6 +53,9 @@ public class InvisibleBelt : Item
             yield break;
         }
 
+        // Set the item as in use
+        IsInUse = true;
+
         // Make the player invisible
         SetPlayerVisibility(player, false);
         Debug.Log("Player is now invisible.");
@@ -62,6 +65,9 @@ public class InvisibleBelt : Item
         // Make the player visible again
         SetPlayerVisibility(player, true);
         Debug.Log("Player is now visible again.");
+
+        // Set the item as not in use
+        IsInUse = false;
     }
 
     private void SetPlayerVisibility(GameObject player, bool isVisible)

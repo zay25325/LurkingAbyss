@@ -209,8 +209,8 @@ public void DropActiveItem(InputAction.CallbackContext context)
         // Get the scroll value
         float scrollValue = context.ReadValue<float>();
 
-        // Check if the inventory is not empty
-        if (items.Count > 0)
+        // Check if the inventory is not empty and the active item is not in use
+        if (items.Count > 0 && (activeItem == null || !activeItem.IsInUse))
         {
             // Scroll through the inventory. Check if the scroll value is positive or negative
 
@@ -243,11 +243,14 @@ public void DropActiveItem(InputAction.CallbackContext context)
     */
     public void Slot1Pressed(InputAction.CallbackContext context)
     {
-        // Remove any destroyed items from the inventory
-        items.RemoveAll(i => i == null);
-        // set the active item to the first item in the inventory
-        currentActiveIndex = 0; // Slot 1
-        ActiveItem(currentActiveIndex);
+        if(!activeItem.IsInUse)
+        {
+            // Remove any destroyed items from the inventory
+            items.RemoveAll(i => i == null);
+            // set the active item to the first item in the inventory
+            currentActiveIndex = 0; // Slot 1
+            ActiveItem(currentActiveIndex);
+        }
     }
 
     /*
@@ -259,11 +262,14 @@ public void DropActiveItem(InputAction.CallbackContext context)
     */
     public void Slot2Pressed(InputAction.CallbackContext context)
     {
-        // Remove any destroyed items from the inventory
-        items.RemoveAll(i => i == null);
-        // set the active item to the second item in the inventory
-        currentActiveIndex = 1; // Slot 2
-        ActiveItem(currentActiveIndex);
+        if(!activeItem.IsInUse)
+        {
+            // Remove any destroyed items from the inventory
+            items.RemoveAll(i => i == null);
+            // set the active item to the second item in the inventory
+            currentActiveIndex = 1; // Slot 2
+            ActiveItem(currentActiveIndex);
+        }
     }
 
     /*
@@ -275,11 +281,14 @@ public void DropActiveItem(InputAction.CallbackContext context)
     */
     public void Slot3Pressed(InputAction.CallbackContext context)
     {
-        // Remove any destroyed items from the inventory
-        items.RemoveAll(i => i == null);
-        // set the active item to the third item in the inventory
-        currentActiveIndex = 2; // Slot 3
-        ActiveItem(currentActiveIndex);
+        if(!activeItem.IsInUse)
+        {
+            // Remove any destroyed items from the inventory
+            items.RemoveAll(i => i == null);
+            // set the active item to the third item in the inventory
+            currentActiveIndex = 2; // Slot 3
+            ActiveItem(currentActiveIndex);
+        }
     }
 
     public Item GetActiveItem()
