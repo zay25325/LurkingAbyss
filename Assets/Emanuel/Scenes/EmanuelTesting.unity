@@ -193,14 +193,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8786005308923651583, guid: 043f49fcf5a6ab0438c81946366556e5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 27087031}
+      addedObject: {fileID: 27087036}
   m_SourcePrefab: {fileID: 100100000, guid: 043f49fcf5a6ab0438c81946366556e5, type: 3}
 --- !u!1 &27087030 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8786005308923651583, guid: 043f49fcf5a6ab0438c81946366556e5, type: 3}
   m_PrefabInstance: {fileID: 27087029}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &27087031
+--- !u!114 &27087036
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,10 +209,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 27087030}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff29efa4e52b31046ab0350e57e3dfb2, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d34b9c194b21a6498fe13958e0e8366, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  batteryIcon: {fileID: 0}
+  warperIcon: {fileID: 0}
 --- !u!1 &400648063 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8786005308923651583, guid: 043f49fcf5a6ab0438c81946366556e5, type: 3}
@@ -589,6 +589,7 @@ MonoBehaviour:
   sneakSpeed: 2
   dashSpeed: 3
   originalSpeed: 0
+  ichorSamples: 0
 --- !u!1001 &8199049334367125516
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -639,6 +640,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7419464304183977446, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419464304183977446, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []

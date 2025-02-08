@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3904007107555255114}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -193,3 +193,4 @@ MonoBehaviour:
   sneakSpeed: 2
   dashSpeed: 3
   originalSpeed: 0
+  ichorSamples: 0
