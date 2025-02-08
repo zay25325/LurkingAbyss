@@ -26,6 +26,9 @@ public class PlayerStats : MonoBehaviour
     [SerializeField]
     private float originalSpeed = 0f;    // Original speed of the player
 
+    [SerializeField]
+    private int ichorSamples = 0;    // Number of ichor samples the player has
+
     private int playerNoise = 0;    // Noise level of the player
 
     public float Health 
@@ -67,6 +70,12 @@ public class PlayerStats : MonoBehaviour
     { 
         get => playerNoise; 
         set => playerNoise = value; 
+    }
+
+    public int IchorSamples 
+    { 
+        get => ichorSamples; 
+        set => ichorSamples = value; 
     }
 
     private void RevivePlayer()

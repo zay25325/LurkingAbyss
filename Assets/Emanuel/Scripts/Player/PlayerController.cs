@@ -215,6 +215,10 @@ public class PlayerController : MonoBehaviour
         {
             playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed when not sneaking
         }
+
+
+        // currently having MovingNoise commented since unsure if we want sneaking to cause no noise at all
+        // rather than just reducing the noise level
         //MovingNoise();
     }
 
@@ -278,10 +282,17 @@ public class PlayerController : MonoBehaviour
         foreach (var hitCollider in hitColliders)
         {
             Item item = hitCollider.GetComponentInChildren<Item>();
+
             if (item != null)
             {
                 inventory.AddItem(hitCollider.gameObject);
                 break;
+            }
+
+            // If Player is touching ichor and interacts with it, it will then increase the player's ichor samples (currency)
+            if (hitCollider.CompareTag("Ichor"))
+            {
+                playerStats.IchorSamples++;
             }
         }
     }
