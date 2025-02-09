@@ -701,18 +701,6 @@ PrefabInstance:
       value: Walls Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
