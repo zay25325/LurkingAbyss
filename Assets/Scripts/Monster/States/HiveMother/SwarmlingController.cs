@@ -9,13 +9,13 @@ public class SwarmlingController : MonsterController
     public float BaseSpeed { get => baseSpeed; }
     private float fleeDistance = 8f;
 
-    private CircleCollider2D collider;
+    private CircleCollider2D touchCollider;
 
     new protected void Awake()
     {
         base.Awake(); // set up the first state
         baseSpeed = Agent.speed; // grab our speed before the state changes it
-        collider = GetComponent<CircleCollider2D>();
+        touchCollider = GetComponent<CircleCollider2D>();
     }
 
     new protected void Start()
@@ -26,7 +26,7 @@ public class SwarmlingController : MonsterController
     public void FleeFromSound(Vector2 pos, bool switchToFleeing = true)
     {
         Vector2 direction = (pos - (Vector2)transform.position).normalized * -1; // direction away from sound
-        Vector2 rayStart = transform.position + (Vector3)direction * collider.radius;
+        Vector2 rayStart = transform.position + (Vector3)direction * touchCollider.radius;
 
         RaycastHit2D hit = Physics2D.Raycast(rayStart, direction, fleeDistance); // hit wall
         Vector3 fleePoint = transform.position + (Vector3)(direction * fleeDistance); // were to flee to
