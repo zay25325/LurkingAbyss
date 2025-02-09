@@ -169,6 +169,12 @@ MonoBehaviour:
   tileManager: {fileID: 8478776620801522138}
   levelMap: {fileID: 368545835}
   mapGenRoomCount: 10
+  roomVariants:
+  - {fileID: 8223989492356317212, guid: ebb6db5862ec87f408399a5f0a48a574, type: 3}
+  - {fileID: 8223989492356317212, guid: 245516b4c810a6f47895a3028a3ecd4d, type: 3}
+  - {fileID: 8223989492356317212, guid: 9f40c0c03a4eb32449864d7196f7e81c, type: 3}
+  - {fileID: 8223989492356317212, guid: 2278386a12f05b241bee7f1f655cc4fd, type: 3}
+  - {fileID: 8223989492356317212, guid: 8239f22593b7ce041a12356447025d44, type: 3}
 --- !u!1 &309415892 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8541394461307609326, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
@@ -313,52 +319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec686daaf7da785478f472e4244f56b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &746280015
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 746280017}
-  - component: {fileID: 746280016}
-  m_Layer: 0
-  m_Name: SpawnPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &746280016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 746280015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f1ae28359d87a94698613881ac8dab0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnThis: {fileID: 0}
-  debugColor: {r: 0, g: 0.07035928, b: 0.6037736, a: 0.5}
---- !u!4 &746280017
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 746280015}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.1152668, y: 0.4640342, z: -0.011650733}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &612917574441269967
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19051,4 +19011,3 @@ SceneRoots:
   - {fileID: 8478776620801522131}
   - {fileID: 5694550689766205875}
   - {fileID: 612917574441269967}
-  - {fileID: 746280017}

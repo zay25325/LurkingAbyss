@@ -17,36 +17,34 @@ public class LevelController : MonoBehaviour
 
     [SerializeField] int mapGenRoomCount;
 
+    [SerializeField] List<RoomVariantData> roomVariants;
+
     public static readonly int STATIC_ROOM_SIZE = 9;
+
+    private void Start() {
+        foreach(var variant in roomVariants) {
+            variant.Init();
+        }
+    }
 
     public void BuildLevelFromMap() {
 
         // Place Level Bounds
-        BoundsInt levelBounds = new(0,0,0,0,0,1);
-        int xMin = 0, xMax = 0, yMin = 0, yMax = 0;
+        var boundsTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette,new Vector2Int(2,0));
         foreach(var pair in levelMap.RoomGrid) {
             RoomController room = pair.Value;
             Vector2Int roompos = (Vector2Int)tileManager.grid.WorldToCell(room.transform.position);
+            Vector2Int roomsize = new(STATIC_ROOM_SIZE, STATIC_ROOM_SIZE);
 
-            // stretch level bounds to fit every generated room
-            xMin = roompos.x < xMin ? roompos.x : xMin;
-            xMax = roompos.x > xMax ? roompos.x : xMax;
-
-            yMin = roompos.y < yMin ? roompos.y : yMin;
-            yMax = roompos.y > yMax ? roompos.y : yMax;
-        }
-
-        levelBounds.SetMinMax(new Vector3Int(xMin, yMin, 0), new Vector3Int(xMax, yMax, 1));
-
-        var boundsTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette,new Vector2Int(2,0));
-        tileManager.SetRect(TileMapLayer.LayerClass.Unbreakable, new Vector2Int(levelBounds.xMin,levelBounds.yMin),new Vector2Int(levelBounds.xMax,levelBounds.yMax), boundsTile);
+            tileManager.SetRect(TileMapLayer.LayerClass.Unbreakable, roompos-roomsize, roompos+roomsize, boundsTile);
+        }        
 
         foreach(var pair in levelMap.RoomGrid) {
             RoomController room = pair.Value;
             Vector2Int roompos = (Vector2Int)tileManager.grid.WorldToCell(room.transform.position);
             Vector2Int roomsize = new(STATIC_ROOM_SIZE, STATIC_ROOM_SIZE);
 
-            // clone room prefab
+            // clone base room
             tileManager.CloneRect(
                 TileMapLayer.LayerClass.Roomx9,
                 new Vector2Int(-4,-4),
@@ -88,6 +86,20 @@ public class LevelController : MonoBehaviour
                         
                 }
             }
+
+            // Get a random room variant
+            var roomVariant = this.roomVariants[Random.Range(0,roomVariants.Count)];
+
+            // place internal walls
+            var wallTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette, new Vector2Int(1,0));
+            foreach(var pos in roomVariant.walls) {
+                tileManager.SetTile(TileMapLayer.LayerClass.Wall, roompos+pos, wallTile);
+            }
+            // place item spawns relative to room origin
+            foreach(var obj in roomVariant.itemSpawns) {
+                Instantiate(obj, room.transform.position+obj.transform.localPosition, Quaternion.identity);
+            }
+            // TODO place interactible spawns relative to room origin
         }
     }
 

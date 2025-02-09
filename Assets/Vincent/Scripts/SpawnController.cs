@@ -4,7 +4,16 @@ using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
-    [SerializeField] GameObject spawnThis = null;
+    public enum SpawnClass {
+        Item,
+        Interactable,
+        Trap,
+        Misc,
+    }
+
+
+    [SerializeField] public GameObject spawnThis = null;
+    [SerializeField] public SpawnClass type = SpawnClass.Misc;
 
     // give the spawnpoint an object to instantiate
     public void SetObject(GameObject prefab) {
@@ -26,6 +35,6 @@ public class SpawnController : MonoBehaviour
 
     private void OnDrawGizmos() {
         Gizmos.color = debugColor;
-        Gizmos.DrawSphere(this.transform.position, 0.4f);
+        Gizmos.DrawSphere(this.transform.position+new Vector3(0.5f,0.5f,0f), 0.4f);
     }
 }

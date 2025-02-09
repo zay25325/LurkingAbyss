@@ -37,6 +37,8 @@ public class TileController : MonoBehaviour
 
     public void SetRect(TileMapLayer.LayerClass layer, Vector2Int pos, Vector2Int end, TileBase tile) {
         var tileMap = layers[layer];
+        //overwrite
+        this.ClearRect(layer,pos,end-pos);
         //expand bounds
         this.SetTile(layer, end, tile);
         //fill
