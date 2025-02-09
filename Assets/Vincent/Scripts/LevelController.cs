@@ -29,10 +29,6 @@ public class LevelController : MonoBehaviour
 
     public void BuildLevelFromMap() {
 
-        foreach(var variant in roomVariants) {
-            variant.Init();
-        }
-
         // Place Level Bounds
         var boundsTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette,new Vector2Int(2,0));
         foreach(var pair in levelMap.RoomGrid) {
