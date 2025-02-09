@@ -88,15 +88,6 @@ public class LevelController : MonoBehaviour
                         
                 }
             }
-
-            // place floor
-            //tileManager.CloneRect(
-            //    "Prefabs",
-            //    new Vector2Int(9,-7),
-            //    new Vector2Int(room.width, room.height),
-            //    "Floor",
-            //    roompos-(roomsize/2)
-            //);
         }
     }
 
