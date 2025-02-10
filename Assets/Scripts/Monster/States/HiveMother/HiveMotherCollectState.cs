@@ -24,6 +24,7 @@ public class HiveMotherCollectState : MonsterState
                 {
                     Vector3 direction = (obj.transform.position - transform.position).normalized;
                     controller.Agent.SetDestination(obj.transform.position + direction); // agents slow down when reaching their destination, so intentionally overshoot
+                    NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, Vector3.Distance(transform.position, obj.transform.position) + 1, GetComponent<EntityInfo>().Tags); ;
                     break;
                 }
             }
@@ -41,13 +42,21 @@ public class HiveMotherCollectState : MonsterState
         navTimer = 0f;
     }
 
+    public override void OnSeeingEntityEnter(Collider2D collider)
+    {
+        EntityInfo info = collider.GetComponent<EntityInfo>();
+        if (info != null && info.Tags.Contains(EntityInfo.EntityTags.Swarmling))
+        {
+        }
+    }
+
     public override void OnTouchEnter(Collision2D collision)
     {
         EntityInfo info = collision.collider.GetComponent<EntityInfo>();
         if (info != null && info.Tags.Contains(EntityInfo.EntityTags.Swarmling))
         {
-            collision.collider.gameObject.SetActive(false);
-            GameObject.Destroy(collision.collider.gameObject);
+            info.gameObject.SetActive(false);
+            GameObject.Destroy(info.gameObject);
             controller.CollectedSwarmlings++;
             controller.SwitchState<HiveMotherCallState>();
         }

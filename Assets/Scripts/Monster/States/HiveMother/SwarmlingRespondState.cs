@@ -18,4 +18,13 @@ public class SwarmlingRespondState : MonsterState
             controller.SwitchState<SwarmlingReturnState>();
         }
     }
+
+    public override void OnNoiseDetection(Vector2 pos, float volume, List<EntityInfo.EntityTags> tags)
+    {
+        if (tags.Contains(EntityInfo.EntityTags.HiveMother))
+        {
+            NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, volume, GetComponent<EntityInfo>().Tags);
+            controller.Agent.SetDestination(pos);
+        }
+    }
 }
