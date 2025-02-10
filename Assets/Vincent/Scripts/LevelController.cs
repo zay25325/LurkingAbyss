@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEditor;
+using Unity.AI.Navigation;
 
 // TODO:
 // add logic for player start and exit
@@ -14,17 +15,22 @@ public class LevelController : MonoBehaviour
 {
     [SerializeField] TileController tileManager;
     [SerializeField] MapController levelMap;
-
     [SerializeField] int mapGenRoomCount;
-
     [SerializeField] List<RoomVariantData> roomVariants;
 
     public static readonly int STATIC_ROOM_SIZE = 9;
+
+    [SerializeField] public MonsterNavController monsterNav;
+
 
     private void Start() {
         foreach(var variant in roomVariants) {
             variant.Init();
         }
+    }
+
+    private void BuildNavMesh() {
+        monsterNav.UpdateMesh();
     }
 
     public void BuildLevelFromMap() {
@@ -100,11 +106,17 @@ public class LevelController : MonoBehaviour
                 Instantiate(obj, room.transform.position+obj.transform.localPosition, Quaternion.identity);
             }
             // TODO place interactible spawns relative to room origin
+
+
         }
     }
 
     public void GenerateLevel() {
         levelMap.StartRoomGen(mapGenRoomCount);
+    }
+
+    public void CreateNavMeshes() {
+        this.BuildNavMesh();
     }
 
     public void DestroyLevel() {
@@ -126,9 +138,14 @@ public class LevelControllerEditor : Editor
             myScript.GenerateLevel();
         }
 
-        if(GUILayout.Button("Place Tiles"))
+        if(GUILayout.Button("Build Map"))
         {
             myScript.BuildLevelFromMap();
+        }
+
+         if(GUILayout.Button("Make Navmesh"))
+        {
+            myScript.CreateNavMeshes();
         }
 
         if(GUILayout.Button("Destroy Map"))
