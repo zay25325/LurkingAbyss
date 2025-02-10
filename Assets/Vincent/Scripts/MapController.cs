@@ -73,7 +73,6 @@ public class MapController : MonoBehaviour {
 
         this.genPoints = roomcount;
         var startroom = PlaceRoom(Vector2.zero, Vector2.zero, defaultRoomSize.x, defaultRoomSize.y);
-
         genQueue.Enqueue(Vector2.zero);
         IsGenerating = true;
         genPoints --;

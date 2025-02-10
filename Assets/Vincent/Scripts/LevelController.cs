@@ -13,14 +13,22 @@ using Unity.AI.Navigation;
 
 public class LevelController : MonoBehaviour
 {
+    //Tilemap
     [SerializeField] TileController tileManager;
     [SerializeField] MapController levelMap;
-    [SerializeField] int mapGenRoomCount;
-    [SerializeField] List<RoomVariantData> roomVariants;
-
     public static readonly int STATIC_ROOM_SIZE = 9;
 
+    //Room Layout
+    [SerializeField] int mapGenRoomCount;
+
+    //Room Variants
+    [SerializeField] List<RoomVariantData> roomVariants;
+
+    //NavMesh
     [SerializeField] public MonsterNavController monsterNav;
+
+    //Point of Interest
+    [SerializeField] public List<SpawnController> spawners = new() {};
 
     public bool BreakTileAt(Vector3 worldpos) {
 
@@ -120,9 +128,10 @@ public class LevelController : MonoBehaviour
             }
             // place item spawns relative to room origin
             foreach(var obj in roomVariant.itemSpawns) {
-                Instantiate(obj, room.transform.position+obj.transform.localPosition, Quaternion.identity);
+                var instance = Instantiate(obj, room.transform.position+obj.transform.localPosition, Quaternion.identity);
+                spawners.Add(instance.GetComponent<SpawnController>());
             }
-            // TODO place interactible spawns relative to room origin
+            // TODO place other spawns relative to room origin
 
 
         }
@@ -136,8 +145,22 @@ public class LevelController : MonoBehaviour
         this.BuildNavMesh();
     }
 
+    public void DestroySpawners() {
+        int count = 0;
+        while(spawners.Count > 0) {
+            //destroy the spawner
+            Destroy(spawners[0].gameObject);
+            //remove the list
+            spawners.RemoveAt(0);
+            count ++;
+        }
+        Debug.Log($"Destroyed {count} spawners");
+    }
+
     public void DestroyLevel() {
         levelMap.ClearRoomGrid();
+        tileManager.Nuke();
+        DestroySpawners();
     }
 }
 
@@ -171,7 +194,7 @@ public class LevelControllerEditor : Editor
         DrawDefaultInspector();
 
         LevelController myScript = (LevelController)target;
-        if(GUILayout.Button("Start Level Gen"))
+        if(GUILayout.Button("Build Layout"))
         {
             myScript.GenerateLevel();
         }

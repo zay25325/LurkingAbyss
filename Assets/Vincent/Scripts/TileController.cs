@@ -66,6 +66,18 @@ public class TileController : MonoBehaviour
         tileMap.ClearAllTiles();
     }
 
+    // clear all world tiles (leave non-world tilemaps intact)
+    // used to reset the level
+    public void Nuke() {
+        foreach(var pair in layers) {
+            var layerMap = pair.Value;
+            var layerInfo = layerMap.gameObject.GetComponent<TileMapLayer>();
+            if(layerInfo.IsWorld) {
+                ClearLayer(pair.Key);
+            }
+        }
+    }
+
     public void CloneTile(TileMapLayer.LayerClass srcLayer, Vector2Int srcPos, TileMapLayer.LayerClass destLayer, Vector2Int destPos) {
     
         var source = layers[srcLayer].GetComponent<Tilemap>();
