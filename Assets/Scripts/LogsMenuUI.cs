@@ -73,6 +73,7 @@ public class LogsMenuUI : MonoBehaviour
         #endregion
 
         #region Data Initialization
+        dataFilePath = "Assets\\items.dat";
         if (!InitializeLogItems())
             Debug.Log("Failed to Initialize Log items");
 
@@ -88,24 +89,30 @@ public class LogsMenuUI : MonoBehaviour
 
         #endregion
 
-        #region Data Saving
-        dataFilePath = "Assets\\items.dat";
+        //#region Data Saving
+        //dataFilePath = "Assets\\items.dat";
 
-        if (!LoadDiscoveredItems()) 
-            Debug.Log("Cannot load discovered items/monsters");
-        else { SaveDiscoveredItems(); }
+        //if (!LoadDiscoveredItems()) 
+        //    Debug.Log("Cannot load discovered items/monsters");
+        //else { SaveDiscoveredItems(); }
 
-        #endregion
+        //#endregion
     }
 
     private bool InitializeLogItems()
     {
         try
         {
+            #region Manual Logging
             // manually logging right now
-            loggedItems.Add(new LogItem("Rock", "Small and hard. Mostly useless. May be able to attract attention when thrown.", ItemType.Item));
-            loggedItems.Add(new LogItem("Andrew", "testing description", ItemType.Monster));
-            loggedItems.Add(new LogItem("Second item", "Item 3", ItemType.Item));
+            //loggedItems.Add(new LogItem("Rock", "Small and hard. Mostly useless. May be able to attract attention when thrown.", ItemType.Item));
+            //loggedItems.Add(new LogItem("Andrew", "testing description", ItemType.Monster));
+            //loggedItems.Add(new LogItem("Second item", "Item 3", ItemType.Item));
+            #endregion
+
+            if (!LoadDiscoveredItems())
+                Debug.Log("Cannot load discovered items/monsters");
+            else { SaveDiscoveredItems(); }
             return true;
         }
         catch (Exception error)
