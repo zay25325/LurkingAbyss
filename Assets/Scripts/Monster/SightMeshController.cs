@@ -60,7 +60,7 @@ public class SightMeshController : MonoBehaviour
         List<Vector3> sortedRaycasts = new List<Vector3>(raycasts.Values);
         sortedRaycasts.Reverse();
 
-        for (int i = 0; i < sortedRaycasts.Count; i++)
+        /*for (int i = 0; i < sortedRaycasts.Count; i++)
         {
             if (i == 0)
             {
@@ -74,7 +74,7 @@ public class SightMeshController : MonoBehaviour
             {
                 Debug.DrawLine(sortedRaycasts[i] + origin.position, sortedRaycasts[i+1] + origin.position, Color.blue);
             }
-        }
+        }*/
 
 
         // create mesh
@@ -156,7 +156,7 @@ public class SightMeshController : MonoBehaviour
             return;
         }
 
-        Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.yellow);
+        //Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.yellow);
 
         RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, GetVectorFromAngle(angle), visionRange, visionLayers);
         if (raycastHit2D.collider == null)
