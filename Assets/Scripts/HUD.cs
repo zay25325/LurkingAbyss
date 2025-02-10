@@ -8,17 +8,22 @@ public class HUD : MonoBehaviour
 
     public Slider intSlider;
 
+    public void Start()
+    {
+        intSlider.value = 17.4f;
+    }
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SetHealth(3);
+            SetHealth(3.1f);
         }
     }
 
-    private void SetHealth(int health)
+    private void SetHealth(float health)
     {
-        intSlider.value += health;
+        intSlider.value -= health;
     }
 
 
