@@ -19,7 +19,7 @@ public class LevelController : MonoBehaviour
     public static readonly int STATIC_ROOM_SIZE = 9;
 
     //Room Layout
-    [SerializeField] int mapGenRoomCount;
+    [SerializeField] int mapGenRoomCount = 30;
 
     //Room Variants
     [SerializeField] List<RoomVariantData> roomVariants;
@@ -113,6 +113,10 @@ public class LevelController : MonoBehaviour
 
                         break;
                     case 2: // open
+                        for(int j = (int)(-halfwidth)+1; j < halfwidth; j++) {
+                            var cellpos = j;
+                            tileManager.ClearTile(TileMapLayer.LayerClass.Wall, (Vector2Int)tileManager.grid.WorldToCell(roompos+dir*(halfwidth)+perp*cellpos));
+                        }
                         break;
                         
                 }
@@ -161,6 +165,7 @@ public class LevelController : MonoBehaviour
         levelMap.ClearRoomGrid();
         tileManager.Nuke();
         DestroySpawners();
+        BuildNavMesh();
     }
 }
 
