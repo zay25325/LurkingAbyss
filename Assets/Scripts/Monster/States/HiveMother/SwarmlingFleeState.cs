@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SwarmlingFleeState : MonsterState
 {
-    new private SwarmlingController controller { get => base.controller as SwarmlingController; } // lets hope this dosen't kill everything
+    new private SwarmlingController controller { get => base.controller as SwarmlingController; }
 
     const float hideDuration = 3f; // if the swarmling runs into a way, don't immediately switch to the return state
     float hideTimer = 0;
@@ -27,10 +27,19 @@ public class SwarmlingFleeState : MonsterState
         hideTimer = 0f;
     }
 
-    public override void OnNoiseDetection(Vector2 pos, float volume)
+    public override void OnNoiseDetection(Vector2 pos, float volume, List<EntityInfo.EntityTags> tags)
     {
-        controller.FleeFromSound(pos, false); // don't reinvoke this state
-        hideTimer = 0f;
+        if (tags.Contains(EntityInfo.EntityTags.HiveMother))
+        {
+            NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, volume, GetComponent<EntityInfo>().Tags);
+            controller.Agent.SetDestination(pos);
+            controller.SwitchState<SwarmlingRespondState>();
+        }
+        else if (tags.Contains(EntityInfo.EntityTags.Swarmling) == false)
+        {
+            controller.FleeFromSound(pos, false); // don't reinvoke this state
+            hideTimer = 0f;
+        }
     }
 
 }

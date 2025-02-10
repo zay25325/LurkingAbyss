@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class SwarmlingReturnState : MonsterState
 {
-    new private SwarmlingController controller { get => base.controller as SwarmlingController; } // lets hope this dosen't kill everything
+    new private SwarmlingController controller { get => base.controller as SwarmlingController; }
 
     Vector3 returnPoint = Vector3.zero;
 
@@ -29,8 +29,17 @@ public class SwarmlingReturnState : MonsterState
         }
     }
 
-    public override void OnNoiseDetection(Vector2 pos, float volume)
+    public override void OnNoiseDetection(Vector2 pos, float volume, List<EntityInfo.EntityTags> tags)
     {
-        controller.FleeFromSound(pos);
+        if (tags.Contains(EntityInfo.EntityTags.HiveMother))
+        {
+            NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, volume, GetComponent<EntityInfo>().Tags);
+            controller.Agent.SetDestination(pos);
+            controller.SwitchState<SwarmlingRespondState>();
+        }
+        else if (tags.Contains(EntityInfo.EntityTags.Swarmling) == false)
+        {
+            controller.FleeFromSound(pos);
+        }
     }
 }

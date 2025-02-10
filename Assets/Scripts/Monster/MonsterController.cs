@@ -13,30 +13,38 @@ public class MonsterController : MonoBehaviour
 
     [SerializeField] protected MonsterState state;
     protected float stunDuration;
-    protected List<GameObject> ObjectsInView = new List<GameObject>();
+    protected List<GameObject> objectsInView = new List<GameObject>();
 
     protected bool overrideSightDirection = false;
 
     public NavMeshAgent Agent { get => agent; }
+    public List<GameObject> ObjectsInView { get => objectsInView; }
 
     protected void Awake()
     {
         state.controller = this;
-    }
-
-    // Start is called before the first frame update
-    protected void Start()
-    {
-        // prevent agent from messing with 2d visuals
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+    }
 
+    private void OnEnable()
+    {
         if (sightEvents != null)
         {
             sightEvents.OnSeeingEntityEnterEvent.AddListener(OnSeeingEntityEnter);
             sightEvents.OnSeeingEntityExitEvent.AddListener(OnSeeingEntityExit);
         }
         NoiseDetectionManager.Instance.NoiseEvent.AddListener(OnNoiseDetection);
+    }
+
+    private void OnDisable()
+    {
+        if (sightEvents != null)
+        {
+            sightEvents.OnSeeingEntityEnterEvent.RemoveListener(OnSeeingEntityEnter);
+            sightEvents.OnSeeingEntityExitEvent.RemoveListener(OnSeeingEntityExit);
+        }
+        NoiseDetectionManager.Instance.NoiseEvent.RemoveListener(OnNoiseDetection);
     }
 
     // Update is called once per frame
@@ -63,7 +71,7 @@ public class MonsterController : MonoBehaviour
     {
         if (collider.gameObject != gameObject)
         {
-            ObjectsInView.Add(collider.gameObject);
+            objectsInView.Add(collider.gameObject);
             state.OnSeeingEntityEnter(collider);
         }
     }
@@ -72,18 +80,18 @@ public class MonsterController : MonoBehaviour
     {
         if (collider.gameObject != gameObject)
         {
-            ObjectsInView.Remove(collider.gameObject);
+            objectsInView.Remove(collider.gameObject);
             state.OnSeeingEntityExit(collider);
         }
     }
 
-    private void OnNoiseDetection(Vector2 pos, float volume)
+    private void OnNoiseDetection(Vector2 pos, float volume, List<EntityInfo.EntityTags> tags)
     {
         float distance = Vector3.Distance(transform.position, pos);
         float amplifiedVolume = volume * HearingAmplificaiton;
         if (amplifiedVolume > distance)
         {
-            state.OnNoiseDetection(pos, volume);
+            state.OnNoiseDetection(pos, volume, tags);
         }
     }
 

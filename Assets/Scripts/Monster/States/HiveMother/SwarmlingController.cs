@@ -18,11 +18,6 @@ public class SwarmlingController : MonsterController
         touchCollider = GetComponent<CircleCollider2D>();
     }
 
-    new protected void Start()
-    {
-        base.Start();
-    }
-
     public void FleeFromSound(Vector2 pos, bool switchToFleeing = true)
     {
         Vector2 direction = (pos - (Vector2)transform.position).normalized * -1; // direction away from sound

@@ -18,5 +18,5 @@ public abstract class MonsterState : MonoBehaviour
     public virtual void OnTouchExit(Collision2D collision) { }
     public virtual void OnSeeingEntityEnter(Collider2D collider) { }
     public virtual void OnSeeingEntityExit(Collider2D collider) { }
-    public virtual void OnNoiseDetection(Vector2 pos, float volume) { }
+    public virtual void OnNoiseDetection(Vector2 pos, float volume, List<EntityInfo.EntityTags> tags) { }
 }

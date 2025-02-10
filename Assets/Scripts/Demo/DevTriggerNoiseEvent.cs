@@ -8,7 +8,7 @@ public class DevTriggerNoiseEvent : MonoBehaviour
 	[SerializeField] float volume = 5f;
 	public void CreateNoise()
     {
-		NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, volume);
+		NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, volume, new List<EntityInfo.EntityTags>());
     }
 }
 
