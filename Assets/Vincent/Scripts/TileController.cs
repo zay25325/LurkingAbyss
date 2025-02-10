@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class TileController : MonoBehaviour
 {
-    [SerializeField] Dictionary<string, Tilemap> layers = new();
+    [SerializeField] Dictionary<TileMapLayer.LayerClass, Tilemap> layers = new();
 
     [SerializeField] public Grid grid;
 
@@ -15,7 +15,7 @@ public class TileController : MonoBehaviour
         this.grid = GetComponent<Grid>();
         Tilemap[] getTilemaps = GetComponentsInChildren<Tilemap>();
         foreach(var item in getTilemaps) {
-            this.layers.Add(item.gameObject.name, item);
+            this.layers.Add(item.gameObject.GetComponent<TileMapLayer>().id, item);
         }
     }
 
@@ -25,27 +25,32 @@ public class TileController : MonoBehaviour
         
     }
 
-    public void SetTile(string layer, Vector2Int pos, TileBase tile) {
-        var tileMap = layers[layer];
-        tileMap.SetTile(new Vector3Int(pos.x,pos.y,0), tile);
-    }
-
-    public TileBase PickTile(string layer, Vector2Int pos) {
+    public TileBase PickTile(TileMapLayer.LayerClass layer, Vector2Int pos) {
         var tileMap = layers[layer];
         return tileMap.GetTile(new Vector3Int(pos.x,pos.y,0));
     }
 
-    public void SetRect(string layer, Vector2Int pos, Vector2Int end, TileBase tile) {
+    public void SetTile(TileMapLayer.LayerClass layer, Vector2Int pos, TileBase tile) {
         var tileMap = layers[layer];
+        tileMap.SetTile(new Vector3Int(pos.x,pos.y,0), tile);
+    }
+
+    public void SetRect(TileMapLayer.LayerClass layer, Vector2Int pos, Vector2Int end, TileBase tile) {
+        var tileMap = layers[layer];
+        //overwrite
+        this.ClearRect(layer,pos,end-pos);
+        //expand bounds
+        this.SetTile(layer, end, tile);
+        //fill
         tileMap.BoxFill(new Vector3Int(pos.x,pos.y,0), tile, pos.x, pos.y, end.x, end.y);
     }
     
-    public void ClearTile(string layer, Vector2Int pos) {
+    public void ClearTile(TileMapLayer.LayerClass layer, Vector2Int pos) {
         var tileMap = layers[layer];
         tileMap.SetTile(new Vector3Int(pos.x,pos.y,0), null);
     }
 
-    public void ClearRect(string layer, Vector2Int pos, Vector2Int size) {
+    public void ClearRect(TileMapLayer.LayerClass layer, Vector2Int pos, Vector2Int size) {
         var tileMap = layers[layer];
 
         BoundsInt area = new BoundsInt(pos.x,pos.y,0,size.x,size.y,1);
@@ -55,13 +60,13 @@ public class TileController : MonoBehaviour
         }
     }
 
-    public void ClearLayer(string layer) {
+    public void ClearLayer(TileMapLayer.LayerClass layer) {
         var gameObject = layers[layer];
         var tileMap = gameObject.GetComponent<Tilemap>();
         tileMap.ClearAllTiles();
     }
 
-    public void CloneTile(string srcLayer, Vector2Int srcPos, string destLayer, Vector2Int destPos) {
+    public void CloneTile(TileMapLayer.LayerClass srcLayer, Vector2Int srcPos, TileMapLayer.LayerClass destLayer, Vector2Int destPos) {
     
         var source = layers[srcLayer].GetComponent<Tilemap>();
         var destination = layers[destLayer].GetComponent<Tilemap>();
@@ -73,7 +78,7 @@ public class TileController : MonoBehaviour
     //
     // Clones an area of tiles from one layer to another
     //
-    public void CloneRect(string srcLayer, Vector2Int srcPos, Vector2Int srcSize, string destLayer, Vector2Int destPos) {    
+    public void CloneRect(TileMapLayer.LayerClass srcLayer, Vector2Int srcPos, Vector2Int srcSize, TileMapLayer.LayerClass destLayer, Vector2Int destPos) {    
 
         var source = layers[srcLayer].GetComponent<Tilemap>();
         var destination = layers[destLayer].GetComponent<Tilemap>();

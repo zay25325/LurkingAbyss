@@ -5,8 +5,8 @@ using UnityEngine.Events;
 
 public class MonsterSightEvents : MonoBehaviour
 {
-    public UnityEvent<Collider2D> OnSeeingEntityEnterEvent = new UnityEvent<Collider2D>();
-    public UnityEvent<Collider2D> OnSeeingEntityExitEvent = new UnityEvent<Collider2D>();
+    [HideInInspector] public UnityEvent<Collider2D> OnSeeingEntityEnterEvent = new UnityEvent<Collider2D>();
+    [HideInInspector] public UnityEvent<Collider2D> OnSeeingEntityExitEvent = new UnityEvent<Collider2D>();
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
