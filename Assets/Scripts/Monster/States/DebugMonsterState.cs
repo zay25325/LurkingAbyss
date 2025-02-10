@@ -5,29 +5,7 @@ using UnityEditor;
 
 public class DebugMonsterState : MonsterState
 {
-    // While not necessary in this state to define the MonoBehaviour events. I want to do this as a best practice since this script will likely get referenced in making new ones
-
-    void Start()
-    {
-        // nothing to do on Start
-    }
-
-    void Update()
-    {
-        // nothing to do on Update
-    }
-
-    private void OnEnable()
-    {
-        // nothing to do when enabled
-    }
-
-    private void OnDisable()
-    {
-        // nothing to do when disabled
-    }
-
-    public override void OnNoiseDetection(Vector2 pos, float volume)
+    public override void OnNoiseDetection(Vector2 pos, float volume, List<EntityInfo.EntityTags> tags)
     {
         Debug.Log($"Noise Detected at: {pos} with a total volume at {volume}");
     }

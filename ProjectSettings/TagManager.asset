@@ -5,7 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Walls
-  - item
+  - Ichor
+  - Item
   layers:
   - Default
   - TransparentFX

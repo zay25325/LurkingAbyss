@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3269529334599586602}
   - component: {fileID: 6140370617454582469}
   - component: {fileID: 1410002626277024882}
+  - component: {fileID: 6530052823025671122}
   m_Layer: 0
   m_Name: MonsterBase
   m_TagString: Untagged
@@ -108,7 +109,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1826378995266505575}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -138,6 +139,19 @@ MonoBehaviour:
   agent: {fileID: 6140370617454582469}
   HearingAmplificaiton: 1
   state: {fileID: 0}
+--- !u!114 &6530052823025671122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826378995266505575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7ba51554d7cd534db8d52fd65eb800b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tags: 03000000
 --- !u!1 &4722425647346356696
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,18 +16,8 @@ public class PlayerController : MonoBehaviour
     const float DASH_DURATION = 0.2f; // Duration of the dash
     const float DASH_COOLDOWN = 0.5f; // Cooldown of the dash
 
-    //serialized fields variables
-    [SerializeField] 
-    private float playerSpeed = 5f;    // Speed of the player
+    private PlayerStats playerStats; // Player stats component
 
-    [SerializeField] 
-    private float sneakSpeed = 2.5f;    // Speed of the player when sneaking
-
-    [SerializeField]
-    private float dashSpeed = 7.5f;    // Speed of the player rotation
-
-    //private variables
-    private float originalSpeed = 0f;    // Original speed of the player
     private Vector2 movementInput = Vector2.zero;   // Input from the player
     private Rigidbody2D playerRigidBody;    // Rigidbody2D component of the player
     private PlayerInputControls playerInputControls;    // Input system controls
@@ -38,6 +28,7 @@ public class PlayerController : MonoBehaviour
 
     //inventory
     private Inventory inventory;
+    private Item activeItem;
 
 
     /*
@@ -71,6 +62,7 @@ public class PlayerController : MonoBehaviour
         playerInputControls.Player.Slot1.performed += OnSlot1Pressed;                       // Subscribe to slot 1 event
         playerInputControls.Player.Slot2.performed += OnSlot2Pressed;                       // Subscribe to slot 2 event
         playerInputControls.Player.Slot3.performed += OnSlot3Pressed;                       // Subscribe to slot 3 event
+        playerInputControls.Player.Fire.performed += Fire;                                  // Subscribe to fire event  
     }
 
     /*
@@ -109,7 +101,16 @@ public class PlayerController : MonoBehaviour
     */
     private void Start()
     {
-        originalSpeed = playerSpeed;    // Original speed of the player
+
+        playerStats = GetComponent<PlayerStats>();
+        if (playerStats == null)
+        {
+            Debug.LogError("PlayerStats component is missing!");
+        }
+        else
+        {
+            playerStats.OriginalSpeed = playerStats.PlayerSpeed;   // Original speed of the player
+        }
         playerRigidBody = GetComponent<Rigidbody2D>();
 
         // Check if Rigidbody2D component is missing
@@ -146,7 +147,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         // Update velocity based on input
-        playerRigidBody.velocity = movementInput * playerSpeed;
+        playerRigidBody.velocity = movementInput * playerStats.PlayerSpeed;
     }
 
     /*
@@ -158,6 +159,7 @@ public class PlayerController : MonoBehaviour
     private void Move(Vector2 direction)
     {
         movementInput = direction;
+        MovingNoise();
     }
 
     /*
@@ -169,6 +171,7 @@ public class PlayerController : MonoBehaviour
     private void StopMoving()
     {
         movementInput = Vector2.zero;
+        MovingNoise();
     }
 
     /*
@@ -205,14 +208,19 @@ public class PlayerController : MonoBehaviour
         //While the sneak action is performed, reduce the player speed
         if (context.performed)
         {
-            playerSpeed = sneakSpeed; // Reduce speed for sneaking
+            playerStats.PlayerSpeed = playerStats.PlayerSpeed / playerStats.SneakSpeed; // Reduce speed for sneaking
         }
 
         //When the sneak action is canceled, reset the player speed
         else if (context.canceled)
         {
-            playerSpeed = originalSpeed; // Reset speed when not sneaking
+            playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed when not sneaking
         }
+
+
+        // currently having MovingNoise commented since unsure if we want sneaking to cause no noise at all
+        // rather than just reducing the noise level
+        //MovingNoise();
     }
 
     /*
@@ -244,9 +252,11 @@ public class PlayerController : MonoBehaviour
     private IEnumerator DashCoroutine()
     {
         canDash = false; // Prevent dashing multiple times
-        playerSpeed = dashSpeed; // Increase speed for dashing
+        playerStats.PlayerSpeed = playerStats.PlayerSpeed * playerStats.DashSpeed; // Increase speed for dashing
+        MovingNoise();
         yield return new WaitForSeconds(DASH_DURATION); // Dash duration
-        playerSpeed = originalSpeed; // Reset speed after dashing
+        playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed after dashing
+        MovingNoise();
         yield return new WaitForSeconds(DASH_COOLDOWN); // Cooldown duration
         canDash = true; // Allow dashing again
     }
@@ -266,15 +276,25 @@ public class PlayerController : MonoBehaviour
     */
     private void DoInteraction(InputAction.CallbackContext context)
     {
+        //maybe a static hitbox so an interactable object can tell if it is being hovered
+        
         // Check for collision with an item or object with Item script
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 1f);
+        
         foreach (var hitCollider in hitColliders)
         {
             Item item = hitCollider.GetComponentInChildren<Item>();
+
             if (item != null)
             {
                 inventory.AddItem(hitCollider.gameObject);
                 break;
+            }
+
+            // If Player is touching ichor and interacts with it, it will then increase the player's ichor samples (currency)
+            if (hitCollider.CompareTag("Ichor"))
+            {
+                playerStats.IchorSamples++;
             }
         }
     }
@@ -339,5 +359,23 @@ public class PlayerController : MonoBehaviour
     private void OnSlot3Pressed(InputAction.CallbackContext context)
     {
         inventory.Slot3Pressed(context);
+    }
+
+    private void Fire(InputAction.CallbackContext context)
+    {
+        activeItem = inventory.GetActiveItem();
+        // activeItem.Use();
+        if (activeItem != null && !activeItem.IsInUse)
+        {
+            activeItem.Use();
+        }
+    }
+
+    private void MovingNoise()
+    {
+        playerStats.PlayerNoise = (int)(movementInput.magnitude * playerStats.PlayerSpeed); // Calculate noise level based on movement and speed
+        //NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise);
+
+        Debug.Log("Player noise level: " + playerStats.PlayerNoise);
     }
 }

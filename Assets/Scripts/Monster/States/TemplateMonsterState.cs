@@ -24,7 +24,7 @@ public class TemplateMonsterState : MonsterState
         // nothing to do when disabled
     }
 
-    public override void OnNoiseDetection(Vector2 pos, float volume)
+    public override void OnNoiseDetection(Vector2 pos, float volume, List<EntityInfo.EntityTags> tags)
     {
         // nothing to do when hearing sounds
     }

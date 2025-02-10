@@ -13,21 +13,22 @@ public class MonsterController : MonoBehaviour
 
     [SerializeField] protected MonsterState state;
     protected float stunDuration;
-    protected List<GameObject> ObjectsInView = new List<GameObject>();
+    protected List<GameObject> objectsInView = new List<GameObject>();
 
     protected bool overrideSightDirection = false;
 
     public NavMeshAgent Agent { get => agent; }
+    public List<GameObject> ObjectsInView { get => objectsInView; }
 
-    // Start is called before the first frame update
-    private void Start()
+    protected void Awake()
     {
-        // prevent agent from messing with 2d visuals
+        state.controller = this;
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+    }
 
-
-        state.controller = this;
+    private void OnEnable()
+    {
         if (sightEvents != null)
         {
             sightEvents.OnSeeingEntityEnterEvent.AddListener(OnSeeingEntityEnter);
@@ -36,8 +37,18 @@ public class MonsterController : MonoBehaviour
         NoiseDetectionManager.Instance.NoiseEvent.AddListener(OnNoiseDetection);
     }
 
+    private void OnDisable()
+    {
+        if (sightEvents != null)
+        {
+            sightEvents.OnSeeingEntityEnterEvent.RemoveListener(OnSeeingEntityEnter);
+            sightEvents.OnSeeingEntityExitEvent.RemoveListener(OnSeeingEntityExit);
+        }
+        NoiseDetectionManager.Instance.NoiseEvent.RemoveListener(OnNoiseDetection);
+    }
+
     // Update is called once per frame
-    private void Update()
+    protected void Update()
     {
         UpdateStunDuration();
         if (overrideSightDirection == false)
@@ -60,7 +71,7 @@ public class MonsterController : MonoBehaviour
     {
         if (collider.gameObject != gameObject)
         {
-            ObjectsInView.Add(collider.gameObject);
+            objectsInView.Add(collider.gameObject);
             state.OnSeeingEntityEnter(collider);
         }
     }
@@ -69,18 +80,18 @@ public class MonsterController : MonoBehaviour
     {
         if (collider.gameObject != gameObject)
         {
-            ObjectsInView.Remove(collider.gameObject);
+            objectsInView.Remove(collider.gameObject);
             state.OnSeeingEntityExit(collider);
         }
     }
 
-    private void OnNoiseDetection(Vector2 pos, float volume)
+    private void OnNoiseDetection(Vector2 pos, float volume, List<EntityInfo.EntityTags> tags)
     {
         float distance = Vector3.Distance(transform.position, pos);
         float amplifiedVolume = volume * HearingAmplificaiton;
         if (amplifiedVolume > distance)
         {
-            state.OnNoiseDetection(pos, volume);
+            state.OnNoiseDetection(pos, volume, tags);
         }
     }
 
@@ -117,7 +128,7 @@ public class MonsterController : MonoBehaviour
     protected void LookTowardsPath()
     {
         // look at the next point in the navigation path, which is index 1
-        if (agent.path.corners.Length > 1) 
+        if (sightController != null && agent.path.corners.Length > 1) 
         {
             Vector3 direction = agent.path.corners[1] - transform.position;
             sightController.LookDirection = SightMeshController.GetAngleFromVectorFloat(direction) + 90f;
