@@ -372,7 +372,7 @@ public class PlayerController : MonoBehaviour
     private void MovingNoise()
     {
         playerStats.PlayerNoise = (int)(movementInput.magnitude * playerStats.PlayerSpeed); // Calculate noise level based on movement and speed
-        NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise);
+        //NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise);
 
         Debug.Log("Player noise level: " + playerStats.PlayerNoise);
     }

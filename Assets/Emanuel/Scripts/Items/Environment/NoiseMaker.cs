@@ -100,7 +100,7 @@ public class NoiseMaker : Item
         int currentNoiseLevel = noiseLevel;
         while (currentNoiseLevel > 0)
         {
-            NoiseDetectionManager.Instance.NoiseEvent.Invoke(this. transform.position, currentNoiseLevel);
+            //NoiseDetectionManager.Instance.NoiseEvent.Invoke(this. transform.position, currentNoiseLevel);
             currentNoiseLevel--;
             Debug.Log("Generating noise: " + currentNoiseLevel);
             yield return new WaitForSeconds(1f);
