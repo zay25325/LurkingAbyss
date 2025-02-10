@@ -105,6 +105,7 @@ public class LogsMenuUI : MonoBehaviour
             // manually logging right now
             loggedItems.Add(new LogItem("Rock", "Small and hard. Mostly useless. May be able to attract attention when thrown.", ItemType.Item));
             loggedItems.Add(new LogItem("Andrew", "testing description", ItemType.Monster));
+            loggedItems.Add(new LogItem("Second item", "Item 3", ItemType.Item));
             return true;
         }
         catch (Exception error)
@@ -116,35 +117,60 @@ public class LogsMenuUI : MonoBehaviour
 
     private bool LoadDiscoveredItems()
     {
+        if (File.Exists(dataFilePath))
+        {
+            try
+            {
+                using var fileStream = new FileStream(dataFilePath, FileMode.Open);
+                using var reader = new BinaryReader(fileStream);
+                int itemCount = reader.ReadInt32();
+
+                Debug.Log($"Loading {itemCount} discovered items");
+
+                // clear so we dont have duplicates
+                loggedItems.Clear();
+
+                for (int i = 0; i < itemCount; i++)
+                {
+                    // take the item contents
+                    string name = reader.ReadString();
+                    string description = reader.ReadString();
+                    bool isDiscovered = reader.ReadBoolean();
+                    ItemType itemType = (ItemType)reader.ReadInt32();
+
+                    // create the item and add to the list
+                    LogItem item = new LogItem(name, description, itemType);
+                    if (isDiscovered)
+                        item.SetDiscovery();
+                    loggedItems.Add(item);
+
+                    Debug.Log($"Loaded item {i + 1}: {name}, {description}, {itemType}, {isDiscovered}");
+                }
+                return true;
+            }
+            catch (Exception error)
+            {
+                Debug.Log($"Data file is corrupted, Creating a new file || Unity Error: {error.Message}");
+                return InitializeAndSaveNewFile();
+            }
+        }
+        else
+        {
+            Debug.Log("No existing data file found, creating new one");
+            return InitializeAndSaveNewFile();
+        }
+    }
+
+    private bool InitializeAndSaveNewFile()
+    {
         try
         {
-            if (File.Exists(dataFilePath))
-            {
-                using var write = new FileStream(dataFilePath, FileMode.Open);
-                using (var read = new BinaryReader(write))
-                {
-                    int itemCount = read.ReadInt16();
-
-                    Debug.Log($"Loading {itemCount} discovered items");
-                    for (int i = 0; i < itemCount; i++)
-                    {
-                        string name = read.ReadString();
-                        string description = read.ReadString();
-                        ItemType itemType = (ItemType)read.ReadInt32();
-                        bool isDiscovered = read.ReadBoolean();
-                        Debug.Log($"{name}, {description}, {itemType}, {isDiscovered}")
-;                    };
-                    return true;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            InitializeLogItems();
+            return SaveDiscoveredItems();
         }
         catch (Exception error)
         {
-            Debug.Log(error.Message);
+            Debug.LogError($"Error initializing new file: {error.Message}");
             return false;
         }
     }
@@ -153,23 +179,22 @@ public class LogsMenuUI : MonoBehaviour
     {
         try
         {
-            using var write = new FileStream(dataFilePath, FileMode.Create);
-            using (var binaryWriter = new BinaryWriter(write))
+            using var fileStream = new FileStream(dataFilePath, FileMode.Create);
+            using var writer = new BinaryWriter(fileStream);
+
+            writer.Write(loggedItems.Count);
+            foreach (var item in loggedItems)
             {
-                binaryWriter.Write(loggedItems.Count);
-                foreach (var item in loggedItems)
-                {
-                    binaryWriter.Write(item.GetName());
-                    binaryWriter.Write(item.GetDesc());
-                    binaryWriter.Write(item.IsDiscovered());
-                    binaryWriter.Write((int)item.ItemType());
-                }
+                writer.Write(item.GetName());
+                writer.Write(item.GetDesc());
+                writer.Write(item.IsDiscovered());
+                writer.Write((int)item.ItemType());
             }
             return true;
         }
         catch (Exception error)
         {
-            Debug.Log(error.Message);
+            Debug.LogError($"Error saving items: {error.Message}");
             return false;
         }
     }
