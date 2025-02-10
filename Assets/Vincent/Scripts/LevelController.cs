@@ -22,6 +22,23 @@ public class LevelController : MonoBehaviour
 
     [SerializeField] public MonsterNavController monsterNav;
 
+    public bool BreakTileAt(Vector3 worldpos) {
+
+        var didBreak = false;
+
+        Vector2Int gridpos = (Vector2Int)tileManager.grid.WorldToCell(worldpos);
+
+        // check breakable layers for a tile at that position
+        // walls
+        if(tileManager.PickTile(TileMapLayer.LayerClass.Wall,gridpos) != null) {
+            tileManager.ClearTile(TileMapLayer.LayerClass.Wall,gridpos);
+            didBreak = true;
+        }
+
+        // only update navmesh if something actually broke
+        if(didBreak) this.BuildNavMesh();
+        return didBreak;
+    }
 
     private void Start() {
         foreach(var variant in roomVariants) {
@@ -123,6 +140,27 @@ public class LevelController : MonoBehaviour
         levelMap.ClearRoomGrid();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 [CustomEditor(typeof(LevelController))]
