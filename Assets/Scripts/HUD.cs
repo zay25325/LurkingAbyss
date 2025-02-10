@@ -8,6 +8,11 @@ public class HUD : MonoBehaviour
 
     public Slider intSlider;
 
+    public HUD()
+    {
+        intSlider.value = 17.4f;
+    }
+
     public void Start()
     {
         intSlider.value = 17.4f;
@@ -21,9 +26,10 @@ public class HUD : MonoBehaviour
         }
     }
 
-    private void SetHealth(float health)
+    public void SetHealth(float health)
     {
-        intSlider.value -= health;
+        if (intSlider.value != 5)
+            intSlider.value -= health;
     }
 
 

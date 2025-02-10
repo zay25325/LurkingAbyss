@@ -40,7 +40,9 @@ public class LogsMenuUI : MonoBehaviour
         public bool IsDiscovered() { return isDiscovered; }
         public ItemType ItemType() { return itemType; }
 
-    }
+        public bool SetDiscovery() { return !isDiscovered; }
+
+    } 
 
     // list so we can store the info of the logged items
     private List<LogItem> loggedItems = new();
@@ -62,6 +64,7 @@ public class LogsMenuUI : MonoBehaviour
         var BackButton = rootElement.Q<Button>("BackBtn");
         BackButton.clicked += () =>
         {
+            SaveDiscoveredItems();
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         };
 
@@ -87,11 +90,9 @@ public class LogsMenuUI : MonoBehaviour
 
         #region Data Saving
         dataFilePath = "Assets\\items.dat";
-        if (File.Exists(dataFilePath))
-        {
-            if (!LoadDiscoveredItems())
-                Debug.Log("Cannot load discovered items/monsters");
-        }
+
+        if (!LoadDiscoveredItems()) 
+            Debug.Log("Cannot load discovered items/monsters");
         else { SaveDiscoveredItems(); }
 
         #endregion
@@ -103,7 +104,7 @@ public class LogsMenuUI : MonoBehaviour
         {
             // manually logging right now
             loggedItems.Add(new LogItem("Rock", "Small and hard. Mostly useless. May be able to attract attention when thrown.", ItemType.Item));
-            loggedItems.Add(new LogItem("Bruh", "Small and hard", ItemType.Monster));
+            loggedItems.Add(new LogItem("Andrew", "testing description", ItemType.Monster));
             return true;
         }
         catch (Exception error)
@@ -178,14 +179,15 @@ public class LogsMenuUI : MonoBehaviour
         
     }
 
-
-    private void ShowItems()
+    private void ShowItemDetails(LogItem item)
     {
-        
-    }
-
-    private void ShowMonsters()
-    {
-
+        if (item.IsDiscovered())
+        {
+            // reveal the text of the item/monsters
+        }
+        else
+        {
+            // set the text to ???
+        }
     }
 }
