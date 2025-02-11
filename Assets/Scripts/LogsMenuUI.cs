@@ -11,7 +11,6 @@ enum ItemType
     Monster
 }
 
-
 public class LogsMenuUI : MonoBehaviour
 {
     private enum ItemType
@@ -27,12 +26,13 @@ public class LogsMenuUI : MonoBehaviour
         private bool isDiscovered { get; set; }
         private ItemType itemType { get; set; }
 
-        public LogItem(string Name, string Description, ItemType itemType, bool isDiscovered)
+        public LogItem(string Name, string Description, ItemType itemType, bool isDiscovered /*, Image logItemImage*/)
         {
             this.Name = Name;
             this.Description = Description;
             this.itemType = itemType;
             this.isDiscovered = isDiscovered;
+            //this.logItemImage = logItemImage;
         }
 
         public string GetName() { return Name; }
@@ -247,6 +247,7 @@ public class LogsMenuUI : MonoBehaviour
 
             // finally add to the screen
             objectCards.Add(itemCard);
+            Image itemImage = new();
             //Debug.Log($"Added card for item: {item.GetName()}, Type: {item.ItemType()}");
         }
     }
