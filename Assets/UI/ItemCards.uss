@@ -1,0 +1,23 @@
+.object-card {
+    background-color: rgb(40, 40, 40);
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px;
+    flex-direction: column;
+}
+
+.name-container {
+    margin-bottom: 5px;
+}
+
+.name {
+    -unity-font-style: bold;
+    font-size: 16px;
+    color: white;
+}
+
+.description {
+    color: rgb(200, 200, 200);
+    white-space: normal;
+    font-size: 14px;
+}

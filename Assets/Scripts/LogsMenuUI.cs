@@ -27,12 +27,12 @@ public class LogsMenuUI : MonoBehaviour
         private bool isDiscovered { get; set; }
         private ItemType itemType { get; set; }
 
-        public LogItem(string Name, string Description, ItemType itemType)
+        public LogItem(string Name, string Description, ItemType itemType, bool isDiscovered)
         {
             this.Name = Name;
             this.Description = Description;
-            isDiscovered = false;
             this.itemType = itemType;
+            this.isDiscovered = isDiscovered;
         }
 
         public string GetName() { return Name; }
@@ -77,26 +77,8 @@ public class LogsMenuUI : MonoBehaviour
         if (!InitializeLogItems())
             Debug.Log("Failed to Initialize Log items");
 
-        //switch (currentItemType)
-        //{
-        //    case ItemType.Item:
-        //        ShowItems();
-        //        break;
-        //    case ItemType.Monster:
-        //        ShowMonsters();
-        //        break;
-        //}
-
+        InitializeUI();
         #endregion
-
-        //#region Data Saving
-        //dataFilePath = "Assets\\items.dat";
-
-        //if (!LoadDiscoveredItems()) 
-        //    Debug.Log("Cannot load discovered items/monsters");
-        //else { SaveDiscoveredItems(); }
-
-        //#endregion
     }
 
     private bool InitializeLogItems()
@@ -105,9 +87,10 @@ public class LogsMenuUI : MonoBehaviour
         {
             #region Manual Logging
             // manually logging right now
-            //loggedItems.Add(new LogItem("Rock", "Small and hard. Mostly useless. May be able to attract attention when thrown.", ItemType.Item));
-            //loggedItems.Add(new LogItem("Andrew", "testing description", ItemType.Monster));
-            //loggedItems.Add(new LogItem("Second item", "Item 3", ItemType.Item));
+            loggedItems.Add(new LogItem("Rock", "Small and hard. Mostly useless. May be able to attract attention when thrown.", ItemType.Item, true));
+            loggedItems.Add(new LogItem("Andrew", "testing description", ItemType.Monster, true));
+            loggedItems.Add(new LogItem("Second item", "Item 3", ItemType.Item, false));
+            //SaveDiscoveredItems(); // update the file manually (testing)
             #endregion
 
             if (!LoadDiscoveredItems())
@@ -146,7 +129,7 @@ public class LogsMenuUI : MonoBehaviour
                     ItemType itemType = (ItemType)reader.ReadInt32();
 
                     // create the item and add to the list
-                    LogItem item = new LogItem(name, description, itemType);
+                    LogItem item = new LogItem(name, description, itemType, isDiscovered);
                     if (isDiscovered)
                         item.SetDiscovery();
                     loggedItems.Add(item);
@@ -168,19 +151,6 @@ public class LogsMenuUI : MonoBehaviour
         }
     }
 
-    private bool InitializeAndSaveNewFile()
-    {
-        try
-        {
-            InitializeLogItems();
-            return SaveDiscoveredItems();
-        }
-        catch (Exception error)
-        {
-            Debug.LogError($"Error initializing new file: {error.Message}");
-            return false;
-        }
-    }
 
     private bool SaveDiscoveredItems()
     {
@@ -206,9 +176,80 @@ public class LogsMenuUI : MonoBehaviour
         }
     }
 
-    private void DiscoverLogItem(Item item)
+    private bool InitializeAndSaveNewFile()
     {
-        
+        try
+        {
+            InitializeLogItems();
+            return SaveDiscoveredItems();
+        }
+        catch (Exception error)
+        {
+            Debug.LogError($"Error initializing new file: {error.Message}");
+            return false;
+        }
+    }
+
+    private void InitializeUI()
+    {
+        // tab buttons
+        var itemsBtn = rootElement.Q<Button>("Items-Btn");
+        var monstersBtn = rootElement.Q<Button>("Monsters-Btn");
+
+        itemsBtn.clicked += () =>
+        {
+            currentItemType = ItemType.Item;
+            DisplayItems();  // Add refresh call
+        };
+
+        monstersBtn.clicked += () =>
+        {
+            currentItemType = ItemType.Monster;
+            DisplayItems();  // Add refresh call
+        };
+
+        DisplayItems();  // Initial display
+    }
+
+    private void DisplayItems()
+    {
+        var objectCards = rootElement.Q<VisualElement>("Object-Cards");
+        objectCards.Clear();  // Clear existing items
+
+        //Debug.Log($"Displaying items. Total items: {loggedItems.Count}, Current type: {currentItemType}");
+
+        // loop through the items/monsters and display them
+        foreach (var item in loggedItems)
+        {
+            // make sure the item is the correct type
+            if (item.ItemType() != currentItemType)
+                continue;
+
+            var itemCard = new VisualElement();
+            itemCard.AddToClassList("object-card");
+
+            // Name container
+            var nameContainer = new VisualElement();
+            nameContainer.AddToClassList("name-container");
+            var itemName = new Label(item.IsDiscovered() ? item.GetName() : "???");
+            itemName.AddToClassList("name");
+            nameContainer.Add(itemName);
+
+            // Description container
+            var descContainer = new VisualElement();
+            descContainer.AddToClassList("description-container");
+            var itemDesc = new Label(item.IsDiscovered() ? item.GetDesc() : "???");
+            itemDesc.AddToClassList("description");
+            descContainer.Add(itemDesc);
+
+            // Add containers to card
+            itemCard.Add(nameContainer);
+            itemCard.Add(descContainer);
+
+            // finally add to the screen
+            objectCards.Add(itemCard);
+            //Debug.Log($"Added card for item: {item.GetName()}, Type: {item.ItemType()}");
+        }
     }
 
     private void ShowItemDetails(LogItem item)
@@ -221,5 +262,10 @@ public class LogsMenuUI : MonoBehaviour
         {
             // set the text to ???
         }
+    }
+
+    private void DiscoverLogItem(Item item)
+    {
+
     }
 }
