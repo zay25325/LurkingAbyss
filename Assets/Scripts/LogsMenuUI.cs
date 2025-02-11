@@ -39,7 +39,6 @@ public class LogsMenuUI : MonoBehaviour
         public string GetDesc() { return Description; }
         public bool IsDiscovered() { return isDiscovered; }
         public ItemType ItemType() { return itemType; }
-
         public bool SetDiscovery() { return !isDiscovered; }
 
     } 
@@ -252,20 +251,17 @@ public class LogsMenuUI : MonoBehaviour
         }
     }
 
-    private void ShowItemDetails(LogItem item)
+    private bool CheckIsDiscovered()
     {
-        if (item.IsDiscovered())
-        {
-            // reveal the text of the item/monsters
-        }
-        else
-        {
-            // set the text to ???
-        }
+
+        throw new NotImplementedException();
+        //return false;
     }
 
     private void DiscoverLogItem(Item item)
     {
+        // check if the item is already discovered
 
+        // if not, discover it, add it to both the list and the items.dat file
     }
 }
