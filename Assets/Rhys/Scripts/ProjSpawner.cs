@@ -8,9 +8,6 @@ public class ProjectileSpawner : MonoBehaviour
     public int poolSize = 10;
     private Queue<GameObject> projectilePool;
 
-    public float fireRate = 0.5f;
-    private float nextFireTime = 0f;
-
     void Awake()
     {
         Instance = this;
@@ -30,26 +27,30 @@ public class ProjectileSpawner : MonoBehaviour
 
     void Update()
     {
-        if (Time.time >= nextFireTime)
+        if (Input.GetMouseButtonDown(0))  // Left click
         {
-            FireProjectile();
-            nextFireTime = Time.time + fireRate;
+            Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            targetPosition.z = 0; // Ensure it's in 2D space
+            FireProjectile(targetPosition);
         }
     }
 
-    void FireProjectile()
+    void FireProjectile(Vector3 targetPosition)
     {
         if (projectilePool.Count > 0)
         {
             GameObject proj = projectilePool.Dequeue();
             proj.transform.position = transform.position;
-            proj.transform.rotation = transform.rotation;
             proj.SetActive(true);
+
+            Projectile projScript = proj.GetComponent<Projectile>();
+            projScript.SetTarget(targetPosition);
         }
     }
 
     public void ReturnProjectile(GameObject proj)
     {
+        proj.transform.position = transform.position;  // Reset position
         proj.SetActive(false);
         projectilePool.Enqueue(proj);
     }

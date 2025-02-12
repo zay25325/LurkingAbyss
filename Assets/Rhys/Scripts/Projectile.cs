@@ -3,45 +3,42 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float speed = 5f;
-    public float maxDistance = 10f;
-    public bool useGravity = false;  // ✅ Toggle gravity in Inspector
+    public bool useGravity = false; 
 
-    private Vector3 startPosition;
+    private Vector3 targetPosition;
     private Rigidbody2D rb;
+    private bool hasTarget = false;
 
     void OnEnable()
     {
-        startPosition = transform.position;
         rb = GetComponent<Rigidbody2D>();
-
-        if (useGravity)
-        {
-            rb.gravityScale = 1;  // Enable gravity
-            rb.velocity = new Vector2(speed * transform.right.x, 0);
-        }
-        else
-        {
-            rb.gravityScale = 0;  // Disable gravity
-            rb.velocity = new Vector2(speed * transform.right.x, 0);
-        }
+        rb.gravityScale = useGravity ? 1 : 0;
     }
 
-    void FixedUpdate()
+    public void SetTarget(Vector3 target)
     {
-        if (useGravity)
-        {
-            // Velocity is updated naturally by gravity
-            rb.velocity = new Vector2(speed * transform.right.x, rb.velocity.y);
-        }
+        targetPosition = target;
+        hasTarget = true;
     }
 
     void Update()
     {
-        // Deactivate projectile when it exceeds max distance
-        if (Vector3.Distance(startPosition, transform.position) >= maxDistance)
+        if (hasTarget)
         {
-            gameObject.SetActive(false);
-            ProjectileSpawner.Instance.ReturnProjectile(gameObject);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+
+            if (Vector3.SqrMagnitude(transform.position - targetPosition) <= Mathf.Epsilon)  // More precise than Vector3.Distance
+            {
+                Debug.Log("Projectile reached target and is being returned.");
+                hasTarget = false;
+                ResetProjectile();
+            }
         }
+    }
+
+    private void ResetProjectile()
+    {
+        gameObject.SetActive(false);
+        ProjectileSpawner.Instance.ReturnProjectile(gameObject);
     }
 }
