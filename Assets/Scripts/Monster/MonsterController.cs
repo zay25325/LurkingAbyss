@@ -5,30 +5,54 @@ using UnityEngine.AI;
 
 public class MonsterController : MonoBehaviour
 {
+    [SerializeField] OnHitEvents hitEvents;
+    [SerializeField] OnInteractionEvent interactionEvent;
     [SerializeField] MonsterSightEvents sightEvents;
     [SerializeField] SightMeshController sightController;
     [SerializeField] NavMeshAgent agent;
+    [SerializeField] protected MonsterState state;
+
 
     public float HearingAmplificaiton = 1f;
 
-    [SerializeField] protected MonsterState state;
+    protected float hp;
+    protected float maxHP;
     protected float stunDuration;
-    protected List<GameObject> objectsInView = new List<GameObject>();
 
+    protected float baseSpeed;
+    protected MonsterState baseState;
+
+    protected List<GameObject> objectsInView = new List<GameObject>();
     protected bool overrideSightDirection = false;
 
     public NavMeshAgent Agent { get => agent; }
     public List<GameObject> ObjectsInView { get => objectsInView; }
+    public float HP { get => hp; set => hp = value; }
+    public float MaxHP { get => maxHP; set => maxHP = value; }
+    public float BaseSpeed { get => baseSpeed; set => baseSpeed = value; }
+
 
     protected void Awake()
     {
         state.controller = this;
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+
+        baseSpeed = Agent.speed; // grab our speed before the state changes it
+        baseState = state;
     }
 
     private void OnEnable()
     {
+        if (hitEvents != null)
+        {
+            hitEvents.OnStunned.AddListener(OnStunned);
+            hitEvents.OnHarmed.AddListener(OnHarmed);
+        }
+        if (interactionEvent != null)
+        {
+            interactionEvent.OnInteract.AddListener(OnInteract);
+        }
         if (sightEvents != null)
         {
             sightEvents.OnSeeingEntityEnterEvent.AddListener(OnSeeingEntityEnter);
@@ -39,6 +63,15 @@ public class MonsterController : MonoBehaviour
 
     private void OnDisable()
     {
+        if (hitEvents != null)
+        {
+            hitEvents.OnStunned.RemoveListener(OnStunned);
+            hitEvents.OnHarmed.RemoveListener(OnHarmed);
+        }
+        if (interactionEvent != null)
+        {
+            interactionEvent.OnInteract.RemoveListener(OnInteract);
+        }
         if (sightEvents != null)
         {
             sightEvents.OnSeeingEntityEnterEvent.RemoveListener(OnSeeingEntityEnter);
@@ -121,6 +154,9 @@ public class MonsterController : MonoBehaviour
             if (stunDuration < 0) // clear negative stun durations
             {
                 stunDuration = 0;
+                sightController.gameObject.SetActive(true);
+                state.enabled = true;
+                agent.speed = baseSpeed;
             }
         }
     }
@@ -133,5 +169,34 @@ public class MonsterController : MonoBehaviour
             Vector3 direction = agent.path.corners[1] - transform.position;
             sightController.LookDirection = SightMeshController.GetAngleFromVectorFloat(direction) + 90f;
         }
+    }
+
+    protected void OnStunned(float duration)
+    {
+        stunDuration = Mathf.Max(duration, stunDuration);
+        if (stunDuration > 0)
+        {
+            state.enabled = false;
+            sightController.gameObject.SetActive(false);
+            agent.speed = 0;
+        }
+    }
+
+    protected void OnHarmed(float damage)
+    {
+        hp -= damage;
+    }
+
+    protected void Respawn()
+    {
+        hp = maxHP;
+        stunDuration = 0;
+        state = baseState;
+        state.enabled = true;
+    }
+
+    protected void OnInteract(GameObject other)
+    {
+        state.OnInteract(other);
     }
 }

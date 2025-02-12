@@ -84,6 +84,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.25
       objectReference: {fileID: 0}
+    - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_Speed
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6530052823025671122, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: tags.Array.size
       value: 3
@@ -141,6 +145,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1f1316912d81348a40fd79ed23dc17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5354534868763268625 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4524818832650360445, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+  m_PrefabInstance: {fileID: 8395910195201212524}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916441748645399307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdeea0c453086d946b10c724ac3caba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7228945833948342764 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1213188183882951040, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+  m_PrefabInstance: {fileID: 8395910195201212524}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916441748645399307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde5915a8fead81448570d3322c4bcf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7916441748645399307 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
@@ -158,11 +184,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f196c4631410b643b1b839609cc5214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEvents: {fileID: 5354534868763268625}
+  interactionEvent: {fileID: 7228945833948342764}
   sightEvents: {fileID: 3833697987151776270}
   sightController: {fileID: 3961565553346124829}
   agent: {fileID: 2428206962176744105}
-  HearingAmplificaiton: 1
   state: {fileID: 43556223004357966}
+  HearingAmplificaiton: 1
   callDistance: 25
   navigationPointDistance: 20
 --- !u!114 &43556223004357966

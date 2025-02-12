@@ -35,5 +35,13 @@ public class EntityInfo : MonoBehaviour
         Scavenger,
         HiveMother,
         Swarmling,
+
+        // Enviroment Objects
+        BearTrap,
+        DartTrap,
+
+        Door,
+        Exit,
+        ChargingStation,
     }
 }
