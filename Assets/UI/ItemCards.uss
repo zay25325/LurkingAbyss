@@ -1,23 +1,91 @@
+#Object-Cards {
+    padding: 10px;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
 .object-card {
+    width: 200px;
+    height: 150px;
+    min-width: 200px;
+    min-height: 150px;
     background-color: rgb(40, 40, 40);
     border-radius: 5px;
     padding: 10px;
-    margin: 5px;
+    margin: 10px;
     flex-direction: column;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    position: relative;
+}
+
+.object-card:hover {
+    background-color: rgb(60, 60, 60);
+    scale: 1.02;
+    transition: all 0.6s;
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background-color: rgb(40, 40, 40);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+}
+
+.object-card.flipped {
+    transform: rotateY(180deg);
 }
 
 .name-container {
+    height: 30px;
     margin-bottom: 5px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(80, 80, 80);
 }
 
 .name {
     -unity-font-style: bold;
     font-size: 16px;
     color: white;
+    -unity-text-align: middle-center;
+}
+
+.description-container {
+    flex-grow: 1;
+    overflow: hidden;
 }
 
 .description {
     color: rgb(200, 200, 200);
     white-space: normal;
     font-size: 14px;
+    flex-wrap: wrap;
+    padding: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#Logs-Container {
+    flex-direction: row;
+    padding: 10px;
+    height: 100%;
+}
+
+#LeftSide {
+    flex-grow: 1;
+    height: 100%;
+}
+
+Button {
+    margin: 5px;
+    padding: 5px 10px;
 }

@@ -252,6 +252,67 @@ public class LogsMenuUI : MonoBehaviour
         }
     }
 
+    // attempting front of back contents for cards on items
+    //private void DisplayItems()
+    //{
+    //    var objectCards = rootElement.Q<VisualElement>("Object-Cards");
+    //    objectCards.Clear();  // clear existing items or monsters, no duplicates
+
+    //    foreach (var item in loggedItems)
+    //    {
+    //        if (item.ItemType() != currentItemType)
+    //            continue;
+
+    //        // main card container
+    //        var itemCard = new VisualElement();
+    //        itemCard.AddToClassList("object-card");
+
+    //        // front side of the card
+    //        var cardFront = new VisualElement();
+    //        cardFront.AddToClassList("card-front");
+
+    //        // attach the info onto the card
+    //        var nameContainer = new VisualElement();
+    //        nameContainer.AddToClassList("name-container");
+    //        var itemName = new Label(item.IsDiscovered() ? item.GetName() : "???");
+    //        itemName.AddToClassList("name");
+    //        nameContainer.Add(itemName);
+    //        cardFront.Add(nameContainer);
+
+    //        // back side of the card
+    //        var cardBack = new VisualElement();
+    //        cardBack.AddToClassList("card-back");
+
+    //        var descContainer = new VisualElement();
+    //        descContainer.AddToClassList("description-container");
+    //        var itemDesc = new Label(item.IsDiscovered() ? item.GetDesc() : "???");
+    //        itemDesc.AddToClassList("description");
+    //        descContainer.Add(itemDesc);
+    //        cardBack.Add(descContainer);
+
+    //        // add both sides to the card
+    //        itemCard.Add(cardFront);
+    //        itemCard.Add(cardBack);
+
+    //        //// Add hover handlers
+    //        //itemCard.RegisterCallback<MouseEnterEvent>((evt) => 
+    //        //{
+    //        //    itemCard.AddToClassList("flipped");
+    //        //});
+
+    //        //itemCard.RegisterCallback<MouseLeaveEvent>((evt) => 
+    //        //{
+    //        //    itemCard.RemoveFromClassList("flipped");
+    //        //});
+
+    //        objectCards.Add(itemCard);
+
+    //        // for adding sprites later
+    //        //Image itemImage = new();
+    //        //Debug.Log($"Added card for item: {item.GetName()}, Type: {item.ItemType()}");
+    //    }
+    //}
+
     private bool CheckIsDiscovered()
     {
 
