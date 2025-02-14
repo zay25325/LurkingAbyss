@@ -29,8 +29,6 @@ public class PlayerController : MonoBehaviour
     private Inventory inventory;
     private Item activeItem;
 
-    public float rotationSpeed = 720f; // Speed of rotation
-
 
     /*
         FUNCTION : Awake()
@@ -43,12 +41,12 @@ public class PlayerController : MonoBehaviour
         // Initialize input controls
         playerInputControls = new PlayerInputControls();
         
-        // Get main camera
-        // mainCamera = Camera.main;
-        // if (mainCamera == null)
-        // {
-        //     Debug.LogError("Main camera not found!");
-        // }
+        //Get main camera
+        mainCamera = Camera.main;
+        if (mainCamera == null)
+        {
+            Debug.LogError("Main camera not found!");
+        }
 
         // Subscribe to input events
         playerInputControls.Player.Move.performed += ctx => Move(ctx.ReadValue<Vector2>()); // Subscribe to move event
@@ -127,6 +125,9 @@ public class PlayerController : MonoBehaviour
 
             // Set collision detection mode to continuous
             playerRigidBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            
+            // Freeze rotation to prevent spinning
+            playerRigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
 
         }
@@ -185,17 +186,27 @@ public class PlayerController : MonoBehaviour
     {
         // Get mouse position in world space
         Vector3 mousePosition = Mouse.current.position.ReadValue(); // Mouse position in screen space
-        // mousePosition = mainCamera.ScreenToWorldPoint(mousePosition); // Convert to world space
+        mousePosition = mainCamera.ScreenToWorldPoint(mousePosition); // Convert to world space
         mousePosition.z = 0; // Ensure Z is 0 for 2D
 
         // Calculate direction to face the mouse
         Vector2 direction = (mousePosition - transform.position).normalized;
 
-        // Calculate the angle to rotate
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        // Calculate the distance between the player and the mouse position
+        float distance = Vector2.Distance(mousePosition, transform.position);
 
-        // Apply rotation
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        // Define a minimum distance threshold to avoid erratic rotations
+        float minDistanceThreshold = 0.1f;
+
+        // Only rotate if the distance is greater than the threshold
+        if (distance > minDistanceThreshold)
+        {
+            // Calculate the angle to rotate
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+            // Apply rotation with an offset to align the top of the sprite
+            transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
+        }
     }
 
     /*
