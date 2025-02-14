@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     private Inventory inventory;
     private Item activeItem;
 
+    public float rotationSpeed = 720f; // Speed of rotation
+
 
     /*
         FUNCTION : Awake()
@@ -42,11 +44,11 @@ public class PlayerController : MonoBehaviour
         playerInputControls = new PlayerInputControls();
         
         // Get main camera
-        mainCamera = Camera.main;
-        if (mainCamera == null)
-        {
-            Debug.LogError("Main camera not found!");
-        }
+        // mainCamera = Camera.main;
+        // if (mainCamera == null)
+        // {
+        //     Debug.LogError("Main camera not found!");
+        // }
 
         // Subscribe to input events
         playerInputControls.Player.Move.performed += ctx => Move(ctx.ReadValue<Vector2>()); // Subscribe to move event
@@ -183,7 +185,7 @@ public class PlayerController : MonoBehaviour
     {
         // Get mouse position in world space
         Vector3 mousePosition = Mouse.current.position.ReadValue(); // Mouse position in screen space
-        mousePosition = mainCamera.ScreenToWorldPoint(mousePosition); // Convert to world space
+        // mousePosition = mainCamera.ScreenToWorldPoint(mousePosition); // Convert to world space
         mousePosition.z = 0; // Ensure Z is 0 for 2D
 
         // Calculate direction to face the mouse
