@@ -19,4 +19,7 @@ public abstract class MonsterState : MonoBehaviour
     public virtual void OnSeeingEntityEnter(Collider2D collider) { }
     public virtual void OnSeeingEntityExit(Collider2D collider) { }
     public virtual void OnNoiseDetection(Vector2 pos, float volume, List<EntityInfo.EntityTags> tags) { }
+    public virtual void OnStunned(float stunDuration) { }
+    public virtual void OnHarmed(float damage) { }
+    public virtual void OnInteract(GameObject other) { }
 }

@@ -5,16 +5,12 @@ using UnityEngine.AI;
 
 public class SwarmlingController : MonsterController
 {
-    private float baseSpeed;
-    public float BaseSpeed { get => baseSpeed; }
     private float fleeDistance = 8f;
-
     private CircleCollider2D touchCollider;
 
     new protected void Awake()
     {
         base.Awake(); // set up the first state
-        baseSpeed = Agent.speed; // grab our speed before the state changes it
         touchCollider = GetComponent<CircleCollider2D>();
     }
 
