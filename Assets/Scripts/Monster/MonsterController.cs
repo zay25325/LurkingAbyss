@@ -38,7 +38,10 @@ public class MonsterController : MonoBehaviour
 
     protected void Awake()
     {
-        state.controller = this;
+        if (state != null)
+        {
+            state.controller = this;
+        }
         agent.updateRotation = false;
         agent.updateUpAxis = false;
 

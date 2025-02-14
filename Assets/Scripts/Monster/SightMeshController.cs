@@ -36,11 +36,14 @@ public class SightMeshController : MonoBehaviour
         raycasts.Clear();
         for (int i = 0; i <= rayCount; i++)
         {
-            Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.green);
-            RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, GetVectorFromAngle(angle), visionRange, visionLayers);
+            Vector2 vectorAngle = GetVectorFromAngle(angle);
+            Debug.DrawRay(origin.position, vectorAngle, Color.green);
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, vectorAngle, visionRange, visionLayers);
             if (raycastHit2D.collider == null && raycasts.ContainsKey(angle) == false)
             {
-                raycasts.Add(angle, GetVectorFromAngle(angle) * visionRange);
+                Vector2 rayEndPoint = vectorAngle * visionRange;
+                raycasts.Add(angle, rayEndPoint);
+                RaycastOpenArea((Vector2)origin.position + rayEndPoint, vectorAngle);
             }
             else
             {
@@ -136,7 +139,26 @@ public class SightMeshController : MonoBehaviour
         AddAdditionalRaycasts(bottomLeftCorner + new Vector2(absNormal.y, absNormal.x) * (1 - cornerOffset));
         AddAdditionalRaycasts(bottomLeftCorner + new Vector2(absNormal.y, absNormal.x) * (1 + cornerOffset));
 
-        // AddAdditionalRaycasts(PointToMaxVision(origin.position, originalRaycast));
+        //AddAdditionalRaycasts(PointToMaxVision(origin.position, originalRaycast));
+    }
+
+    private void RaycastOpenArea(Vector2 endOfRay, Vector2 rayAngle)
+    {
+        Vector2 perpendicularAngle = Vector2.Perpendicular(rayAngle);
+
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(endOfRay, perpendicularAngle, LengthBetweenEndPoints, visionLayers);
+        if (raycastHit2D.collider != null)
+        {
+            Debug.DrawRay(endOfRay, perpendicularAngle, Color.cyan);
+            AddAdditionalRaycasts(raycastHit2D.point);
+        }
+
+        raycastHit2D = Physics2D.Raycast(endOfRay, -perpendicularAngle, LengthBetweenEndPoints, visionLayers);
+        if (raycastHit2D.collider != null)
+        {
+            Debug.DrawRay(endOfRay, -perpendicularAngle, Color.cyan);
+            AddAdditionalRaycasts(raycastHit2D.point);
+        }
     }
 
     private void AddAdditionalRaycasts(Vector2 raycastTo)
@@ -156,7 +178,7 @@ public class SightMeshController : MonoBehaviour
             return;
         }
 
-        //Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.yellow);
+        Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.yellow);
 
         RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, GetVectorFromAngle(angle), visionRange, visionLayers);
         if (raycastHit2D.collider == null)
@@ -169,18 +191,83 @@ public class SightMeshController : MonoBehaviour
         }
     }
 
+    private float LengthBetweenEndPoints // c^2 = a^2+b^2-2abcos(c), but since a=b -> c^2 = 2a^2 - 2a^2 * cos(c)
+    {
+        get
+        {
+            float angle = fov / rayCount; // c
+            float twoASquared = 2 * (visionRange * visionRange);
+            return Mathf.Sqrt(twoASquared - twoASquared * Mathf.Cos(angle * Mathf.Deg2Rad));
+        }
+    }
+
     private Vector2 PointToMaxVision(Vector2 origin, RaycastHit2D raycast)
     {
-        // NOT IMPLIMENTED
+        // See:https://asq-team1-cga1iv4s.atlassian.net/wiki/spaces/LA/pages/33521665/Corridor+raycast+fix
 
-        // Determin if we are moving vertically or horizontally
         Vector2 absoluteNormalVectorInverse = new Vector2(Mathf.Abs(raycast.normal.y), Mathf.Abs(raycast.normal.x));
-        // Math I just don't know
-        /*
-        Vector2 raycastDirection = raycast.point - origin; // get the direction of the
+
+        Vector2 raycastDirection = (raycast.point - origin).normalized; // get the direction of the
         Vector2 lineDirection = raycastDirection * absoluteNormalVectorInverse; // get the perpendicular line of the normal direction going away from the origin
-        // Get the intersection point of a circle (p = origin, r = visionRange) and a line (starts at p = raycast.point, direction = lineDirection)
+
+        Vector2 blueRed = IntersectionPointTwoLines(origin, origin - raycast.normal, raycast.point, raycast.point - lineDirection);
+        float blueLength = Vector2.Distance(origin, blueRed);
+
+        float RedLength = Mathf.Sqrt(blueLength * blueLength + visionRange * visionRange);
+
+        Vector2 newRaycastPosition = blueRed + (lineDirection * RedLength);
+
+        //Debug.DrawLine(newRaycastPosition, newRaycastPosition - lineDirection, Color.cyan);
+        Debug.DrawRay(newRaycastPosition, -lineDirection, Color.cyan);
+
+        return newRaycastPosition;
+    }
+
+    /*
+    * TITLE : Calculating Intersection Points in Unity
+    * AUTHOR : Mark O Meara
+    * DATE : 2/14/2025
+    * AVAILABIILTY : https://medium.com/@markomeara98/calculating-intersection-points-in-unity-cf010c155491
+    */
+    private Vector2 IntersectionPointTwoLines(Vector3 line1Start, Vector3 line1End, Vector3 line2Start, Vector3 line2End)
+    {
+        (float x1, float y1) = GetXYPosition(line1Start);
+        (float x2, float y2) = GetXYPosition(line1End);
+        (float x3, float y3) = GetXYPosition(line2Start);
+        (float x4, float y4) = GetXYPosition(line2End);
+
+        float topX = (x1 * y2 - x2 * y1) * (x3 - x4) - (x3 * y4 - x4 * y3) * (x1 - x2);
+        float topY = (x1 * y2 - x2 * y1) * (y3 - y4) - (x3 * y4 - x4 * y3) * (y1 - y2);
+        float bottom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        float pX = topX / bottom;
+        float pY = topY / bottom;
+
+        Vector2 pVector = new Vector2(pX, pY);
+        /*
+        bool isInBoundsLine1 = IsIntersectionInBounds(line1Start, line1End, pVector);
+        bool isInBoundsLine2 = IsIntersectionInBounds(line2Start, line2End, pVector);
+
+        if (!isInBoundsLine1 || !isInBoundsLine2)
+        {
+            return default;
+        }
         */
-        return Vector2.zero;
+        return pVector;
+    }
+    private (float, float) GetXYPosition(Vector3 vector)
+    {
+        return (vector.x, vector.y);
+    }
+    private bool IsIntersectionInBounds(Vector3 lineStart, Vector3 lineEnd, Vector3 intersection)
+    {
+        float distAC = Vector3.Distance(lineStart, intersection);
+        float distBC = Vector3.Distance(lineEnd, intersection);
+        float distAB = Vector3.Distance(lineStart, lineEnd);
+        if (Mathf.Abs(distAC + distBC - distAB) > 0.001f)
+        {
+            return false;
+        }
+
+        return true;
     }
 }
