@@ -15,5 +15,13 @@ public class OnHitEvents : MonoBehaviour
         {
             OnStunned.Invoke(stunDuration);
         }
+        if (damage > 0)
+        {
+            OnHarmed.Invoke(damage);
+        }
+        if (structuralDamaged > 0)
+        {
+            OnStructuralDamaged.Invoke(structuralDamaged);
+        }
     }
 }

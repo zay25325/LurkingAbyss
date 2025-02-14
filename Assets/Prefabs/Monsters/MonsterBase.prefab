@@ -143,6 +143,8 @@ MonoBehaviour:
   agent: {fileID: 6140370617454582469}
   state: {fileID: 0}
   HearingAmplificaiton: 1
+  hp: 10
+  maxHP: 10
 --- !u!114 &6530052823025671122
 MonoBehaviour:
   m_ObjectHideFlags: 0

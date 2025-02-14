@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Threading.Tasks;
 
 public class MonsterController : MonoBehaviour
 {
@@ -12,18 +13,21 @@ public class MonsterController : MonoBehaviour
     [SerializeField] NavMeshAgent agent;
     [SerializeField] protected MonsterState state;
 
-
+    [Header("Stats")]
     public float HearingAmplificaiton = 1f;
 
-    protected float hp;
-    protected float maxHP;
+    [SerializeField] protected float hp;
+    [SerializeField] protected float maxHP;
     protected float stunDuration;
 
     protected float baseSpeed;
     protected MonsterState baseState;
+    protected Vector3 spawnPoint;
 
     protected List<GameObject> objectsInView = new List<GameObject>();
     protected bool overrideSightDirection = false;
+
+    protected const float RESPAWN_DELAY = 5f;
 
     public NavMeshAgent Agent { get => agent; }
     public List<GameObject> ObjectsInView { get => objectsInView; }
@@ -40,6 +44,7 @@ public class MonsterController : MonoBehaviour
 
         baseSpeed = Agent.speed; // grab our speed before the state changes it
         baseState = state;
+        spawnPoint = transform.position;
     }
 
     private void OnEnable()
@@ -153,10 +158,7 @@ public class MonsterController : MonoBehaviour
             stunDuration -= Time.deltaTime;
             if (stunDuration < 0) // clear negative stun durations
             {
-                stunDuration = 0;
-                sightController.gameObject.SetActive(true);
-                state.enabled = true;
-                agent.speed = baseSpeed;
+                OnStunEnd();
             }
         }
     }
@@ -176,23 +178,50 @@ public class MonsterController : MonoBehaviour
         stunDuration = Mathf.Max(duration, stunDuration);
         if (stunDuration > 0)
         {
-            state.enabled = false;
-            sightController.gameObject.SetActive(false);
-            agent.speed = 0;
+            OnStunStart();
         }
     }
 
     protected void OnHarmed(float damage)
     {
         hp -= damage;
+        if (hp <= 0)
+        {
+            OnDeath();
+        }
     }
 
-    protected void Respawn()
+    protected void OnStunStart()
     {
-        hp = maxHP;
+        state.enabled = false;
+        sightController.gameObject.SetActive(false);
+        agent.speed = 0;
+    }
+
+    protected void OnStunEnd()
+    {
         stunDuration = 0;
-        state = baseState;
+        sightController.gameObject.SetActive(true);
         state.enabled = true;
+        agent.speed = baseSpeed;
+    }
+
+    protected void OnDeath()
+    {
+        OnStunStart();
+        gameObject.SetActive(false);
+        
+        RespawnManager.Instance.StartRespawnTimer(this, RESPAWN_DELAY);
+    }
+
+    public void Respawn()
+    {
+        transform.position = spawnPoint;
+        hp = maxHP;
+        state = baseState;
+        
+        OnStunEnd(); // ensure there is no remaining stun on the 
+        gameObject.SetActive(true);
     }
 
     protected void OnInteract(GameObject other)

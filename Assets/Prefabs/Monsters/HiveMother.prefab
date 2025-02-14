@@ -191,6 +191,8 @@ MonoBehaviour:
   agent: {fileID: 2428206962176744105}
   state: {fileID: 43556223004357966}
   HearingAmplificaiton: 1
+  hp: 10
+  maxHP: 10
   callDistance: 25
   navigationPointDistance: 20
 --- !u!114 &43556223004357966
