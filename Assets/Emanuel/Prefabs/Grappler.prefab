@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8310893879551385108}
   m_Layer: 0
   m_Name: Grappler
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -171,3 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a4f3959307542a4089c26607439fda4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grapplerIcon: {fileID: 0}
+  grappleRange: 1
+  grappleSpeed: 10
+  grappleTagWalls: Walls

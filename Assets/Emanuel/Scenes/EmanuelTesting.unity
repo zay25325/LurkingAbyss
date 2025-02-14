@@ -271,6 +271,71 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
+--- !u!1001 &1609888512
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -9005441170134393525, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: pullRadius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3810492056175241408, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5749638377805226640, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.644681
+      objectReference: {fileID: 0}
+    - target: {fileID: 5749638377805226640, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.8201561
+      objectReference: {fileID: 0}
+    - target: {fileID: 5749638377805226640, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5749638377805226640, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5749638377805226640, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5749638377805226640, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5749638377805226640, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5749638377805226640, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5749638377805226640, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5749638377805226640, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8786005308923651583, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
+      propertyPath: m_Name
+      value: GravitonSurgePlate
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
 --- !u!1 &1968311962 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7419464304183977446, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
@@ -428,3 +493,4 @@ SceneRoots:
   - {fileID: 8199049334367125516}
   - {fileID: 1503951704}
   - {fileID: 2108605789}
+  - {fileID: 1609888512}
