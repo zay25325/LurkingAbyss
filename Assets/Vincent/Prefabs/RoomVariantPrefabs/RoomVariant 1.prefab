@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5456928441279483656}
     m_Modifications:
+    - target: {fileID: 2585982570914008925, guid: 3275144476589b64eb924ec156040491, type: 3}
+      propertyPath: type
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5111078744729206678, guid: 3275144476589b64eb924ec156040491, type: 3}
       propertyPath: m_Name
       value: Item SpawnPoint
@@ -816,6 +820,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5456928441279483656}
     m_Modifications:
+    - target: {fileID: 2585982570914008925, guid: 3275144476589b64eb924ec156040491, type: 3}
+      propertyPath: type
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5111078744729206678, guid: 3275144476589b64eb924ec156040491, type: 3}
       propertyPath: m_Name
       value: Item SpawnPoint (1)
@@ -878,6 +886,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5456928441279483656}
     m_Modifications:
+    - target: {fileID: 2585982570914008925, guid: 3275144476589b64eb924ec156040491, type: 3}
+      propertyPath: type
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5111078744729206678, guid: 3275144476589b64eb924ec156040491, type: 3}
       propertyPath: m_Name
       value: Item SpawnPoint (3)
@@ -940,6 +952,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5456928441279483656}
     m_Modifications:
+    - target: {fileID: 2585982570914008925, guid: 3275144476589b64eb924ec156040491, type: 3}
+      propertyPath: type
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5111078744729206678, guid: 3275144476589b64eb924ec156040491, type: 3}
       propertyPath: m_Name
       value: Item SpawnPoint (2)

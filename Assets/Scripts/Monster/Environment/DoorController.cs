@@ -39,7 +39,7 @@ public class DoorController : MonoBehaviour
         this.navModifierComponent.enabled = false;
         LevelController.UpdateNavMesh.Invoke();
         //black out the door to "open" it
-        this.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.black;
+        this.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(0f,0f,0f,0f);
     }
 
     private void Close() {
@@ -68,7 +68,7 @@ public class DoorController : MonoBehaviour
     // boop
     private void OnStructuralDamage(float damage) {
         // this could be a durability value for the door
-        if(damage > 0) {
+        if(damage > this.strength) {
             Destroy(this.gameObject);
         }
     }

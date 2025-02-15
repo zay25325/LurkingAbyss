@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5456928441279483656}
     m_Modifications:
+    - target: {fileID: 2585982570914008925, guid: 3275144476589b64eb924ec156040491, type: 3}
+      propertyPath: type
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5111078744729206678, guid: 3275144476589b64eb924ec156040491, type: 3}
       propertyPath: m_Name
       value: Item SpawnPoint
@@ -72,7 +76,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 61198115022002117, guid: c4bb4a12793f17943b7fcadc958d0545, type: 3}
       propertyPath: m_Name
-      value: RoomVariant 2
+      value: RoomVariant 4
       objectReference: {fileID: 0}
     - target: {fileID: 3449344929976170824, guid: c4bb4a12793f17943b7fcadc958d0545, type: 3}
       propertyPath: m_Size.x
