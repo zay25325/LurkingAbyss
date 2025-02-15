@@ -179,27 +179,6 @@ public class LevelController : MonoBehaviour
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 [CustomEditor(typeof(LevelController))]
 public class LevelControllerEditor : Editor
 {
