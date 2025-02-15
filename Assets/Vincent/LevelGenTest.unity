@@ -383,7 +383,7 @@ PrefabInstance:
       objectReference: {fileID: 158572599}
     - target: {fileID: 5454295879838271702, guid: 828db8ec83716ab44a0a3633d67e5cf5, type: 3}
       propertyPath: SpawnThese.Array.size
-      value: 7
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5454295879838271702, guid: 828db8ec83716ab44a0a3633d67e5cf5, type: 3}
       propertyPath: SpawnThese.Array.data[0]
@@ -411,6 +411,22 @@ PrefabInstance:
       objectReference: {fileID: 6650585788990336934, guid: 331ae2e9bcd1add44858d2b7ffb1e00f, type: 3}
     - target: {fileID: 5454295879838271702, guid: 828db8ec83716ab44a0a3633d67e5cf5, type: 3}
       propertyPath: SpawnThese.Array.data[6]
+      value: 
+      objectReference: {fileID: 6650585788990336934, guid: 331ae2e9bcd1add44858d2b7ffb1e00f, type: 3}
+    - target: {fileID: 5454295879838271702, guid: 828db8ec83716ab44a0a3633d67e5cf5, type: 3}
+      propertyPath: SpawnThese.Array.data[7]
+      value: 
+      objectReference: {fileID: 6650585788990336934, guid: 331ae2e9bcd1add44858d2b7ffb1e00f, type: 3}
+    - target: {fileID: 5454295879838271702, guid: 828db8ec83716ab44a0a3633d67e5cf5, type: 3}
+      propertyPath: SpawnThese.Array.data[8]
+      value: 
+      objectReference: {fileID: 6650585788990336934, guid: 331ae2e9bcd1add44858d2b7ffb1e00f, type: 3}
+    - target: {fileID: 5454295879838271702, guid: 828db8ec83716ab44a0a3633d67e5cf5, type: 3}
+      propertyPath: SpawnThese.Array.data[9]
+      value: 
+      objectReference: {fileID: 6650585788990336934, guid: 331ae2e9bcd1add44858d2b7ffb1e00f, type: 3}
+    - target: {fileID: 5454295879838271702, guid: 828db8ec83716ab44a0a3633d67e5cf5, type: 3}
+      propertyPath: SpawnThese.Array.data[10]
       value: 
       objectReference: {fileID: 6650585788990336934, guid: 331ae2e9bcd1add44858d2b7ffb1e00f, type: 3}
     - target: {fileID: 6388553787151066288, guid: 828db8ec83716ab44a0a3633d67e5cf5, type: 3}
@@ -608,7 +624,7 @@ PrefabInstance:
       objectReference: {fileID: 8478776620801522138}
     - target: {fileID: 5869196295540328824, guid: 0a98b4062075adf4eac0519cf6f23666, type: 3}
       propertyPath: mapGenRoomCount
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5869196295540328824, guid: 0a98b4062075adf4eac0519cf6f23666, type: 3}
       propertyPath: monsterNavs.Array.size
