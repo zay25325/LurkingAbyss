@@ -43,5 +43,9 @@ public class EntityInfo : MonoBehaviour
         Door,
         Exit,
         ChargingStation,
+
+        // Properties
+        Breakable,
+        CanOpenDoors,
     }
 }

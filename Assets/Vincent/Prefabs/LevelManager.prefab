@@ -60,6 +60,7 @@ MonoBehaviour:
   - {fileID: 1305262450324845948}
   monsterNav: {fileID: 0}
   spawners: []
+  doorPrefab: {fileID: 305779746204369520, guid: 19a30fbebcd28554b9c265963ad042d7, type: 3}
 --- !u!1001 &16441283851047440
 PrefabInstance:
   m_ObjectHideFlags: 0
