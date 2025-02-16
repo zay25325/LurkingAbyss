@@ -44,14 +44,17 @@ public class HiveMotherMoveState : MonsterState
     public override void OnSeeingEntityEnter(Collider2D collider)
     {
         EntityInfo info = collider.GetComponent<EntityInfo>();
-        if ((info.Tags.Contains(EntityInfo.EntityTags.Hunter) || info.Tags.Contains(EntityInfo.EntityTags.Territorial))
+        if (info != null)
+        {
+            if ((info.Tags.Contains(EntityInfo.EntityTags.Hunter) || info.Tags.Contains(EntityInfo.EntityTags.Territorial))
             && controller.CollectedSwarmlings >= HiveMotherController.RequiredSwarmlingsForCombat)
-        {
-            // enter combat state
-        }
-        else if (info.Tags.Contains(EntityInfo.EntityTags.Swarmling))
-        {
-            controller.SwitchState<HiveMotherCallState>();
+            {
+                // enter combat state
+            }
+            else if (info.Tags.Contains(EntityInfo.EntityTags.Swarmling))
+            {
+                controller.SwitchState<HiveMotherCallState>();
+            }
         }
     }
 

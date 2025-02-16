@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 6140370617454582469}
   - component: {fileID: 1410002626277024882}
   - component: {fileID: 6530052823025671122}
+  - component: {fileID: 4524818832650360445}
+  - component: {fileID: 1213188183882951040}
   m_Layer: 0
   m_Name: MonsterBase
   m_TagString: Untagged
@@ -111,7 +113,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.3
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 20
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -134,11 +136,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84d0dc7ce8cee94ebc9a1e798301213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEvents: {fileID: 4524818832650360445}
+  interactionEvent: {fileID: 1213188183882951040}
   sightEvents: {fileID: 4733366595748055650}
   sightController: {fileID: 4791281585164000369}
   agent: {fileID: 6140370617454582469}
-  HearingAmplificaiton: 1
   state: {fileID: 0}
+  HearingAmplificaiton: 1
+  hp: 10
+  maxHP: 10
 --- !u!114 &6530052823025671122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +158,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tags: 03000000
+--- !u!114 &4524818832650360445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826378995266505575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdeea0c453086d946b10c724ac3caba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnStunned:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHarmed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStructuralDamaged:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1213188183882951040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826378995266505575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde5915a8fead81448570d3322c4bcf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnInteract:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4722425647346356696
 GameObject:
   m_ObjectHideFlags: 0

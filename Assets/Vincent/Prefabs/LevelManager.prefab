@@ -51,13 +51,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileManager: {fileID: 0}
   levelMap: {fileID: 0}
-  mapGenRoomCount: 10
+  mapGenRoomCount: 30
   roomVariants:
   - {fileID: 8640794095421831784}
   - {fileID: 4524740683787192381}
   - {fileID: 2113558552815106060}
   - {fileID: 8222187106972619276}
   - {fileID: 1305262450324845948}
+  monsterNav: {fileID: 0}
+  spawners: []
 --- !u!1001 &16441283851047440
 PrefabInstance:
   m_ObjectHideFlags: 0
