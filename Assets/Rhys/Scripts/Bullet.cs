@@ -3,7 +3,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float speed = 10f;
-    public float maxDistance = 10f;  // Configurable max distance
+    public float maxDistance = 10f;
 
     private Vector3 startPosition;
     private Vector3 direction;
@@ -26,7 +26,6 @@ public class Bullet : MonoBehaviour
         {
             transform.position += direction * speed * Time.deltaTime;
 
-            // Check if bullet traveled max distance
             if (Vector3.Distance(startPosition, transform.position) >= maxDistance)
             {
                 Debug.Log("Bullet reached max distance and is being returned.");

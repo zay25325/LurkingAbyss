@@ -5,7 +5,7 @@ public class BulletSpawner : MonoBehaviour
 {
     public static BulletSpawner Instance;
     public GameObject bulletPrefab;
-    public int poolSize = 20;  // More bullets since bullets fire quickly
+    public int poolSize = 20;
     private Queue<GameObject> bulletPool;
 
     void Awake()
@@ -27,10 +27,10 @@ public class BulletSpawner : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))  // Left click to fire
+        if (Input.GetMouseButtonDown(0))
         {
             Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            targetPosition.z = 0; // Ensure it's in 2D space
+            targetPosition.z = 0;
             FireBullet(targetPosition);
         }
     }
@@ -50,7 +50,7 @@ public class BulletSpawner : MonoBehaviour
 
     public void ReturnBullet(GameObject bullet)
     {
-        bullet.transform.position = transform.position;  // Reset position
+        bullet.transform.position = transform.position;
         bullet.SetActive(false);
         bulletPool.Enqueue(bullet);
     }
