@@ -27,10 +27,10 @@ public class ProjectileSpawner : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))  // Left click
+        if (Input.GetMouseButtonDown(0))
         {
             Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            targetPosition.z = 0; // Ensure it's in 2D space
+            targetPosition.z = 0;
             FireProjectile(targetPosition);
         }
     }
@@ -50,7 +50,7 @@ public class ProjectileSpawner : MonoBehaviour
 
     public void ReturnProjectile(GameObject proj)
     {
-        proj.transform.position = transform.position;  // Reset position
+        proj.transform.position = transform.position;
         proj.SetActive(false);
         projectilePool.Enqueue(proj);
     }
