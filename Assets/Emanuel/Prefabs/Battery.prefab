@@ -171,4 +171,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff29efa4e52b31046ab0350e57e3dfb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  batteryIcon: {fileID: 0}
+  batteryIcon: {fileID: 21300000, guid: 798b5e981f07a1e42a493657d2895f7d, type: 3}

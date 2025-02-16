@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 1787235246, guid: c73a556b96cc8c848897a4b1e2713f57, type: 3}
-  m_Color: {r: 0.25279447, g: 0.9924528, b: 0.37447178, a: 1}
+  m_Color: {r: 0.654902, g: 0.654902, b: 0.654902, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 064f2bd86ddbb9344bacada4c75e6845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunIcon: {fileID: 0}
+  gunIcon: {fileID: 1787235246, guid: c73a556b96cc8c848897a4b1e2713f57, type: 3}
 --- !u!114 &5817877590220985154
 MonoBehaviour:
   m_ObjectHideFlags: 0
