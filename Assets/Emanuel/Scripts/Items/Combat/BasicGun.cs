@@ -6,6 +6,8 @@ public class BasicGun : Item
 {
     public Sprite gunIcon = null;  // Icon for the gun
     private GameObject gunPrefab = null;    // Prefab for the
+
+    private BulletSpawner bulletSpawner;
     private void Awake()
     {
         // Set the prefab reference here
@@ -25,6 +27,13 @@ public class BasicGun : Item
         ItemSubtype = Subtype.Combat;
         ItemObject = gunPrefab;
 
+        // Find the spawner in the scene (Make sure there is one)
+        bulletSpawner = FindObjectOfType<BulletSpawner>(); 
+        if (bulletSpawner == null)
+        {
+            Debug.LogError("BulletSpawner not found in the scene! Ensure it's attached to a GameObject.");
+        }
+
     }
 
     public override void Use()
@@ -43,7 +52,22 @@ public class BasicGun : Item
 
     private void Shoot()
     {
-        // Implement shooting functionality
+        if (bulletSpawner == null)
+        {
+            Debug.LogError("BulletSpawner is missing. Cannot shoot!");
+            return;
+        }
+
+        // Get target position (mouse position converted to world space)
+        Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        targetPosition.z = 0; // Ensure it's in 2D space
+
+        // Get the player's current position
+        Vector3 playerPosition = FindObjectOfType<PlayerController>().transform.position;
+
+        // Fire a bullet from the player's position towards the target
+        bulletSpawner.FireBullet(playerPosition, targetPosition);
+
         Debug.Log("Shooting with: " + ItemName);
     }
 
