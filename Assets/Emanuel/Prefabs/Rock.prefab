@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6467834988121516077}
   - component: {fileID: 3810492056175241408}
   - component: {fileID: 6386562194984417603}
+  - component: {fileID: 4337752399407332488}
   m_Layer: 0
   m_Name: Rock
   m_TagString: Item
@@ -173,3 +174,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: 10
   rockIcon: {fileID: 0}
+--- !u!114 &4337752399407332488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8786005308923651583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91299b4ab3e953438437e8e0fa13772, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 7197188442645736784, guid: de280d9c90f76d940bae48f006f29014, type: 3}
+  poolSize: 10
+  projScript: {fileID: 0}

@@ -12,11 +12,14 @@ public class Projectile : MonoBehaviour
     private bool useMaxDistance = false;
     private float maxDistance;
 
+    private bool hasLanded = false;
+
     void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = useGravity ? 1 : 0;
         startPosition = transform.position;
+        hasLanded = false;
     }
 
     public void SetTarget(Vector3 target)
@@ -24,6 +27,7 @@ public class Projectile : MonoBehaviour
         targetPosition = target;
         hasTarget = true;
         useMaxDistance = false;
+        hasLanded = false;
     }
 
     public void SetProjectileData(float speed, float maxDistance)
@@ -33,6 +37,7 @@ public class Projectile : MonoBehaviour
         startPosition = transform.position;
         hasTarget = false;
         useMaxDistance = true;
+        hasLanded = false;
     }
 
     void Update()
@@ -44,6 +49,7 @@ public class Projectile : MonoBehaviour
             if (Vector3.SqrMagnitude(transform.position - targetPosition) <= Mathf.Epsilon)  
             {
                 Debug.Log("Projectile reached target and is being returned.");
+                hasLanded = true;
                 ResetProjectile();
             }
         }
@@ -63,5 +69,10 @@ public class Projectile : MonoBehaviour
     {
         gameObject.SetActive(false);
         ProjectileSpawner.Instance.ReturnProjectile(gameObject);
+    }
+
+    public bool HasLanded()
+    {
+        return hasLanded;
     }
 }

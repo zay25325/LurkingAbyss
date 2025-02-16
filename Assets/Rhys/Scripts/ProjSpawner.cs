@@ -8,6 +8,9 @@ public class ProjectileSpawner : MonoBehaviour
     public int poolSize = 10;
     private Queue<GameObject> projectilePool;
 
+    [HideInInspector]
+    public Projectile projScript;
+
     void Awake()
     {
         Instance = this;
@@ -25,33 +28,40 @@ public class ProjectileSpawner : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            targetPosition.z = 0;
-            FireProjectile(targetPosition);
-        }
-    }
+    // void Update()
+    // {
+    //     if (Input.GetMouseButtonDown(0))
+    //     {
+    //         Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //         targetPosition.z = 0;
+    //         FireProjectile(targetPosition);
+    //     }
+    // }
 
-    void FireProjectile(Vector3 targetPosition)
+    public void FireProjectile(Vector3 startPosition, Vector3 targetPosition)
     {
         if (projectilePool.Count > 0)
         {
             GameObject proj = projectilePool.Dequeue();
-            proj.transform.position = transform.position;
+            proj.transform.position = startPosition;
             proj.SetActive(true);
 
-            Projectile projScript = proj.GetComponent<Projectile>();
+            projScript = proj.GetComponent<Projectile>();
             projScript.SetTarget(targetPosition);
         }
     }
 
     public void ReturnProjectile(GameObject proj)
     {
-        proj.transform.position = transform.position;
-        proj.SetActive(false);
-        projectilePool.Enqueue(proj);
+        if (proj != null && proj.activeInHierarchy)
+        {
+            proj.transform.position = transform.position;
+            proj.SetActive(false);
+            projectilePool.Enqueue(proj);
+        }
+        else
+        {
+            Debug.Log("Projectile is null or not active in hierarchy.");
+        }
     }
 }
