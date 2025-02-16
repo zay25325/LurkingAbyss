@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3926fb4dd1f825243835eee0163713bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 2037603817}
   smoothSpeed: 0.125
   offset: {x: 0, y: 0, z: 0}
 --- !u!1001 &152203865
@@ -11937,6 +11937,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2105041691572683754, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
+      propertyPath: m_Size.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: -2105041691572683754, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
+      propertyPath: m_Size.y
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 3824459805755344928, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.8991622
@@ -38179,6 +38187,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3810492056175241408, guid: ba7ad057acdca5d43962a5b7b18bbe7f, type: 3}
+      propertyPath: m_Size.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3810492056175241408, guid: ba7ad057acdca5d43962a5b7b18bbe7f, type: 3}
+      propertyPath: m_Size.y
+      value: 0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 5749638377805226640, guid: ba7ad057acdca5d43962a5b7b18bbe7f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.3641653
