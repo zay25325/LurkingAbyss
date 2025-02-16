@@ -25,22 +25,22 @@ public class BulletSpawner : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            targetPosition.z = 0;
-            FireBullet(targetPosition);
-        }
-    }
+    // void Update()
+    // {
+    //     if (Input.GetMouseButtonDown(0))
+    //     {
+    //         Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //         targetPosition.z = 0;
+    //         FireBullet(targetPosition);
+    //     }
+    // }
 
-    void FireBullet(Vector3 targetPosition)
+    public void FireBullet(Vector3 startPosition, Vector3 targetPosition)
     {
         if (bulletPool.Count > 0)
         {
             GameObject bullet = bulletPool.Dequeue();
-            bullet.transform.position = transform.position;
+            bullet.transform.position = startPosition;
             bullet.SetActive(true);
 
             Bullet bulletScript = bullet.GetComponent<Bullet>();
