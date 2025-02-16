@@ -199,14 +199,14 @@ public class PlayerController : MonoBehaviour
         float minDistanceThreshold = 0.1f;
 
         // Only rotate if the distance is greater than the threshold
-        if (distance > minDistanceThreshold)
-        {
-            // Calculate the angle to rotate
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        // if (distance > minDistanceThreshold)
+        // {
+        //     // Calculate the angle to rotate
+        //     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-            // Apply rotation with an offset to align the top of the sprite
-            transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
-        }
+        //     // Apply rotation with an offset to align the top of the sprite
+        //     transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
+        // }
     }
 
     /*
