@@ -1,11 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement style="flex-grow: 1;">
-        <ui:VisualElement name="ItemBar" style="flex-grow: 1;">
-            <ui:VisualElement name="Item1" style="flex-grow: 1;" />
-            <ui:VisualElement name="Item2" style="flex-grow: 1;">
-                <ui:VisualElement name="ItemBar" style="flex-grow: 1;" />
-            </ui:VisualElement>
-            <ui:VisualElement name="Item3" style="flex-grow: 1;" />
+        <ui:VisualElement name="ItemBar" class="item-bar" style="flex-grow: 1; flex-direction: row; justify-content: space-around; align-self: center; width: 300px; height: 100px; color: rgb(87, 86, 86);">
+            <ui:VisualElement name="Item1" class="item-slot" style="flex-grow: 1; align-items: stretch; width: 80px; height: 80px;" />
+            <ui:VisualElement name="Item2" style="flex-grow: 1; width: 80px; height: 80px;" />
+            <ui:VisualElement name="Item3" style="flex-grow: 1; width: 80px; height: 80px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
