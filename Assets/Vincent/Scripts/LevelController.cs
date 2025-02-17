@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEditor;
+using Unity.AI.Navigation;
 
 // TODO:
 // add logic for player start and exit
@@ -12,70 +13,131 @@ using UnityEditor;
 
 public class LevelController : MonoBehaviour
 {
+    //Tilemap
     [SerializeField] TileController tileManager;
     [SerializeField] MapController levelMap;
+    public static readonly int STATIC_ROOM_SIZE = 9;
 
-    [SerializeField] int mapGenRoomCount;
+    //Room Layout
+    [SerializeField] int mapGenRoomCount = 30;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    //Room Variants
+    [SerializeField] List<RoomVariantData> roomVariants;
+
+    //NavMesh
+    [SerializeField] public MonsterNavController monsterNav;
+
+    //Point of Interest
+    [SerializeField] public List<SpawnController> spawners = new() {};
+
+    public bool BreakTileAt(Vector3 worldpos) {
+
+        var didBreak = false;
+
+        Vector2Int gridpos = (Vector2Int)tileManager.grid.WorldToCell(worldpos);
+
+        // check breakable layers for a tile at that position
+        // walls
+        if(tileManager.PickTile(TileMapLayer.LayerClass.Wall,gridpos) != null) {
+            tileManager.ClearTile(TileMapLayer.LayerClass.Wall,gridpos);
+            didBreak = true;
+        }
+
+        // only update navmesh if something actually broke
+        if(didBreak) this.BuildNavMesh();
+        return didBreak;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void Start() {
+        foreach(var variant in roomVariants) {
+            variant.Init();
+        }
+    }
+
+    private void BuildNavMesh() {
+        monsterNav.UpdateMesh();
     }
 
     public void BuildLevelFromMap() {
 
+        // Place Level Bounds
+        var boundsTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette,new Vector2Int(2,0));
         foreach(var pair in levelMap.RoomGrid) {
             RoomController room = pair.Value;
             Vector2Int roompos = (Vector2Int)tileManager.grid.WorldToCell(room.transform.position);
-            Vector2Int roomsize = new(room.width, room.height);
+            Vector2Int roomsize = new(STATIC_ROOM_SIZE, STATIC_ROOM_SIZE);
 
-            // clone room prefab
+            tileManager.SetRect(TileMapLayer.LayerClass.Unbreakable, roompos-roomsize, roompos+roomsize, boundsTile);
+        }        
+
+        foreach(var pair in levelMap.RoomGrid) {
+            RoomController room = pair.Value;
+            Vector2Int roompos = (Vector2Int)tileManager.grid.WorldToCell(room.transform.position);
+            Vector2Int roomsize = new(STATIC_ROOM_SIZE, STATIC_ROOM_SIZE);
+
+            // clone base room
             tileManager.CloneRect(
-                "Prefabs",
-                new Vector2Int(2,-7),
-                new Vector2Int(room.width, room.height),
-                "Walls",
-                roompos-(roomsize/2));
+                TileMapLayer.LayerClass.Roomx9,
+                new Vector2Int(-4,-4),
+                new Vector2Int(STATIC_ROOM_SIZE, STATIC_ROOM_SIZE),
+                TileMapLayer.LayerClass.Wall,
+                roompos-(roomsize/2)
+            );
+
+            //carve out level bounds 
+            tileManager.ClearRect(
+                TileMapLayer.LayerClass.Unbreakable,
+                roompos-(roomsize/2),
+                new Vector2Int(STATIC_ROOM_SIZE, STATIC_ROOM_SIZE)
+            );
 
             // place doors
             for(int i = 0; i < room.connections.Length; i++) {
                 
                 var dir = Directions.IntToVec(i);
                 var perp = Vector2.Perpendicular(dir);
-                var halfwidth = Mathf.Floor(room.width/2);
+                var halfwidth = Mathf.Floor(STATIC_ROOM_SIZE/2);
 
                 switch(room.GetConnectionByIndex(i)) {
                     case 0: // closed
                         break;
                     case 1: // door
                         //selects a random spot for the opening to appear
-                        var doorpos = Random.Range(-(halfwidth-1),halfwidth-1); //this just uses room width. we don't plan on having oblong rooms do we?
-
+                        //var doorpos = Random.Range(-(halfwidth-1),halfwidth-1); //this just uses room width. we don't plan on having oblong rooms do we?
+                        var doorpos = 0;
                         // this is a really confusing string of math, but basically:
                         // roompos points to the center of the room
                         // then pos points to a wall
                         // then perp points to a spot on that wall
-                        tileManager.ClearTile("Walls", (Vector2Int)tileManager.grid.WorldToCell(roompos+dir*(halfwidth)+perp*doorpos));
+                        tileManager.ClearTile(TileMapLayer.LayerClass.Wall, (Vector2Int)tileManager.grid.WorldToCell(roompos+dir*(halfwidth)+perp*doorpos));
 
                         break;
+                    case 2: // open
+                        for(int j = (int)(-halfwidth)+1; j < halfwidth; j++) {
+                            var cellpos = j;
+                            tileManager.ClearTile(TileMapLayer.LayerClass.Wall, (Vector2Int)tileManager.grid.WorldToCell(roompos+dir*(halfwidth)+perp*cellpos));
+                        }
+                        break;
+                        
                 }
             }
 
-            // place floor
-            tileManager.CloneRect(
-                "Prefabs",
-                new Vector2Int(9,-7),
-                new Vector2Int(room.width, room.height),
-                "Floor",
-                roompos-(roomsize/2)
-            );
+            // Get a random room variant
+            var roomVariant = this.roomVariants[Random.Range(0,roomVariants.Count)];
+
+            // place internal walls
+            var wallTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette, new Vector2Int(1,0));
+            foreach(var pos in roomVariant.walls) {
+                tileManager.SetTile(TileMapLayer.LayerClass.Wall, roompos+pos, wallTile);
+            }
+            // place item spawns relative to room origin
+            foreach(var obj in roomVariant.itemSpawns) {
+                var instance = Instantiate(obj, room.transform.position+obj.transform.localPosition, Quaternion.identity);
+                spawners.Add(instance.GetComponent<SpawnController>());
+            }
+            // TODO place other spawns relative to room origin
+
+
         }
     }
 
@@ -83,10 +145,50 @@ public class LevelController : MonoBehaviour
         levelMap.StartRoomGen(mapGenRoomCount);
     }
 
+    public void CreateNavMeshes() {
+        this.BuildNavMesh();
+    }
+
+    public void DestroySpawners() {
+        int count = 0;
+        while(spawners.Count > 0) {
+            //destroy the spawner
+            Destroy(spawners[0].gameObject);
+            //remove the list
+            spawners.RemoveAt(0);
+            count ++;
+        }
+        Debug.Log($"Destroyed {count} spawners");
+    }
+
     public void DestroyLevel() {
         levelMap.ClearRoomGrid();
+        tileManager.Nuke();
+        DestroySpawners();
+        BuildNavMesh();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 [CustomEditor(typeof(LevelController))]
@@ -97,14 +199,19 @@ public class LevelControllerEditor : Editor
         DrawDefaultInspector();
 
         LevelController myScript = (LevelController)target;
-        if(GUILayout.Button("Start Level Gen"))
+        if(GUILayout.Button("Build Layout"))
         {
             myScript.GenerateLevel();
         }
 
-        if(GUILayout.Button("Place Tiles"))
+        if(GUILayout.Button("Build Map"))
         {
             myScript.BuildLevelFromMap();
+        }
+
+         if(GUILayout.Button("Make Navmesh"))
+        {
+            myScript.CreateNavMeshes();
         }
 
         if(GUILayout.Button("Destroy Map"))

@@ -15,7 +15,7 @@ public class MapController : MonoBehaviour {
     public Dictionary<Vector2, RoomController> RoomGrid {get => roomGrid;}
 
     //width and height of the rooms in tiles
-    private Vector2Int defaultRoomSize = new Vector2Int(7,7);
+    private Vector2Int defaultRoomSize = new Vector2Int(9,9);
 
     public bool IsGenerating {get; private set;} = false;
     private int genPoints = 0;
@@ -34,36 +34,41 @@ public class MapController : MonoBehaviour {
             var index = genQueue.Dequeue();
             roomGrid.TryGetValue(index, out var currentroom);
             
-            // select random directions to connect to
-            // we always choose at least one direction
-            // TODO make it only include unconnected walls so we don't get too many deadend rooms
-            int r = Random.Range(1,16);
-            int[] connections = {
-                (r >> 0) & 1,
-                (r >> 1) & 1,
-                (r >> 2) & 1,
-                (r >> 3) & 1
-            };
 
-            // For each wall, check if we generate a connection there
-            for(int c = 0; c < connections.Length; c++) {
-                if(genPoints <= 0) break;
+            // push all directions onto a list
+            var connectionsToTry = new List<int>() {0,1,2,3};
+            var connectionCount = Random.Range(0,3); // choose a minimum number of connections
+            var requiredRoom = false; // we try to generate a new room if possible, so we always reach the room cap
 
-                // only try to make a room if there is no connection on that wall
-                if(connections[c] != 0 && currentroom.GetConnectionByIndex(c) == 0) {
-                    bool roomCreated = TryCreateFromRoom(index, Directions.IntToVec(c), out var newIndex);
+            while(connectionsToTry.Count > 0) {
+                if(genPoints <= 0) break; // stop trying if we are out of points
+                if(connectionCount <= 0 && requiredRoom) break;
+
+                // pop a random direction from the list
+                var tryIndex = Random.Range(0,connectionsToTry.Count);
+                var tryDir = connectionsToTry[tryIndex];
+                connectionsToTry.RemoveAt(tryIndex);
+
+                // try to build a new room there
+                if(currentroom.GetConnectionByIndex(tryDir) == 0) {
+                    bool roomCreated = TryCreateFromRoom(index, Directions.IntToVec(tryDir), out var newIndex, (connectionCount > 0));
                     
                     // if we were able to make a room, subtract points and add it to the generation queue
                     if(roomCreated) {
                         genPoints --;
                         genQueue.Enqueue(newIndex);
+                        requiredRoom = true;
                     }
+                    // since there was no connection here before, reduce required connections by 1
+                    connectionCount--;
                 }
+
             }
 
             // make sure to filp the state when we are done
             if(genPoints <= 0) {
                 IsGenerating = false;
+                genQueue.Clear();
                 Debug.Log("Finished Generating Rooms");
             }
         }
@@ -73,7 +78,6 @@ public class MapController : MonoBehaviour {
 
         this.genPoints = roomcount;
         var startroom = PlaceRoom(Vector2.zero, Vector2.zero, defaultRoomSize.x, defaultRoomSize.y);
-
         genQueue.Enqueue(Vector2.zero);
         IsGenerating = true;
         genPoints --;
@@ -84,7 +88,7 @@ public class MapController : MonoBehaviour {
     // returns whether a room could be created
     // do not reference the createdroom index if it returns false.
     //
-    public bool TryCreateFromRoom(Vector2 src, Vector2 dir, out Vector2 createdroomindex) {
+    public bool TryCreateFromRoom(Vector2 src, Vector2 dir, out Vector2 createdroomindex, bool connectExisting) {
         
         if(!roomGrid.ContainsKey(src)) {
             Debug.Log("Source Room Doesn't Exist");
@@ -95,14 +99,16 @@ public class MapController : MonoBehaviour {
         //roomgrid location of new room
         var newroomindex = src+dir;
 
-        //int connectiontype = Random.Range((int)2,3); //choose either door or open
-        int connectiontype = 1;
+        int connectiontype = Random.Range((int)1,3); //choose either door or open
+        //int connectiontype = 1;
 
         // check if there's already a room
         if(roomGrid.ContainsKey(newroomindex)) {
-            // connect to the existing room without making a new room
-            roomGrid[src].SetConnectionByDir(dir,connectiontype); //current direction in the old room
-            roomGrid[newroomindex].SetConnectionByDir(-dir, connectiontype); //opposite direction in the new room
+            if(connectExisting) {
+                // connect to the existing room without making a new room
+                roomGrid[src].SetConnectionByDir(dir,connectiontype); //current direction in the old room
+                roomGrid[newroomindex].SetConnectionByDir(-dir, connectiontype); //opposite direction in the new room
+            }
             createdroomindex = Vector2.zero;
             return false;
         } else {

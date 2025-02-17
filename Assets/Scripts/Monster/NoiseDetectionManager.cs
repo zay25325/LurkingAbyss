@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static EntityInfo;
 
 public class NoiseDetectionManager
 {
@@ -19,5 +20,5 @@ public class NoiseDetectionManager
         }
     }
 
-    public UnityEvent<Vector2, float> NoiseEvent = new UnityEvent<Vector2, float>();
+    public UnityEvent<Vector2, float, List<EntityTags>> NoiseEvent = new UnityEvent<Vector2, float, List<EntityTags>>();
 }

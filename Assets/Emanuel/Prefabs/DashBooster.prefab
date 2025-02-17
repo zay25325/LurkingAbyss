@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4621852958720320481}
   - component: {fileID: 6467834988121516077}
   - component: {fileID: 3810492056175241408}
-  - component: {fileID: 6386562194984417603}
+  - component: {fileID: 2067228028070481044}
   m_Layer: 0
-  m_Name: Interactable Test
+  m_Name: DashBooster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -5177388603050735206, guid: 8884154dfe85442a3a3578be807dbcdf, type: 3}
-  m_Color: {r: 0.8255275, g: 0, b: 0.9433962, a: 1}
+  m_Color: {r: 0.6186199, g: 0.59033465, b: 0.6226415, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
@@ -159,7 +159,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6386562194984417603
+--- !u!114 &2067228028070481044
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,8 +168,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8786005308923651583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cac8c198cf4eb44badd31a10963273e, type: 3}
+  m_Script: {fileID: 11500000, guid: 411f34c6e14fd0d43b776755f43ee2b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 10
-  rockIcon: {fileID: 0}
+  dashBoosterIcon: {fileID: 0}

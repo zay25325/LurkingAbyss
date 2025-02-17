@@ -1,8 +1,8 @@
+//#define DebugVisualize // I don't want to have have to tie this to a SerializeField variable
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
 
 public class SightMeshController : MonoBehaviour
 {
@@ -23,9 +23,6 @@ public class SightMeshController : MonoBehaviour
     void Start()
     {
         meshFilter = GetComponent<MeshFilter>();
-        transform.parent = null;
-        transform.rotation = Quaternion.identity;
-        transform.position = new Vector3(0,0,-1);
     }
 
     private void LateUpdate()
@@ -36,11 +33,16 @@ public class SightMeshController : MonoBehaviour
         raycasts.Clear();
         for (int i = 0; i <= rayCount; i++)
         {
-            Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.green);
-            RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, GetVectorFromAngle(angle), visionRange, visionLayers);
+            Vector2 vectorAngle = GetVectorFromAngle(angle);
+#if (DebugVisualize)
+            Debug.DrawRay(origin.position, vectorAngle, Color.green);
+#endif
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, vectorAngle, visionRange, visionLayers);
             if (raycastHit2D.collider == null && raycasts.ContainsKey(angle) == false)
             {
-                raycasts.Add(angle, GetVectorFromAngle(angle) * visionRange);
+                Vector2 rayEndPoint = vectorAngle * visionRange;
+                raycasts.Add(angle, rayEndPoint);
+                RaycastOpenArea((Vector2)origin.position + rayEndPoint, vectorAngle);
             }
             else
             {
@@ -60,6 +62,7 @@ public class SightMeshController : MonoBehaviour
         List<Vector3> sortedRaycasts = new List<Vector3>(raycasts.Values);
         sortedRaycasts.Reverse();
 
+#if (DebugVisualize)
         for (int i = 0; i < sortedRaycasts.Count; i++)
         {
             if (i == 0)
@@ -75,7 +78,7 @@ public class SightMeshController : MonoBehaviour
                 Debug.DrawLine(sortedRaycasts[i] + origin.position, sortedRaycasts[i+1] + origin.position, Color.blue);
             }
         }
-
+#endif
 
         // create mesh
         Vector2[] points = new Vector2[sortedRaycasts.Count + 2];
@@ -86,10 +89,10 @@ public class SightMeshController : MonoBehaviour
         }
         points[sortedRaycasts.Count + 1] = Vector2.zero;
         polyCollider.points = points;
-        polyCollider.offset = origin.position;
         meshFilter.mesh = polyCollider.CreateMesh(false, false);
     }
 
+    // While we are doing a very similar thing to this video, almost everything needed to be changed causing the only thing actually used are these two methods
     /*
     * TITLE : “FieldOfView.cs” source code
     * AUTHOR : Code Monkey
@@ -135,8 +138,29 @@ public class SightMeshController : MonoBehaviour
         // opposite corner
         AddAdditionalRaycasts(bottomLeftCorner + new Vector2(absNormal.y, absNormal.x) * (1 - cornerOffset));
         AddAdditionalRaycasts(bottomLeftCorner + new Vector2(absNormal.y, absNormal.x) * (1 + cornerOffset));
+    }
 
-        // AddAdditionalRaycasts(PointToMaxVision(origin.position, originalRaycast));
+    private void RaycastOpenArea(Vector2 endOfRay, Vector2 rayAngle)
+    {
+        Vector2 perpendicularAngle = Vector2.Perpendicular(rayAngle);
+
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(endOfRay, perpendicularAngle, LengthBetweenEndPoints, visionLayers);
+        if (raycastHit2D.collider != null)
+        {
+#if (DebugVisualize)
+            Debug.DrawRay(endOfRay, perpendicularAngle, Color.cyan);
+#endif
+            AddAdditionalRaycasts(raycastHit2D.point);
+        }
+
+        raycastHit2D = Physics2D.Raycast(endOfRay, -perpendicularAngle, LengthBetweenEndPoints, visionLayers);
+        if (raycastHit2D.collider != null)
+        {
+#if (DebugVisualize)
+            Debug.DrawRay(endOfRay, -perpendicularAngle, Color.cyan);
+#endif
+            AddAdditionalRaycasts(raycastHit2D.point);
+        }
     }
 
     private void AddAdditionalRaycasts(Vector2 raycastTo)
@@ -156,7 +180,9 @@ public class SightMeshController : MonoBehaviour
             return;
         }
 
+#if (DebugVisualize)
         Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.yellow);
+#endif
 
         RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, GetVectorFromAngle(angle), visionRange, visionLayers);
         if (raycastHit2D.collider == null)
@@ -169,18 +195,13 @@ public class SightMeshController : MonoBehaviour
         }
     }
 
-    private Vector2 PointToMaxVision(Vector2 origin, RaycastHit2D raycast)
+    private float LengthBetweenEndPoints // c^2 = a^2+b^2-2abcos(c), but since a=b -> c^2 = 2a^2 - 2a^2 * cos(c)
     {
-        // NOT IMPLIMENTED
-
-        // Determin if we are moving vertically or horizontally
-        Vector2 absoluteNormalVectorInverse = new Vector2(Mathf.Abs(raycast.normal.y), Mathf.Abs(raycast.normal.x));
-        // Math I just don't know
-        /*
-        Vector2 raycastDirection = raycast.point - origin; // get the direction of the
-        Vector2 lineDirection = raycastDirection * absoluteNormalVectorInverse; // get the perpendicular line of the normal direction going away from the origin
-        // Get the intersection point of a circle (p = origin, r = visionRange) and a line (starts at p = raycast.point, direction = lineDirection)
-        */
-        return Vector2.zero;
+        get
+        {
+            float angle = fov / rayCount; // c
+            float twoASquared = 2 * (visionRange * visionRange);
+            return Mathf.Sqrt(twoASquared - twoASquared * Mathf.Cos(angle * Mathf.Deg2Rad));
+        }
     }
 }

@@ -2,32 +2,65 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Threading.Tasks;
 
 public class MonsterController : MonoBehaviour
 {
+    [SerializeField] OnHitEvents hitEvents;
+    [SerializeField] OnInteractionEvent interactionEvent;
     [SerializeField] MonsterSightEvents sightEvents;
     [SerializeField] SightMeshController sightController;
     [SerializeField] NavMeshAgent agent;
+    [SerializeField] protected MonsterState state;
 
+    [Header("Stats")]
     public float HearingAmplificaiton = 1f;
 
-    [SerializeField] protected MonsterState state;
+    [SerializeField] protected float hp;
+    [SerializeField] protected float maxHP;
     protected float stunDuration;
-    protected List<GameObject> ObjectsInView = new List<GameObject>();
 
+    protected float baseSpeed;
+    protected MonsterState baseState;
+    protected Vector3 spawnPoint;
+
+    protected List<GameObject> objectsInView = new List<GameObject>();
     protected bool overrideSightDirection = false;
 
-    public NavMeshAgent Agent { get => agent; }
+    protected const float RESPAWN_DELAY = 5f;
 
-    // Start is called before the first frame update
-    private void Start()
+    public NavMeshAgent Agent { get => agent; }
+    public List<GameObject> ObjectsInView { get => objectsInView; }
+    public float HP { get => hp; set => hp = value; }
+    public float MaxHP { get => maxHP; set => maxHP = value; }
+    public float BaseSpeed { get => baseSpeed; set => baseSpeed = value; }
+
+
+    protected void Awake()
     {
-        // prevent agent from messing with 2d visuals
+        if (state != null)
+        {
+            state.controller = this;
+        }
         agent.updateRotation = false;
         agent.updateUpAxis = false;
 
+        baseSpeed = Agent.speed; // grab our speed before the state changes it
+        baseState = state;
+        spawnPoint = transform.position;
+    }
 
-        state.controller = this;
+    private void OnEnable()
+    {
+        if (hitEvents != null)
+        {
+            hitEvents.OnStunned.AddListener(OnStunned);
+            hitEvents.OnHarmed.AddListener(OnHarmed);
+        }
+        if (interactionEvent != null)
+        {
+            interactionEvent.OnInteract.AddListener(OnInteract);
+        }
         if (sightEvents != null)
         {
             sightEvents.OnSeeingEntityEnterEvent.AddListener(OnSeeingEntityEnter);
@@ -36,8 +69,27 @@ public class MonsterController : MonoBehaviour
         NoiseDetectionManager.Instance.NoiseEvent.AddListener(OnNoiseDetection);
     }
 
+    private void OnDisable()
+    {
+        if (hitEvents != null)
+        {
+            hitEvents.OnStunned.RemoveListener(OnStunned);
+            hitEvents.OnHarmed.RemoveListener(OnHarmed);
+        }
+        if (interactionEvent != null)
+        {
+            interactionEvent.OnInteract.RemoveListener(OnInteract);
+        }
+        if (sightEvents != null)
+        {
+            sightEvents.OnSeeingEntityEnterEvent.RemoveListener(OnSeeingEntityEnter);
+            sightEvents.OnSeeingEntityExitEvent.RemoveListener(OnSeeingEntityExit);
+        }
+        NoiseDetectionManager.Instance.NoiseEvent.RemoveListener(OnNoiseDetection);
+    }
+
     // Update is called once per frame
-    private void Update()
+    protected void Update()
     {
         UpdateStunDuration();
         if (overrideSightDirection == false)
@@ -60,7 +112,7 @@ public class MonsterController : MonoBehaviour
     {
         if (collider.gameObject != gameObject)
         {
-            ObjectsInView.Add(collider.gameObject);
+            objectsInView.Add(collider.gameObject);
             state.OnSeeingEntityEnter(collider);
         }
     }
@@ -69,18 +121,18 @@ public class MonsterController : MonoBehaviour
     {
         if (collider.gameObject != gameObject)
         {
-            ObjectsInView.Remove(collider.gameObject);
+            objectsInView.Remove(collider.gameObject);
             state.OnSeeingEntityExit(collider);
         }
     }
 
-    private void OnNoiseDetection(Vector2 pos, float volume)
+    private void OnNoiseDetection(Vector2 pos, float volume, List<EntityInfo.EntityTags> tags)
     {
         float distance = Vector3.Distance(transform.position, pos);
         float amplifiedVolume = volume * HearingAmplificaiton;
         if (amplifiedVolume > distance)
         {
-            state.OnNoiseDetection(pos, volume);
+            state.OnNoiseDetection(pos, volume, tags);
         }
     }
 
@@ -109,7 +161,7 @@ public class MonsterController : MonoBehaviour
             stunDuration -= Time.deltaTime;
             if (stunDuration < 0) // clear negative stun durations
             {
-                stunDuration = 0;
+                OnStunEnd();
             }
         }
     }
@@ -117,10 +169,66 @@ public class MonsterController : MonoBehaviour
     protected void LookTowardsPath()
     {
         // look at the next point in the navigation path, which is index 1
-        if (agent.path.corners.Length > 1) 
+        if (sightController != null && agent.path.corners.Length > 1) 
         {
             Vector3 direction = agent.path.corners[1] - transform.position;
             sightController.LookDirection = SightMeshController.GetAngleFromVectorFloat(direction) + 90f;
         }
+    }
+
+    protected void OnStunned(float duration)
+    {
+        stunDuration = Mathf.Max(duration, stunDuration);
+        if (stunDuration > 0)
+        {
+            OnStunStart();
+        }
+    }
+
+    protected void OnHarmed(float damage)
+    {
+        hp -= damage;
+        if (hp <= 0)
+        {
+            OnDeath();
+        }
+    }
+
+    protected void OnStunStart()
+    {
+        state.enabled = false;
+        sightController.gameObject.SetActive(false);
+        agent.speed = 0;
+    }
+
+    protected void OnStunEnd()
+    {
+        stunDuration = 0;
+        sightController.gameObject.SetActive(true);
+        state.enabled = true;
+        agent.speed = baseSpeed;
+    }
+
+    protected void OnDeath()
+    {
+        OnStunStart();
+        gameObject.SetActive(false);
+        
+        RespawnManager.Instance.StartRespawnTimer(this, RESPAWN_DELAY);
+    }
+
+    public void Respawn()
+    {
+        transform.position = spawnPoint;
+        hp = maxHP;
+        state = baseState;
+        
+        OnStunEnd(); // ensure there is no remaining stun on the 
+        gameObject.SetActive(true);
+    }
+
+    protected void OnInteract(GameObject other)
+    {
+        state.OnInteract(other);
     }
 }

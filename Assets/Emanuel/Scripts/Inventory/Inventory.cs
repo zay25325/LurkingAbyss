@@ -1,5 +1,6 @@
 /*
 Class Name: Inventory
+
 Description: This class is responsible for managing the player's inventory. 
              It contains the properties and methods to add, remove, and select items in the inventory.
 */
@@ -47,6 +48,20 @@ public class Inventory : MonoBehaviour
 
                 return true; // Item added successfully
             }
+            else
+            {
+                // Drop the currently held item
+                DropActiveItem(new InputAction.CallbackContext());
+
+                // Add the new item to the inventory
+                items.Add(item);
+                itemObject.SetActive(false); // Deactivate the item so it is removed from the scene
+
+                // Set the new item as the active item
+                ActiveItem(items.Count - 1);
+
+                return true; // Item added successfully after dropping the held item
+            }
         }
         Debug.Log("Item not added to inventory");
         return false; // Inventory full or item does not have an Item component
@@ -68,6 +83,7 @@ public class Inventory : MonoBehaviour
             items.Remove(item);
             if (item.ItemObject != null)
             {
+                AddRemoveGameworld(activeItem, true);
                 item.ItemObject.SetActive(true); // Activate the item so it is added back to the scene
             }
             // Update the active item if necessary
@@ -91,29 +107,34 @@ public class Inventory : MonoBehaviour
         PARAMETERS : InputAction.CallbackContext context - Input context for the drop action.
         RETURNS : NONE
     */
-    public void DropActiveItem(InputAction.CallbackContext context)
+public void DropActiveItem(InputAction.CallbackContext context)
+{
+    if (activeItem != null)
     {
-        // Check if the inventory is not empty
-        if (activeItem != null)
+        // Get the player's facing direction from rotation
+        Vector2 dropDirection = (Vector2)(Quaternion.Euler(0, 0, transform.eulerAngles.z) * Vector2.right);
+
+        // Set the drop position in front of the player
+        Vector3 dropPosition = transform.position + (Vector3)dropDirection;
+
+
+        // Move and activate the item
+        activeItem.ItemObject.transform.position = dropPosition;
+        activeItem.ItemObject.SetActive(true);
+
+        // Remove the item from inventory
+        RemoveItem(activeItem);
+        activeItem = null;
+
+        // Set next active item if available
+        if (items.Count > 0)
         {
-            // Place the item in front of the player
-            Vector3 dropPosition = transform.position + transform.forward;
-            activeItem.ItemObject.transform.position = dropPosition;
-            activeItem.ItemObject.SetActive(true);
-
-            // Remove the item from the inventory
-            RemoveItem(activeItem);
-            // Set the active item to null
-            activeItem = null;
-
-            // Set the active item to the first item in the inventory
-            if (items.Count > 0)
-            {
-                currentActiveIndex = 0;
-                ActiveItem(currentActiveIndex);
-            }
+            currentActiveIndex = 0;
+            ActiveItem(currentActiveIndex);
         }
     }
+}
+
 
 
     /*
@@ -125,20 +146,25 @@ public class Inventory : MonoBehaviour
     */
     private void ActiveItem(int index)
     {
+        items.RemoveAll(i => i == null);
         // Check if the index is within the inventory range
         if (index >= 0 && index < items.Count)
         {
-            // // Check if the active item is not null
-            // if (activeItem != null)
-            // {
-            //     // Deactivate the current active item
-            //     activeItem.SetActive(false);
-            // }
+            // Deactivate all items
+            foreach (var item in items)
+            {
+                item.ItemObject.SetActive(false);
+            }
 
             // Activate the new item
             activeItem = items[index];
             currentActiveIndex = index;
             checkActiveItemState();
+
+            activeItem.ItemObject.SetActive(true);
+            AddRemoveGameworld(activeItem, false);
+
+        // Add any other components you want to disable here
         }
     }
     
@@ -178,11 +204,13 @@ public class Inventory : MonoBehaviour
     */
     public void Scrolling(InputAction.CallbackContext context)
     {
+        // Remove any destroyed items from the inventory
+        items.RemoveAll(i => i == null);
         // Get the scroll value
         float scrollValue = context.ReadValue<float>();
 
-        // Check if the inventory is not empty
-        if (items.Count > 0)
+        // Check if the inventory is not empty and the active item is not in use
+        if (items.Count > 0 && (activeItem == null || !activeItem.IsInUse))
         {
             // Scroll through the inventory. Check if the scroll value is positive or negative
 
@@ -215,9 +243,14 @@ public class Inventory : MonoBehaviour
     */
     public void Slot1Pressed(InputAction.CallbackContext context)
     {
-        // set the active item to the first item in the inventory
-        currentActiveIndex = 0; // Slot 1
-        ActiveItem(currentActiveIndex);
+        if(!activeItem.IsInUse)
+        {
+            // Remove any destroyed items from the inventory
+            items.RemoveAll(i => i == null);
+            // set the active item to the first item in the inventory
+            currentActiveIndex = 0; // Slot 1
+            ActiveItem(currentActiveIndex);
+        }
     }
 
     /*
@@ -229,9 +262,14 @@ public class Inventory : MonoBehaviour
     */
     public void Slot2Pressed(InputAction.CallbackContext context)
     {
-        // set the active item to the second item in the inventory
-        currentActiveIndex = 1; // Slot 2
-        ActiveItem(currentActiveIndex);
+        if(!activeItem.IsInUse)
+        {
+            // Remove any destroyed items from the inventory
+            items.RemoveAll(i => i == null);
+            // set the active item to the second item in the inventory
+            currentActiveIndex = 1; // Slot 2
+            ActiveItem(currentActiveIndex);
+        }
     }
 
     /*
@@ -243,8 +281,37 @@ public class Inventory : MonoBehaviour
     */
     public void Slot3Pressed(InputAction.CallbackContext context)
     {
-        // set the active item to the third item in the inventory
-        currentActiveIndex = 2; // Slot 3
-        ActiveItem(currentActiveIndex);
+        if(!activeItem.IsInUse)
+        {
+            // Remove any destroyed items from the inventory
+            items.RemoveAll(i => i == null);
+            // set the active item to the third item in the inventory
+            currentActiveIndex = 2; // Slot 3
+            ActiveItem(currentActiveIndex);
+        }
+    }
+
+    public Item GetActiveItem()
+    {
+        return activeItem;
+    }
+
+    public Item AddRemoveGameworld(Item itemAddRemove, bool yesNo)
+    {
+        itemAddRemove.ItemObject.GetComponent<Renderer>().enabled = yesNo;
+        // Disable all components of the active item
+        Collider2D collider = itemAddRemove.ItemObject.GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            collider.enabled = yesNo;
+        }
+
+        Rigidbody2D rigidbody = itemAddRemove.ItemObject.GetComponent<Rigidbody2D>();
+        if (rigidbody != null)
+        {
+            rigidbody.simulated = yesNo;
+        }
+
+        return itemAddRemove;
     }
 }

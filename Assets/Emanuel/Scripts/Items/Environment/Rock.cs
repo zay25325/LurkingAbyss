@@ -29,14 +29,15 @@ public class Rock : Item
 
         // Set the properties of the rock item
         ItemName = "Default Rock";
-        ItemDescription = "A simple rock";
+        ItemDescription = "Can be thrown, making noise on-hit or end of flight. Deals minor damage. ";
         ItemIcon = rockIcon; 
         ItemID = 0;
+        maxItemCharge = 1;
         ItemCharge = 1;
         ItemRarity = Rarity.Common;
         ItemValue = 0;
         CanItemDestroy = true;
-        ItemSubtype = Subtype.Combat;
+        ItemSubtype = Subtype.Environment;
         ItemObject = rockPrefab;
     }
 
@@ -49,9 +50,16 @@ public class Rock : Item
     */
     public override void Use()
     {
-        // Implement rock-specific functionality
-        Debug.Log("Rock used: " + ItemName);
-        Throw();
+        if (CanUseItem())
+        {
+            Throw();
+            ReduceItemCharge();
+            DestroyItem(ItemObject);
+        }
+        else
+        {
+            Debug.Log("Not enough charges to use " + ItemName);
+        }
     }
 
     /*
