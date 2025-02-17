@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4621852958720320481}
   - component: {fileID: 6467834988121516077}
   - component: {fileID: 3810492056175241408}
-  - component: {fileID: -2974537905295160407}
+  - component: {fileID: -9005441170134393525}
   m_Layer: 0
-  m_Name: MobileShieldGenerator
+  m_Name: GravitonSurgePlate
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -3, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -76,11 +76,11 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 794696090, guid: 7d63e92abd5afbb4fb5309bc17cd656c, type: 3}
-  m_Color: {r: 0.7686275, g: 0.7686275, b: 0.7686275, a: 1}
+  m_Sprite: {fileID: -5177388603050735206, guid: 8884154dfe85442a3a3578be807dbcdf, type: 3}
+  m_Color: {r: 0.24987741, g: 0.020024918, b: 0.2830189, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
+  m_DrawMode: 2
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
@@ -148,18 +148,18 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
+    border: {x: 0.25, y: 0.25, z: 0.25, w: 0.25}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.14, y: 0.14}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-2974537905295160407
+--- !u!114 &-9005441170134393525
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,7 +168,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8786005308923651583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 247ab99abce5fc143863afa91c81e1a0, type: 3}
+  m_Script: {fileID: 11500000, guid: e4d096b0d07fc774c98bb90150629a7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldGeneratorIcon: {fileID: 794696090, guid: 7d63e92abd5afbb4fb5309bc17cd656c, type: 3}
+  gravitonSurgePlateIcon: {fileID: 0}
+  pullRadius: 5
+  pullForce: 10

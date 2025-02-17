@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class MobileShieldGenerator : Item
 {
-    private Sprite shieldGeneratorIcon = null;  // Icon for the shield generator
+    public Sprite shieldGeneratorIcon = null;  // Icon for the shield generator
     private GameObject shieldGeneratorPrefab = null;    // Prefab for the shield generator
 
     private PlayerStats playerStats = null;    // Reference to the player stats

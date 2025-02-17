@@ -17,6 +17,8 @@ public class Warper : Item
 
     private float maxTeleportDistance = 5f;   // Maximum distance the player can teleport
 
+    private bool didTeleport = false; // Flag to check if the player has teleported
+
 
     /*
         FUNCTION : Awake()
@@ -57,8 +59,12 @@ public class Warper : Item
         if(CanUseItem())
         {
             Teleport();
-            ReduceItemCharge();
-            DestroyItem(ItemObject);
+            if(didTeleport)
+            {
+                ReduceItemCharge();
+                didTeleport = false;
+                DestroyItem(ItemObject);
+            }
         }
         else
         {
@@ -103,9 +109,19 @@ public class Warper : Item
         // Calculate the clamped target position
         Vector3 clampedTargetPosition = playerPosition + direction * clampedDistance;
 
-        // Set the player's position to the clamped target position
-        playerTransform.position = clampedTargetPosition;
-
-        Debug.Log("Player teleported to: " + clampedTargetPosition);
+        // Use NavMesh to find the closest valid position
+        UnityEngine.AI.NavMeshHit hit;
+        if (UnityEngine.AI.NavMesh.SamplePosition(clampedTargetPosition, out hit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
+        {
+            // Set the player's position to the closest valid position on the NavMesh
+            playerTransform.position = hit.position;
+            Debug.Log("Player teleported to: " + hit.position);
+            didTeleport = true;
+        }
+        else
+        {
+            Debug.LogError("No valid position found on the NavMesh!");
+            didTeleport = false;
+        }
     }
 }
