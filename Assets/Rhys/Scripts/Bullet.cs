@@ -29,7 +29,6 @@ public class Bullet : MonoBehaviour
             if (Vector3.Distance(startPosition, transform.position) >= maxDistance)
             {
                 Debug.Log("Bullet reached max distance and is being returned.");
-                isFired = false;
                 ResetBullet();
             }
         }
@@ -39,5 +38,14 @@ public class Bullet : MonoBehaviour
     {
         gameObject.SetActive(false);
         BulletSpawner.Instance.ReturnBullet(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Walls")) 
+        {
+            Debug.Log("Bullet hit a wall and is being destroyed.");
+            ResetBullet();
+        }
     }
 }

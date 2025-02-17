@@ -31,5 +31,17 @@ public class Trap : MonoBehaviour
         {
             projectileScript.SetProjectileData(projectileSpeed, range);
         }
+
+        StartCoroutine(DeactivateProjectile(proj, range / projectileSpeed));
+    }
+
+    IEnumerator DeactivateProjectile(GameObject proj, float lifetime)
+    {
+        yield return new WaitForSeconds(lifetime);
+        if (proj.activeSelf)
+        {
+            proj.SetActive(false);
+            ProjectileSpawner.Instance.ReturnProjectile(proj);
+        }
     }
 }

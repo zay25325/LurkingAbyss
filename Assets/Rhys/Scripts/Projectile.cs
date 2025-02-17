@@ -3,7 +3,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float speed = 5f;
-    public bool useGravity = false; 
+    public bool useGravity = false;
 
     private Vector3 targetPosition;
     private Vector3 startPosition;
@@ -54,7 +54,7 @@ public class Projectile : MonoBehaviour
             if (Vector3.Distance(startPosition, transform.position) >= maxDistance)
             {
                 Debug.Log("Projectile reached max distance and is being destroyed.");
-                Destroy(gameObject);
+                ResetProjectile();
             }
         }
     }
@@ -63,5 +63,14 @@ public class Projectile : MonoBehaviour
     {
         gameObject.SetActive(false);
         ProjectileSpawner.Instance.ReturnProjectile(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Walls")) 
+        {
+            Debug.Log("Projectile hit a wall and is being destroyed.");
+            ResetProjectile();
+        }
     }
 }
