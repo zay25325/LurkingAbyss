@@ -13,7 +13,7 @@ using UnityEngine.InputSystem;
 public class Inventory : MonoBehaviour
 {
     private List<Item> items = new List<Item>(); // List to store all items
-    private const int maxItems = 3; // Maximum number of items
+    private int maxItems = 3; // Maximum number of items
     private Item activeItem; // Currently active item
     private int currentActiveIndex = 0;
 
@@ -107,33 +107,48 @@ public class Inventory : MonoBehaviour
         PARAMETERS : InputAction.CallbackContext context - Input context for the drop action.
         RETURNS : NONE
     */
-public void DropActiveItem(InputAction.CallbackContext context)
-{
-    if (activeItem != null)
+    public void DropActiveItem(InputAction.CallbackContext context)
     {
-        // Get the player's facing direction from rotation
-        Vector2 dropDirection = (Vector2)(Quaternion.Euler(0, 0, transform.eulerAngles.z) * Vector2.right);
-
-        // Set the drop position in front of the player
-        Vector3 dropPosition = transform.position + (Vector3)dropDirection;
-
-
-        // Move and activate the item
-        activeItem.ItemObject.transform.position = dropPosition;
-        activeItem.ItemObject.SetActive(true);
-
-        // Remove the item from inventory
-        RemoveItem(activeItem);
-        activeItem = null;
-
-        // Set next active item if available
-        if (items.Count > 0)
+        if (activeItem != null)
         {
-            currentActiveIndex = 0;
-            ActiveItem(currentActiveIndex);
+            // Get the mouse position in the world
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0; // Ensure the z position is 0
+
+            // Calculate the drop direction based on the mouse position
+            Vector2 dropDirection = (mousePosition - transform.position).normalized;
+
+            // Set the initial drop position in front of the player
+            Vector3 dropPosition = transform.position + (Vector3)dropDirection;
+
+            // Use NavMesh to find a valid drop position
+            UnityEngine.AI.NavMeshHit hit;
+            if (UnityEngine.AI.NavMesh.SamplePosition(dropPosition, out hit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
+            {
+                dropPosition = hit.position;
+            }
+            else
+            {
+                // If no valid position is found, place the item beside the player
+                dropPosition = transform.position + new Vector3(0.5f, 0, 0); // Adjust the offset as needed
+            }
+
+            // Move and activate the item
+            activeItem.ItemObject.transform.position = dropPosition;
+            activeItem.ItemObject.SetActive(true);
+
+            // Remove the item from inventory
+            RemoveItem(activeItem);
+            activeItem = null;
+
+            // Set next active item if available
+            if (items.Count > 0)
+            {
+                currentActiveIndex = 0;
+                ActiveItem(currentActiveIndex);
+            }
         }
     }
-}
 
 
 

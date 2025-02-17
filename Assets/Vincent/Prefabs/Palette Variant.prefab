@@ -12,9 +12,17 @@ PrefabInstance:
       propertyPath: id
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1232085657058263651, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: IsWorld
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3836921161496206752, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
+      propertyPath: Hide
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5049940527528459825, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
       propertyPath: m_Name
-      value: Basic Variant
+      value: Palette Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8222076816784708759, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
       propertyPath: m_LocalPosition.x

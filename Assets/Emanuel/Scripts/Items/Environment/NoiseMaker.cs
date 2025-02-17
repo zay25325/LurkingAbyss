@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static EntityInfo;
 
 public class NoiseMaker : Item
 {
@@ -97,12 +98,13 @@ public class NoiseMaker : Item
     */
     private IEnumerator GenerateNoise()
     {
-        int currentNoiseLevel = noiseLevel;
-        while (currentNoiseLevel > 0)
+        int noiseCounter = noiseLevel;
+        while (noiseCounter > 0)
         {
-            //NoiseDetectionManager.Instance.NoiseEvent.Invoke(this. transform.position, currentNoiseLevel);
-            currentNoiseLevel--;
-            Debug.Log("Generating noise: " + currentNoiseLevel);
+            //MOST LIKELY NEEDS TO BE REFACTORED TO INCLUDE ENEMIES WITHIN ENTITY TAGS LIST
+            NoiseDetectionManager.Instance.NoiseEvent.Invoke(this.transform.position, noiseLevel, new List<EntityTags>());
+            noiseCounter--;
+            Debug.Log("Noise Counter: " + noiseCounter);
             yield return new WaitForSeconds(1f);
         }
     }
