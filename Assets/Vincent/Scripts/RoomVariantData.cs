@@ -22,11 +22,11 @@ public class RoomVariantData : MonoBehaviour
 
     public void Init() {
         if(!didInit) {
-            //register our item spawns
+            //register all spawners
             foreach(var i in GetComponentsInChildren<SpawnController>()) {
-                if(i.type == SpawnController.SpawnClass.Item) {
+                //if(i.type == SpawnController.SpawnClass.Item) {
                     itemSpawns.Add(i);
-                }
+                //}
             }
 
             // get list of wall positions

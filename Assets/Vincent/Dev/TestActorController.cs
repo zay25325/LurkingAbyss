@@ -13,6 +13,7 @@ public class TestActorController:MonoBehaviour {
     // Rigidbody of the player.
     private Rigidbody2D rb;
 
+    [SerializeField] public Camera testcamera;
 
     // Movement along X and Y axes.
     private float movementX;
@@ -46,5 +47,6 @@ public class TestActorController:MonoBehaviour {
 
         // Apply force to the Rigidbody to move the player.
         rb.AddForce(movement * speed);
+        testcamera.transform.SetPositionAndRotation(new Vector3(this.transform.position.x, this.transform.position.y, testcamera.transform.position.z), Quaternion.identity);
     }
 }

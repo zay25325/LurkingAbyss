@@ -27,7 +27,7 @@ public class CursorWallBreaker : MonoBehaviour
 
     void OnClick() {
         cursorpos = view.ScreenToWorldPoint(Input.mousePosition);
-        cursorpos += this.transform.position;
+        //cursorpos += this.transform.position;
         // do something
         var result = levelManager.BreakTileAt(cursorpos);
         Debug.Log($"Cursor clicked at {cursorpos}! {Input.mousePosition}");

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEditor;
 using Unity.AI.Navigation;
+using UnityEngine.Events;
 
 // TODO:
 // add logic for player start and exit
@@ -25,10 +26,14 @@ public class LevelController : MonoBehaviour
     [SerializeField] List<RoomVariantData> roomVariants;
 
     //NavMesh
-    [SerializeField] public MonsterNavController monsterNav;
+    [SerializeField] public List<MonsterNavController> monsterNavs;
+    [SerializeField] public static UnityEvent UpdateNavMesh = new UnityEvent();
 
     //Point of Interest
     [SerializeField] public List<SpawnController> spawners = new() {};
+
+    //Doors
+    [SerializeField] GameObject doorPrefab;
 
     public bool BreakTileAt(Vector3 worldpos) {
 
@@ -49,13 +54,17 @@ public class LevelController : MonoBehaviour
     }
 
     private void Start() {
+        UpdateNavMesh.AddListener(BuildNavMesh);
+
         foreach(var variant in roomVariants) {
             variant.Init();
         }
     }
 
     private void BuildNavMesh() {
-        monsterNav.UpdateMesh();
+        foreach(var nav in monsterNavs) {
+            nav.UpdateMesh();
+        }
     }
 
     public void BuildLevelFromMap() {
@@ -110,7 +119,7 @@ public class LevelController : MonoBehaviour
                         // then pos points to a wall
                         // then perp points to a spot on that wall
                         tileManager.ClearTile(TileMapLayer.LayerClass.Wall, (Vector2Int)tileManager.grid.WorldToCell(roompos+dir*(halfwidth)+perp*doorpos));
-
+                        Instantiate(doorPrefab, roompos+dir*(halfwidth)+perp*doorpos+(Vector2.one*0.5f), Quaternion.identity);
                         break;
                     case 2: // open
                         for(int j = (int)(-halfwidth)+1; j < halfwidth; j++) {
@@ -168,27 +177,6 @@ public class LevelController : MonoBehaviour
         BuildNavMesh();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 [CustomEditor(typeof(LevelController))]
