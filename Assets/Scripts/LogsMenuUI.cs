@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-enum ItemType
-{
-    Item,
-    Monster
-}
+//enum ItemType
+//{
+//    Item,
+//    Monster
+//}
 
 public class LogsMenuUI : MonoBehaviour
 {
@@ -25,14 +25,15 @@ public class LogsMenuUI : MonoBehaviour
         private string Description { get; set; }
         private bool isDiscovered { get; set; }
         private ItemType itemType { get; set; }
+        private string logImagePath { get; set; }
 
-        public LogItem(string Name, string Description, ItemType itemType, bool isDiscovered /*, Image logItemImage*/)
+        public LogItem(string Name, string Description, ItemType itemType, bool isDiscovered, string logImagePath)
         {
             this.Name = Name;
             this.Description = Description;
             this.itemType = itemType;
             this.isDiscovered = isDiscovered;
-            //this.logItemImage = logItemImage;
+            this.logImagePath = logImagePath;
         }
 
         public string GetName() { return Name; }
@@ -40,6 +41,7 @@ public class LogsMenuUI : MonoBehaviour
         public bool IsDiscovered() { return isDiscovered; }
         public ItemType ItemType() { return itemType; }
         public bool SetDiscovery() { return !isDiscovered; }
+        public string GetImageFilePath() { return logImagePath; }
 
     } 
 
@@ -86,9 +88,15 @@ public class LogsMenuUI : MonoBehaviour
         {
             #region Manual Logging
             // manually logging right now
-            loggedItems.Add(new LogItem("Rock", "Small and hard. Mostly useless. May be able to attract attention when thrown.", ItemType.Item, true));
-            loggedItems.Add(new LogItem("Andrew", "testing description", ItemType.Monster, true));
-            loggedItems.Add(new LogItem("Second item", "Item 3", ItemType.Item, false));
+            loggedItems.Add(new LogItem(
+                "Rock", 
+                "Small and hard. Mostly useless. May be able to attract attention when thrown.", 
+                ItemType.Item, 
+                true, 
+                "Assets / Sprites / 1_Stone(1).png"));
+
+            //loggedItems.Add(new LogItem("Andrew", "testing description", ItemType.Monster, true, null));
+            //loggedItems.Add(new LogItem("Second item", "Item 3", ItemType.Item, false, null));
             //SaveDiscoveredItems(); // update the file manually (testing)
             #endregion
 
@@ -126,9 +134,10 @@ public class LogsMenuUI : MonoBehaviour
                     string description = reader.ReadString();
                     bool isDiscovered = reader.ReadBoolean();
                     ItemType itemType = (ItemType)reader.ReadInt32();
+                    string logImagePath = reader.ReadString();
 
                     // create the item and add to the list
-                    LogItem item = new LogItem(name, description, itemType, isDiscovered);
+                    LogItem item = new LogItem(name, description, itemType, isDiscovered, logImagePath);
                     if (isDiscovered)
                         item.SetDiscovery();
                     loggedItems.Add(item);
@@ -165,6 +174,7 @@ public class LogsMenuUI : MonoBehaviour
                 writer.Write(item.GetDesc());
                 writer.Write(item.IsDiscovered());
                 writer.Write((int)item.ItemType());
+                writer.Write(item.GetImageFilePath());
             }
             return true;
         }
@@ -227,6 +237,30 @@ public class LogsMenuUI : MonoBehaviour
             var itemCard = new VisualElement();
             itemCard.AddToClassList("object-card");
 
+            var imageContainer = new VisualElement();
+            imageContainer.AddToClassList("image-container");
+
+            var itemImage = new Image();
+            itemImage.AddToClassList("item-image");
+
+            if (item.IsDiscovered())
+            {
+                Texture2D texture = Resources.Load<Texture2D>(item.GetImageFilePath());
+                if (texture != null)
+                {
+                    itemImage.image = texture;
+                }
+                else
+                {
+                    Debug.Log($"Could not load image for {item.GetName()} for path: {item.GetImageFilePath()}");
+                }
+            }
+            else
+            {
+                itemImage.image = Resources.Load<Texture2D>("");
+            }
+            imageContainer.Add(itemImage);
+
             // Name container
             var nameContainer = new VisualElement();
             nameContainer.AddToClassList("name-container");
@@ -242,12 +276,12 @@ public class LogsMenuUI : MonoBehaviour
             descContainer.Add(itemDesc);
 
             // Add containers to card
+            itemCard.Add(imageContainer);
             itemCard.Add(nameContainer);
             itemCard.Add(descContainer);
 
             // finally add to the screen
             objectCards.Add(itemCard);
-            Image itemImage = new();
             //Debug.Log($"Added card for item: {item.GetName()}, Type: {item.ItemType()}");
         }
     }

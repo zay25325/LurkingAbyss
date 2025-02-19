@@ -36,14 +36,14 @@
     border-radius: 5px;
     padding: 10px;
 }
-
+/* 
 .card-back {
     transform: rotateY(180deg);
 }
 
 .object-card.flipped {
     transform: rotateY(180deg);
-}
+} */
 
 .name-container {
     height: 30px;
