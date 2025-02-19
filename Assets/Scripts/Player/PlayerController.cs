@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D playerRigidBody;    // Rigidbody2D component of the player
     private PlayerInputControls playerInputControls;    // Input system controls
     private Camera mainCamera; // Main camera for screen-to-world calculations
+    private readonly HUD hud = new();
 
     private bool canDash = true; // Flag to check if player can dash
 
@@ -246,6 +247,7 @@ public class PlayerController : MonoBehaviour
     */
     private void Dash(InputAction.CallbackContext context)
     {
+        hud.SetHealth(3.1f);
         // Dash action is performed once upon button press
         if (context.performed && canDash)
         {

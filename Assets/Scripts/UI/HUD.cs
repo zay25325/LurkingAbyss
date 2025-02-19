@@ -8,14 +8,29 @@ public class HUD : MonoBehaviour
 
     public Slider intSlider;
 
-    public void SetMaxHealth(int health)
+    public HUD()
     {
-        intSlider.maxValue = health;
-        intSlider.value = health;
+        intSlider.value = 17.4f;
     }
 
-    public void SetHealth(int health)
+    public void Start()
     {
-        intSlider.value = health;
+        intSlider.value = 17.4f;
     }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SetHealth(3.1f);
+        }
+    }
+
+    public void SetHealth(float health)
+    {
+        if (intSlider.value != 5)
+            intSlider.value -= health;
+    }
+
+
 }

@@ -5,12 +5,11 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-enum ItemType
-{
-    Item,
-    Monster
-}
-
+//enum ItemType
+//{
+//    Item,
+//    Monster
+//}
 
 public class LogsMenuUI : MonoBehaviour
 {
@@ -26,21 +25,25 @@ public class LogsMenuUI : MonoBehaviour
         private string Description { get; set; }
         private bool isDiscovered { get; set; }
         private ItemType itemType { get; set; }
+        private string logImagePath { get; set; }
 
-        public LogItem(string Name, string Description, ItemType itemType)
+        public LogItem(string Name, string Description, ItemType itemType, bool isDiscovered, string logImagePath)
         {
             this.Name = Name;
             this.Description = Description;
-            isDiscovered = false;
             this.itemType = itemType;
+            this.isDiscovered = isDiscovered;
+            this.logImagePath = logImagePath;
         }
 
         public string GetName() { return Name; }
         public string GetDesc() { return Description; }
         public bool IsDiscovered() { return isDiscovered; }
         public ItemType ItemType() { return itemType; }
+        public bool SetDiscovery() { return !isDiscovered; }
+        public string GetImageFilePath() { return logImagePath; }
 
-    }
+    } 
 
     // list so we can store the info of the logged items
     private List<LogItem> loggedItems = new();
@@ -62,6 +65,7 @@ public class LogsMenuUI : MonoBehaviour
         var BackButton = rootElement.Q<Button>("BackBtn");
         BackButton.clicked += () =>
         {
+            SaveDiscoveredItems();
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         };
 
@@ -70,30 +74,11 @@ public class LogsMenuUI : MonoBehaviour
         #endregion
 
         #region Data Initialization
+        dataFilePath = "Assets\\items.dat";
         if (!InitializeLogItems())
             Debug.Log("Failed to Initialize Log items");
 
-        //switch (currentItemType)
-        //{
-        //    case ItemType.Item:
-        //        ShowItems();
-        //        break;
-        //    case ItemType.Monster:
-        //        ShowMonsters();
-        //        break;
-        //}
-
-        #endregion
-
-        #region Data Saving
-        dataFilePath = "Assets\\items.dat";
-        if (File.Exists(dataFilePath))
-        {
-            if (!LoadDiscoveredItems())
-                Debug.Log("Cannot load discovered items/monsters");
-        }
-        else { SaveDiscoveredItems(); }
-
+        InitializeUI();
         #endregion
     }
 
@@ -101,9 +86,23 @@ public class LogsMenuUI : MonoBehaviour
     {
         try
         {
+            #region Manual Logging
             // manually logging right now
-            loggedItems.Add(new LogItem("Rock", "Small and hard. Mostly useless. May be able to attract attention when thrown.", ItemType.Item));
-            loggedItems.Add(new LogItem("Bruh", "Small and hard", ItemType.Monster));
+            loggedItems.Add(new LogItem(
+                "Rock", 
+                "Small and hard. Mostly useless. May be able to attract attention when thrown.", 
+                ItemType.Item, 
+                true, 
+                "Assets / Sprites / 1_Stone(1).png"));
+
+            //loggedItems.Add(new LogItem("Andrew", "testing description", ItemType.Monster, true, null));
+            //loggedItems.Add(new LogItem("Second item", "Item 3", ItemType.Item, false, null));
+            //SaveDiscoveredItems(); // update the file manually (testing)
+            #endregion
+
+            if (!LoadDiscoveredItems())
+                Debug.Log("Cannot load discovered items/monsters");
+            else { SaveDiscoveredItems(); }
             return true;
         }
         catch (Exception error)
@@ -115,77 +114,250 @@ public class LogsMenuUI : MonoBehaviour
 
     private bool LoadDiscoveredItems()
     {
-        try
+        if (File.Exists(dataFilePath))
         {
-            if (File.Exists(dataFilePath))
+            try
             {
-                using var write = new FileStream(dataFilePath, FileMode.Open);
-                using (var read = new BinaryReader(write))
-                {
-                    int itemCount = read.ReadInt16();
+                using var fileStream = new FileStream(dataFilePath, FileMode.Open);
+                using var reader = new BinaryReader(fileStream);
+                int itemCount = reader.ReadInt32();
 
-                    Debug.Log($"Loading {itemCount} discovered items");
-                    for (int i = 0; i < itemCount; i++)
-                    {
-                        string name = read.ReadString();
-                        string description = read.ReadString();
-                        ItemType itemType = (ItemType)read.ReadInt32();
-                        bool isDiscovered = read.ReadBoolean();
-                        Debug.Log($"{name}, {description}, {itemType}, {isDiscovered}")
-;                    };
-                    return true;
+                Debug.Log($"Loading {itemCount} discovered items");
+
+                // clear so we dont have duplicates
+                loggedItems.Clear();
+
+                for (int i = 0; i < itemCount; i++)
+                {
+                    // take the item contents
+                    string name = reader.ReadString();
+                    string description = reader.ReadString();
+                    bool isDiscovered = reader.ReadBoolean();
+                    ItemType itemType = (ItemType)reader.ReadInt32();
+                    string logImagePath = reader.ReadString();
+
+                    // create the item and add to the list
+                    LogItem item = new LogItem(name, description, itemType, isDiscovered, logImagePath);
+                    if (isDiscovered)
+                        item.SetDiscovery();
+                    loggedItems.Add(item);
+
+                    Debug.Log($"Loaded item {i + 1}: {name}, {description}, {itemType}, {isDiscovered}");
                 }
+                return true;
             }
-            else
+            catch (Exception error)
             {
-                return false;
+                Debug.Log($"Data file is corrupted, Creating a new file || Unity Error: {error.Message}");
+                return InitializeAndSaveNewFile();
             }
         }
-        catch (Exception error)
+        else
         {
-            Debug.Log(error.Message);
-            return false;
+            Debug.Log("No existing data file found, creating new one");
+            return InitializeAndSaveNewFile();
         }
     }
+
 
     private bool SaveDiscoveredItems()
     {
         try
         {
-            using var write = new FileStream(dataFilePath, FileMode.Create);
-            using (var binaryWriter = new BinaryWriter(write))
+            using var fileStream = new FileStream(dataFilePath, FileMode.Create);
+            using var writer = new BinaryWriter(fileStream);
+
+            writer.Write(loggedItems.Count);
+            foreach (var item in loggedItems)
             {
-                binaryWriter.Write(loggedItems.Count);
-                foreach (var item in loggedItems)
-                {
-                    binaryWriter.Write(item.GetName());
-                    binaryWriter.Write(item.GetDesc());
-                    binaryWriter.Write(item.IsDiscovered());
-                    binaryWriter.Write((int)item.ItemType());
-                }
+                writer.Write(item.GetName());
+                writer.Write(item.GetDesc());
+                writer.Write(item.IsDiscovered());
+                writer.Write((int)item.ItemType());
+                writer.Write(item.GetImageFilePath());
             }
             return true;
         }
         catch (Exception error)
         {
-            Debug.Log(error.Message);
+            Debug.LogError($"Error saving items: {error.Message}");
             return false;
         }
     }
 
+    private bool InitializeAndSaveNewFile()
+    {
+        try
+        {
+            InitializeLogItems();
+            return SaveDiscoveredItems();
+        }
+        catch (Exception error)
+        {
+            Debug.LogError($"Error initializing new file: {error.Message}");
+            return false;
+        }
+    }
+
+    private void InitializeUI()
+    {
+        // tab buttons
+        var itemsBtn = rootElement.Q<Button>("Items-Btn");
+        var monstersBtn = rootElement.Q<Button>("Monsters-Btn");
+
+        itemsBtn.clicked += () =>
+        {
+            currentItemType = ItemType.Item;
+            DisplayItems();  // Add refresh call
+        };
+
+        monstersBtn.clicked += () =>
+        {
+            currentItemType = ItemType.Monster;
+            DisplayItems();  // Add refresh call
+        };
+
+        DisplayItems();  // Initial display
+    }
+
+    private void DisplayItems()
+    {
+        var objectCards = rootElement.Q<VisualElement>("Object-Cards");
+        objectCards.Clear();  // Clear existing items
+
+        //Debug.Log($"Displaying items. Total items: {loggedItems.Count}, Current type: {currentItemType}");
+
+        // loop through the items/monsters and display them
+        foreach (var item in loggedItems)
+        {
+            // make sure the item is the correct type
+            if (item.ItemType() != currentItemType)
+                continue;
+
+            var itemCard = new VisualElement();
+            itemCard.AddToClassList("object-card");
+
+            var imageContainer = new VisualElement();
+            imageContainer.AddToClassList("image-container");
+
+            var itemImage = new Image();
+            itemImage.AddToClassList("item-image");
+
+            if (item.IsDiscovered())
+            {
+                Texture2D texture = Resources.Load<Texture2D>(item.GetImageFilePath());
+                if (texture != null)
+                {
+                    itemImage.image = texture;
+                }
+                else
+                {
+                    Debug.Log($"Could not load image for {item.GetName()} for path: {item.GetImageFilePath()}");
+                }
+            }
+            else
+            {
+                itemImage.image = Resources.Load<Texture2D>("");
+            }
+            imageContainer.Add(itemImage);
+
+            // Name container
+            var nameContainer = new VisualElement();
+            nameContainer.AddToClassList("name-container");
+            var itemName = new Label(item.IsDiscovered() ? item.GetName() : "???");
+            itemName.AddToClassList("name");
+            nameContainer.Add(itemName);
+
+            // Description container
+            var descContainer = new VisualElement();
+            descContainer.AddToClassList("description-container");
+            var itemDesc = new Label(item.IsDiscovered() ? item.GetDesc() : "???");
+            itemDesc.AddToClassList("description");
+            descContainer.Add(itemDesc);
+
+            // Add containers to card
+            itemCard.Add(imageContainer);
+            itemCard.Add(nameContainer);
+            itemCard.Add(descContainer);
+
+            // finally add to the screen
+            objectCards.Add(itemCard);
+            //Debug.Log($"Added card for item: {item.GetName()}, Type: {item.ItemType()}");
+        }
+    }
+
+    // attempting front of back contents for cards on items
+    //private void DisplayItems()
+    //{
+    //    var objectCards = rootElement.Q<VisualElement>("Object-Cards");
+    //    objectCards.Clear();  // clear existing items or monsters, no duplicates
+
+    //    foreach (var item in loggedItems)
+    //    {
+    //        if (item.ItemType() != currentItemType)
+    //            continue;
+
+    //        // main card container
+    //        var itemCard = new VisualElement();
+    //        itemCard.AddToClassList("object-card");
+
+    //        // front side of the card
+    //        var cardFront = new VisualElement();
+    //        cardFront.AddToClassList("card-front");
+
+    //        // attach the info onto the card
+    //        var nameContainer = new VisualElement();
+    //        nameContainer.AddToClassList("name-container");
+    //        var itemName = new Label(item.IsDiscovered() ? item.GetName() : "???");
+    //        itemName.AddToClassList("name");
+    //        nameContainer.Add(itemName);
+    //        cardFront.Add(nameContainer);
+
+    //        // back side of the card
+    //        var cardBack = new VisualElement();
+    //        cardBack.AddToClassList("card-back");
+
+    //        var descContainer = new VisualElement();
+    //        descContainer.AddToClassList("description-container");
+    //        var itemDesc = new Label(item.IsDiscovered() ? item.GetDesc() : "???");
+    //        itemDesc.AddToClassList("description");
+    //        descContainer.Add(itemDesc);
+    //        cardBack.Add(descContainer);
+
+    //        // add both sides to the card
+    //        itemCard.Add(cardFront);
+    //        itemCard.Add(cardBack);
+
+    //        //// Add hover handlers
+    //        //itemCard.RegisterCallback<MouseEnterEvent>((evt) => 
+    //        //{
+    //        //    itemCard.AddToClassList("flipped");
+    //        //});
+
+    //        //itemCard.RegisterCallback<MouseLeaveEvent>((evt) => 
+    //        //{
+    //        //    itemCard.RemoveFromClassList("flipped");
+    //        //});
+
+    //        objectCards.Add(itemCard);
+
+    //        // for adding sprites later
+    //        //Image itemImage = new();
+    //        //Debug.Log($"Added card for item: {item.GetName()}, Type: {item.ItemType()}");
+    //    }
+    //}
+
+    private bool CheckIsDiscovered()
+    {
+
+        throw new NotImplementedException();
+        //return false;
+    }
+
     private void DiscoverLogItem(Item item)
     {
-        
-    }
+        // check if the item is already discovered
 
-
-    private void ShowItems()
-    {
-        
-    }
-
-    private void ShowMonsters()
-    {
-
+        // if not, discover it, add it to both the list and the items.dat file
     }
 }
