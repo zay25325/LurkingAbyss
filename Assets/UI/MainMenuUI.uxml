@@ -1,4 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MenuStyling.uss?fileID=7433441132597879392&amp;guid=47a64857804d1a54ea1b3cb5ddf3499d&amp;type=3#MenuStyling" />
     <ui:VisualElement name="MainContainer" style="flex-grow: 1; flex-direction: row; flex-wrap: nowrap; background-image: url(&quot;project://database/Assets/Images/spaceship-placehodler.jpg?fileID=2800000&amp;guid=1f0dc1b567c1d1441b5b9f6befc43cc4&amp;type=3#spaceship-placehodler&quot;);">
         <ui:VisualElement name="Header" style="flex-grow: 1;">
             <ui:VisualElement name="Title" style="flex-grow: 1;">
