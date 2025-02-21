@@ -8,10 +8,10 @@ public class HUD : MonoBehaviour
 
     public Slider intSlider;
 
-    public HUD()
+    /*public HUD() // was causing errors. Also SHOULD NOT have constructors for MonoBehaviours
     {
         intSlider.value = 17.4f;
-    }
+    }*/
 
     public void Start()
     {

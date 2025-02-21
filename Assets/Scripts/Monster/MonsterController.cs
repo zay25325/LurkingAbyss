@@ -181,6 +181,7 @@ public class MonsterController : MonoBehaviour
         stunDuration = Mathf.Max(duration, stunDuration);
         if (stunDuration > 0)
         {
+            state.OnStunned(duration); // allow any final reactions before disabling the state
             OnStunStart();
         }
     }
@@ -192,19 +193,23 @@ public class MonsterController : MonoBehaviour
         {
             OnDeath();
         }
+        else
+        {
+            state.OnHarmed(damage); // do not react to the onHarm if the monster is dead
+        }
     }
 
     protected void OnStunStart()
     {
         state.enabled = false;
-        sightController.gameObject.SetActive(false);
+        if (sightController != null) sightController.gameObject.SetActive(false);
         agent.speed = 0;
     }
 
     protected void OnStunEnd()
     {
         stunDuration = 0;
-        sightController.gameObject.SetActive(true);
+        if (sightController != null) sightController.gameObject.SetActive(true);
         state.enabled = true;
         agent.speed = baseSpeed;
     }
