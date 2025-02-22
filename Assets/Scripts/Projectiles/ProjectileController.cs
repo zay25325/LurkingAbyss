@@ -21,9 +21,6 @@ public class ProjectileController : MonoBehaviour
     [SerializeField] private float speed = 1f;
     [SerializeField] private float maxFligtTime = 10f;
 
-    [SerializeField] private float damage;
-    [SerializeField] private float stunDuration;
-    [SerializeField] private float structuralDamage;
 
 
     private Vector2 target;
@@ -31,12 +28,12 @@ public class ProjectileController : MonoBehaviour
 
     private Vector3 MovementVector;
     private float flightTime = 0f;
+    private bool endFlight = false;
+
+    private List<ProjectileModifier> projectileModifiers = new List<ProjectileModifier>();
 
     public float Speed { get => speed; set => speed = value; }
     public float MaxFlightTime { get => maxFligtTime; set => maxFligtTime = value; }
-    public float Damage { get => damage; set => damage = value; }
-    public float StunDuration { get => stunDuration; set => stunDuration = value; }
-    public float StructuralDamage { get => structuralDamage; set => structuralDamage = value; }
 
     public Vector2 Target { get => target; set => SetTarget(value); }
     public Vector2 StartPos { get => startingPos; }
@@ -46,6 +43,8 @@ public class ProjectileController : MonoBehaviour
     {
         startingPos = transform.position;
         UpdateMovement();
+        projectileModifiers.Clear();
+        projectileModifiers.AddRange(GetComponentsInChildren<ProjectileModifier>());
     }
 
     // Update is called once per frame
@@ -53,7 +52,12 @@ public class ProjectileController : MonoBehaviour
     {
         transform.position += MovementVector * speed * Time.deltaTime;
         flightTime += Time.deltaTime;
-        if (flightTime > maxFligtTime)
+
+        projectileModifiers.ForEach((modifier) => {
+            modifier.OnMove(transform.position, startingPos, target);
+        });
+
+        if (flightTime > maxFligtTime || endFlight)
         {
             OnFlightEnd();
         }
@@ -61,11 +65,9 @@ public class ProjectileController : MonoBehaviour
 
     protected private void OnTriggerEnter2D(Collider2D collision)
     {
-        OnHitEvents onHit = collision.GetComponent<OnHitEvents>();
-        if (onHit != null)
-        {
-            onHit.ApplyHit(StunDuration, Damage, StructuralDamage);
-        }
+        projectileModifiers.ForEach((modifier) => {
+            modifier.OnHit(collision);
+        });
     }
 
     // To improve performance, calculate this value ahead of time.
@@ -83,7 +85,16 @@ public class ProjectileController : MonoBehaviour
 
     virtual protected void OnFlightEnd()
     {
+        projectileModifiers.ForEach((modifier) => {
+            modifier.OnEndOfFlight();
+        });
+
         gameObject.SetActive(false);
         Destroy(gameObject); // If we make a projectile pool, just delete this
+    }
+
+    public void EndFlight()
+    {
+        endFlight = true;
     }
 }

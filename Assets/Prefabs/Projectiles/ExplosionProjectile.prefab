@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -891780289, guid: 1525eaa0f3446fb44aafa8e233110a8e, type: 3}
+    - target: {fileID: 121681812182532705, guid: 896dd737e81920f4d853ad206bf2eee1, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 121681812182532705, guid: 896dd737e81920f4d853ad206bf2eee1, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2408106798328468135, guid: 896dd737e81920f4d853ad206bf2eee1, type: 3}
       propertyPath: m_LocalScale.x
       value: 3
@@ -99,5 +107,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3646233433960996345, guid: 896dd737e81920f4d853ad206bf2eee1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2030889995651055571}
   m_SourcePrefab: {fileID: 100100000, guid: 896dd737e81920f4d853ad206bf2eee1, type: 3}
+--- !u!1 &8486114643135514399 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3646233433960996345, guid: 896dd737e81920f4d853ad206bf2eee1, type: 3}
+  m_PrefabInstance: {fileID: 5142752003695352550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2030889995651055571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8486114643135514399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 563a289e842122549b5c1ef6d33615fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stunDuration: 0
+  damage: 5
+  structuralDamage: 0
