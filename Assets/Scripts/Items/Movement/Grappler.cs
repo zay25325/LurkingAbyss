@@ -100,73 +100,89 @@ public class Grappler : Item
             Vector2 playerPosition = playerMovement.transform.position;
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            // Calculate the direction from the player to the mouse
+            // Perform a raycast from the player position towards the mouse position
             Vector2 direction = (mousePosition - playerPosition).normalized;
+            float distanceToMouse = Vector2.Distance(playerPosition, mousePosition);
 
-            // Perform raycast within the grapple range
-            ContactFilter2D filter = new ContactFilter2D();
-            filter.useTriggers = false;
-            filter.SetLayerMask(Physics2D.DefaultRaycastLayers);
-            filter.useLayerMask = true;
+            // Raycast from the player's position towards the mouse position
+            RaycastHit2D mouseHit = Physics2D.Raycast(playerPosition, direction, distanceToMouse, LayerMask.GetMask("VisionBlockers"));
 
-            // Array to store the hits
-            RaycastHit2D[] hits = new RaycastHit2D[10];
-            int hitCount = Physics2D.Raycast(playerPosition, direction, filter, hits, grappleRange); // Now uses grappleRange
+            // Debug the raycast
+            Debug.DrawRay(playerPosition, direction * distanceToMouse, Color.red, 1f);
 
-            // Check if any object was hit
-            for (int i = 0; i < hitCount; i++)
+            if (mouseHit.collider != null && mouseHit.collider.CompareTag(grappleTagWalls))
             {
-                // Get the hit object
-                RaycastHit2D hit = hits[i];
+                Debug.Log("Mouse clicked on a wall: " + mouseHit.collider.name);
 
-                // Check if the hit object is not the player
-                if (hit.collider.gameObject != playerMovement.gameObject)
+                // Perform raycast within the grapple range to check for valid targets
+                ContactFilter2D filter = new ContactFilter2D();
+                filter.useTriggers = false;
+                filter.SetLayerMask(Physics2D.DefaultRaycastLayers);
+                filter.useLayerMask = true;
+
+                // Array to store the hits
+                RaycastHit2D[] hits = new RaycastHit2D[10];
+                int hitCount = Physics2D.Raycast(playerPosition, direction, filter, hits, grappleRange); // Now uses grappleRange
+
+                // Check if any object was hit
+                for (int i = 0; i < hitCount; i++)
                 {
-                    Debug.Log("Raycast hit: " + hit.collider.name);
-                    Debug.Log("Hit object tag: " + hit.collider.tag);
+                    // Get the hit object
+                    RaycastHit2D hit = hits[i];
 
-                    // Check if the hit object is a valid grapple target
-                    float distanceToTarget = Vector2.Distance(playerPosition, hit.point);
-
-                    // Check if the hit object is within the grapple range
-                    if (distanceToTarget <= grappleRange)
+                    // Check if the hit object is not the player
+                    if (hit.collider.gameObject != playerMovement.gameObject)
                     {
-                        // Check if the hit object is a valid grapple target
-                        if (hit.collider.CompareTag(grappleTagWalls))
+                        Debug.Log("Raycast hit: " + hit.collider.name);
+                        Debug.Log("Hit object tag: " + hit.collider.tag);
+
+                        // Check if the hit object is within the grapple range
+                        float distanceToTarget = Vector2.Distance(playerPosition, hit.point);
+
+                        // Check if the hit object is within the grapple range
+                        if (distanceToTarget <= grappleRange)
                         {
-                            UnityEngine.AI.NavMeshHit navHit;
-
-                            // Use NavMesh to find the closest valid position
-                            if (UnityEngine.AI.NavMesh.SamplePosition(hit.point, out navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
+                            // Check if the hit object is a valid grapple target
+                            if (hit.collider.CompareTag(grappleTagWalls))
                             {
-                                lineRenderer.SetPosition(0, playerPosition);
-                                lineRenderer.SetPosition(1, playerPosition);
+                                UnityEngine.AI.NavMeshHit navHit;
 
-                                // Start the grapple coroutine
-                                StartCoroutine(GrappleToTarget(navHit.position));
+                                // Use NavMesh to find the closest valid position
+                                if (UnityEngine.AI.NavMesh.SamplePosition(hit.point, out navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
+                                {
+                                    lineRenderer.SetPosition(0, playerPosition);
+                                    lineRenderer.SetPosition(1, playerPosition);
+
+                                    // Start the grapple coroutine
+                                    StartCoroutine(GrappleToTarget(navHit.position));
+                                }
+                                else
+                                {
+                                    Debug.LogError("No valid position found on the NavMesh!");
+                                }
                             }
                             else
                             {
-                                Debug.LogError("No valid position found on the NavMesh!");
+                                Debug.Log("Hit object is not a valid grapple target.");
                             }
                         }
                         else
                         {
-                            Debug.Log("Hit object is not a valid grapple target.");
+                            Debug.Log("Target is too far to grapple!");
                         }
-                    }
-                    else
-                    {
-                        Debug.Log("Target is too far to grapple!");
-                    }
 
-                    break; // Stop checking after the first valid hit
+                        break; // Stop checking after the first valid hit
+                    }
+                }
+
+                if (hitCount == 0)
+                {
+                    Debug.Log("No object to grapple to in that direction.");
                 }
             }
-
-            if (hitCount == 0)
+            else
             {
-                Debug.Log("No object to grapple to in that direction.");
+                Debug.Log("Mouse did not click on a wall.");
             }
         }
     }
@@ -217,17 +233,41 @@ public class Grappler : Item
         {
             float coveredDistance = (Time.time - startTime) * grappleSpeed;
             float fractionOfJourney = coveredDistance / distance;
-            playerMovement.transform.position = Vector2.Lerp(startPosition, target, fractionOfJourney);
+            Vector2 newPosition = Vector2.Lerp(startPosition, target, fractionOfJourney);
 
-            // **Fix: Update the LineRenderer so it follows the player correctly**
-            lineRenderer.SetPosition(0, playerMovement.transform.position); // Player moves -> update start position
+            // Cast a ray to detect collision with walls during movement
+            Vector2 direction = (target - (Vector2)playerMovement.transform.position).normalized;
+            float distanceToCheck = Vector2.Distance(playerMovement.transform.position, target);
+            RaycastHit2D hit = Physics2D.Raycast(newPosition, direction, distanceToCheck, LayerMask.GetMask("VisionBlockers"));
+
+            // Debug the raycast (optional, helps with visualization)
+            Debug.DrawRay(newPosition, direction * distanceToCheck, Color.red, 1f);
+
+            if (hit.collider != null)
+            {
+                // Wall collision detected
+                Debug.Log("Collision detected at: " + hit.point);
+
+                // Stop movement and adjust position
+                Vector2 collisionPoint = hit.point;
+                Vector2 offset = direction * 1f; // Adjust this value as needed
+                playerMovement.transform.position = collisionPoint - offset; // Move player to just before the collision point
+                lineRenderer.enabled = false; // Disable the rope
+                yield break; // Exit the grappling process
+            }
+
+            // Move the player to the new position
+            playerMovement.transform.position = newPosition;
+
+            // Update LineRenderer to follow player
+            lineRenderer.SetPosition(0, playerMovement.transform.position); // Player position updated
             lineRenderer.SetPosition(1, target); // Keep rope attached to the target
 
             yield return null;
         }
 
-        // Ensure player is exactly at the target
-        playerMovement.transform.position = target;
+        // Ensure player reaches the target exactly
+        //playerMovement.transform.position = target;
 
         // Disable the rope after reaching the target
         lineRenderer.enabled = false;
