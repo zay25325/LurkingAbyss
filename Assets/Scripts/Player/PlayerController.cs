@@ -247,7 +247,7 @@ public class PlayerController : MonoBehaviour
     */
     private void Dash(InputAction.CallbackContext context)
     {
-        hud.SetHealth(3.1f);
+        //hud.SetHealth(3.1f);
         // Dash action is performed once upon button press
         if (context.performed && canDash)
         {
@@ -308,6 +308,23 @@ public class PlayerController : MonoBehaviour
             if (hitCollider.CompareTag("Ichor"))
             {
                 playerStats.IchorSamples++;
+            }
+
+            // Check if the hit object has an EntityInfo component
+            EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
+            if (entityInfo != null)
+            {
+                // Check for specific tags
+                if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
+                {
+                    Debug.Log("Interacted with a Mimic!");
+                    // Handle enemy interaction
+
+                    //switch to mimic attack state
+                    MimicController mimicController = hitCollider.GetComponent<MimicController>();
+                    mimicController.SwitchState<MimicAttackState>();
+
+                }
             }
         }
     }
