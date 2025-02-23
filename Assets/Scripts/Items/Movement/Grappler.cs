@@ -253,6 +253,8 @@ public class Grappler : Item
                 Vector2 offset = direction * 1f; // Adjust this value as needed
                 playerMovement.transform.position = collisionPoint - offset; // Move player to just before the collision point
                 lineRenderer.enabled = false; // Disable the rope
+                ReduceItemCharge();
+                DestroyItem(ItemObject);
                 yield break; // Exit the grappling process
             }
 

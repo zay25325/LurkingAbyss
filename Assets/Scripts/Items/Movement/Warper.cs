@@ -113,10 +113,33 @@ public class Warper : Item
         UnityEngine.AI.NavMeshHit hit;
         if (UnityEngine.AI.NavMesh.SamplePosition(clampedTargetPosition, out hit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
         {
-            // Set the player's position to the closest valid position on the NavMesh
-            playerTransform.position = hit.position;
-            Debug.Log("Player teleported to: " + hit.position);
-            didTeleport = true;
+            // Perform an overlap circle check to ensure no walls or colliders at the new position
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(hit.position, 0.5f); // Adjust the radius as needed
+
+            bool isCollision = false;
+            foreach (var collider in colliders)
+            {
+                if (collider.CompareTag("Walls")) // Check if the collider is a wall
+                {
+                    isCollision = true;
+                    break;
+                }
+            }
+
+            if (isCollision)
+            {
+                Debug.Log("Collision detected at target position. Teleport failed.");
+                // Move the player to the position right before the wall
+                playerTransform.position = hit.position - new Vector3 (0f,1f,0f); // Adjust the offset as needed
+                didTeleport = true;
+            }
+            else
+            {
+                // Set the player's position to the closest valid position on the NavMesh
+                playerTransform.position = hit.position;
+                Debug.Log("Player teleported to: " + hit.position);
+                didTeleport = true;
+            }
         }
         else
         {
