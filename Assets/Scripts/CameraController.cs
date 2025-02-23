@@ -14,6 +14,11 @@ public class CameraController : MonoBehaviour
     {
         // Set the near clipping plane to -2
         Camera.main.nearClipPlane = -2f;
+        Transform playerTransform = GameObject.FindWithTag("Player").transform;
+        if (playerTransform != null)
+        {
+            transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y, transform.position.z);
+        }
     }
 
     private void LateUpdate()
