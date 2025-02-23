@@ -27,6 +27,22 @@ public class MimicController : MonsterController
 
     public void SetItemSprite(Sprite itemSprite)
     {
+        StartCoroutine(PlayMimicLickAnimation(itemSprite));
+    }
+
+    private IEnumerator PlayMimicLickAnimation(Sprite itemSprite)
+    {
+        // Play the "mimic lick" animation
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.enabled = true;
+                    // Wait until the animation is no longer playing
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+        }
+
+        animator.enabled = false;
+        // After the animation, set the item sprite
         spriteRenderer = GetComponent<SpriteRenderer>();
         CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
 
