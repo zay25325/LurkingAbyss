@@ -287,44 +287,59 @@ public class PlayerController : MonoBehaviour
         PARAMETERS : InputAction.CallbackContext context - Input context for the interaction action.
         RETURNS : NONE
     */
-    private void DoInteraction(InputAction.CallbackContext context)
+ private void DoInteraction(InputAction.CallbackContext context)
+{
+
+    // Get the mouse position in world coordinates
+    Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    
+    float detectionRadius = 0.5f; // Default radius for left, right, and down
+    Vector2 direction = (mousePosition - (Vector2)transform.position).normalized;
+
+    if (direction.y > 0.5f) // If the direction is mostly upward
     {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+        detectionRadius = 1.5f; // Increase radius when interacting above
+    }
 
-        // Check for collision with an item or object with Item script
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 1f);
+    // Detect all colliders within a radius of 1 unit around the player
+    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
 
-        foreach (var hitCollider in hitColliders)
+    foreach (var hitCollider in hitColliders)
+    {
+        // Ensure the mouse is over the object
+        if (hitCollider.OverlapPoint(mousePosition))  // Check if the mouse is over this collider
         {
-            // Ensure the mouse is actually over the object
-            if (hit.collider == hitCollider)
+            // Check if the object has an Item script attached
+            Item item = hitCollider.GetComponentInChildren<Item>();
+            if (item != null)
             {
-                Item item = hitCollider.GetComponentInChildren<Item>();
-                if (item != null)
-                {
-                    inventory.AddItem(hitCollider.gameObject);
-                    break;
-                }
+                inventory.AddItem(hitCollider.gameObject);
+                Debug.Log("Picked up item: " + item.name);
+                return;
+            }
 
-                if (hitCollider.CompareTag("Ichor"))
-                {
-                    playerStats.IchorSamples++;
-                }
+            // Check if the object is an Ichor
+            if (hitCollider.CompareTag("Ichor"))
+            {
+                playerStats.IchorSamples++;
+                Debug.Log("Picked up Ichor Sample");
+                return;
+            }
 
-                EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
-                if (entityInfo != null && entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
-                {
-                    Debug.Log("Interacted with a Mimic!");
-                    MimicController mimicController = hitCollider.GetComponent<MimicController>();
-                    playerStats.TakeDamage(mimicController.AttackDamage);
-                    mimicController.SwitchState<MimicRevealState>();
-
-                    Debug.Log("Player Shield: " + playerStats.Shields);
-                }
+            // Check for interactions with a Mimic
+            EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
+            if (entityInfo != null && entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
+            {
+                Debug.Log("Interacted with a Mimic!");
+                MimicController mimicController = hitCollider.GetComponent<MimicController>();
+                playerStats.TakeDamage(mimicController.AttackDamage);
+                mimicController.SwitchState<MimicRevealState>();
+                Debug.Log("Player Shield: " + playerStats.Shields);
+                return;
             }
         }
     }
+}
 
     /*
         FUNCTION : DropItem
