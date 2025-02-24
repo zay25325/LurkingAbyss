@@ -103,8 +103,8 @@ public class LogsMenuUI : MonoBehaviour
     private void AddItems()
     {
         // Basics
-        loggedItems.Add(new LogItem("Gun", "Harms monsters at a distance, makes a lot of noise", ItemType.Item, false, "Assets/Sprites/gun.png"));
-        loggedItems.Add(new LogItem("Noise Maker", "Can be placed, makes noise after a timed fuse", ItemType.Item, false, "Assets/Sprites/noise_maker.png"));
+        loggedItems.Add(new LogItem("Gun", "Harms monsters at a distance, makes a lot of noise", ItemType.Item, true, "Assets/Sprites/gun.png"));
+        loggedItems.Add(new LogItem("Noise Maker", "Can be placed, makes noise after a timed fuse", ItemType.Item, true, "Assets/Sprites/noise_maker.png"));
         loggedItems.Add(new LogItem("Dash Booster", "Allows the player a quick burst of movement", ItemType.Item, false, "Assets/Sprites/dash_booster.png"));
         loggedItems.Add(new LogItem("Bear Trap", "Holds a monster in place for a time", ItemType.Item, false, "Assets/Sprites/bear_trap.png"));
         loggedItems.Add(new LogItem("Battery", "Takes an item slot, but lets you charge another item", ItemType.Item, false, "Assets/Sprites/battery.png"));
@@ -199,6 +199,7 @@ public class LogsMenuUI : MonoBehaviour
                 writer.Write(item.IsDiscovered());
                 writer.Write((int)item.ItemType());
                 writer.Write(item.GetImageFilePath());
+                writer.Write('\n');
             }
             return true;
         }
