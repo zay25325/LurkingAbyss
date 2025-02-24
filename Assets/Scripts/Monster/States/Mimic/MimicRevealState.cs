@@ -15,6 +15,10 @@ public class MimicRevealState : MonsterState
     private float checkRadius = 1.5f; // Distance to check if player is nearby
     private bool reachedDestination = false;
 
+    private Transform playerTransform; // Store reference to the player
+    private float playerDistanceThreshold = 7f; // Distance threshold for player proximity
+    private Vector3 lastDirection = Vector3.zero; // Stores last movement direction
+
     private void Awake()
     {
         navSurface = GameObject.FindFirstObjectByType<NavMeshPlus.Components.NavMeshSurface>();
@@ -28,12 +32,23 @@ public class MimicRevealState : MonsterState
             controller.spriteRenderer.sprite = controller.OriginalSprite;
             controller.transform.localScale = new Vector3(3, 3, 1);
             reachedDestination = false;
+
+            // Find the player reference
+            playerTransform = GameObject.FindWithTag("Player").transform;
+
+            // Find a safe spot and assign currentNavPoint
             FindSafeSpot();
 
             if (currentNavPoint.HasValue)
             {
-                controller.Agent.SetDestination(currentNavPoint.Value);
+                // Move to the initial valid safe spot
+                SetDestination();
                 StartCoroutine(CheckIfSafe());
+            }
+            else
+            {
+                Debug.LogWarning("No valid nav point found, retrying safe spot search.");
+                FindSafeSpot(); // Retry if no valid spot was found
             }
         }
         else
@@ -42,23 +57,61 @@ public class MimicRevealState : MonsterState
         }
     }
 
-    private void FindSafeSpot()
+    private void SetDestination()
     {
-        Transform playerTransform = GameObject.FindWithTag("Player").transform;
-        Vector3 playerPosition = playerTransform.position;
-
-        Vector3 randomDirection = Random.insideUnitSphere.normalized * Random.Range(safeDistance, maxDistance);
-        randomDirection += playerPosition; // Offset from the player’s position
-
-        // Ensure the point is on the NavMesh
-        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+        // Check if the path to the destination is valid before setting it
+        NavMeshPath path = new NavMeshPath();
+        if (controller.Agent.CalculatePath(currentNavPoint.Value, path) && path.status == NavMeshPathStatus.PathComplete)
         {
-            currentNavPoint = hit.position;
+            controller.Agent.SetDestination(currentNavPoint.Value);
+            Debug.Log($"Moving to: {currentNavPoint.Value}");
         }
         else
         {
-            Debug.LogWarning("Failed to find valid NavMesh point, using fallback.");
-            currentNavPoint = playerPosition + (Vector3.right * safeDistance); // Fallback to a straight-line safe spot
+            Debug.LogWarning("Calculated path is invalid, retrying safe spot search.");
+            FindSafeSpot(); // Retry finding a valid position if the path is invalid
+        }
+    }
+
+    private void FindSafeSpot()
+    {
+        Vector3 playerPosition = playerTransform.position;
+        Vector3 mimicPosition = controller.transform.position;
+
+        // Calculate a movement direction directly away from the player
+        Vector3 escapeDirection = (mimicPosition - playerPosition).normalized;
+        
+        float bestDistance = 0f;
+        Vector3 bestPosition = mimicPosition;
+
+        for (int i = 0; i < 10; i++) // Try up to 10 different potential spots
+        {
+            Vector3 testDirection = Quaternion.Euler(0, Random.Range(-60, 60), 0) * escapeDirection; // Slight angle variance
+            Vector3 potentialPosition = mimicPosition + (testDirection * Random.Range(safeDistance, maxDistance));
+
+            // Ensure the position is valid on the NavMesh
+            if (NavMesh.SamplePosition(potentialPosition, out NavMeshHit hit, 30f, NavMesh.AllAreas))
+            {
+                float distanceFromPlayer = Vector3.Distance(hit.position, playerPosition);
+                
+                // Choose the farthest valid point from the player
+                if (distanceFromPlayer > bestDistance)
+                {
+                    bestDistance = distanceFromPlayer;
+                    bestPosition = hit.position;
+                }
+            }
+        }
+
+        if (bestDistance > 0)
+        {
+            currentNavPoint = bestPosition;
+            Debug.Log($"Found safe spot at {currentNavPoint.Value}");
+        }
+        else
+        {
+            Debug.LogWarning("No valid escape spot found. Choosing a fallback location.");
+            currentNavPoint = mimicPosition + (escapeDirection * safeDistance); // Last resort: move a fixed distance directly away
         }
     }
 
@@ -79,18 +132,34 @@ public class MimicRevealState : MonsterState
     {
         while (true)
         {
-            Transform playerTransform = GameObject.FindWithTag("Player").transform;
             float distanceToPlayer = Vector3.Distance(playerTransform.position, controller.transform.position);
 
-            if (distanceToPlayer > checkRadius * safeDistance)
+            // If the player is far enough away, switch to idle
+            if (distanceToPlayer > playerDistanceThreshold)
             {
+                // Mimic is far enough from the player, safe to idle
                 SwitchToIdle();
                 yield break;
             }
-            
-            yield return new WaitForSeconds(1f);
+
+            // If the player is close to the destination, recheck the safe spot
+            if (Vector3.Distance(playerTransform.position, currentNavPoint.Value) < playerDistanceThreshold)
+            {
+                // Prevent constant re-checking by adding a buffer zone before retrying
+                if (Time.time > nextSafeSpotCheckTime) 
+                {
+                    Debug.Log("Player is too close to the destination, finding new safe spot.");
+                    FindSafeSpot(); // Recalculate safe spot
+                    SetDestination(); // Set new destination
+                    nextSafeSpotCheckTime = Time.time + 2f; // Delay next check by 2 seconds to avoid ping-ponging
+                }
+            }
+
+            yield return new WaitForSeconds(1f); // Check every second
         }
     }
+
+private float nextSafeSpotCheckTime = 0f; // Time when the next safe spot check can happen
 
     private void SwitchToIdle()
     {
