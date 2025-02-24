@@ -289,41 +289,36 @@ public class PlayerController : MonoBehaviour
     */
     private void DoInteraction(InputAction.CallbackContext context)
     {
-        //maybe a static hitbox so an interactable object can tell if it is being hovered
-        
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+
         // Check for collision with an item or object with Item script
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 1f);
-        
+
         foreach (var hitCollider in hitColliders)
         {
-            Item item = hitCollider.GetComponentInChildren<Item>();
-
-            if (item != null)
+            // Ensure the mouse is actually over the object
+            if (hit.collider == hitCollider)
             {
-                inventory.AddItem(hitCollider.gameObject);
-                break;
-            }
+                Item item = hitCollider.GetComponentInChildren<Item>();
+                if (item != null)
+                {
+                    inventory.AddItem(hitCollider.gameObject);
+                    break;
+                }
 
-            // If Player is touching ichor and interacts with it, it will then increase the player's ichor samples (currency)
-            if (hitCollider.CompareTag("Ichor"))
-            {
-                playerStats.IchorSamples++;
-            }
+                if (hitCollider.CompareTag("Ichor"))
+                {
+                    playerStats.IchorSamples++;
+                }
 
-            // Check if the hit object has an EntityInfo component
-            EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
-            if (entityInfo != null)
-            {
-                // Check for specific tags
-                if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
+                EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
+                if (entityInfo != null && entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
                 {
                     Debug.Log("Interacted with a Mimic!");
-                    // Handle enemy interaction
-
-                    //switch to mimic attack state
                     MimicController mimicController = hitCollider.GetComponent<MimicController>();
-                    mimicController.SwitchState<MimicAttackState>();
-
+                    playerStats.TakeDamage(mimicController.AttackDamage);
+                    mimicController.SwitchState<MimicRevealState>();
                 }
             }
         }

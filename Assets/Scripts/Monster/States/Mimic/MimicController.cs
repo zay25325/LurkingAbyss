@@ -12,18 +12,12 @@ public class MimicController : MonsterController
     [SerializeField] float attackDuration = 0.5f;
     [SerializeField] float attackDamage = 1f;
 
-    [SerializeField] Sprite disguiseSprite;
-    [SerializeField] Sprite attackSprite;
-
     private SpriteRenderer spriteRenderer;
 
     public float AttackDistance { get => attackDistance; }
     public float AttackCooldown { get => attackCooldown; }
     public float AttackDuration { get => attackDuration; }
     public float AttackDamage { get => attackDamage; }
-
-    public Sprite DisguiseSprite { get => disguiseSprite; set => disguiseSprite = value; }
-    public Sprite AttackSprite { get => attackSprite; set => attackSprite = value; }
 
     public void SetItemSprite(Sprite itemSprite)
     {

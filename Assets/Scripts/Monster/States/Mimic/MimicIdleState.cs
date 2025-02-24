@@ -6,35 +6,10 @@ public class MimicIdleState : MonsterState
 {
     new private MimicController controller { get => base.controller as MimicController; }
 
-    // private void Update()
-    // {
-    //     if (controller.Target != null)
-    //     {
-    //         if (Vector2.Distance(transform.position, controller.Target.position) < controller.AttackDistance)
-    //         {
-    //             controller.SwitchState<MimicAttackState>();
-    //         }
-    //         else
-    //         {
-    //             controller.Agent.SetDestination(controller.Target.position);
-    //         }
-    //     }
-    // }
-
     private void OnEnable()
     {
-        // controller.Agent.isStopped = false;
-        // controller.Agent.speed = controller.WalkSpeed;
-        // controller.Agent.SetDestination(controller.Target.position);
-
-        // Start the coroutine to set the sprite after a delay
         StartCoroutine(SetRandomItemSpriteAfterDelay(0.1f)); // Adjust the delay as needed
     }
-
-    // private void OnDisable()
-    // {
-    //     controller.Agent.isStopped = true;
-    // }
 
     private IEnumerator SetRandomItemSpriteAfterDelay(float delay)
     {
