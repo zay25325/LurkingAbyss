@@ -15,17 +15,23 @@ public class MimicIdleState : MonsterState
     {
         // Wait for the specified delay
         yield return new WaitForSeconds(delay);
+        
+        Debug.Log($"Items count in controller: {controller.items?.Count ?? 0}");
 
         // Find all items in the scene
-        Item[] items = GameObject.FindObjectsOfType<Item>();
+        List<Item> items = controller.items;
 
         List<Sprite> itemSprites = new List<Sprite>();
         foreach (var item in items)
         {
-            if (item.ItemIcon != null)
+            // Access the Sprite variable within each item
+            Sprite itemSprite = item.GetComponent<SpriteRenderer>()?.sprite;
+            if (itemSprite != null)
             {
-                itemSprites.Add(item.ItemIcon);
+                Debug.Log($"Adding item sprite: {itemSprite.name}");
+                itemSprites.Add(itemSprite);
             }
+            Debug.Log($"Item name: {item.name}");
         }
 
         // Randomly select one of the items
@@ -34,6 +40,11 @@ public class MimicIdleState : MonsterState
             int randomIndex = Random.Range(0, itemSprites.Count);
             Sprite randomItemSprite = itemSprites[randomIndex];
             controller.SetItemSprite(randomItemSprite);
+
+             // Debug logs to check the random selection process
+            Debug.Log($"Randomly selected item index: {randomIndex}");
+            Debug.Log($"Total items available: {itemSprites.Count}");
+            Debug.Log($"Selected item sprite: {randomItemSprite.name}");
         }
     }
 }

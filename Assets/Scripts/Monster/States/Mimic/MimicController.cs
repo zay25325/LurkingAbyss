@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class MimicController : MonsterController
 {
-
     [Header("Mimic")]
     [SerializeField] float attackDistance = 2f;
     [SerializeField] float attackCooldown = 1f;
@@ -20,6 +19,8 @@ public class MimicController : MonsterController
     public float AttackCooldown { get => attackCooldown; }
     public float AttackDuration { get => attackDuration; }
     public float AttackDamage { get => attackDamage; }
+
+    public List<Item> items = new List<Item>();
 
     public void SetItemSprite(Sprite itemSprite)
     {

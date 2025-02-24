@@ -254,6 +254,18 @@ MonoBehaviour:
   attackDamage: 1
   spriteRenderer: {fileID: 0}
   OriginalSprite: {fileID: 51963613, guid: 175202ee100b8d74ca842d5d642b5272, type: 3}
+  items:
+  - {fileID: -1416942402890891063, guid: ba7ad057acdca5d43962a5b7b18bbe7f, type: 3}
+  - {fileID: 6971442123878740020, guid: f9a6b87c81bfa7c4fb6c5934048985a3, type: 3}
+  - {fileID: 2067228028070481044, guid: da96a0dcd3041c94288b85b3b11dfb37, type: 3}
+  - {fileID: 8310893879551385108, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
+  - {fileID: -1786313548333909381, guid: 2af902657e816f24a96ffd41779a1e49, type: 3}
+  - {fileID: -3209342604988097404, guid: 503db0d653620e64da4eed1abf57cd2a, type: 3}
+  - {fileID: -2974537905295160407, guid: e1fb7aac7a892d94eb04fbd4004fb5f2, type: 3}
+  - {fileID: 4027574888258101429, guid: 8237d177a123a75479e5e59702af2c0e, type: 3}
+  - {fileID: 1387739841180143927, guid: ceec8c526cb4f5d4faf9149731661976, type: 3}
+  - {fileID: 6386562194984417603, guid: 043f49fcf5a6ab0438c81946366556e5, type: 3}
+  - {fileID: 2256273917066218283, guid: c3336ed8c0d83a943a0765bb75244f44, type: 3}
 --- !u!114 &653323243950043545
 MonoBehaviour:
   m_ObjectHideFlags: 0
