@@ -38316,6 +38316,8 @@ MonoBehaviour:
   attackCooldown: 1
   attackDuration: 0.5
   attackDamage: 1
+  spriteRenderer: {fileID: 0}
+  OriginalSprite: {fileID: 456242043, guid: 5fcc64203e7fe6040981e4852c2d6e7e, type: 3}
 --- !u!95 &1505223693
 Animator:
   serializedVersion: 5

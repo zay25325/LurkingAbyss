@@ -319,6 +319,8 @@ public class PlayerController : MonoBehaviour
                     MimicController mimicController = hitCollider.GetComponent<MimicController>();
                     playerStats.TakeDamage(mimicController.AttackDamage);
                     mimicController.SwitchState<MimicRevealState>();
+
+                    Debug.Log("Player Shield: " + playerStats.Shields);
                 }
             }
         }
