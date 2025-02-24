@@ -47,5 +47,20 @@ public class EntityInfo : MonoBehaviour
         // Properties
         Breakable,
         CanOpenDoors,
+
+        //Items
+        BasicGun,
+        Battery,
+        DashBooster,
+        Grappler,
+        GravitonSurgePlateItem,
+        Grenade,
+        InvisibleBelt,
+        MobileShieldGenerator,
+        NoiseMaker,
+        Revivor,
+        Rock,
+        Warper,
+
     }
 }

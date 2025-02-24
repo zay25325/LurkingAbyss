@@ -88,9 +88,13 @@ PrefabInstance:
       propertyPath: m_Speed
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_AgentTypeID
+      value: -1372625422
+      objectReference: {fileID: 0}
     - target: {fileID: 6530052823025671122, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: tags.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6530052823025671122, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: tags.Array.data[1]
@@ -99,6 +103,10 @@ PrefabInstance:
     - target: {fileID: 6530052823025671122, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: tags.Array.data[2]
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6530052823025671122, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: tags.Array.data[3]
+      value: 26
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1410002626277024882, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}

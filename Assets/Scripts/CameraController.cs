@@ -12,8 +12,8 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        // Set the near clipping plane to -2
-        Camera.main.nearClipPlane = -2f;
+        // Set the near clipping plane to something greater than -2
+        Camera.main.nearClipPlane = -20f;
     }
 
     private void LateUpdate()

@@ -9,18 +9,7 @@ public class RoomController : MonoBehaviour
     [SerializeField] public int height = 0;
    
     // this must not be serialized, or it fails to initialize properly
-    [System.NonSerialized] public int[] connections = new int[4] {0,0,0,0};
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [HideInInspector] public int[] connections = new int[4] {0,0,0,0};
 
     public void SetConnectionByDir(Vector2 dir, int set) {
         this.connections[Directions.VecToInt(dir)] = set;
