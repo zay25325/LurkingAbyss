@@ -40,7 +40,7 @@ public class LogsMenuUI : MonoBehaviour
         public string GetDesc() { return Description; }
         public bool IsDiscovered() { return isDiscovered; }
         public ItemType ItemType() { return itemType; }
-        public bool SetDiscovery() { return !isDiscovered; }
+        public bool SetDiscovery(bool discovered = true) { return isDiscovered = discovered; }
         public string GetImageFilePath() { return logImagePath; }
 
     } 
@@ -83,26 +83,14 @@ public class LogsMenuUI : MonoBehaviour
     }
 
     private bool InitializeLogItems()
-    {
+    {// manually logging right now
         try
         {
-            #region Manual Logging
-            // manually logging right now
-            loggedItems.Add(new LogItem(
-                "Rock", 
-                "Small and hard. Mostly useless. May be able to attract attention when thrown.", 
-                ItemType.Item, 
-                true, 
-                "Assets / Sprites / 1_Stone(1).png"));
-
-            //loggedItems.Add(new LogItem("Andrew", "testing description", ItemType.Monster, true, null));
-            //loggedItems.Add(new LogItem("Second item", "Item 3", ItemType.Item, false, null));
-            //SaveDiscoveredItems(); // update the file manually (testing)
-            #endregion
-
-            if (!LoadDiscoveredItems())
-                Debug.Log("Cannot load discovered items/monsters");
-            else { SaveDiscoveredItems(); }
+            if (loggedItems.Count == 0)
+            {
+                AddItems();
+                SaveDiscoveredItems();
+            }
             return true;
         }
         catch (Exception error)
@@ -110,6 +98,42 @@ public class LogsMenuUI : MonoBehaviour
             Debug.Log(error.Message);
             return false;
         }
+    }
+
+    private void AddItems()
+    {
+        // Basics
+        loggedItems.Add(new LogItem("Gun", "Harms monsters at a distance, makes a lot of noise", ItemType.Item, false, "Assets/Sprites/gun.png"));
+        loggedItems.Add(new LogItem("Noise Maker", "Can be placed, makes noise after a timed fuse", ItemType.Item, false, "Assets/Sprites/noise_maker.png"));
+        loggedItems.Add(new LogItem("Dash Booster", "Allows the player a quick burst of movement", ItemType.Item, false, "Assets/Sprites/dash_booster.png"));
+        loggedItems.Add(new LogItem("Bear Trap", "Holds a monster in place for a time", ItemType.Item, false, "Assets/Sprites/bear_trap.png"));
+        loggedItems.Add(new LogItem("Battery", "Takes an item slot, but lets you charge another item", ItemType.Item, false, "Assets/Sprites/battery.png"));
+        loggedItems.Add(new LogItem("Rock", "Can be thrown, making noise on-hit or end of flight. Deals minor damage.", ItemType.Item, true, "Assets/Sprites/1_Stone(1).png"));
+        loggedItems.Add(new LogItem("C4/Bomb", "Destroys walls, or other static obstructions. Timed fuse, placable", ItemType.Item, false, "Assets/Sprites/c4_bomb.png"));
+        loggedItems.Add(new LogItem("Grenade", "Destroys walls, or other static obstructions. Throwable", ItemType.Item, false, "Assets/Sprites/grenade.png"));
+        loggedItems.Add(new LogItem("Lamp", "Increases player's passive vision", ItemType.Item, false, "Assets/Sprites/lamp.png"));
+        loggedItems.Add(new LogItem("Reflector", "Can reflect a projectile. Charge depletes upon use NOT when reflecting a projectile", ItemType.Item, false, "Assets/Sprites/reflector.png"));
+
+        // Anomalies
+        loggedItems.Add(new LogItem("Flamethrower", "Spews flame where the player is looking, can harm multiple enemies", ItemType.Item, false, "Assets/Sprites/flamethrower.png"));
+        loggedItems.Add(new LogItem("Horned Helmet", "Gains the ability to charge and destroy walls", ItemType.Item, false, "Assets/Sprites/horned_helmet.png"));
+        loggedItems.Add(new LogItem("Revivor", "Upon taking lethal damage, revive without any shield charge", ItemType.Item, false, "Assets/Sprites/revivor.png"));
+        loggedItems.Add(new LogItem("Mobile Shield Generator", "Portable version of a generator that can restore shield health to player within a level", ItemType.Item, false, "Assets/Sprites/mobile_shield_generator.png"));
+        loggedItems.Add(new LogItem("Warper", "Grants the player to do a short range teleport based on where the player is facing", ItemType.Item, false, "Assets/Sprites/warper.png"));
+        loggedItems.Add(new LogItem("Invisible Belt", "Players can briefly go invisible for X amount of seconds. Moves slowly", ItemType.Item, false, "Assets/Sprites/invisible_belt.png"));
+        loggedItems.Add(new LogItem("Grappler", "Grappling device to swing the player for quick movement", ItemType.Item, false, "Assets/Sprites/grappler.png"));
+        loggedItems.Add(new LogItem("Mimic Helmet", "Transform into an object to hide from monsters. Can not move", ItemType.Item, false, "Assets/Sprites/mimic_helmet.png"));
+        loggedItems.Add(new LogItem("Graviton Surge Plate", "When this trap activates it acts as a black hole", ItemType.Item, false, "Assets/Sprites/graviton_surge_plate.png"));
+        loggedItems.Add(new LogItem("Stun Plate", "Pressure plate placed on a tile which stuns the monster who stepped on it and those close to its vicinity", ItemType.Item, false, "Assets/Sprites/stun_plate.png"));
+        loggedItems.Add(new LogItem("Teleport Plate", "Pressure plate placed on a tile that teleports a target that steps on it", ItemType.Item, false, "Assets/Sprites/teleport_plate.png"));
+        loggedItems.Add(new LogItem("Slow Grenade", "Slows enemies", ItemType.Item, false, "Assets/Sprites/slow_grenade.png"));
+        loggedItems.Add(new LogItem("Stun Grenade", "Stuns enemies", ItemType.Item, false, "Assets/Sprites/stun_grenade.png"));
+        loggedItems.Add(new LogItem("Warp Grenade", "Teleports enemies", ItemType.Item, false, "Assets/Sprites/warp_grenade.png"));
+
+        // Gifts of the Abyss
+        loggedItems.Add(new LogItem("Blackened Heart", "The Blackened Heart replaces the protagonist's heart and acts as a fuel source to provide constant low power to the shield attached to the player. Shield health can slowly regenerate over time, but loses ability to refill shield health at generators.", ItemType.Item, false, "Assets/Sprites/blackened_heart.png"));
+        loggedItems.Add(new LogItem("Eldritch Eyes", "The Eldritch eyes give the protagonist to see anew. Unlocks a permanent map showcasing monster locations, but the eyes constantly make noise, attracting monster attention to player location.", ItemType.Item, false, "Assets/Sprites/eldritch_eyes.png"));
+        loggedItems.Add(new LogItem("Eldritch Horns", "The horns fuse to the protagonist's head and grant them the ability to charge and destroy walls permanently (with cooldown). Not using the charge ability in time causes the monster within to briefly take over and charge at a random location.", ItemType.Item, false, "Assets/Sprites/eldritch_horns.png"));
     }
 
     private bool LoadDiscoveredItems()
@@ -245,19 +269,25 @@ public class LogsMenuUI : MonoBehaviour
 
             if (item.IsDiscovered())
             {
-                Texture2D texture = Resources.Load<Texture2D>(item.GetImageFilePath());
-                if (texture != null)
+                string imagePath = item.GetImageFilePath();
+                if (!string.IsNullOrEmpty(imagePath))
                 {
-                    itemImage.image = texture;
-                }
-                else
-                {
-                    Debug.Log($"Could not load image for {item.GetName()} for path: {item.GetImageFilePath()}");
+                    Texture2D texture = Resources.Load<Texture2D>(imagePath);
+                    if (texture != null)
+                    {
+                        itemImage.image = texture;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Could not load image for {item.GetName()} at path: {imagePath}");
+                        
+                        //itemImage.image = Resources.Load<Texture2D>("DefaultItem");
+                    }
                 }
             }
             else
             {
-                itemImage.image = Resources.Load<Texture2D>("");
+                //itemImage.image = Resources.Load<Texture2D>("UnknownItem");
             }
             imageContainer.Add(itemImage);
 
