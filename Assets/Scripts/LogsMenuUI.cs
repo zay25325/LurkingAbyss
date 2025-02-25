@@ -5,12 +5,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-//enum ItemType
-//{
-//    Item,
-//    Monster
-//}
-
 public class LogsMenuUI : MonoBehaviour
 {
     private enum ItemType
@@ -134,6 +128,16 @@ public class LogsMenuUI : MonoBehaviour
         loggedItems.Add(new LogItem("Blackened Heart", "The Blackened Heart replaces the protagonist's heart and acts as a fuel source to provide constant low power to the shield attached to the player. Shield health can slowly regenerate over time, but loses ability to refill shield health at generators.", ItemType.Item, false, "Assets/Sprites/blackened_heart.png"));
         loggedItems.Add(new LogItem("Eldritch Eyes", "The Eldritch eyes give the protagonist to see anew. Unlocks a permanent map showcasing monster locations, but the eyes constantly make noise, attracting monster attention to player location.", ItemType.Item, false, "Assets/Sprites/eldritch_eyes.png"));
         loggedItems.Add(new LogItem("Eldritch Horns", "The horns fuse to the protagonist's head and grant them the ability to charge and destroy walls permanently (with cooldown). Not using the charge ability in time causes the monster within to briefly take over and charge at a random location.", ItemType.Item, false, "Assets/Sprites/eldritch_horns.png"));
+
+        // Monsters (currently set to true for debugging)
+        loggedItems.Add(new LogItem("Charger", "A monster with predictable charge ability, but a slow base speed. very large, durable, and fast when prevoked. Attracted by noise", ItemType.Monster, true, "Assets/Sprites/Monsters/charger.png"));
+        loggedItems.Add(new LogItem("Projectile", "Forces the player to constantly move, shall find a target and run to a safe distance before unleashing them with tracking projectiles in the form of explosive drones", ItemType.Monster, true, "Assets/Sprites/Monsters/projectile.png"));
+        loggedItems.Add(new LogItem("Trapper", "Forces the player to be attentive to their environment. Trapper waits for its target to activate a trap before attacking them", ItemType.Monster, true, "Assets/Sprites/Monsters/trapper.png"));
+        loggedItems.Add(new LogItem("Brothers", "A group of 2 monsters, a Little Brother who is very curious. While Big Brother, wanders the level interacting with objects. Little Brother shall summon his Big Brother when harmed to defend himself", ItemType.Monster, false, "Assets/Sprites/Monsters/Brothers.png"));
+        loggedItems.Add(new LogItem("Mimic", "The mimic disguises itself as any interactable object. Once it tries to be interacted with, it will attack", ItemType.Monster, false, "Assets/Sprites/Monsters/Mimic.png"));
+        loggedItems.Add(new LogItem("Scavenger", "Mostly passive, can pick up anything it sees and stores in its sack. Pacifist monster, avoids combat with the player amnd collecting items", ItemType.Monster, false, "Assets/Sprites/Monsters/Scavenger.png"));
+
+
     }
 
     private bool LoadDiscoveredItems()
@@ -199,7 +203,7 @@ public class LogsMenuUI : MonoBehaviour
                 writer.Write(item.IsDiscovered());
                 writer.Write((int)item.ItemType());
                 writer.Write(item.GetImageFilePath());
-                writer.Write('\n');
+                writer.Write('\n'); // seperate the items from eachother
             }
             return true;
         }
