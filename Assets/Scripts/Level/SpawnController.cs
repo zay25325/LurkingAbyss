@@ -8,41 +8,41 @@ using UnityEngine.Events;
 //
 public class SpawnController : MonoBehaviour
 {
-    public enum SpawnClass {
-        Item,
-        Interactable,
-        Trap,
-        Monster,
-        None,
-        PlayerStart,
-        PlayerExit
-    }
+    //public enum SpawnClass {
+    //    Item,
+    //    Interactable,
+    //    Trap,
+    //    Monster,
+    //    None,
+    //    PlayerStart,
+    //    PlayerExit
+    //}
 
 
-    [SerializeField] public GameObject spawnThis = null;
-    [SerializeField] public SpawnClass type = SpawnClass.None;
+    //[SerializeField] public GameObject spawnThis = null;
+    //[SerializeField] public SpawnClass type = SpawnClass.None;
 
-    [SerializeField] public List<EntityInfo.EntityTags> tags = new() {};
+    //[SerializeField] public List<EntityInfo.EntityTags> tags = new() {};
 
-    [SerializeField] public UnityEvent trigger;
+    //[SerializeField] public UnityEvent trigger; // trigger what?
 
-    private void Start() {
-        trigger.AddListener(OnTrigger);
-    }
+    //private void Start() {
+    //    trigger.AddListener(OnTrigger);
+    //}
 
     // give the spawnpoint an object to instantiate
-    public void AssignObject(GameObject prefab) {
-        this.spawnThis = prefab;
-    }
+    //public void AssignObject(GameObject prefab) {
+    //    this.spawnThis = prefab;
+    //}
 
     // default behaviour is to instantiate a copy of registered thing in worldspace
     // override this to do something different
-    public void OnTrigger() {
-        // instantiate an object
-        if(spawnThis != null) {
-            Instantiate(this.spawnThis, this.transform, true);
-        }
-    }
+    //public void OnTrigger() {
+    //    // instantiate an object
+    //    if(spawnThis != null) {
+    //        Instantiate(this.spawnThis, this.transform, true);
+    //    }
+    //}
 
 
     // so we can see in editor only

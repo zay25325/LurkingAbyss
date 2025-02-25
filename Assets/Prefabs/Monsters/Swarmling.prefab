@@ -128,6 +128,14 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_AgentTypeID
+      value: -334000983
+      objectReference: {fileID: 0}
     - target: {fileID: 6530052823025671122, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: tags.Array.size
       value: 3
@@ -183,11 +191,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1cb10e1b56000e458bb30bf19735e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEvents: {fileID: 0}
+  interactionEvent: {fileID: 0}
   sightEvents: {fileID: 0}
   sightController: {fileID: 0}
   agent: {fileID: 1163547218427231748}
-  HearingAmplificaiton: 1
   state: {fileID: 4400905094261621928}
+  HearingAmplificaiton: 1
+  hp: 0
+  maxHP: 0
 --- !u!114 &4400905094261621928
 MonoBehaviour:
   m_ObjectHideFlags: 0

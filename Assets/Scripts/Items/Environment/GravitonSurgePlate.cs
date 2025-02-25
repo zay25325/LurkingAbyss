@@ -66,16 +66,17 @@ public class GravitonSurgePlate : Item
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
-        {
-            PullEnemies();
-            Debug.Log("Player stepped on the trap.");
-        }
-        else if (other.CompareTag("Enemy"))
-        {
-            Debug.Log("Enemy stepped on the trap.");
-            PullEnemies();
-        }
+        //if (other.CompareTag("Player"))
+        //{
+        //    Debug.Log("Player stepped on the trap.");
+        //}
+        //else if (other.CompareTag("Enemy"))
+        //{
+        //    Debug.Log("Enemy stepped on the trap.");
+        //}
+
+        Debug.Log($"{other.name} stepped on the trap.");
+        PullEnemies();
     }
 
     private void PullEnemies()
@@ -83,7 +84,8 @@ public class GravitonSurgePlate : Item
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, pullRadius);
         foreach (Collider2D enemy in enemies)
         {
-            if (enemy.CompareTag("Enemy") || enemy.CompareTag("Player"))
+            EntityInfo info = enemy.GetComponent<EntityInfo>();
+            if (info != null && info.Tags.Contains(EntityInfo.EntityTags.Creature)) //enemy.CompareTag("Enemy") || enemy.CompareTag("Player")
             {
                 Vector2 direction = (transform.position - enemy.transform.position).normalized;
                 enemy.GetComponent<Rigidbody2D>().AddForce(direction * pullForce, ForceMode2D.Impulse);

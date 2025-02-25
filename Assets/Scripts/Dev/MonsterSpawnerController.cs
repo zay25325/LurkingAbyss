@@ -8,13 +8,7 @@ public class MonsterSpawnerController : MonoBehaviour
     [SerializeField] List<GameObject> SpawnThese = new() {};
     [SerializeField] LevelController levelController;
 
-    public void SpawnList() {
-        //spawn the list of things in random spots in the level
-        foreach(var thing in SpawnThese) {
-            int spot = Random.Range(0,levelController.spawners.Count);
-            Instantiate(thing, levelController.spawners[spot].transform);
-        }
-    }
+    
 
 }
 
@@ -28,7 +22,7 @@ public class MonsterSpawnerControllerEditor : Editor
         MonsterSpawnerController myScript = (MonsterSpawnerController)target;
         if(GUILayout.Button("Spawn Things"))
         {
-            myScript.SpawnList();
+            //myScript.SpawnList();
         }
     }
 }

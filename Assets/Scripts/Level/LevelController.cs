@@ -14,10 +14,12 @@ using UnityEngine.Events;
 
 public class LevelController : MonoBehaviour
 {
+    public bool AutoCreate = true;
+
     //Tilemap
     [SerializeField] TileController tileManager;
     [SerializeField] MapController levelMap;
-    public static readonly int STATIC_ROOM_SIZE = 9;
+    public static readonly int STATIC_ROOM_SIZE = 13;
 
     //Room Layout
     [SerializeField] int mapGenRoomCount = 30;
@@ -34,6 +36,11 @@ public class LevelController : MonoBehaviour
 
     //Doors
     [SerializeField] GameObject doorPrefab;
+
+    //SpawnPools
+    [SerializeField] SpawnPoolManager spawnPoolManager;
+    private List<GameObject> spawnListPrefabs = new List<GameObject>();
+    [SerializeField] Transform spawnPointParent;
 
     public bool BreakTileAt(Vector3 worldpos) {
 
@@ -59,12 +66,29 @@ public class LevelController : MonoBehaviour
         foreach(var variant in roomVariants) {
             variant.Init();
         }
+
+        if (AutoCreate)
+        {
+            StartCoroutine(AutoStartCoroutine());
+        }
     }
 
-    private void BuildNavMesh() {
-        foreach(var nav in monsterNavs) {
-            nav.UpdateMesh();
-        }
+    private IEnumerator AutoStartCoroutine()
+    {
+        GenerateLevel();
+        yield return null;
+        BuildLevelFromMap();
+        yield return null;
+        BuildNavMesh();
+        yield return null;
+        CreateSpawnList();
+        yield return null;
+        SpawnList();
+    }
+
+    public void GenerateLevel()
+    {
+        levelMap.StartRoomGen(mapGenRoomCount);
     }
 
     public void BuildLevelFromMap() {
@@ -87,7 +111,7 @@ public class LevelController : MonoBehaviour
             // clone base room
             tileManager.CloneRect(
                 TileMapLayer.LayerClass.Roomx9,
-                new Vector2Int(-4,-4),
+                new Vector2Int(-(STATIC_ROOM_SIZE/2),-(STATIC_ROOM_SIZE/2)),
                 new Vector2Int(STATIC_ROOM_SIZE, STATIC_ROOM_SIZE),
                 TileMapLayer.LayerClass.Wall,
                 roompos-(roomsize/2)
@@ -131,36 +155,75 @@ public class LevelController : MonoBehaviour
                 }
             }
 
+            
+
             // Get a random room variant
-            var roomVariant = this.roomVariants[Random.Range(0,roomVariants.Count)];
+            RoomVariantData roomVariant = this.roomVariants[Random.Range(0,roomVariants.Count)];
 
             // place internal walls
             var wallTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette, new Vector2Int(1,0));
-            foreach(var pos in roomVariant.walls) {
+            foreach(var pos in roomVariant.walls)
+            {
                 tileManager.SetTile(TileMapLayer.LayerClass.Wall, roompos+pos, wallTile);
             }
             // place item spawns relative to room origin
-            foreach(var obj in roomVariant.itemSpawns) {
-                var instance = Instantiate(obj, room.transform.position+obj.transform.localPosition, Quaternion.identity);
+            foreach(var obj in roomVariant.SpawnPoints)
+            {
+                // We need to intentionally duplicate spawn points as we are never actually instantiating the room prefab
+                var instance = Instantiate(obj, room.transform.position+obj.transform.localPosition, Quaternion.identity, spawnPointParent);
                 spawners.Add(instance.GetComponent<SpawnController>());
             }
             // TODO place other spawns relative to room origin
 
-
         }
     }
 
-    public void GenerateLevel() {
-        levelMap.StartRoomGen(mapGenRoomCount);
+    public void BuildNavMesh()
+    {
+        foreach (var nav in monsterNavs)
+        {
+            nav.UpdateMesh();
+        }
+    }
+    public IEnumerable WaitBuildNavMesh()
+    {
+        foreach (var nav in monsterNavs)
+        {
+            AsyncOperation asyncOp = nav.UpdateMesh();
+            while (asyncOp.isDone == false)
+            {
+                yield return null;
+            }
+        }
     }
 
-    public void CreateNavMeshes() {
-        this.BuildNavMesh();
+    private void CreateSpawnList()
+    {
+        // TODO: Add logic for number of each type
+        spawnListPrefabs = spawnPoolManager.GenerateSpawnList(8, 2, 2);
     }
 
-    public void DestroySpawners() {
+    public void SpawnList()
+    {
+
+        //spawn the list of things in random spots in the level
+        foreach (var prefab in spawnListPrefabs)
+        {
+            int index = Random.Range(0, spawners.Count);
+            GameObject obj = Instantiate(prefab, spawners[index].transform);
+            Vector3 spawnPoint = spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0);
+            obj.transform.position = spawnPoint;
+            obj.transform.parent = null;
+
+            spawners.RemoveAt(index);
+        }
+    }
+
+    public void DestroySpawners()
+    {
         int count = 0;
-        while(spawners.Count > 0) {
+        while(spawners.Count > 0)
+        {
             //destroy the spawner
             Destroy(spawners[0].gameObject);
             //remove the list
@@ -170,7 +233,8 @@ public class LevelController : MonoBehaviour
         Debug.Log($"Destroyed {count} spawners");
     }
 
-    public void DestroyLevel() {
+    public void DestroyLevel()
+    {
         levelMap.ClearRoomGrid();
         tileManager.Nuke();
         DestroySpawners();
@@ -199,12 +263,17 @@ public class LevelControllerEditor : Editor
 
          if(GUILayout.Button("Make Navmesh"))
         {
-            myScript.CreateNavMeshes();
+            myScript.BuildNavMesh();
         }
 
         if(GUILayout.Button("Destroy Map"))
         {
             myScript.DestroyLevel();
+        }
+
+        if (GUILayout.Button("Spawn List"))
+        {
+            myScript.SpawnList();
         }
     }
 }
