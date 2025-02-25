@@ -69,12 +69,21 @@ public class LevelController : MonoBehaviour
 
         if (AutoCreate)
         {
-            GenerateLevel();
-            BuildLevelFromMap();
-            BuildNavMesh();
-            CreateSpawnList();
-            SpawnList();
+            StartCoroutine(AutoStartCoroutine());
         }
+    }
+
+    private IEnumerator AutoStartCoroutine()
+    {
+        GenerateLevel();
+        yield return null;
+        BuildLevelFromMap();
+        yield return null;
+        BuildNavMesh();
+        yield return null;
+        CreateSpawnList();
+        yield return null;
+        SpawnList();
     }
 
     public void GenerateLevel()
@@ -176,6 +185,17 @@ public class LevelController : MonoBehaviour
             nav.UpdateMesh();
         }
     }
+    public IEnumerable WaitBuildNavMesh()
+    {
+        foreach (var nav in monsterNavs)
+        {
+            AsyncOperation asyncOp = nav.UpdateMesh();
+            while (asyncOp.isDone == false)
+            {
+                yield return null;
+            }
+        }
+    }
 
     private void CreateSpawnList()
     {
@@ -190,9 +210,12 @@ public class LevelController : MonoBehaviour
         foreach (var prefab in spawnListPrefabs)
         {
             int index = Random.Range(0, spawners.Count);
+            GameObject obj = Instantiate(prefab, spawners[index].transform);
             Vector3 spawnPoint = spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0);
-            GameObject obj = Instantiate(prefab);
             obj.transform.position = spawnPoint;
+            obj.transform.parent = null;
+
+            spawners.RemoveAt(index);
         }
     }
 
@@ -246,6 +269,11 @@ public class LevelControllerEditor : Editor
         if(GUILayout.Button("Destroy Map"))
         {
             myScript.DestroyLevel();
+        }
+
+        if (GUILayout.Button("Spawn List"))
+        {
+            myScript.SpawnList();
         }
     }
 }

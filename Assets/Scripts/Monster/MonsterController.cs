@@ -52,6 +52,9 @@ public class MonsterController : MonoBehaviour
 
     private void OnEnable()
     {
+        agent.enabled = true;
+        agent.ResetPath();
+
         if (hitEvents != null)
         {
             hitEvents.OnStunned.AddListener(OnStunned);

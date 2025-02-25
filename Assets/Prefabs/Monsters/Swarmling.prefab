@@ -129,8 +129,12 @@ PrefabInstance:
       value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_AgentTypeID
-      value: -1372625422
+      value: -334000983
       objectReference: {fileID: 0}
     - target: {fileID: 6530052823025671122, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: tags.Array.size
