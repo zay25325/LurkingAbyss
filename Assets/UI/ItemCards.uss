@@ -6,8 +6,9 @@
 }
 
 .object-card {
-    width: 200px;
-    height: 150px;
+    background-color: #222222;
+    width: 150;
+    height: 180px;
     min-width: 200px;
     min-height: 150px;
     background-color: rgb(40, 40, 40);
@@ -64,7 +65,7 @@
     overflow: hidden;
 }
 
-.description {
+/* .description {
     color: rgb(200, 200, 200);
     white-space: normal;
     font-size: 14px;
@@ -72,6 +73,12 @@
     padding: 5px;
     overflow: hidden;
     text-overflow: ellipsis;
+} */
+
+.description {
+    font-size: 14px;
+    color: #CCCCCC;
+    white-space: normal;
 }
 
 #Logs-Container {
@@ -80,12 +87,18 @@
     height: 100%;
 }
 
+#Logs-Container {
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #LeftSide {
     flex-grow: 1;
     height: 100%;
 }
-
-Button {
+/* 
+#Button {
     margin: 5px;
     padding: 5px 10px;
-}
+} */

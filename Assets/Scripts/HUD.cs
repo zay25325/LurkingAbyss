@@ -31,6 +31,4 @@ public class HUD : MonoBehaviour
         if (intSlider.value != 5)
             intSlider.value -= health;
     }
-
-
 }
