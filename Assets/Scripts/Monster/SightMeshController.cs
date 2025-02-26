@@ -3,16 +3,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class SightMeshController : MonoBehaviour
 {
     MeshFilter meshFilter;
+    [SerializeField] Light2D light2D;
     [SerializeField] Transform origin;
     [SerializeField] [Range(0, 360)] float fov = 90;
     [SerializeField] [Range(0, 10)] float visionRange = 5;
     [SerializeField] [Range(0,50)] int rayCount = 16;
     [SerializeField] LayerMask visionLayers;
     [SerializeField] PolygonCollider2D polyCollider;
+    [SerializeField] Texture2D texture;
 
     SortedList<float, Vector3> raycasts = new SortedList<float, Vector3>();
 
@@ -23,6 +26,9 @@ public class SightMeshController : MonoBehaviour
     void Start()
     {
         meshFilter = GetComponent<MeshFilter>();
+        light2D.pointLightInnerRadius = 0;
+        light2D.pointLightOuterAngle = fov;
+        light2D.pointLightOuterRadius = visionRange;
     }
 
     private void LateUpdate()
@@ -90,6 +96,33 @@ public class SightMeshController : MonoBehaviour
         points[sortedRaycasts.Count + 1] = Vector2.zero;
         polyCollider.points = points;
         meshFilter.mesh = polyCollider.CreateMesh(false, false);
+
+
+        var bottMesh = GetComponent<MeshFilter>().mesh;
+        var sprite1 = GetComponent<SpriteMask>().sprite;
+        if (sprite1 == null)
+        {
+            sprite1 = Sprite.Create(Texture2D.whiteTexture, new Rect(Vector2.zero, new Vector2(visionRange*2, visionRange * 2)), Vector2.zero);
+            GetComponent<SpriteMask>().sprite = sprite1;
+        }
+
+        var copiedVerticies = new Vector2[bottMesh.vertices.Length];
+        for (int i = 0; i < bottMesh.vertices.Length; i++)
+        {
+            copiedVerticies[i] = new Vector2(bottMesh.vertices[i].x, bottMesh.vertices[i].y);
+        }
+
+        for (int i = 0; i < copiedVerticies.Length; ++i)
+            copiedVerticies[i] = (copiedVerticies[i] * sprite1.pixelsPerUnit) + sprite1.pivot;
+        
+        var copiedTriangels = new ushort[bottMesh.triangles.Length];
+        for (int i = 0; i < bottMesh.triangles.Length; i++)
+        {
+            copiedTriangels[i] = (ushort)bottMesh.triangles[i];
+        }
+        sprite1.OverrideGeometry(copiedVerticies, copiedTriangels);
+
+        light2D.transform.localRotation = Quaternion.Euler(0, 0, lookDirection + 180);
     }
 
     // While we are doing a very similar thing to this video, almost everything needed to be changed causing the only thing actually used are these two methods

@@ -12,6 +12,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] SightMeshController sightMeshController;
+
     //constants
     const float DASH_DURATION = 0.2f; // Duration of the dash
     const float DASH_COOLDOWN = 0.5f; // Cooldown of the dash
@@ -143,7 +145,7 @@ public class PlayerController : MonoBehaviour
 
     /*
         FUNCTION : FixedUpdate()
-        DESCRIPTION : called once per frame. Currently handles player movement
+        DESCRIPTION : called once per fixed update. Currently handles player movement
         PARAMETERS : NONE
         RETURNS : NONE
     */
@@ -208,6 +210,8 @@ public class PlayerController : MonoBehaviour
         //     // Apply rotation with an offset to align the top of the sprite
         //     transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
         // }
+
+        sightMeshController.LookDirection = SightMeshController.GetAngleFromVectorFloat(direction) + 90;
     }
 
     /*

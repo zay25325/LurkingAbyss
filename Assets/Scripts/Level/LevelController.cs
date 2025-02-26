@@ -81,6 +81,8 @@ public class LevelController : MonoBehaviour
         yield return null;
         BuildNavMesh();
         yield return null;
+        tileManager.GenerateShadows();
+        yield return null;
         CreateSpawnList();
         yield return null;
         SpawnList();

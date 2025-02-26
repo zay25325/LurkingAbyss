@@ -158,6 +158,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: -100
       objectReference: {fileID: 0}
+    - target: {fileID: 981747893455945043, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: aaf074fa09bcb5a4aa89325ac0279e7f, type: 2}
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_Size.x
       value: 23
@@ -2326,6 +2330,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2263599673584327319, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: aaf074fa09bcb5a4aa89325ac0279e7f, type: 2}
     - target: {fileID: 3387428988910926666, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_Size.y
       value: 10
@@ -4410,6 +4418,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: -100
       objectReference: {fileID: 0}
+    - target: {fileID: 3849628691215661036, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: aaf074fa09bcb5a4aa89325ac0279e7f, type: 2}
     - target: {fileID: 4464375507158801550, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_Size.x
       value: 20
@@ -6162,6 +6174,10 @@ PrefabInstance:
       propertyPath: m_Tiles.Array.data[66].second.m_TileObjectToInstantiateIndex
       value: 65535
       objectReference: {fileID: 0}
+    - target: {fileID: 4826919957104855705, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
+      propertyPath: shadowCreator
+      value: 
+      objectReference: {fileID: 714815219810004917}
     - target: {fileID: 5796490066892926348, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -18626,10 +18642,18 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: -10
       objectReference: {fileID: 0}
+    - target: {fileID: 8097499518984642190, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: aaf074fa09bcb5a4aa89325ac0279e7f, type: 2}
     - target: {fileID: 8331499609758845365, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_Name
       value: LevelGrid
       objectReference: {fileID: 0}
+    - target: {fileID: 8616693395670689317, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: aaf074fa09bcb5a4aa89325ac0279e7f, type: 2}
     - target: {fileID: 8616693395670689317, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_DetectChunkCullingBounds
       value: 0
@@ -18647,6 +18671,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8541394461307609326, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2326223426204896732}
+    - targetCorrespondingSourceObject: {fileID: 8541394461307609326, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 714815219810004917}
     - targetCorrespondingSourceObject: {fileID: 2194499966224981084, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7673031692717485618}
@@ -18849,6 +18876,19 @@ CompositeCollider2D:
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
   m_CompositeGameObject: {fileID: 4756569313270709065}
+--- !u!114 &714815219810004917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4756569313270709065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a5940738b6dd1344a736fe1fccf3522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selfShadows: 1
 --- !u!19719996 &6785793152842885130 stripped
 TilemapCollider2D:
   m_CorrespondingSourceObject: {fileID: 7683248164828541869, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}

@@ -8,6 +8,7 @@ public class TileController : MonoBehaviour
     [SerializeField] Dictionary<TileMapLayer.LayerClass, Tilemap> layers = new();
 
     [SerializeField] public Grid grid;
+    [SerializeField] ShadowCaster2DCreator shadowCreator;
 
     // reference the tilemaps in our layers dict
     void Start()
@@ -102,6 +103,10 @@ public class TileController : MonoBehaviour
         destination.SetTilesBlock(destinationArea, sourceBlock);
     }
 
+    public void GenerateShadows()
+    {
+        shadowCreator.Create();
+    }
 
     private void OnDrawGizmos() {
         Gizmos.color = new Color(1,0,1,0.5f);

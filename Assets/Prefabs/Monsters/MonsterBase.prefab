@@ -139,7 +139,7 @@ MonoBehaviour:
   hitEvents: {fileID: 4524818832650360445}
   interactionEvent: {fileID: 1213188183882951040}
   sightEvents: {fileID: 4733366595748055650}
-  sightController: {fileID: 4791281585164000369}
+  sightController: {fileID: 0}
   agent: {fileID: 6140370617454582469}
   state: {fileID: 0}
   HearingAmplificaiton: 1
@@ -284,7 +284,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4722425647346356696}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -421,7 +421,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: aaf074fa09bcb5a4aa89325ac0279e7f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
