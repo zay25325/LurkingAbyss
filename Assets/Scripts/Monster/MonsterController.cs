@@ -9,7 +9,7 @@ public class MonsterController : MonoBehaviour
     [SerializeField] OnHitEvents hitEvents;
     [SerializeField] OnInteractionEvent interactionEvent;
     [SerializeField] MonsterSightEvents sightEvents;
-    [SerializeField] SightMeshController sightController;
+    [SerializeField] SimpleSightMeshController sightController;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] protected MonsterState state;
 
