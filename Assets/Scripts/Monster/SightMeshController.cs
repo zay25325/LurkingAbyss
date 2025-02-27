@@ -15,7 +15,9 @@ public class SightMeshController : MonoBehaviour
     [SerializeField] [Range(0,50)] int rayCount = 16;
     [SerializeField] LayerMask visionLayers;
     [SerializeField] PolygonCollider2D polyCollider;
-    [SerializeField] Texture2D texture;
+    [SerializeField] Sprite baseSprite;
+
+    Sprite visionSprite = null;
 
     SortedList<float, Vector3> raycasts = new SortedList<float, Vector3>();
 
@@ -96,32 +98,43 @@ public class SightMeshController : MonoBehaviour
         }
         points[sortedRaycasts.Count + 1] = Vector2.zero;
         polyCollider.points = points;
-        meshFilter.mesh = polyCollider.CreateMesh(false, false);
+        Mesh mesh = polyCollider.CreateMesh(false, false);
+        meshFilter.mesh = mesh;
 
-
-        var bottMesh = GetComponent<MeshFilter>().mesh;
-        var sprite1 = GetComponent<SpriteMask>().sprite;
-        if (sprite1 == null)
+        /*
+        * TITLE : “Is it possible to convert meshes to sprites?” function code
+        * AUTHOR : kacperszkola365
+        * DATE : 2/25/2025
+        * AVAILABIILTY : https://discussions.unity.com/t/is-it-possible-to-convert-meshes-to-sprites/198984/3
+        */
+        if (visionSprite == null)
         {
-            sprite1 = Sprite.Create(Texture2D.whiteTexture, new Rect(Vector2.zero, new Vector2(visionRange*2, visionRange * 2)), Vector2.zero);
-            GetComponent<SpriteMask>().sprite = sprite1;
+            Texture2D texture = baseSprite.texture;
+            visionSprite = Sprite.Create(
+                texture, // texture
+                new Rect(0.0f, 0.0f, texture.width, texture.height), // section of texture
+                new Vector2(.5f, .5f), // pivot
+                baseSprite.pixelsPerUnit, // pixelsPerUnit
+                (uint)(visionRange * 2 * baseSprite.pixelsPerUnit) // size (more or less)
+                );
+            GetComponent<SpriteMask>().sprite = visionSprite;
         }
 
-        var copiedVerticies = new Vector2[bottMesh.vertices.Length];
-        for (int i = 0; i < bottMesh.vertices.Length; i++)
+        var copiedVerticies = new Vector2[mesh.vertices.Length];
+        for (int i = 0; i < mesh.vertices.Length; i++)
         {
-            copiedVerticies[i] = new Vector2(bottMesh.vertices[i].x, bottMesh.vertices[i].y);
+            copiedVerticies[i] = new Vector2(mesh.vertices[i].x, mesh.vertices[i].y);
         }
 
         for (int i = 0; i < copiedVerticies.Length; ++i)
-            copiedVerticies[i] = (copiedVerticies[i] * sprite1.pixelsPerUnit) + sprite1.pivot;
+            copiedVerticies[i] = (copiedVerticies[i] * visionSprite.pixelsPerUnit) + visionSprite.pivot;
         
-        var copiedTriangels = new ushort[bottMesh.triangles.Length];
-        for (int i = 0; i < bottMesh.triangles.Length; i++)
+        var copiedTriangels = new ushort[mesh.triangles.Length];
+        for (int i = 0; i < mesh.triangles.Length; i++)
         {
-            copiedTriangels[i] = (ushort)bottMesh.triangles[i];
+            copiedTriangels[i] = (ushort)mesh.triangles[i];
         }
-        sprite1.OverrideGeometry(copiedVerticies, copiedTriangels);
+        visionSprite.OverrideGeometry(copiedVerticies, copiedTriangels);
 
         light2D.transform.localRotation = Quaternion.Euler(0, 0, lookDirection + 180);
     }

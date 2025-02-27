@@ -5,8 +5,13 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 
+/*
+* TITLE : “ShadowCaster2DCreator.cs” source code
+* AUTHOR : Rehope Games, Lumos-Github
+* DATE : 2/25/2025
+* AVAILABIILTY : https://drive.google.com/file/d/1W7OiE4m9MqvWoVD40k31sKC-dOZT2ju2/view?pli=1
+*/
 
-#if UNITY_EDITOR
 
 [RequireComponent(typeof(CompositeCollider2D))]
 public class ShadowCaster2DCreator : MonoBehaviour
@@ -62,6 +67,7 @@ public class ShadowCaster2DCreator : MonoBehaviour
 	}
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(ShadowCaster2DCreator))]
 public class ShadowCaster2DTileMapEditor : Editor
 {

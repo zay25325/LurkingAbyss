@@ -327,7 +327,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.15
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 0.25
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 00000000
@@ -419,7 +419,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   polyCollider: {fileID: 3242985935221876035}
-  texture: {fileID: 0}
+  baseSprite: {fileID: 7482667652216324306, guid: 9c889b0d779cb2e4bb74ef6ab6bd8b02, type: 3}
   lookDirection: 0
 --- !u!114 &3985707481179359127
 MonoBehaviour:
@@ -583,7 +583,7 @@ SpriteMask:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 9c889b0d779cb2e4bb74ef6ab6bd8b02, type: 3}
+  m_Sprite: {fileID: 0}
   m_MaskAlphaCutoff: 1
   m_FrontSortingLayerID: 0
   m_BackSortingLayerID: 0
@@ -642,7 +642,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.15
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 00000000
