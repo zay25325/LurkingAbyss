@@ -1,4 +1,4 @@
-//#define DebugVisualize // I don't want to have have to tie this to a SerializeField variable
+#define DebugVisualize // I don't want to have have to tie this to a SerializeField variable
 
 using System.Collections;
 using System.Collections.Generic;
@@ -42,6 +42,7 @@ public class SightMeshController : MonoBehaviour
             Vector2 vectorAngle = GetVectorFromAngle(angle);
 #if (DebugVisualize)
             Debug.DrawRay(origin.position, vectorAngle, Color.green);
+            Debug.DrawLine(origin.position, origin.position + (Vector3)(vectorAngle * visionRange), Color.green);
 #endif
             RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, vectorAngle, visionRange, visionLayers);
             if (raycastHit2D.collider == null && raycasts.ContainsKey(angle) == false)
@@ -213,18 +214,24 @@ public class SightMeshController : MonoBehaviour
             return;
         }
 
-#if (DebugVisualize)
-        Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.yellow);
-#endif
+
 
         RaycastHit2D raycastHit2D = Physics2D.Raycast(origin.position, GetVectorFromAngle(angle), visionRange, visionLayers);
         if (raycastHit2D.collider == null)
         {
             raycasts.Add(angle, GetVectorFromAngle(angle) * visionRange);
+#if (DebugVisualize)
+            //Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.yellow);
+            Debug.DrawLine(origin.position, origin.position + GetVectorFromAngle(angle) * visionRange, Color.yellow);
+#endif
         }
         else
         {
             raycasts.Add(angle, raycastHit2D.point - (Vector2)origin.position);
+#if (DebugVisualize)
+            //Debug.DrawRay(origin.position, GetVectorFromAngle(angle), Color.yellow);
+            Debug.DrawLine(origin.position, raycastHit2D.point, Color.yellow);
+#endif
         }
     }
 

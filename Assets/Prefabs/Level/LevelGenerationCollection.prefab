@@ -18650,6 +18650,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelGrid
       objectReference: {fileID: 0}
+    - target: {fileID: 8541394461307609326, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
+      propertyPath: m_TagString
+      value: Walls
+      objectReference: {fileID: 0}
     - target: {fileID: 8616693395670689317, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
