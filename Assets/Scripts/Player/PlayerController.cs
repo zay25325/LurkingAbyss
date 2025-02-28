@@ -251,7 +251,7 @@ public class PlayerController : MonoBehaviour
     */
     private void Dash(InputAction.CallbackContext context)
     {
-        hud.SetHealth(3.1f);
+        //hud.SetHealth(3.1f);
         // Dash action is performed once upon button press
         if (context.performed && canDash)
         {

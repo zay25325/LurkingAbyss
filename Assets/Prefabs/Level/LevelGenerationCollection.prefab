@@ -19047,6 +19047,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8536346270313615678}
     - target: {fileID: 5869196295540328824, guid: 0a98b4062075adf4eac0519cf6f23666, type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 7419464304183977446, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
+    - target: {fileID: 5869196295540328824, guid: 0a98b4062075adf4eac0519cf6f23666, type: 3}
       propertyPath: mapGenRoomCount
       value: 20
       objectReference: {fileID: 0}

@@ -37,6 +37,9 @@ public class LevelController : MonoBehaviour
     //Doors
     [SerializeField] GameObject doorPrefab;
 
+    //Player
+    [SerializeField] GameObject playerPrefab;
+
     //SpawnPools
     [SerializeField] SpawnPoolManager spawnPoolManager;
     private List<GameObject> spawnListPrefabs = new List<GameObject>();
@@ -209,16 +212,27 @@ public class LevelController : MonoBehaviour
     {
 
         //spawn the list of things in random spots in the level
-        foreach (var prefab in spawnListPrefabs)
+        foreach (GameObject prefab in spawnListPrefabs)
         {
-            int index = Random.Range(0, spawners.Count);
-            GameObject obj = Instantiate(prefab, spawners[index].transform);
-            Vector3 spawnPoint = spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0);
-            obj.transform.position = spawnPoint;
-            obj.transform.parent = null;
-
-            spawners.RemoveAt(index);
+            SpawnItem(prefab);
         }
+
+        //Spawn Player
+        GameObject playerObj = SpawnItem(playerPrefab);
+        CameraController cameraController = Camera.main.GetComponent<CameraController>();
+        cameraController.FollowTransform = playerObj.transform;
+    }
+
+    private GameObject SpawnItem(GameObject prefab)
+    {
+        int index = Random.Range(0, spawners.Count);
+        GameObject obj = Instantiate(prefab, spawners[index].transform);
+        Vector3 spawnPoint = spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0);
+        obj.transform.position = spawnPoint;
+        obj.transform.parent = null;
+
+        spawners.RemoveAt(index);
+        return obj;
     }
 
     public void DestroySpawners()
