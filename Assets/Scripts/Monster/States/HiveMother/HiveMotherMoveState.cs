@@ -1,12 +1,17 @@
+/*
+File: ProjectileController.cs
+Project: Capstone Project
+Programmer: Isaiah Bartlett
+First Version: 
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class HiveMotherMoveState : MonsterState
+public class HiveMotherMoveState : HiveMotherBaseState
 {
-    new private HiveMotherController controller { get => base.controller as HiveMotherController; }
-
     NavMeshPlus.Components.NavMeshSurface navSurface;
     List<Vector3> navigationPoints = new List<Vector3>();
     Vector3? currentNavPoint = null;
@@ -16,8 +21,9 @@ public class HiveMotherMoveState : MonsterState
         navSurface = GameObject.FindFirstObjectByType<NavMeshPlus.Components.NavMeshSurface>();
     }
 
-    private void OnEnable()
+    new protected void OnEnable()
     {
+        base.OnEnable();
         if (currentNavPoint.HasValue == false)
         {
             if (navigationPoints.Count == 0)
@@ -47,9 +53,10 @@ public class HiveMotherMoveState : MonsterState
         if (info != null)
         {
             if ((info.Tags.Contains(EntityInfo.EntityTags.Hunter) || info.Tags.Contains(EntityInfo.EntityTags.Territorial))
-            && controller.CollectedSwarmlings >= HiveMotherController.RequiredSwarmlingsForCombat)
+            && controller.CollectedSwarmlings >= controller.RequiredSwarmlingsForCombat)
             {
-                // enter combat state
+                controller.CombatTarget = info.gameObject;
+                controller.SwitchState<HiveMotherCombatState>();
             }
             else if (info.Tags.Contains(EntityInfo.EntityTags.Swarmling))
             {

@@ -27,13 +27,15 @@ public class MonsterController : MonoBehaviour
     protected List<GameObject> objectsInView = new List<GameObject>();
     protected bool overrideSightDirection = false;
 
-    protected const float RESPAWN_DELAY = 5f;
+    protected const float RESPAWN_DELAY = 30f;
 
     public NavMeshAgent Agent { get => agent; }
     public List<GameObject> ObjectsInView { get => objectsInView; }
     public float HP { get => hp; set => hp = value; }
     public float MaxHP { get => maxHP; set => maxHP = value; }
     public float BaseSpeed { get => baseSpeed; set => baseSpeed = value; }
+    public bool OverrideSightDirection { get => overrideSightDirection; set => overrideSightDirection = value; }
+    public SimpleSightMeshController SightController { get => sightController; }
 
 
     protected void Awake()
