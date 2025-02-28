@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HiveMotherCollectState : MonsterState
+public class HiveMotherCollectState : HiveMotherBaseState
 {
-    new private HiveMotherController controller { get => base.controller as HiveMotherController; }
-
     const float navUpdateLimit = .25f; // Don't recalculate a navigation path every single frame. That would be bad
     float navTimer = 0;
 
@@ -37,8 +35,9 @@ public class HiveMotherCollectState : MonsterState
         }
     }
 
-    private void OnEnable()
+    new protected void OnEnable()
     {
+        base.OnEnable();
         navTimer = 0f;
     }
 
@@ -50,15 +49,5 @@ public class HiveMotherCollectState : MonsterState
         }
     }
 
-    public override void OnTouchEnter(Collision2D collision)
-    {
-        EntityInfo info = collision.collider.GetComponent<EntityInfo>();
-        if (info != null && info.Tags.Contains(EntityInfo.EntityTags.Swarmling))
-        {
-            info.gameObject.SetActive(false);
-            GameObject.Destroy(info.gameObject);
-            controller.CollectedSwarmlings++;
-            controller.SwitchState<HiveMotherCallState>();
-        }
-    }
+    
 }

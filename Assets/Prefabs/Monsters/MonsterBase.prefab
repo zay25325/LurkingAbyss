@@ -110,7 +110,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826378995266505575}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -334000983
   m_Radius: 0.3
   m_Speed: 3.5
   m_Acceleration: 20
@@ -355,7 +355,7 @@ MonoBehaviour:
       m_Calls: []
   raycastLayers:
     serializedVersion: 2
-    m_Bits: 3137
+    m_Bits: 1089
 --- !u!33 &1289978413882350417
 MeshFilter:
   m_ObjectHideFlags: 0
