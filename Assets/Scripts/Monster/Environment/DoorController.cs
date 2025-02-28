@@ -4,6 +4,7 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.Events;
 using NavMeshPlus;
+using UnityEngine.AI;
 
 public class DoorController : MonoBehaviour
 {
@@ -14,10 +15,14 @@ public class DoorController : MonoBehaviour
     [SerializeField] bool isOpen = false;
     [SerializeField] float strength = 0; // only breaks when taking more than this amount of structural damage
     [SerializeField] private int entitiesInTrigger = 0; // to track whether it should be open or not
+    [SerializeField] private Collider2D myCollider;
+    [SerializeField] private SpriteRenderer myRenderer;
 
-    [SerializeField] private Behaviour navModifierComponent;
+    [SerializeField] private NavMeshModifierVolume navModifierComponent;
 
     private void Start() {
+        this.myCollider = this.gameObject.GetComponent<Collider2D>();
+        this.myRenderer = this.gameObject.GetComponentInChildren<SpriteRenderer>();
         hitEvents.OnStructuralDamaged.AddListener(this.OnStructuralDamage);
         proximityEvents.OnEnter.AddListener(this.OnEnter);
         proximityEvents.OnExit.AddListener(this.OnLeave);
@@ -34,23 +39,21 @@ public class DoorController : MonoBehaviour
     private void Open() {
         this.isOpen = true;
         //disable the rigidbody collider
-        this.gameObject.GetComponent<Collider2D>().enabled = false;
+        this.myCollider.enabled = false;
         //update navmesh
         this.navModifierComponent.enabled = false;
-        LevelController.UpdateNavMesh.Invoke();
         //black out the door to "open" it
-        this.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(0f,0f,0f,0f);
+        this.myRenderer.color = new Color(0f,0f,0f,0f);
     }
 
     private void Close() {
         this.isOpen = false;
         //disable the rigidbody collider
-        this.gameObject.GetComponent<Collider2D>().enabled = true;
+       this.myCollider.enabled = true;
         //update navmesh
         this.navModifierComponent.enabled = true;
-        LevelController.UpdateNavMesh.Invoke();
         //black out the door to "open" it
-        this.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
+        this.myRenderer.color = Color.white;
     }
 
     private void OnEnter(EntityInfo info) {
@@ -69,6 +72,10 @@ public class DoorController : MonoBehaviour
     private void OnStructuralDamage(float damage) {
         // this could be a durability value for the door
         if(damage > this.strength) {
+            this.myCollider.enabled = false;
+            //update navmesh
+            this.navModifierComponent.enabled = false;
+            //die
             Destroy(this.gameObject);
         }
     }
