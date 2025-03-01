@@ -458,7 +458,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1339978770136006912, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 677.144
+      value: 677
       objectReference: {fileID: 0}
     - target: {fileID: 1339978770136006912, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
       propertyPath: m_SizeDelta.y
@@ -512,9 +512,57 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1950182880322031279, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1950182880322031279, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1950182880322031279, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1950182880322031279, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6550237742575403416, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6550237742575403416, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6550237742575403416, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6550237742575403416, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7558635727817644601, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
       propertyPath: m_Name
       value: HUDBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 8481449626100858146, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8481449626100858146, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8481449626100858146, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8481449626100858146, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

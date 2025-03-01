@@ -10,15 +10,17 @@ public class HUD : MonoBehaviour
 
     public Slider intSlider;
     private List<Item> items;
+    private Item currentItem;
 
     public HUD()
     {
-        items = new List<Item>();
+        //items = new List<Item>();
         intSlider.value = 17.4f;
     }
 
     public void Start()
     {
+        items = new List<Item>();
         intSlider.value = 17.4f;
     }
 
