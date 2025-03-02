@@ -43,5 +43,24 @@ public class EntityInfo : MonoBehaviour
         Door,
         Exit,
         ChargingStation,
+
+        // Properties
+        Breakable,
+        CanOpenDoors,
+
+        //Items
+        BasicGun,
+        Battery,
+        DashBooster,
+        Grappler,
+        GravitonSurgePlateItem,
+        Grenade,
+        InvisibleBelt,
+        MobileShieldGenerator,
+        NoiseMaker,
+        Revivor,
+        Rock,
+        Warper,
+
     }
 }

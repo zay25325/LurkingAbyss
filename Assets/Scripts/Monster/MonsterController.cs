@@ -9,7 +9,7 @@ public class MonsterController : MonoBehaviour
     [SerializeField] OnHitEvents hitEvents;
     [SerializeField] OnInteractionEvent interactionEvent;
     [SerializeField] MonsterSightEvents sightEvents;
-    [SerializeField] SightMeshController sightController;
+    [SerializeField] SimpleSightMeshController sightController;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] protected MonsterState state;
 
@@ -27,13 +27,15 @@ public class MonsterController : MonoBehaviour
     protected List<GameObject> objectsInView = new List<GameObject>();
     protected bool overrideSightDirection = false;
 
-    protected const float RESPAWN_DELAY = 5f;
+    protected const float RESPAWN_DELAY = 30f;
 
     public NavMeshAgent Agent { get => agent; }
     public List<GameObject> ObjectsInView { get => objectsInView; }
     public float HP { get => hp; set => hp = value; }
     public float MaxHP { get => maxHP; set => maxHP = value; }
     public float BaseSpeed { get => baseSpeed; set => baseSpeed = value; }
+    public bool OverrideSightDirection { get => overrideSightDirection; set => overrideSightDirection = value; }
+    public SimpleSightMeshController SightController { get => sightController; }
 
 
     protected void Awake()
@@ -52,6 +54,9 @@ public class MonsterController : MonoBehaviour
 
     private void OnEnable()
     {
+        agent.enabled = true;
+        agent.ResetPath();
+
         if (hitEvents != null)
         {
             hitEvents.OnStunned.AddListener(OnStunned);
@@ -181,6 +186,7 @@ public class MonsterController : MonoBehaviour
         stunDuration = Mathf.Max(duration, stunDuration);
         if (stunDuration > 0)
         {
+            state.OnStunned(duration); // allow any final reactions before disabling the state
             OnStunStart();
         }
     }
@@ -192,19 +198,23 @@ public class MonsterController : MonoBehaviour
         {
             OnDeath();
         }
+        else
+        {
+            state.OnHarmed(damage); // do not react to the onHarm if the monster is dead
+        }
     }
 
     protected void OnStunStart()
     {
         state.enabled = false;
-        sightController.gameObject.SetActive(false);
+        if (sightController != null) sightController.gameObject.SetActive(false);
         agent.speed = 0;
     }
 
     protected void OnStunEnd()
     {
         stunDuration = 0;
-        sightController.gameObject.SetActive(true);
+        if (sightController != null) sightController.gameObject.SetActive(true);
         state.enabled = true;
         agent.speed = baseSpeed;
     }
