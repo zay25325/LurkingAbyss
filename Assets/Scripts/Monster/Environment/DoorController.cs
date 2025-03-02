@@ -5,12 +5,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using NavMeshPlus;
 using UnityEngine.AI;
+using System;
 
 public class DoorController : MonoBehaviour
 {
-    [SerializeField] OnHitEvents hitEvents; //so the door can be destroyed by explosions
-    [SerializeField] NavMeshSurface dumbMonsterNav; // so the door can block dumb monsters
-    [SerializeField] ProximityEvents proximityEvents; // so the door can open for smart monsters and the player
+    [SerializeField] private OnHitEvents hitEvents; //so the door can be destroyed by explosions
+    [SerializeField] private ProximityEvents proximityEvents; // so the door can open for smart monsters and the player
 
     [SerializeField] bool isOpen = false;
     [SerializeField] float strength = 0; // only breaks when taking more than this amount of structural damage
@@ -18,22 +18,31 @@ public class DoorController : MonoBehaviour
     [SerializeField] private Collider2D myCollider;
     [SerializeField] private SpriteRenderer myRenderer;
 
-    [SerializeField] private NavMeshModifierVolume navModifierComponent;
+    [SerializeField] private NavMeshObstacle navModifierComponent;
+    private int SmartMeshId; //id of the smartmonster navmesh so they can path through doors
+
+    private static int debugcount = 0;
 
     private void Start() {
+        
+        for (int i = 0; i < NavMesh.GetSettingsCount(); i++)
+        {
+            NavMeshBuildSettings settings = NavMesh.GetSettingsByIndex(index: i);
+            if (name == NavMesh.GetSettingsNameFromID(agentTypeID: settings.agentTypeID))
+            {
+                SmartMeshId = settings.agentTypeID;
+            }
+        }
+
         this.myCollider = this.gameObject.GetComponent<Collider2D>();
         this.myRenderer = this.gameObject.GetComponentInChildren<SpriteRenderer>();
+
         hitEvents.OnStructuralDamaged.AddListener(this.OnStructuralDamage);
         proximityEvents.OnEnter.AddListener(this.OnEnter);
         proximityEvents.OnExit.AddListener(this.OnLeave);
     }
 
     private void Update() {
-        if(entitiesInTrigger > 0 && isOpen == false) {
-            this.Open();
-        } else if(entitiesInTrigger <= 0 && isOpen == true) {
-            this.Close();
-        }
     }
 
     private void Open() {
@@ -59,12 +68,18 @@ public class DoorController : MonoBehaviour
     private void OnEnter(EntityInfo info) {
         if(info.Tags.Contains(EntityInfo.EntityTags.CanOpenDoors)) {
             entitiesInTrigger ++;
+            if(entitiesInTrigger > 0 && isOpen == false) {
+                this.Open();
+            }
         }
     }
 
     private void OnLeave(EntityInfo info) {
         if(info.Tags.Contains(EntityInfo.EntityTags.CanOpenDoors)) {
             entitiesInTrigger --;
+            if(entitiesInTrigger <= 0 && isOpen == true) {
+                this.Close();
+            }
         }
     }
 
