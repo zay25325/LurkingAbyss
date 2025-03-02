@@ -22,7 +22,7 @@ TagManager:
   - Projectiles
   - Vision Area
   - Floor
-  - 
+  - Item
   - 
   - 
   - 
@@ -43,4 +43,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Item
+    uniqueID: 1104294017
+    locked: 0
+  - name: Player
+    uniqueID: 603423773
     locked: 0

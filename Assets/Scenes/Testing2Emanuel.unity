@@ -432,6 +432,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4621852958720320481, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621852958720320481, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621852958720320481, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1104294017
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621852958720320481, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 5749638377805226640, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.7915382
@@ -479,6 +495,10 @@ PrefabInstance:
     - target: {fileID: 8786005308923651583, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
       propertyPath: m_Name
       value: Grappler
+      objectReference: {fileID: 0}
+    - target: {fileID: 8786005308923651583, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8786005308923651583, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
       propertyPath: m_IsActive
@@ -12061,6 +12081,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4621852958720320481, guid: 503db0d653620e64da4eed1abf57cd2a, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621852958720320481, guid: 503db0d653620e64da4eed1abf57cd2a, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1104294017
+      objectReference: {fileID: 0}
     - target: {fileID: 5749638377805226640, guid: 503db0d653620e64da4eed1abf57cd2a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.1199932
@@ -12105,6 +12133,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InvisibleBelt
       objectReference: {fileID: 0}
+    - target: {fileID: 8786005308923651583, guid: 503db0d653620e64da4eed1abf57cd2a, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12126,6 +12158,10 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 0.4
       objectReference: {fileID: 0}
+    - target: {fileID: 2194229061092642432, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3824459805755344928, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.83
@@ -12136,7 +12172,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3824459805755344928, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 3824459805755344928, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -12173,6 +12209,18 @@ PrefabInstance:
     - target: {fileID: 7419464304183977446, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7835508895305856311, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7835508895305856311, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7835508895305856311, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 603423773
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -38441,6 +38489,10 @@ PrefabInstance:
     - target: {fileID: 6946657031299846838, guid: 3ed8e1c8568b9c54dbae9afb6748c7c7, type: 3}
       propertyPath: m_Name
       value: Mimic
+      objectReference: {fileID: 0}
+    - target: {fileID: 6946657031299846838, guid: 3ed8e1c8568b9c54dbae9afb6748c7c7, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8173062445614549035, guid: 3ed8e1c8568b9c54dbae9afb6748c7c7, type: 3}
       propertyPath: sightEvents

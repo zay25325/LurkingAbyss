@@ -55,6 +55,8 @@ public class MimicRevealState : MonsterState
         {
             Debug.LogWarning("MimicController is null.");
         }
+
+        ResetSpriteRendererSortingLayer();
     }
 
     private void SetDestination()
@@ -165,5 +167,20 @@ private float nextSafeSpotCheckTime = 0f; // Time when the next safe spot check 
     {
         Debug.Log("Mimic is safe and player is far. Switching to idle.");
         controller.SwitchState<MimicIdleState>();
+    }
+
+    private void ResetSpriteRendererSortingLayer()
+    {
+        if (controller != null && controller.spriteRenderer != null)
+        {
+            controller.spriteRenderer.sortingLayerName = "Default";
+            controller.spriteRenderer.sortingOrder = 0;
+            controller.gameObject.layer = LayerMask.NameToLayer("Entities");
+            Debug.Log("Sprite Renderer sorting layer reset to default and layer set to Entities.");
+        }
+        else
+        {
+            Debug.LogWarning("Controller or Sprite Renderer is null.");
+        }
     }
 }

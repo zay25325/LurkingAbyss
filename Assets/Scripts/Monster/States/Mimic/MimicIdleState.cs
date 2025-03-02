@@ -46,6 +46,24 @@ public class MimicIdleState : MonsterState
             Debug.Log($"Total items available: {itemSprites.Count}");
             Debug.Log($"Selected item sprite: {randomItemSprite.name}");
         }
+
+        SetSpriteRendererSortingLayerToItem();
+    }
+
+    private void SetSpriteRendererSortingLayerToItem()
+    {
+        SpriteRenderer spriteRenderer = controller.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.sortingLayerName = "Item";
+            spriteRenderer.gameObject.layer = LayerMask.NameToLayer("Item");
+            Debug.Log($"Sprite Renderer sorting layer set to: {spriteRenderer.sortingLayerName}");
+            Debug.Log($"GameObject layer set to: {LayerMask.LayerToName(spriteRenderer.gameObject.layer)}");
+        }
+        else
+        {
+            Debug.LogWarning("SpriteRenderer component not found on the controller.");
+        }
     }
 }
 
