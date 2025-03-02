@@ -6,20 +6,18 @@ public class Grenade : Item
 {
     public Sprite grenadeIcon = null;  // Icon for the grenade
     private GameObject grenadePrefab = null;    // Prefab for the grenade
-
-    private ProjectileSpawner grenadeSpawner;
+    public GameObject grenadeProjectilePrefab; // Prefab for the grenade projectile
 
     private void Awake()
     {
         // Set the prefab reference here
         grenadePrefab = this.gameObject;
+        
         // Initialize the item properties manually
-
-        // Set the properties of the grenade item
         ItemName = "Grenade";
         ItemDescription = "Explodes on impact, dealing damage to nearby enemies.";
         ItemIcon = grenadeIcon;
-        ItemID = 0;
+        ItemID = 1;
         maxItemCharge = 3;
         ItemCharge = 3;
         ItemRarity = Rarity.Common;
@@ -28,11 +26,9 @@ public class Grenade : Item
         ItemSubtype = Subtype.Combat;
         ItemObject = grenadePrefab;
 
-        // Find the spawner in the scene (Make sure there is one)
-        grenadeSpawner = FindObjectOfType<ProjectileSpawner>();
-        if (grenadeSpawner == null)
+        if (grenadeProjectilePrefab == null)
         {
-            Debug.LogError("ProjectileSpawner not found in the scene! Ensure it's attached to a GameObject.");
+            Debug.LogError("GrenadeProjectilePrefab is not assigned! Please assign it in the inspector.");
         }
     }
 
@@ -40,7 +36,9 @@ public class Grenade : Item
     {
         if (CanUseItem())
         {
-            Throw();
+            ThrowGrenade();
+            ReduceItemCharge();
+            DestroyItem(ItemObject);
         }
         else
         {
@@ -48,54 +46,72 @@ public class Grenade : Item
         }
     }
 
-        private void Throw()
+private void ThrowGrenade()
+{
+    if (Camera.main == null) return;
+
+    // Get mouse position in world space
+    Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    mousePosition.z = 0f; // Ensure the grenade stays in 2D space
+
+    // Get the player position
+    PlayerController player = FindObjectOfType<PlayerController>();
+    if (player == null)
     {
-        StartCoroutine(WaitForProjectileToLand());
+        Debug.LogError("Player not found!");
+        return;
     }
 
-    private IEnumerator WaitForProjectileToLand()
+    // Spawn the grenade projectile at the player's position
+    GameObject grenade = Instantiate(grenadeProjectilePrefab, player.transform.position, Quaternion.identity);
+
+    // Get the direction from the player's position to the mouse position
+    Vector3 direction = (mousePosition - player.transform.position).normalized;
+
+    // Set the target for the ProjectileController to handle the movement
+    ProjectileController projectileController = grenade.GetComponent<ProjectileController>();
+    if (projectileController != null)
     {
-        // Get target position (mouse position converted to world space)
-        Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        targetPosition.z = 0; // Ensure it's in 2D space
+        projectileController.Target = new Vector2(mousePosition.x, mousePosition.y); // Set target to the mouse position
+    }
+    else
+    {
+        Debug.LogError("Grenade is missing a ProjectileController!");
+    }
 
-        // Get the player's current position
-        Vector3 playerPosition = FindObjectOfType<PlayerController>().transform.position;
+    // Set projectile movement with velocity
+    Rigidbody2D rb = grenade.GetComponent<Rigidbody2D>();
+    if (rb != null)
+    {
+        float grenadeSpeed = projectileController.Speed; // Adjust as needed
+        rb.velocity = direction * grenadeSpeed;  // Apply velocity in the desired direction
+    }
+    else
+    {
+        Debug.LogError("Grenade projectile is missing a Rigidbody2D!");
+    }
 
-        // Fire a rock from the player's position towards the target
-        grenadeSpawner.FireProjectile(playerPosition, targetPosition);
-
-        Projectile rockProj = grenadeSpawner.projScript;
-
-        // Wait until the projectile has landed
-        while (!rockProj.HasLanded())
+        // Ignore collision with the player
+        Collider2D playerCollider = player.GetComponent<Collider2D>();
+        Collider2D projectileCollider = grenade.GetComponent<Collider2D>();
+        if (playerCollider != null && projectileCollider != null)
         {
-            yield return null; // Wait for the next frame
+            Physics2D.IgnoreCollision(playerCollider, projectileCollider);
+            Debug.Log("Ignoring collision between player and projectile.");
         }
 
-        // Continue with the rest of the logic after the projectile has landed
-        Explosion(targetPosition);
+    // Set grenade projectile layer and collision rules
+    int projectileLayer = LayerMask.NameToLayer("Projectiles");
+    grenade.layer = projectileLayer;
 
-        Debug.Log("Shooting with: " + ItemName);
-    }
+    int playerLayer = LayerMask.NameToLayer("Player");
+    int entitiesLayer = LayerMask.NameToLayer("Entities");
+    int visionBlockersLayer = LayerMask.NameToLayer("VisionBlockers");
+    int itemLayer = LayerMask.NameToLayer("Item");
 
-    private void Explosion(Vector3 targetPosition)
-    {
-        //COMMENTING OUT THIS FOR NOW UNTIL I UNDERSTAND MROE ABOUT THE TAG SYSTEM WE ARE IMPLMENTING
-
-        // Collider2D[] colliders = Physics2D.OverlapCircleAll(targetPosition, 5f);
-
-        // foreach (Collider2D collider in colliders)
-        // {
-        //     if (collider.CompareTag("Enemy"))
-        //     {
-        //         collider.GetComponent<Enemy>().TakeDamage(10);
-        //     }
-        // }
-
-        Debug.Log("BIG BOOM Explosion at: " + targetPosition);
-
-        ReduceItemCharge();
-        DestroyItem(ItemObject);
-    }
+    Physics2D.IgnoreLayerCollision(projectileLayer, playerLayer, false);
+    Physics2D.IgnoreLayerCollision(projectileLayer, entitiesLayer, false);
+    Physics2D.IgnoreLayerCollision(projectileLayer, visionBlockersLayer, false);
+    Physics2D.IgnoreLayerCollision(projectileLayer, itemLayer, true);
+}
 }

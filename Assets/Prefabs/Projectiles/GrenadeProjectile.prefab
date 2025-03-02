@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 1495061116417795756}
   - component: {fileID: 7588300488887606566}
   - component: {fileID: 8752684270251212796}
+  - component: {fileID: 511163491455605654}
   m_Layer: 11
   m_Name: GrenadeProjectile
   m_TagString: Untagged
@@ -208,3 +209,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ce7cc08cadafe47b5d4430ecc4b853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &511163491455605654
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5477511654260802890}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
