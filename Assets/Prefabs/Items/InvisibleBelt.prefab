@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6467834988121516077}
   - component: {fileID: 3810492056175241408}
   - component: {fileID: -3209342604988097404}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: InvisibleBelt
   m_TagString: Item
   m_Icon: {fileID: 0}

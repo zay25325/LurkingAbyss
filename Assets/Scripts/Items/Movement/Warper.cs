@@ -128,10 +128,19 @@ public class Warper : Item
 
             if (isCollision)
             {
-                Debug.Log("Collision detected at target position. Teleport failed.");
-                // Move the player to the position right before the wall
-                playerTransform.position = hit.position - new Vector3 (0f,1f,0f); // Adjust the offset as needed
-                didTeleport = true;
+                Debug.Log("Collision detected at target position. Finding nearest valid position.");
+                // Find the nearest valid position within the NavMesh
+                if (UnityEngine.AI.NavMesh.SamplePosition(hit.position, out UnityEngine.AI.NavMeshHit nearestHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
+                {
+                    playerTransform.position = nearestHit.position;
+                    Debug.Log("Player teleported to nearest valid position: " + nearestHit.position);
+                    didTeleport = true;
+                }
+                else
+                {
+                    Debug.LogError("No valid position found near the target position!");
+                    didTeleport = false;
+                }
             }
             else
             {
