@@ -12,12 +12,6 @@ public class HUD : MonoBehaviour
     private List<Item> items;
     private Item currentItem;
 
-    /*public HUD() // was causing errors. Also SHOULD NOT have constructors for MonoBehaviours
-    {
-        //items = new List<Item>();
-        intSlider.value = 17.4f;
-    }*/
-
     public void Start()
     {
         items = new List<Item>();
