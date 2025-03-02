@@ -11,7 +11,7 @@ public class MonsterNavController : MonoBehaviour
         monsterNav.BuildNavMesh();
     }
 
-    public void UpdateMesh() {
-        monsterNav.UpdateNavMesh(monsterNav.navMeshData);
+    public AsyncOperation UpdateMesh() {
+        return monsterNav.UpdateNavMesh(monsterNav.navMeshData);
     }
 }

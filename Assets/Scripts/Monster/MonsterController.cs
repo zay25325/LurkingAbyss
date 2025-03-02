@@ -9,7 +9,7 @@ public class MonsterController : MonoBehaviour
     [SerializeField] OnHitEvents hitEvents;
     [SerializeField] OnInteractionEvent interactionEvent;
     [SerializeField] MonsterSightEvents sightEvents;
-    [SerializeField] SightMeshController sightController;
+    [SerializeField] SimpleSightMeshController sightController;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] protected MonsterState state;
 
@@ -27,13 +27,15 @@ public class MonsterController : MonoBehaviour
     protected List<GameObject> objectsInView = new List<GameObject>();
     protected bool overrideSightDirection = false;
 
-    protected const float RESPAWN_DELAY = 5f;
+    protected const float RESPAWN_DELAY = 30f;
 
     public NavMeshAgent Agent { get => agent; }
     public List<GameObject> ObjectsInView { get => objectsInView; }
     public float HP { get => hp; set => hp = value; }
     public float MaxHP { get => maxHP; set => maxHP = value; }
     public float BaseSpeed { get => baseSpeed; set => baseSpeed = value; }
+    public bool OverrideSightDirection { get => overrideSightDirection; set => overrideSightDirection = value; }
+    public SimpleSightMeshController SightController { get => sightController; }
 
 
     protected void Awake()
@@ -52,6 +54,9 @@ public class MonsterController : MonoBehaviour
 
     private void OnEnable()
     {
+        agent.enabled = true;
+        agent.ResetPath();
+
         if (hitEvents != null)
         {
             hitEvents.OnStunned.AddListener(OnStunned);
