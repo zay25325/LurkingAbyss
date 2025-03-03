@@ -148,7 +148,7 @@ public class LevelController : MonoBehaviour
                         // then pos points to a wall
                         // then perp points to a spot on that wall
                         tileManager.ClearTile(TileMapLayer.LayerClass.Wall, (Vector2Int)tileManager.grid.WorldToCell(roompos+dir*(halfwidth)+perp*doorpos));
-                        Instantiate(doorPrefab, roompos+dir*(halfwidth)+perp*doorpos+(Vector2.one*0.5f), Quaternion.identity);
+                        //Instantiate(doorPrefab, roompos+dir*(halfwidth)+perp*doorpos+(Vector2.one*0.5f), Quaternion.identity);
                         break;
                     case 2: // open
                         for(int j = (int)(-halfwidth)+1; j < halfwidth; j++) {
