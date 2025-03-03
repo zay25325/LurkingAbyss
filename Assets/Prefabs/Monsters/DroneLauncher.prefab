@@ -60,11 +60,24 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 1743688563, guid: ad828b0bbd3f45b45b7aae5f403d5c52, type: 3}
+    - target: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_AgentTypeID
       value: -1372625422
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1410002626277024882, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -133,7 +146,7 @@ MonoBehaviour:
   sightEvents: {fileID: 387152459142826319}
   sightController: {fileID: 8352039265561788746}
   agent: {fileID: 1286270550787987944}
-  state: {fileID: 0}
+  state: {fileID: -2213816959302096698}
   HearingAmplificaiton: 1
   hp: 0
   maxHP: 0

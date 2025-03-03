@@ -54,11 +54,12 @@ public class ProjectileMonsterMoveState : MonsterState
 
         if (controller.Agent.remainingDistance < 0.5f)
         {
-            if (currentNavPoint.HasValue)  // <-- Prevent null reference
-            {
-                navigationPoints.Remove(currentNavPoint.Value);
-                currentNavPoint = null;
-            }
+            navigationPoints.Remove(currentNavPoint.Value); 
+            if (navigationPoints.Count == 0)
+                GenerateNavigationPoints();
+
+            currentNavPoint = navigationPoints[Random.Range(0, navigationPoints.Count)];
+            controller.Agent.SetDestination(currentNavPoint.Value);
         }
 
         // Check for potential targets
@@ -72,7 +73,7 @@ public class ProjectileMonsterMoveState : MonsterState
 
     private void GenerateNavigationPoints()
     {
-        NavMeshSurface navMeshSurface = GameObject.FindObjectOfType<NavMeshSurface>();
+        NavMeshPlus.Components.NavMeshSurface navMeshSurface = GameObject.FindFirstObjectByType<NavMeshPlus.Components.NavMeshSurface>();
         if (navMeshSurface == null)
         {
             Debug.LogError("No NavMeshSurface found in the scene.");

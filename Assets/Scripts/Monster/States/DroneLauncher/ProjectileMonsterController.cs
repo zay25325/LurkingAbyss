@@ -27,7 +27,7 @@ public class ProjectileMonsterController : MonsterController
     {
         base.Update();
 
-        if (Target == null)
+        if (state.GetType() != typeof(ProjectileMonsterMoveState) && Target == null)
         {
             SwitchState<ProjectileMonsterMoveState>();
         }
