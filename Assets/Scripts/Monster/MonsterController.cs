@@ -1,3 +1,10 @@
+/*
+File: MonsterController.cs
+Project: Capstone Project
+Programmer: Isaiah Bartlett
+First Version: 
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -240,5 +247,37 @@ public class MonsterController : MonoBehaviour
     protected void OnInteract(GameObject other)
     {
         state.OnInteract(other);
+    }
+
+
+
+
+
+
+    public static List<Vector3> GenerateNavigationPoints(float navigationPointDistance)
+    {
+        List<Vector3> navigationPoints = new List<Vector3>();
+        NavMeshPlus.Components.NavMeshSurface navSurface = GameObject.FindFirstObjectByType<NavMeshPlus.Components.NavMeshSurface>();
+        // Make points spread out evenly across the entire navmesh 
+        Bounds bounds = navSurface.navMeshData.sourceBounds;
+        int xPoints = Mathf.CeilToInt(bounds.size.x / navigationPointDistance);
+        int yPoints = Mathf.CeilToInt(bounds.size.z / navigationPointDistance); // navmesh needs to be rotated, so this needs to be z, not y
+
+        float xDifference = bounds.size.x / (xPoints + 1);
+        float yDifference = bounds.size.z / (yPoints + 1);
+
+        for (int x = 0; x <= xPoints; x++)
+        {
+            for (int y = 0; y <= yPoints; y++)
+            {
+                Vector3 rawNavPoint = new Vector3(bounds.min.x, bounds.min.z, 0) + new Vector3(xDifference / 2 + xDifference * x, yDifference / 2 + yDifference * y, 0);
+                if (NavMesh.SamplePosition(rawNavPoint, out NavMeshHit hit, navigationPointDistance, 1))
+                {
+                    navigationPoints.Add(hit.position);
+                }
+            }
+        }
+
+        return navigationPoints;
     }
 }
