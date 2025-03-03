@@ -46,72 +46,72 @@ public class Grenade : Item
         }
     }
 
-private void ThrowGrenade()
-{
-    if (Camera.main == null) return;
-
-    // Get mouse position in world space
-    Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    mousePosition.z = 0f; // Ensure the grenade stays in 2D space
-
-    // Get the player position
-    PlayerController player = FindObjectOfType<PlayerController>();
-    if (player == null)
+    private void ThrowGrenade()
     {
-        Debug.LogError("Player not found!");
-        return;
-    }
+        if (Camera.main == null) return;
 
-    // Spawn the grenade projectile at the player's position
-    GameObject grenade = Instantiate(grenadeProjectilePrefab, player.transform.position, Quaternion.identity);
+        // Get mouse position in world space
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.z = 0f; // Ensure the grenade stays in 2D space
 
-    // Get the direction from the player's position to the mouse position
-    Vector3 direction = (mousePosition - player.transform.position).normalized;
-
-    // Set the target for the ProjectileController to handle the movement
-    ProjectileController projectileController = grenade.GetComponent<ProjectileController>();
-    if (projectileController != null)
-    {
-        projectileController.Target = new Vector2(mousePosition.x, mousePosition.y); // Set target to the mouse position
-    }
-    else
-    {
-        Debug.LogError("Grenade is missing a ProjectileController!");
-    }
-
-    // Set projectile movement with velocity
-    Rigidbody2D rb = grenade.GetComponent<Rigidbody2D>();
-    if (rb != null)
-    {
-        float grenadeSpeed = projectileController.Speed; // Adjust as needed
-        rb.velocity = direction * grenadeSpeed;  // Apply velocity in the desired direction
-    }
-    else
-    {
-        Debug.LogError("Grenade projectile is missing a Rigidbody2D!");
-    }
-
-        // Ignore collision with the player
-        Collider2D playerCollider = player.GetComponent<Collider2D>();
-        Collider2D projectileCollider = grenade.GetComponent<Collider2D>();
-        if (playerCollider != null && projectileCollider != null)
+        // Get the player position
+        PlayerController player = FindObjectOfType<PlayerController>();
+        if (player == null)
         {
-            Physics2D.IgnoreCollision(playerCollider, projectileCollider);
-            Debug.Log("Ignoring collision between player and projectile.");
+            Debug.LogError("Player not found!");
+            return;
         }
 
-    // Set grenade projectile layer and collision rules
-    int projectileLayer = LayerMask.NameToLayer("Projectiles");
-    grenade.layer = projectileLayer;
+        // Spawn the grenade projectile at the player's position
+        GameObject grenade = Instantiate(grenadeProjectilePrefab, player.transform.position, Quaternion.identity);
 
-    int playerLayer = LayerMask.NameToLayer("Player");
-    int entitiesLayer = LayerMask.NameToLayer("Entities");
-    int visionBlockersLayer = LayerMask.NameToLayer("VisionBlockers");
-    int itemLayer = LayerMask.NameToLayer("Item");
+        // Get the direction from the player's position to the mouse position
+        Vector3 direction = (mousePosition - player.transform.position).normalized;
 
-    Physics2D.IgnoreLayerCollision(projectileLayer, playerLayer, false);
-    Physics2D.IgnoreLayerCollision(projectileLayer, entitiesLayer, false);
-    Physics2D.IgnoreLayerCollision(projectileLayer, visionBlockersLayer, false);
-    Physics2D.IgnoreLayerCollision(projectileLayer, itemLayer, true);
-}
+        // Set the target for the ProjectileController to handle the movement
+        ProjectileController projectileController = grenade.GetComponent<ProjectileController>();
+        if (projectileController != null)
+        {
+            projectileController.Target = new Vector2(mousePosition.x, mousePosition.y); // Set target to the mouse position
+        }
+        else
+        {
+            Debug.LogError("Grenade is missing a ProjectileController!");
+        }
+
+        // Set projectile movement with velocity
+        Rigidbody2D rb = grenade.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            float grenadeSpeed = projectileController.Speed; // Adjust as needed
+            rb.velocity = direction * grenadeSpeed;  // Apply velocity in the desired direction
+        }
+        else
+        {
+            Debug.LogError("Grenade projectile is missing a Rigidbody2D!");
+        }
+
+            // Ignore collision with the player
+            Collider2D playerCollider = player.GetComponent<Collider2D>();
+            Collider2D projectileCollider = grenade.GetComponent<Collider2D>();
+            if (playerCollider != null && projectileCollider != null)
+            {
+                Physics2D.IgnoreCollision(playerCollider, projectileCollider);
+                Debug.Log("Ignoring collision between player and projectile.");
+            }
+
+        // Set grenade projectile layer and collision rules
+        int projectileLayer = LayerMask.NameToLayer("Projectiles");
+        grenade.layer = projectileLayer;
+
+        int playerLayer = LayerMask.NameToLayer("Player");
+        int entitiesLayer = LayerMask.NameToLayer("Entities");
+        int visionBlockersLayer = LayerMask.NameToLayer("VisionBlockers");
+        int itemLayer = LayerMask.NameToLayer("Item");
+
+        Physics2D.IgnoreLayerCollision(projectileLayer, playerLayer, false);
+        Physics2D.IgnoreLayerCollision(projectileLayer, entitiesLayer, false);
+        Physics2D.IgnoreLayerCollision(projectileLayer, visionBlockersLayer, false);
+        Physics2D.IgnoreLayerCollision(projectileLayer, itemLayer, true);
+    }
 }

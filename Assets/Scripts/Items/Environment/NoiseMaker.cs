@@ -102,7 +102,7 @@ public class NoiseMaker : Item
         while (noiseCounter > 0)
         {
             //MOST LIKELY NEEDS TO BE REFACTORED TO INCLUDE ENEMIES WITHIN ENTITY TAGS LIST
-            NoiseDetectionManager.Instance.NoiseEvent.Invoke(this.transform.position, noiseLevel, new List<EntityTags>());
+            NoiseDetectionManager.Instance.NoiseEvent.Invoke(this.transform.position, noiseLevel, GetComponent<EntityInfo>().Tags);
             noiseCounter--;
             Debug.Log("Noise Counter: " + noiseCounter);
             yield return new WaitForSeconds(1f);
