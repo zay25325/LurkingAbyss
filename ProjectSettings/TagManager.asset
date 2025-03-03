@@ -16,13 +16,13 @@ TagManager:
   - UI
   - VisionBlockers
   - 
-  - 
+  - Player
   - 
   - Entities
   - Projectiles
   - Vision Area
   - Floor
-  - 
+  - Item
   - 
   - 
   - 
@@ -44,6 +44,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Item
+    uniqueID: 1104294017
+    locked: 0
+  - name: Player
+    uniqueID: 603423773
   - name: Darkness
     uniqueID: 2038318623
     locked: 0
