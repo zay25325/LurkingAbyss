@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6467834988121516077}
   - component: {fileID: 3810492056175241408}
   - component: {fileID: 2067228028070481044}
+  - component: {fileID: -5955856154439124910}
   m_Layer: 14
   m_Name: DashBooster
   m_TagString: Item
@@ -172,3 +173,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashBoosterIcon: {fileID: 0}
+--- !u!114 &-5955856154439124910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8786005308923651583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7ba51554d7cd534db8d52fd65eb800b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tags: 010000001d000000
