@@ -300,6 +300,9 @@ MonoBehaviour:
   maxHP: 10
   callDistance: 25
   navigationPointDistance: 20
+  RequiredSwarmlingsForCombat: 4
+  collectedSwarmlings: 0
+  passiveHealingPerSwarmling: 0.125
 --- !u!114 &43556223004357966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,5 +359,6 @@ MonoBehaviour:
   controller: {fileID: 0}
   SwarmlingProjectile: {fileID: 3646233433960996345, guid: d42105ad2b98f4e4e9ef099e32ddb436, type: 3}
   fireRateDelay: 0.75
+  fireRateReductionPerSwarmling: 0.125
   positionUpdateDelay: 0.5
   combatDistance: 3

@@ -1,0 +1,1874 @@
+fileFormatVersion: 2
+guid: ad828b0bbd3f45b45b7aae5f403d5c52
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ProjectileMonster_0
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 960
+        width: 41
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb8dd193db1162846909d58cc9d4d54b
+      internalID: 1743688563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_1
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 960
+        width: 42
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 092ed72a36a860c4991a72730bccd5fe
+      internalID: 681745286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_2
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 960
+        width: 42
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ee1529caf00d2b42b8eb902d5f0730c
+      internalID: 696686744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_3
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 960
+        width: 42
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 431f359b3c9b9264b9c4a4e5b3fb7712
+      internalID: 1159547803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_4
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 960
+        width: 39
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 592246147bd54c745bcd8419c87549f5
+      internalID: 1336403731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_5
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 896
+        width: 42
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3a4f7f1eb0749641951ccdaa2da07a0
+      internalID: -310628602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_6
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 896
+        width: 41
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c18c6754f39510f4c80f4904f3c76670
+      internalID: -1666262720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_7
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 896
+        width: 39
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62e895b7b4ffb024396edc63b26b8b79
+      internalID: 1742287585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_8
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 896
+        width: 42
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b33f4f53eb19be847b021478c52bed09
+      internalID: 925343726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_9
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 896
+        width: 41
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e7f52189cbf723479900b809cd90987
+      internalID: -855132380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_10
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 832
+        width: 38
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ed13d908dc005a44a33bd23a1eb7c01
+      internalID: -1615051509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_11
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 832
+        width: 41
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bb5792a55d6a904ba2c929125969393
+      internalID: 353941194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_12
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 832
+        width: 43
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6afe5d6afaae63148b3604063b61e2b2
+      internalID: -617233598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_13
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 832
+        width: 40
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05c68807482127b4486044bd6ceaea54
+      internalID: 1812325318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_14
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 832
+        width: 39
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 692a2d9dc37aef445adc8e1ca6e7618b
+      internalID: 30395897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 768
+        width: 70
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 110794ebfe18e9146b9b37c3b37a2dd0
+      internalID: -1030778185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_16
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 768
+        width: 69
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5a7dc3333b6cad4e9bc135b48803d41
+      internalID: 1801003693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_17
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 768
+        width: 67
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1809d8cf4b294b245909025ea573bfc2
+      internalID: 853191402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_18
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 768
+        width: 51
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26ea0f9f7a10f6d4484d7fce60cdc775
+      internalID: -2128166625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_19
+      rect:
+        serializedVersion: 2
+        x: 349
+        y: 768
+        width: 38
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5add82885f4caa44a877cd5b6a4841e
+      internalID: -1044072226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_20
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 704
+        width: 44
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c2ea5ae408adfc45b7ce3e416b6af73
+      internalID: 292534292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_21
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 704
+        width: 46
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 527355eb415b4f9438ebf4de9fa1b96f
+      internalID: -1117648461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_22
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 704
+        width: 46
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0f4814b7404e27448f07ba20f242c16
+      internalID: 1611869978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_23
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 708
+        width: 6
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68a53b16e6a24bc4781e23fddcd84f95
+      internalID: 882441526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_24
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 704
+        width: 46
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2858794e501cee44b357d310c2116e7
+      internalID: -1361394605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_25
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 704
+        width: 51
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d29b4766a07b7a6479846b145a5d373f
+      internalID: -886455659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_26
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 640
+        width: 52
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a51f4468acbac6b4db751bba6d72fa87
+      internalID: 1716260439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_27
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 640
+        width: 57
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c35fe8120a0173d46a33d6db17efd434
+      internalID: 793497891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_28
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 640
+        width: 54
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 755cc5d5f995cd04383728b6f4fba830
+      internalID: -991125772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_29
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 640
+        width: 45
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ffbd51dba9a09347bea3ca0a4882e2e
+      internalID: -1992890069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_30
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 640
+        width: 43
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7128b39dd70864c46a8bd8965fedf071
+      internalID: -1119307539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_31
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 576
+        width: 41
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9675ef923174e14394bf3331227563e
+      internalID: -1458476694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_32
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 576
+        width: 38
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24fa9eea3d34ab749b8294115bfb7802
+      internalID: -958685719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_33
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 576
+        width: 39
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c805b7b718f4ff48904bcf70ba1e317
+      internalID: 1843161191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_34
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 576
+        width: 44
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db4d0ad50ff724740ace871b6517d5fb
+      internalID: -1610114137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_35
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 576
+        width: 44
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40d8234af4334b94fb9d57a2a6696e4a
+      internalID: -1822703254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_36
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 512
+        width: 43
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44fc1efc114596848865bd2c34b49819
+      internalID: -1027558698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_37
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 512
+        width: 47
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9aee4b3baa4d35145a5225abde44c8f3
+      internalID: -1978393229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_38
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 512
+        width: 45
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da59c750e27dca240a5748c7e9150f8e
+      internalID: -1364788159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_39
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 512
+        width: 47
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63b8848c160a32a42afbf11a36ba46cf
+      internalID: 919330910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_40
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 512
+        width: 46
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed1df09f81d28ee42a3ec0f4b8e40f3c
+      internalID: -1493421153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_41
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 448
+        width: 47
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d56b02bbdc624a14091cbe210457b00e
+      internalID: 269210660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_42
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 448
+        width: 47
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44abb905dbdd8634fb904f5b7ab6d26c
+      internalID: 1267417125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_43
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 448
+        width: 47
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc2a4017c6985fa4ca79e37cdeb6163c
+      internalID: 1689261058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_44
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 448
+        width: 47
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3710ead3dc5bdde4cb260df870901899
+      internalID: 1484725649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_45
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 448
+        width: 46
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d28f4a1e92384234fb5c1f888281aa62
+      internalID: -2025392645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_46
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 384
+        width: 46
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 732d3a2a73db8234abc8a187c159de34
+      internalID: -1258647966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_47
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 384
+        width: 46
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91c2232c59e36454597c53c05433fe61
+      internalID: -1574813180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_48
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 384
+        width: 46
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b4039581fc639d41a19c7deffbd0676
+      internalID: 983533253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_49
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 384
+        width: 46
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da38292eac26a6341be56c4bc9ddac8d
+      internalID: -1013286142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_50
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 384
+        width: 46
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28d419a2ddaeed54eb1259b58cb6cc70
+      internalID: 175272233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_51
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 320
+        width: 47
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7fd9ab24990213d4393d87cb730f0c40
+      internalID: 480872210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_52
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 320
+        width: 44
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c75114c9b1a58e1449f87f7492c79b16
+      internalID: 1342728922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_53
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 320
+        width: 43
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50846ef8619dca14ab077dc1adee0277
+      internalID: -1242157625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_54
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 320
+        width: 43
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e85d50d61ef020249acda9b8192257ed
+      internalID: 1344792907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_55
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 320
+        width: 64
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb8edba3dbf9c784e95b14a45d8d9b5c
+      internalID: 1700666973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_56
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 256
+        width: 63
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f358257a314cfad47861c8c20fde4658
+      internalID: 1795006219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_57
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 256
+        width: 55
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63bdece694198cd4c987a5fb2e318620
+      internalID: -169458743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_58
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 256
+        width: 47
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd7a98ca51cd5c447a3057c01b1907c2
+      internalID: -506824880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_59
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 256
+        width: 47
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a32609cc7e96944380ce5e1aba784f9
+      internalID: 1595997529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_60
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 256
+        width: 47
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 358e245bf06e8ab449d3e7c0b47e96cb
+      internalID: -1700834025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_61
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 192
+        width: 47
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8edd941c0df3a343895dd12734d14e9
+      internalID: 1046748259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_62
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 192
+        width: 46
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe74a5733f2ccd4489a2869292294d24
+      internalID: 197046721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_63
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 192
+        width: 51
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15cca452854683447a2c85f75b5eaf91
+      internalID: -21641381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_64
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 192
+        width: 71
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a04a15626c1a09943a8306e5113f6a7a
+      internalID: -3473542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_65
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 192
+        width: 80
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38139e4901594e24d9deb96926719ad9
+      internalID: 364234172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_66
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 128
+        width: 72
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 252e52dd5bbdfe244afb2bfb6403e14b
+      internalID: -1187207155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_67
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 128
+        width: 72
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d3dbd5322d97694a97b06cc22d60baa
+      internalID: 1634093190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_68
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 128
+        width: 47
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7385163626776984b90a0efddd398779
+      internalID: 88990059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_69
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 128
+        width: 44
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 275161042a749ec42a4649e1f08213de
+      internalID: 186569197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_70
+      rect:
+        serializedVersion: 2
+        x: 339
+        y: 128
+        width: 43
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ffd820040e249542b03991c2f668d33
+      internalID: -829120333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_71
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 64
+        width: 44
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc108d58b47e3f44fb792ff8b8d99d29
+      internalID: -418394748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_72
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 64
+        width: 46
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7bd20dcea4bbd640a6466c80d850cf1
+      internalID: 1488891916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_73
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 64
+        width: 41
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e37fc4f1e7075814fa9be389e4fd0048
+      internalID: 693062693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_74
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 64
+        width: 38
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43043986b1a5c0b4184803f59df196f0
+      internalID: -2070727213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_75
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 64
+        width: 41
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1a3d349e9ecc944cba5db91b9a47997
+      internalID: 516860901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_76
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 0
+        width: 43
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1214fbe23d43c9145bfb16195abc5b76
+      internalID: 145236242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_77
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 0
+        width: 43
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bdb0b0bc1647c25439e147e3e052c0a6
+      internalID: 1291566975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_78
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 0
+        width: 41
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87e28ad00de6da648b0c2bdf19130b1f
+      internalID: -725435711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileMonster_79
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 0
+        width: 41
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c62da52f6d2031b468b26c9c679f6387
+      internalID: -1162628702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      ProjectileMonster_0: 1743688563
+      ProjectileMonster_1: 681745286
+      ProjectileMonster_10: -1615051509
+      ProjectileMonster_11: 353941194
+      ProjectileMonster_12: -617233598
+      ProjectileMonster_13: 1812325318
+      ProjectileMonster_14: 30395897
+      ProjectileMonster_15: -1030778185
+      ProjectileMonster_16: 1801003693
+      ProjectileMonster_17: 853191402
+      ProjectileMonster_18: -2128166625
+      ProjectileMonster_19: -1044072226
+      ProjectileMonster_2: 696686744
+      ProjectileMonster_20: 292534292
+      ProjectileMonster_21: -1117648461
+      ProjectileMonster_22: 1611869978
+      ProjectileMonster_23: 882441526
+      ProjectileMonster_24: -1361394605
+      ProjectileMonster_25: -886455659
+      ProjectileMonster_26: 1716260439
+      ProjectileMonster_27: 793497891
+      ProjectileMonster_28: -991125772
+      ProjectileMonster_29: -1992890069
+      ProjectileMonster_3: 1159547803
+      ProjectileMonster_30: -1119307539
+      ProjectileMonster_31: -1458476694
+      ProjectileMonster_32: -958685719
+      ProjectileMonster_33: 1843161191
+      ProjectileMonster_34: -1610114137
+      ProjectileMonster_35: -1822703254
+      ProjectileMonster_36: -1027558698
+      ProjectileMonster_37: -1978393229
+      ProjectileMonster_38: -1364788159
+      ProjectileMonster_39: 919330910
+      ProjectileMonster_4: 1336403731
+      ProjectileMonster_40: -1493421153
+      ProjectileMonster_41: 269210660
+      ProjectileMonster_42: 1267417125
+      ProjectileMonster_43: 1689261058
+      ProjectileMonster_44: 1484725649
+      ProjectileMonster_45: -2025392645
+      ProjectileMonster_46: -1258647966
+      ProjectileMonster_47: -1574813180
+      ProjectileMonster_48: 983533253
+      ProjectileMonster_49: -1013286142
+      ProjectileMonster_5: -310628602
+      ProjectileMonster_50: 175272233
+      ProjectileMonster_51: 480872210
+      ProjectileMonster_52: 1342728922
+      ProjectileMonster_53: -1242157625
+      ProjectileMonster_54: 1344792907
+      ProjectileMonster_55: 1700666973
+      ProjectileMonster_56: 1795006219
+      ProjectileMonster_57: -169458743
+      ProjectileMonster_58: -506824880
+      ProjectileMonster_59: 1595997529
+      ProjectileMonster_6: -1666262720
+      ProjectileMonster_60: -1700834025
+      ProjectileMonster_61: 1046748259
+      ProjectileMonster_62: 197046721
+      ProjectileMonster_63: -21641381
+      ProjectileMonster_64: -3473542
+      ProjectileMonster_65: 364234172
+      ProjectileMonster_66: -1187207155
+      ProjectileMonster_67: 1634093190
+      ProjectileMonster_68: 88990059
+      ProjectileMonster_69: 186569197
+      ProjectileMonster_7: 1742287585
+      ProjectileMonster_70: -829120333
+      ProjectileMonster_71: -418394748
+      ProjectileMonster_72: 1488891916
+      ProjectileMonster_73: 693062693
+      ProjectileMonster_74: -2070727213
+      ProjectileMonster_75: 516860901
+      ProjectileMonster_76: 145236242
+      ProjectileMonster_77: 1291566975
+      ProjectileMonster_78: -725435711
+      ProjectileMonster_79: -1162628702
+      ProjectileMonster_8: 925343726
+      ProjectileMonster_9: -855132380
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
