@@ -4131,9 +4131,33 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2213816959302096698, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1369656147482787558, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
+      propertyPath: state
+      value: 
+      objectReference: {fileID: 1307823487}
+    - target: {fileID: -1369656147482787558, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1369656147482787558, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
+      propertyPath: stalkingDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1286270550787987944, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1286270550787987944, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
+      propertyPath: m_AgentTypeID
+      value: -1372625422
+      objectReference: {fileID: 0}
+    - target: {fileID: 6304598713306179423, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
+      propertyPath: state
+      value: 
+      objectReference: {fileID: 1307823487}
+    - target: {fileID: 6304598713306179423, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -4143,7 +4167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6710790479279192983, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -24
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 6710790479279192983, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4181,6 +4205,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DroneLauncher
       objectReference: {fileID: 0}
+    - target: {fileID: 7292405018989683543, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 6702605786081691888, guid: 93c0d062e75dc6f488c7f90a95a911ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13250,6 +13278,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0b58844626d8284b8c6651558823dd3, type: 3}
+--- !u!114 &1307823487 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7292405018989683543, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
+  m_PrefabInstance: {fileID: 1109065765}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5ba46fe92459e449b0075071fea4702, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1337735065
 PrefabInstance:
   m_ObjectHideFlags: 0

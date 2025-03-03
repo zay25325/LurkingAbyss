@@ -13,29 +13,52 @@ using Unity.AI.Navigation;
 
 public class ProjectileMonsterMoveState : MonsterState
 {
-    protected new ProjectileMonsterController controller => base.controller as ProjectileMonsterController;
+    new protected ProjectileMonsterController controller { get => base.controller as ProjectileMonsterController; }
     private Vector3? currentNavPoint = null;
     private List<Vector3> navigationPoints = new List<Vector3>();
 
-    protected void OnEnable()
+    new protected void OnEnable()
     {
+        if (controller == null)
+        {
+            Debug.LogError("ProjectileMonsterMoveState: Controller is STILL null! Something went wrong.");
+            return;
+        }
+
         if (!currentNavPoint.HasValue)
         {
             if (navigationPoints.Count == 0)
+            {
                 GenerateNavigationPoints();
-
+            }
             currentNavPoint = navigationPoints[Random.Range(0, navigationPoints.Count)];
         }
 
         controller.Agent.SetDestination(currentNavPoint.Value);
     }
 
+
     private void Update()
     {
+        if (controller == null)
+        {
+            Debug.LogError("ProjectileMonsterMoveState: Controller is null!");
+            return;
+        }
+
+        if (controller.Agent == null)
+        {
+            Debug.LogError("ProjectileMonsterMoveState: NavMeshAgent is null!");
+            return;
+        }
+
         if (controller.Agent.remainingDistance < 0.5f)
         {
-            navigationPoints.Remove(currentNavPoint.Value);
-            currentNavPoint = null;
+            if (currentNavPoint.HasValue)  // <-- Prevent null reference
+            {
+                navigationPoints.Remove(currentNavPoint.Value);
+                currentNavPoint = null;
+            }
         }
 
         // Check for potential targets
@@ -45,6 +68,7 @@ public class ProjectileMonsterMoveState : MonsterState
             controller.SwitchState<ProjectileMonsterStalkingState>();
         }
     }
+
 
     private void GenerateNavigationPoints()
     {
