@@ -84,7 +84,7 @@ public class LevelController : MonoBehaviour
         yield return null;
         BuildNavMesh();
         yield return null;
-        tileManager.GenerateShadows();
+        GenerateShadows();
         yield return null;
         CreateSpawnList();
         yield return null;
@@ -190,6 +190,12 @@ public class LevelController : MonoBehaviour
             nav.UpdateMesh();
         }
     }
+
+    public void GenerateShadows()
+    {
+        tileManager.GenerateShadows();
+    }
+
     public IEnumerable WaitBuildNavMesh()
     {
         foreach (var nav in monsterNavs)
@@ -202,7 +208,7 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    private void CreateSpawnList()
+    public void CreateSpawnList()
     {
         // TODO: Add logic for number of each type
         spawnListPrefabs = spawnPoolManager.GenerateSpawnList(8, 2, 2);
@@ -282,15 +288,22 @@ public class LevelControllerEditor : Editor
             myScript.BuildNavMesh();
         }
 
-        if(GUILayout.Button("Destroy Map"))
+        if (GUILayout.Button("Generate Shadows"))
         {
-            myScript.DestroyLevel();
+            myScript.GenerateShadows();
         }
 
         if (GUILayout.Button("Spawn List"))
         {
+            myScript.CreateSpawnList();
             myScript.SpawnList();
         }
+
+        if (GUILayout.Button("Destroy Map"))
+        {
+            myScript.DestroyLevel();
+        }
+
     }
 }
 
