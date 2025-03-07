@@ -113,10 +113,42 @@ public class Warper : Item
         UnityEngine.AI.NavMeshHit hit;
         if (UnityEngine.AI.NavMesh.SamplePosition(clampedTargetPosition, out hit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
         {
-            // Set the player's position to the closest valid position on the NavMesh
-            playerTransform.position = hit.position;
-            Debug.Log("Player teleported to: " + hit.position);
-            didTeleport = true;
+            // Perform an overlap circle check to ensure no walls or colliders at the new position
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(hit.position, 0.5f); // Adjust the radius as needed
+
+            bool isCollision = false;
+            foreach (var collider in colliders)
+            {
+                if (collider.CompareTag("Walls")) // Check if the collider is a wall
+                {
+                    isCollision = true;
+                    break;
+                }
+            }
+
+            if (isCollision)
+            {
+                Debug.Log("Collision detected at target position. Finding nearest valid position.");
+                // Find the nearest valid position within the NavMesh
+                if (UnityEngine.AI.NavMesh.SamplePosition(hit.position, out UnityEngine.AI.NavMeshHit nearestHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
+                {
+                    playerTransform.position = nearestHit.position;
+                    Debug.Log("Player teleported to nearest valid position: " + nearestHit.position);
+                    didTeleport = true;
+                }
+                else
+                {
+                    Debug.LogError("No valid position found near the target position!");
+                    didTeleport = false;
+                }
+            }
+            else
+            {
+                // Set the player's position to the closest valid position on the NavMesh
+                playerTransform.position = hit.position;
+                Debug.Log("Player teleported to: " + hit.position);
+                didTeleport = true;
+            }
         }
         else
         {

@@ -291,30 +291,59 @@ public class PlayerController : MonoBehaviour
         PARAMETERS : InputAction.CallbackContext context - Input context for the interaction action.
         RETURNS : NONE
     */
-    private void DoInteraction(InputAction.CallbackContext context)
-    {
-        //maybe a static hitbox so an interactable object can tell if it is being hovered
-        
-        // Check for collision with an item or object with Item script
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 1f);
-        
-        foreach (var hitCollider in hitColliders)
-        {
-            Item item = hitCollider.GetComponentInChildren<Item>();
+ private void DoInteraction(InputAction.CallbackContext context)
+{
 
+    // Get the mouse position in world coordinates
+    Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    
+    float detectionRadius = 0.5f; // Default radius for left, right, and down
+    Vector2 direction = (mousePosition - (Vector2)transform.position).normalized;
+
+    if (direction.y > 0.5f) // If the direction is mostly upward
+    {
+        detectionRadius = 1.5f; // Increase radius when interacting above
+    }
+
+    // Detect all colliders within a radius of 1 unit around the player
+    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
+
+    foreach (var hitCollider in hitColliders)
+    {
+        // Ensure the mouse is over the object
+        if (hitCollider.OverlapPoint(mousePosition))  // Check if the mouse is over this collider
+        {
+            // Check if the object has an Item script attached
+            Item item = hitCollider.GetComponentInChildren<Item>();
             if (item != null)
             {
                 inventory.AddItem(hitCollider.gameObject);
-                break;
+                Debug.Log("Picked up item: " + item.name);
+                return;
             }
 
-            // If Player is touching ichor and interacts with it, it will then increase the player's ichor samples (currency)
+            // Check if the object is an Ichor
             if (hitCollider.CompareTag("Ichor"))
             {
                 playerStats.IchorSamples++;
+                Debug.Log("Picked up Ichor Sample");
+                return;
+            }
+
+            // Check for interactions with a Mimic
+            EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
+            if (entityInfo != null && entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
+            {
+                Debug.Log("Interacted with a Mimic!");
+                MimicController mimicController = hitCollider.GetComponent<MimicController>();
+                playerStats.TakeDamage(mimicController.AttackDamage);
+                mimicController.SwitchState<MimicRevealState>();
+                Debug.Log("Player Shield: " + playerStats.Shields);
+                return;
             }
         }
     }
+}
 
     /*
         FUNCTION : DropItem

@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 6467834988121516077}
   - component: {fileID: 3810492056175241408}
   - component: {fileID: 1387739841180143927}
-  m_Layer: 0
+  - component: {fileID: 3094634768795245870}
+  m_Layer: 14
   m_Name: Revivor
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -73,8 +74,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1104294017
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: -1779541695, guid: 7d63e92abd5afbb4fb5309bc17cd656c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -172,3 +173,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   revivorIcon: {fileID: -1779541695, guid: 7d63e92abd5afbb4fb5309bc17cd656c, type: 3}
+--- !u!114 &3094634768795245870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8786005308923651583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7ba51554d7cd534db8d52fd65eb800b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tags: 0100000024000000
