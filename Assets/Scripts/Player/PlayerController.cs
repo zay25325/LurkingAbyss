@@ -291,9 +291,19 @@ public class PlayerController : MonoBehaviour
     {
         canDash = false; // Prevent dashing multiple times
         playerStats.PlayerSpeed = playerStats.PlayerSpeed * playerStats.DashSpeed; // Increase speed for dashing
+        // Change sprite color to yellow to indicate invincibility
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = new Color(1f, 1f, 0f, 1f); // Yellow color
+        }
         MovingNoise();
         yield return new WaitForSeconds(DASH_DURATION); // Dash duration
         playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed after dashing
+        // Reset sprite color to original
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Original color
+        }
         MovingNoise();
         yield return new WaitForSeconds(DASH_COOLDOWN); // Cooldown duration
         canDash = true; // Allow dashing again
