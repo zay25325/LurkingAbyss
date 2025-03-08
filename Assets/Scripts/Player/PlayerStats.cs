@@ -33,6 +33,7 @@ public class PlayerStats : MonoBehaviour
     private int ichorSamples = 0;    // Number of ichor samples the player has
 
     private int playerNoise = 0;    // Noise level of the player
+    private OnHitEvents hitEvents;
 
     public float Health 
     { 
@@ -91,6 +92,15 @@ public class PlayerStats : MonoBehaviour
     { 
         get => ichorSamples; 
         set => ichorSamples = value; 
+    }
+
+    private void Start()
+    {
+        hitEvents = GetComponent<OnHitEvents>();
+        if (hitEvents != null)
+        {
+            hitEvents.OnHarmed.AddListener(TakeDamage);
+        }
     }
 
     private void RevivePlayer()

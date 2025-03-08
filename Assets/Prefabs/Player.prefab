@@ -690,6 +690,8 @@ GameObject:
   - component: {fileID: 2194229061092642432}
   - component: {fileID: 8924210376975214470}
   - component: {fileID: 6778809293174336508}
+  - component: {fileID: 4532257247874309121}
+  - component: {fileID: 5329569986458671722}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -835,3 +837,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tags: 0300000005000000070000001a000000
+--- !u!114 &4532257247874309121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7419464304183977446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdeea0c453086d946b10c724ac3caba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnStunned:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHarmed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStructuralDamaged:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &5329569986458671722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7419464304183977446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde5915a8fead81448570d3322c4bcf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnInteract:
+    m_PersistentCalls:
+      m_Calls: []

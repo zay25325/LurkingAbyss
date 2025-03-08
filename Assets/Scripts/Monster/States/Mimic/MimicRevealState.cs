@@ -36,6 +36,18 @@ public class MimicRevealState : MonsterState
             // Find the player reference
             playerTransform = GameObject.FindWithTag("Player").transform;
 
+            // Trigger ApplyHit on the player
+            OnHitEvents playerHitEvents = playerTransform.GetComponent<OnHitEvents>();
+            if (playerHitEvents != null)
+            {
+                playerHitEvents.ApplyHit(stunDuration: 0f, damage: 1f, structuralDamaged: 0f);
+                Debug.Log("Applied hit to the player.");
+            }
+            else
+            {
+                Debug.LogWarning("Player does not have OnHitEvents component.");
+            }
+            
             // Find a safe spot and assign currentNavPoint
             FindSafeSpot();
 

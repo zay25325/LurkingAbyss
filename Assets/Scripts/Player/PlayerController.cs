@@ -336,7 +336,7 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("Interacted with a Mimic!");
                 MimicController mimicController = hitCollider.GetComponent<MimicController>();
-                playerStats.TakeDamage(mimicController.AttackDamage);
+                //playerStats.TakeDamage(mimicController.AttackDamage);
                 mimicController.SwitchState<MimicRevealState>();
                 Debug.Log("Player Shield: " + playerStats.Shields);
                 return;
