@@ -34,6 +34,7 @@ public class PlayerStats : MonoBehaviour
 
     private int playerNoise = 0;    // Noise level of the player
     private OnHitEvents hitEvents;
+    private PlayerController playerController;
 
     public float Health 
     { 
@@ -101,6 +102,12 @@ public class PlayerStats : MonoBehaviour
         {
             hitEvents.OnHarmed.AddListener(TakeDamage);
         }
+
+        playerController = GetComponent<PlayerController>();
+        if (playerController == null)
+        {
+            Debug.LogError("PlayerController component is missing!");
+        }
     }
 
     private void RevivePlayer()
@@ -131,7 +138,13 @@ public class PlayerStats : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (shields > 0)
+        if (playerController != null && playerController.isInvincible)
+        {
+            Debug.Log("Player is invincible and did not take damage.");
+            return;
+        }
+        
+        else if (shields > 0)
         {
             shields -= damage;
             if (shields < 0)

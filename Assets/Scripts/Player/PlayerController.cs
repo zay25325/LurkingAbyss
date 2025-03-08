@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
 
     private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer component
 
+    public bool isInvincible { get; private set; } // Flag to check if player is invincible
 
     /*
         FUNCTION : Awake()
@@ -290,6 +291,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator DashCoroutine()
     {
         canDash = false; // Prevent dashing multiple times
+        isInvincible = true; // Set invincibility flag
         playerStats.PlayerSpeed = playerStats.PlayerSpeed * playerStats.DashSpeed; // Increase speed for dashing
         // Change sprite color to yellow to indicate invincibility
         if (spriteRenderer != null)
@@ -299,6 +301,7 @@ public class PlayerController : MonoBehaviour
         MovingNoise();
         yield return new WaitForSeconds(DASH_DURATION); // Dash duration
         playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed after dashing
+        isInvincible = false; // Reset invincibility flag
         // Reset sprite color to original
         if (spriteRenderer != null)
         {
