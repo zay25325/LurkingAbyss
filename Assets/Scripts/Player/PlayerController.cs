@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
     private Inventory inventory;
     private Item activeItem;
 
+    private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer component
+
 
     /*
         FUNCTION : Awake()
@@ -103,7 +105,6 @@ public class PlayerController : MonoBehaviour
     */
     private void Start()
     {
-
         playerStats = GetComponent<PlayerStats>();
         if (playerStats == null)
         {
@@ -120,7 +121,6 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("Rigidbody2D component is missing!");
         }
-
         else
         {
             // Ensure drag is zero
@@ -131,8 +131,6 @@ public class PlayerController : MonoBehaviour
             
             // Freeze rotation to prevent spinning
             playerRigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
-
-
         }
 
         // Get the Inventory component
@@ -140,6 +138,21 @@ public class PlayerController : MonoBehaviour
         if (inventory == null)
         {
             Debug.LogError("Inventory component is missing!");
+        }
+
+        // Get the SpriteRenderer component from the child GameObject named "Sprite"
+        Transform spriteTransform = transform.Find("Sprite");
+        if (spriteTransform != null)
+        {
+            spriteRenderer = spriteTransform.GetComponent<SpriteRenderer>();
+            if (spriteRenderer == null)
+            {
+                Debug.LogError("SpriteRenderer component is missing on the child GameObject!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Child GameObject named 'Sprite' is missing!");
         }
     }
 
@@ -226,12 +239,20 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             playerStats.PlayerSpeed = playerStats.PlayerSpeed / playerStats.SneakSpeed; // Reduce speed for sneaking
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f); // Dim the sprite (reduce alpha to 50%)
+            }
         }
 
         //When the sneak action is canceled, reset the player speed
         else if (context.canceled)
         {
             playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed when not sneaking
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Restore the sprite color (set alpha to 100%)
+            }
         }
 
 
