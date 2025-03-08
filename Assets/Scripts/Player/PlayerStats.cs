@@ -101,6 +101,7 @@ public class PlayerStats : MonoBehaviour
         if (hitEvents != null)
         {
             hitEvents.OnHarmed.AddListener(TakeDamage);
+            hitEvents.OnStunned.AddListener(StunPlayer);
         }
 
         playerController = GetComponent<PlayerController>();
@@ -143,7 +144,7 @@ public class PlayerStats : MonoBehaviour
             Debug.Log("Player is invincible and did not take damage.");
             return;
         }
-        
+
         else if (shields > 0)
         {
             shields -= damage;
@@ -157,6 +158,21 @@ public class PlayerStats : MonoBehaviour
         {
             health -= damage;
         }
+    }
+
+    public void StunPlayer(float stunDuration)
+    {
+        if (playerController != null)
+        {
+            StartCoroutine(StunCoroutine(stunDuration));
+        }
+    }
+
+    private IEnumerator StunCoroutine(float stunDuration)
+    {
+        playerController.isParalyzed = true;
+        yield return new WaitForSeconds(stunDuration);
+        playerController.isParalyzed = false;
     }
 
 

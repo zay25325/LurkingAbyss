@@ -47,7 +47,7 @@ public class MimicRevealState : MonsterState
             {
                 Debug.LogWarning("Player does not have OnHitEvents component.");
             }
-            
+
             // Find a safe spot and assign currentNavPoint
             FindSafeSpot();
 

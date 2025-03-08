@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour
 
     public bool isInvincible { get; private set; } // Flag to check if player is invincible
 
+    public bool isParalyzed = false;
+
     /*
         FUNCTION : Awake()
         DESCRIPTION : called when the script instance is being loaded. Currently handles input control initialization, camera reference and input event subscription
@@ -165,6 +167,40 @@ public class PlayerController : MonoBehaviour
     */
     private void FixedUpdate()
     {
+        if (isParalyzed)
+        {
+            // Disable Player Animation Script in the child GameObject "Sprite"
+            Transform spriteTransform = transform.Find("Sprite");
+            if (spriteTransform != null)
+            {
+                var playerAnimation = spriteTransform.GetComponent<PlayerAnimation>();
+                if (playerAnimation != null)
+                {
+                    playerAnimation.enabled = false;
+                }
+
+                // Start flashing blue to indicate shock
+                StartCoroutine(FlashBlue(spriteRenderer));
+            }
+            return;
+        }
+        else
+        {
+            // Enable Player Animation Script in the child GameObject "Sprite"
+            Transform spriteTransform = transform.Find("Sprite");
+            if (spriteTransform != null)
+            {
+                var playerAnimation = spriteTransform.GetComponent<PlayerAnimation>();
+                if (playerAnimation != null)
+                {
+                    playerAnimation.enabled = true;
+                }
+
+                // Stop flashing and reset color to normal
+                StopCoroutine(FlashBlue(spriteRenderer));
+                spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Original color
+            }
+        }
         // Update velocity based on input
         playerRigidBody.velocity = movementInput * playerStats.PlayerSpeed;
     }
@@ -457,5 +493,22 @@ public class PlayerController : MonoBehaviour
         //NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise);
 
         Debug.Log("Player noise level: " + playerStats.PlayerNoise);
+    }
+
+    private IEnumerator FlashBlue(SpriteRenderer spriteRenderer)
+    {
+        float elapsedTime = 0f;
+        float flashDuration = 0.5f; // Duration of one flash cycle
+
+        while (isParalyzed)
+        {
+            elapsedTime += Time.deltaTime;
+            float lerpValue = Mathf.PingPong(elapsedTime, flashDuration) / flashDuration;
+            spriteRenderer.color = Color.Lerp(new Color(1f, 1f, 1f, 1f), new Color(0f, 0f, 1f, 1f), lerpValue);
+            yield return null;
+        }
+
+        // Reset color to original when no longer paralyzed
+        spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
     }
 }
