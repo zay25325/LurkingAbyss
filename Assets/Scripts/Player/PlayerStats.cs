@@ -118,7 +118,7 @@ public class PlayerStats : MonoBehaviour
         {
             foreach (Item item in inventory.GetItems())
             {
-                if (item.name == "Revivor" && item.CanUseItem())
+                if (item != null && item.name == "Revivor" && item.CanUseItem())
                 {
                     item.Use();
                     health = 1f; // Revive player with 1 health
@@ -134,6 +134,15 @@ public class PlayerStats : MonoBehaviour
         if (health <= 0)
         {
             RevivePlayer();
+
+            if (health <= 0)
+            {
+                Debug.Log("Player has died.");
+                Destroy(gameObject);
+
+                //probably have code how to different menu upon player death
+                
+            }
         }
     }
 
