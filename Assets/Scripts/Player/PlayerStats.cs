@@ -34,6 +34,14 @@ public class PlayerStats : MonoBehaviour
 
     private int playerNoise = 0;    // Noise level of the player
 
+    // hud
+    //private HUD hud;
+
+    private void Start()
+    {
+        //hud = new HUD();
+    }
+
     public float Health 
     { 
         get => health; 
@@ -128,6 +136,8 @@ public class PlayerStats : MonoBehaviour
             {
                 health += shields;
                 shields = 0;
+                // andrew
+                //SetHealth(3.1f); // or else the slider cries
             }
         }
         else
@@ -135,6 +145,4 @@ public class PlayerStats : MonoBehaviour
             health -= damage;
         }
     }
-
-
 }
