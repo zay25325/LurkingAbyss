@@ -22,6 +22,13 @@ public class ProjectileMonsterStalkingState : MonsterState
 
         float distanceToTarget = Vector3.Distance(controller.transform.position, controller.Target.transform.position);
 
+        if (distanceToTarget > controller.MaxChaseDistance)
+        {
+            controller.Target = null;
+            controller.SwitchState<ProjectileMonsterMoveState>();
+            return;
+        }
+
         if (distanceToTarget < controller.FleeDistance)
         {
             controller.SwitchState<ProjectileMonsterFleeState>();
