@@ -1,4 +1,3 @@
-
 // FileName:     ProjectileMonsterStalkingState.cs
 // Assignment:   Capstone Project
 // Author:       Rhys McCash
@@ -14,8 +13,9 @@ public class ProjectileMonsterStalkingState : MonsterState
 
     private void Update()
     {
-        if (controller.Target == null)
+        if (controller.Target == null || !controller.Target.CompareTag("Player"))
         {
+            controller.Target = null;
             controller.SwitchState<ProjectileMonsterMoveState>();
             return;
         }

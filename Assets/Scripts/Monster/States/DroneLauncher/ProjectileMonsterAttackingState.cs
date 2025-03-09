@@ -1,10 +1,9 @@
-
 // FileName:     ProjectileMonsterAttackingState.cs
 // Assignment:   Capstone Project
 // Author:       Rhys McCash
 // Student #:    8825169
 // Date:         03/01/2025
-// Description:  Charges and fires a homing projectile at the target.
+// Description:  Charges and fires a homing projectile at the target if they are a player.
 
 using System.Collections;
 using UnityEngine;
@@ -17,6 +16,12 @@ public class ProjectileMonsterAttackingState : MonsterState
 
     private void OnEnable()
     {
+        if (controller.Target == null || !controller.Target.CompareTag("Player"))
+        {
+            controller.SwitchState<ProjectileMonsterStalkingState>();
+            return;
+        }
+
         StartCoroutine(ChargeAttack());
     }
 
@@ -28,7 +33,13 @@ public class ProjectileMonsterAttackingState : MonsterState
 
     private void Update()
     {
-        if (controller.Target == null || Vector3.Distance(controller.transform.position, controller.Target.transform.position) < controller.FleeDistance)
+        if (controller.Target == null || !controller.Target.CompareTag("Player"))
+        {
+            controller.SwitchState<ProjectileMonsterStalkingState>();
+            return;
+        }
+
+        if (Vector3.Distance(controller.transform.position, controller.Target.transform.position) < controller.FleeDistance)
         {
             controller.SwitchState<ProjectileMonsterStalkingState>();
             return;
@@ -43,6 +54,8 @@ public class ProjectileMonsterAttackingState : MonsterState
 
     private void FireProjectile()
     {
+        if (controller.Target == null || !controller.Target.CompareTag("Player")) return;
+
         GameObject projectile = Instantiate(projectilePrefab, controller.transform.position, Quaternion.identity);
         ProjectileController projectileScript = projectile.GetComponent<ProjectileController>();
         projectileScript.Target = controller.Target.transform.position;

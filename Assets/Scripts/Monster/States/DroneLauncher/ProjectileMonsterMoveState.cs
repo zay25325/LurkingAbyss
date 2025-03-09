@@ -1,4 +1,3 @@
-
 // FileName:     ProjectileMonsterMoveState.cs
 // Assignment:   Capstone Project
 // Author:       Rhys McCash
@@ -37,24 +36,17 @@ public class ProjectileMonsterMoveState : MonsterState
         controller.Agent.SetDestination(currentNavPoint.Value);
     }
 
-
     private void Update()
     {
-        if (controller == null)
+        if (controller == null || controller.Agent == null)
         {
-            Debug.LogError("ProjectileMonsterMoveState: Controller is null!");
-            return;
-        }
-
-        if (controller.Agent == null)
-        {
-            Debug.LogError("ProjectileMonsterMoveState: NavMeshAgent is null!");
+            Debug.LogError("ProjectileMonsterMoveState: Controller or NavMeshAgent is null!");
             return;
         }
 
         if (controller.Agent.remainingDistance < 0.5f)
         {
-            navigationPoints.Remove(currentNavPoint.Value); 
+            navigationPoints.Remove(currentNavPoint.Value);
             if (navigationPoints.Count == 0)
                 GenerateNavigationPoints();
 
@@ -62,14 +54,16 @@ public class ProjectileMonsterMoveState : MonsterState
             controller.Agent.SetDestination(currentNavPoint.Value);
         }
 
-        // Check for potential targets
-        if (controller.ObjectsInView.Count > 0)
+        foreach (GameObject obj in controller.ObjectsInView)
         {
-            controller.Target = controller.ObjectsInView[0];
-            controller.SwitchState<ProjectileMonsterStalkingState>();
+            if (obj.CompareTag("Player"))
+            {
+                controller.Target = obj;
+                controller.SwitchState<ProjectileMonsterStalkingState>();
+                return;
+            }
         }
     }
-
 
     private void GenerateNavigationPoints()
     {

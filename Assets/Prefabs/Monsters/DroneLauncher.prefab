@@ -148,8 +148,8 @@ MonoBehaviour:
   agent: {fileID: 1286270550787987944}
   state: {fileID: -2213816959302096698}
   HearingAmplificaiton: 1
-  hp: 0
-  maxHP: 0
+  hp: 10
+  maxHP: 10
   attackChargeTime: 2
   fleeDistance: 5
   stalkingDistance: 10
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 6702605786081691888, guid: 93c0d062e75dc6f488c7f90a95a911ce, type: 3}
 --- !u!114 &-9111835584292663604
 MonoBehaviour:
   m_ObjectHideFlags: 0
