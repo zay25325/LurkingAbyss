@@ -30,7 +30,7 @@ public class MimicController : MonsterController
     private IEnumerator PlayMimicLickAnimation(Sprite itemSprite)
     {
         // Play the "mimic lick" animation
-        Animator animator = GetComponent<Animator>();
+        Animator animator = transform.Find("CharacterSprite").GetComponent<Animator>();
         if (animator != null)
         {
             animator.enabled = true;
@@ -40,7 +40,7 @@ public class MimicController : MonsterController
 
         animator.enabled = false;
         // After the animation, set the item sprite
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = transform.Find("CharacterSprite").GetComponent<SpriteRenderer>();
         CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
 
         if (itemSprite != null)
@@ -48,7 +48,7 @@ public class MimicController : MonsterController
             Debug.Log("Setting item sprite");
             spriteRenderer.sprite = itemSprite;
             spriteRenderer.drawMode = SpriteDrawMode.Simple;
-            transform.localScale = new Vector3(2, 2, 2);
+            // spriteRenderer.transform.localScale = new Vector3(2, 2, 2);
 
             if (circleCollider != null)
             {
