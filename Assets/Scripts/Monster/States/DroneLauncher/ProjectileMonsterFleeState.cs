@@ -1,4 +1,3 @@
-
 // FileName:     ProjectileMonsterFleeState.cs
 // Assignment:   Capstone Project
 // Author:       Rhys McCash
@@ -12,30 +11,46 @@ using UnityEngine.AI;
 public class ProjectileMonsterFleeState : MonsterState
 {
     new protected ProjectileMonsterController controller => base.controller as ProjectileMonsterController;
+    private Vector3 fleeDestination;
 
     private void OnEnable()
     {
-        Flee();
+        PickNewFleeLocation();
     }
 
-    private void Flee()
+    private void PickNewFleeLocation()
     {
         if (controller.Target == null) return;
 
         Vector3 fleeDirection = (controller.transform.position - controller.Target.transform.position).normalized;
-        Vector3 fleePosition = controller.transform.position + fleeDirection * controller.FleeDistance;
+        Vector3 potentialFleePosition = controller.transform.position + fleeDirection * controller.FleeDistance;
 
-        if (NavMesh.SamplePosition(fleePosition, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(potentialFleePosition, out NavMeshHit hit, 5f, NavMesh.AllAreas))
         {
-            controller.Agent.SetDestination(hit.position);
+            fleeDestination = hit.position;
+            controller.Agent.SetDestination(fleeDestination);
+        }
+        else
+        {
+            Debug.LogWarning("Failed to find a valid flee position!");
         }
     }
 
     private void Update()
     {
-        if (Vector3.Distance(controller.transform.position, controller.Target.transform.position) >= controller.FleeDistance)
+        float distanceToTarget = Vector3.Distance(controller.transform.position, controller.Target.transform.position);
+
+        if (!controller.Agent.pathPending && controller.Agent.remainingDistance <= 0.5f)
         {
-            controller.SwitchState<ProjectileMonsterStalkingState>();
+            if (distanceToTarget < controller.FleeDistance)
+            {
+                PickNewFleeLocation();
+                return;
+            }
+            else
+            {
+                controller.SwitchState<ProjectileMonsterStalkingState>();
+            }
         }
     }
 }

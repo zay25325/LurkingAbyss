@@ -17,7 +17,10 @@ public class ProjectileMonsterController : MonsterController
     [SerializeField] float fleeDistance = 5f;     
     [SerializeField] float stalkingDistance = 10f;
     [SerializeField] float maxChaseDistance = 20f; 
+    [SerializeField] float attackSpeed = 1.5f;
 
+
+    public float AttackSpeed => attackSpeed;
     public float MaxChaseDistance => maxChaseDistance;
     public float AttackChargeTime => attackChargeTime;
     public float FleeDistance => fleeDistance;

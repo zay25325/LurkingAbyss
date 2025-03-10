@@ -473,6 +473,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3904007107555255114, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
+      propertyPath: health
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7419464304183977446, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
       propertyPath: m_Name
       value: Player
@@ -37943,8 +37947,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -1369656147482787558, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
+      propertyPath: attackSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -1369656147482787558, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
       propertyPath: fleeDistance
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -1369656147482787558, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
+      propertyPath: maxChaseDistance
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: -1369656147482787558, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
       propertyPath: stalkingDistance
@@ -37997,7 +38009,7 @@ PrefabInstance:
     - target: {fileID: 7292405018989683543, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
       propertyPath: projectilePrefab
       value: 
-      objectReference: {fileID: 3646233433960996345, guid: 896dd737e81920f4d853ad206bf2eee1, type: 3}
+      objectReference: {fileID: 2413166785188260484, guid: 93c0d062e75dc6f488c7f90a95a911ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
