@@ -29,10 +29,10 @@ public class HUD : MonoBehaviour
 
     public void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    SetHealth(3.1f);
-        //}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            AdjustHealthBar(false, 3.1f);
+        }
 
         //if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
         //{
@@ -56,17 +56,25 @@ public class HUD : MonoBehaviour
     //    }
     //}
 
-    public void SetHealth(float health)
+    public void AdjustHealthBar(bool isHealing, float health)
     {
-        if (intSlider.value != 5)
+        switch (isHealing)
         {
-            intSlider.value -= health;
-            // change color here somehow
+            case true:
+                if (intSlider.value != 5)
+                {
+                    intSlider.value += health;
+                    // change color here somehow
+                }
+                break;
+            case false:
+                if (intSlider.value != 5)
+                {
+                    intSlider.value -= health;
+                    // change color here somehow
+                }
+                break;
         }
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    SetHealth(3.1f);
-        //}
     }
 
     public void InsertItem(Item item)

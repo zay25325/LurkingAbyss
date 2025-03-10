@@ -42,6 +42,7 @@ public class PlayerStats : MonoBehaviour
         hud = GameObject.FindObjectOfType<HUD>();
     }
 
+
     public float Health 
     { 
         get => health; 
@@ -141,12 +142,6 @@ public class PlayerStats : MonoBehaviour
         else
         {
             health -= damage;
-        }
-
-
-        if (hud != null)
-        {
-            hud.SetHealth(3.1f);
         }
     }
 }
