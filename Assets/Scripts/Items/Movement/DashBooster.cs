@@ -8,6 +8,7 @@ public class DashBooster : Item
     private GameObject dashBoosterPrefab = null;    // Prefab for the dash booster
 
     private PlayerStats playerMovement = null;
+    private bool isCooldown = false;
 
     private void Awake()
     {
@@ -31,11 +32,15 @@ public class DashBooster : Item
 
     public override void Use()
     {
-        if (CanUseItem())
+        if (CanUseItem() && !isCooldown)
         {
             BoostDash();
             ReduceItemCharge();
             DestroyItem(ItemObject);
+        }
+        else if (isCooldown)
+        {
+            Debug.Log("Dash booster is on cooldown");
         }
         else
         {
@@ -66,12 +71,13 @@ public class DashBooster : Item
 
     private IEnumerator TemporaryBoost(PlayerStats playerMovement, float boost)
     {
+        isCooldown = true;
         playerMovement.PlayerSpeed = playerMovement.PlayerSpeed * boost;
 
         yield return new WaitForSeconds(1.0f);
         
 
         playerMovement.PlayerSpeed = playerMovement.OriginalSpeed;
-
+        isCooldown = false;
     }
 }
