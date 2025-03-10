@@ -41,4 +41,9 @@ public class ScavengerController : MonsterController
     {
         return items;
     }
+
+    new protected void Update()
+    {
+        base.Update();
+    }
 }

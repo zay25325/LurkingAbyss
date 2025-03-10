@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScavengerThreatenedState : MonsterState
+public class ScavengerThreatenedState : ScavengerBaseState
 {
+    new protected void OnEnable()
+    {
+        base.OnEnable();
+    }
 }
