@@ -145,6 +145,8 @@ public class PlayerStats : MonoBehaviour
                 
             }
         }
+        // THIS IS TESTING, THIS CAN BE REMOVED ONCE
+        // WE GET ON HIT DETECTION WORKING
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("spaced");
@@ -162,9 +164,7 @@ public class PlayerStats : MonoBehaviour
             hud.UpdateHealthBarColor(hud.intSlider.value);
         }
         else
-        {
             Debug.LogError("hud reference isnt working in PlayerStats :c");
-        }
 
 
         if (playerController != null && playerController.isInvincible)
@@ -172,7 +172,6 @@ public class PlayerStats : MonoBehaviour
             Debug.Log("Player is invincible and did not take damage.");
             return;
         }
-
         else if (shields > 0)
         {
             shields -= damage;
