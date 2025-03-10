@@ -13,6 +13,11 @@ public class HUD : MonoBehaviour
     private List<Item> items;
     private Item currentItem;
 
+    private Image fillImage;
+    //private Color normalHealth = new(47f, 243f, 237f);
+    private Color normalHealth = new(47f / 255f, 243f / 255f, 237f / 255f);
+    private Color lowHealth = Color.red;
+    private const float lowHealthThreshold = 8.1f;
 
     // item hud hotbar 
     //[SerializeField] private RectTransform[] itemSlots;
@@ -27,15 +32,24 @@ public class HUD : MonoBehaviour
         if (intSlider == null)
         {
             intSlider = GetComponentInChildren<Slider>();
+            if (intSlider == null)
+            {
+                Debug.LogError("HUD: intSlider is null and couldn't be found");
+            }
+        }
+        intSlider.value = 17.4f;
+
+        // fill image component
+        fillImage = intSlider.fillRect.GetComponent<Image>();
+        if (fillImage != null)
+        {
+            fillImage.color = normalHealth;
+        }
+        else
+        {
+            Debug.LogError("HUD: fill image not found");
         }
 
-        if (intSlider != null)
-            Debug.LogError("HUD: intSlider is NULL, is it assigned?");
-        else 
-        {
-            intSlider.value = 17.4f;
-            Debug.LogError("HUD: intSlider is not assigned");
-        }
     }
 
     public void Update() { }
@@ -54,19 +68,28 @@ public class HUD : MonoBehaviour
         switch (isHealing)
         {
             case true:
-                if (intSlider.value != 5)
+                if (intSlider.value != 8.1f)
                 {
                     intSlider.value += health;
                     // change color here somehow
+                    UpdateHealthBarColor(intSlider.value);
                 }
                 break;
             case false:
-                if (intSlider.value != 5)
+                if (intSlider.value != 8.1f)
                 {
                     intSlider.value -= health;
-                    // change color here somehow
+                    UpdateHealthBarColor(intSlider.value);
                 }
                 break;
+        }
+    }
+
+    public void UpdateHealthBarColor(float health)
+    {
+        if (intSlider.value < 8.1f)
+        {
+            fillImage.color = lowHealth;
         }
     }
 

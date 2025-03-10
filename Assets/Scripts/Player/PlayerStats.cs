@@ -159,6 +159,7 @@ public class PlayerStats : MonoBehaviour
         {
             hud.AdjustHealthBar(false, 3.1f);
             Debug.Log($"New health bar value: {hud.intSlider.value}");
+            hud.UpdateHealthBarColor(hud.intSlider.value);
         }
         else
         {
