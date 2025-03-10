@@ -32,6 +32,11 @@ public class PlayerController : MonoBehaviour
     private Inventory inventory;
     private Item activeItem;
 
+    private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer component
+
+    public bool isInvincible { get; private set; } // Flag to check if player is invincible
+
+    public bool isParalyzed = false;
 
     /*
         FUNCTION : Awake()
@@ -103,7 +108,6 @@ public class PlayerController : MonoBehaviour
     */
     private void Start()
     {
-
         playerStats = GetComponent<PlayerStats>();
         if (playerStats == null)
         {
@@ -120,7 +124,6 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("Rigidbody2D component is missing!");
         }
-
         else
         {
             // Ensure drag is zero
@@ -131,8 +134,6 @@ public class PlayerController : MonoBehaviour
             
             // Freeze rotation to prevent spinning
             playerRigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
-
-
         }
 
         // Get the Inventory component
@@ -140,6 +141,21 @@ public class PlayerController : MonoBehaviour
         if (inventory == null)
         {
             Debug.LogError("Inventory component is missing!");
+        }
+
+        // Get the SpriteRenderer component from the child GameObject named "Sprite"
+        Transform spriteTransform = transform.Find("Sprite");
+        if (spriteTransform != null)
+        {
+            spriteRenderer = spriteTransform.GetComponent<SpriteRenderer>();
+            if (spriteRenderer == null)
+            {
+                Debug.LogError("SpriteRenderer component is missing on the child GameObject!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Child GameObject named 'Sprite' is missing!");
         }
     }
 
@@ -151,6 +167,40 @@ public class PlayerController : MonoBehaviour
     */
     private void FixedUpdate()
     {
+        if (isParalyzed)
+        {
+            // Disable Player Animation Script in the child GameObject "Sprite"
+            Transform spriteTransform = transform.Find("Sprite");
+            if (spriteTransform != null)
+            {
+                var playerAnimation = spriteTransform.GetComponent<PlayerAnimation>();
+                if (playerAnimation != null)
+                {
+                    playerAnimation.enabled = false;
+                }
+
+                // Start flashing blue to indicate shock
+                StartCoroutine(FlashBlue(spriteRenderer));
+            }
+            return;
+        }
+        else
+        {
+            // Enable Player Animation Script in the child GameObject "Sprite"
+            Transform spriteTransform = transform.Find("Sprite");
+            if (spriteTransform != null)
+            {
+                var playerAnimation = spriteTransform.GetComponent<PlayerAnimation>();
+                if (playerAnimation != null)
+                {
+                    playerAnimation.enabled = true;
+                }
+
+                // Stop flashing and reset color to normal
+                StopCoroutine(FlashBlue(spriteRenderer));
+                spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Original color
+            }
+        }
         // Update velocity based on input
         playerRigidBody.velocity = movementInput * playerStats.PlayerSpeed;
     }
@@ -226,12 +276,20 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             playerStats.PlayerSpeed = playerStats.PlayerSpeed / playerStats.SneakSpeed; // Reduce speed for sneaking
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f); // Dim the sprite (reduce alpha to 50%)
+            }
         }
 
         //When the sneak action is canceled, reset the player speed
         else if (context.canceled)
         {
             playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed when not sneaking
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Restore the sprite color (set alpha to 100%)
+            }
         }
 
 
@@ -269,10 +327,22 @@ public class PlayerController : MonoBehaviour
     private IEnumerator DashCoroutine()
     {
         canDash = false; // Prevent dashing multiple times
+        isInvincible = true; // Set invincibility flag
         playerStats.PlayerSpeed = playerStats.PlayerSpeed * playerStats.DashSpeed; // Increase speed for dashing
+        // Change sprite color to yellow to indicate invincibility
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = new Color(1f, 1f, 0f, 1f); // Yellow color
+        }
         MovingNoise();
         yield return new WaitForSeconds(DASH_DURATION); // Dash duration
         playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed after dashing
+        isInvincible = false; // Reset invincibility flag
+        // Reset sprite color to original
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Original color
+        }
         MovingNoise();
         yield return new WaitForSeconds(DASH_COOLDOWN); // Cooldown duration
         canDash = true; // Allow dashing again
@@ -291,30 +361,59 @@ public class PlayerController : MonoBehaviour
         PARAMETERS : InputAction.CallbackContext context - Input context for the interaction action.
         RETURNS : NONE
     */
-    private void DoInteraction(InputAction.CallbackContext context)
-    {
-        //maybe a static hitbox so an interactable object can tell if it is being hovered
-        
-        // Check for collision with an item or object with Item script
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 1f);
-        
-        foreach (var hitCollider in hitColliders)
-        {
-            Item item = hitCollider.GetComponentInChildren<Item>();
+ private void DoInteraction(InputAction.CallbackContext context)
+{
 
+    // Get the mouse position in world coordinates
+    Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    
+    float detectionRadius = 0.5f; // Default radius for left, right, and down
+    Vector2 direction = (mousePosition - (Vector2)transform.position).normalized;
+
+    if (direction.y > 0.5f) // If the direction is mostly upward
+    {
+        detectionRadius = 1.5f; // Increase radius when interacting above
+    }
+
+    // Detect all colliders within a radius of 1 unit around the player
+    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
+
+    foreach (var hitCollider in hitColliders)
+    {
+        // Ensure the mouse is over the object
+        if (hitCollider.OverlapPoint(mousePosition))  // Check if the mouse is over this collider
+        {
+            // Check if the object has an Item script attached
+            Item item = hitCollider.GetComponentInChildren<Item>();
             if (item != null)
             {
                 inventory.AddItem(hitCollider.gameObject);
-                break;
+                Debug.Log("Picked up item: " + item.name);
+                return;
             }
 
-            // If Player is touching ichor and interacts with it, it will then increase the player's ichor samples (currency)
+            // Check if the object is an Ichor
             if (hitCollider.CompareTag("Ichor"))
             {
                 playerStats.IchorSamples++;
+                Debug.Log("Picked up Ichor Sample");
+                return;
+            }
+
+            // Check for interactions with a Mimic
+            EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
+            if (entityInfo != null && entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
+            {
+                Debug.Log("Interacted with a Mimic!");
+                MimicController mimicController = hitCollider.GetComponent<MimicController>();
+                //playerStats.TakeDamage(mimicController.AttackDamage);
+                mimicController.SwitchState<MimicRevealState>();
+                Debug.Log("Player Shield: " + playerStats.Shields);
+                return;
             }
         }
     }
+}
 
     /*
         FUNCTION : DropItem
@@ -394,5 +493,22 @@ public class PlayerController : MonoBehaviour
         //NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise);
 
         Debug.Log("Player noise level: " + playerStats.PlayerNoise);
+    }
+
+    private IEnumerator FlashBlue(SpriteRenderer spriteRenderer)
+    {
+        float elapsedTime = 0f;
+        float flashDuration = 0.5f; // Duration of one flash cycle
+
+        while (isParalyzed)
+        {
+            elapsedTime += Time.deltaTime;
+            float lerpValue = Mathf.PingPong(elapsedTime, flashDuration) / flashDuration;
+            spriteRenderer.color = Color.Lerp(new Color(1f, 1f, 1f, 1f), new Color(0f, 0f, 1f, 1f), lerpValue);
+            yield return null;
+        }
+
+        // Reset color to original when no longer paralyzed
+        spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
     }
 }

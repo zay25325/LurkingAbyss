@@ -15,7 +15,7 @@ public class Rock : Item
     public Sprite rockIcon = null;  // Icon for the rock
     private GameObject rockPrefab = null;    // Prefab for the rock
 
-    private ProjectileSpawner rockSpawner;
+    public GameObject rockprojectilePrefab;
 
     private int noiseLevel = 10;
 
@@ -44,13 +44,6 @@ public class Rock : Item
         CanItemDestroy = true;
         ItemSubtype = Subtype.Environment;
         ItemObject = rockPrefab;
-
-            // Find the spawner in the scene (Make sure there is one)
-        rockSpawner = FindObjectOfType<ProjectileSpawner>(); 
-        if (rockSpawner == null)
-        {
-            Debug.LogError("rockSpawner not found in the scene! Ensure it's attached to a GameObject.");
-        }
     }
 
     /*
@@ -64,7 +57,9 @@ public class Rock : Item
     {
         if (CanUseItem())
         {
-            Throw();
+            StartCoroutine(Throw());
+            //ReduceItemCharge();
+            DestroyItem(ItemObject);
         }
         else
         {
@@ -79,45 +74,88 @@ public class Rock : Item
         PARAMETERS : NONE
         RETURNS : NONE
     */
-    private void Throw()
+    private IEnumerator Throw()
     {
-        StartCoroutine(WaitForProjectileToLand());
-    }
+        if (Camera.main == null) yield break;
 
-    private IEnumerator WaitForProjectileToLand()
-    {
-        // Get target position (mouse position converted to world space)
-        Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        targetPosition.z = 0; // Ensure it's in 2D space
+        // Get mouse position in world space
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.z = 0f; // Ensure the rock stays in 2D space
 
-        // Get the player's current position
-        Vector3 playerPosition = FindObjectOfType<PlayerController>().transform.position;
-
-        // Fire a rock from the player's position towards the target
-        rockSpawner.FireProjectile(playerPosition, targetPosition);
-
-        Projectile rockProj = rockSpawner.projScript;
-
-        // Wait until the projectile has landed
-        while (!rockProj.HasLanded())
+        // Get the player position
+        PlayerController player = FindObjectOfType<PlayerController>();
+        if (player == null)
         {
-            yield return null; // Wait for the next frame
+            Debug.LogError("Player not found!");
+            yield break;
         }
 
-        // Continue with the rest of the logic after the projectile has landed
-        GenerateNoise(targetPosition);
+        // Spawn the rock projectile at the player's position
+        GameObject rock = Instantiate(rockprojectilePrefab, player.transform.position, Quaternion.identity);
 
-        Debug.Log("Shooting with: " + ItemName);
-    }
+        // Get the direction from the player's position to the mouse position
+        Vector3 direction = (mousePosition - player.transform.position).normalized;
 
-    private void GenerateNoise(Vector3 position)
-    {
-        NoiseDetectionManager.Instance.NoiseEvent.Invoke(position, noiseLevel, new List<EntityTags>());
+        // Set the target for the ProjectileController to handle the movement
+        ProjectileController projectileController = rock.GetComponent<ProjectileController>();
+        if (projectileController != null)
+        {
+            projectileController.Target = new Vector2(mousePosition.x, mousePosition.y); // Set target to the mouse position
+        }
+        else
+        {
+            Debug.LogError("Rock is missing a ProjectileController!");
+        }
 
-        ReduceItemCharge();
-        DestroyItem(ItemObject);
+        // Set projectile movement with velocity
+        Rigidbody2D rb = rock.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            float rockSpeed = projectileController.Speed; // Adjust as needed
+            rb.velocity = direction * rockSpeed;  // Apply velocity in the desired direction
+        }
+        else
+        {
+            Debug.LogError("Rock projectile is missing a Rigidbody2D!");
+            yield break;
+        }
 
-        // Generate noise at the given position
-        Debug.Log("Noise generated at position: " + position);
+        // Ignore collision with the player
+        Collider2D playerCollider = player.GetComponent<Collider2D>();
+        Collider2D projectileCollider = rock.GetComponent<Collider2D>();
+        if (playerCollider != null && projectileCollider != null)
+        {
+            Physics2D.IgnoreCollision(playerCollider, projectileCollider);
+            Debug.Log("Ignoring collision between player and projectile.");
+        }
+
+        // Set rock projectile layer and collision rules
+        int projectileLayer = LayerMask.NameToLayer("Projectiles");
+        rock.layer = projectileLayer;
+
+        int playerLayer = LayerMask.NameToLayer("Player");
+        int entitiesLayer = LayerMask.NameToLayer("Entities");
+        int visionBlockersLayer = LayerMask.NameToLayer("VisionBlockers");
+        int itemLayer = LayerMask.NameToLayer("Item");
+
+        Physics2D.IgnoreLayerCollision(projectileLayer, playerLayer, false);
+        Physics2D.IgnoreLayerCollision(projectileLayer, entitiesLayer, false);
+        Physics2D.IgnoreLayerCollision(projectileLayer, visionBlockersLayer, false);
+        Physics2D.IgnoreLayerCollision(projectileLayer, itemLayer, true);
+
+        // Store the initial position of the rock in 2D space
+        Vector2 initialPosition = rock.transform.position;
+        // Wait until the rock is destroyed
+        while (rock != null && rock.activeInHierarchy)
+        {
+            initialPosition = rock.transform.position;
+            yield return null; // Wait for the next frame before checking again
+        }
+
+        Debug.Log("Rock Position: " + initialPosition);
+        // Call NoiseDetectionManager before the rock gets destroyed
+        NoiseDetectionManager.Instance.NoiseEvent.Invoke(
+            initialPosition, noiseLevel, GetComponent<EntityInfo>().Tags
+        );
     }
 }
