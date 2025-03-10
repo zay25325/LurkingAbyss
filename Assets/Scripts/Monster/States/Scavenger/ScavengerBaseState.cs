@@ -8,10 +8,6 @@ public class ScavengerBaseState : MonsterState
 
     protected void OnEnable()
     {
-        // if (controller != null)
-        // {
-            controller.OverrideSightDirection = false;
-        // }
+        controller.OverrideSightDirection = false;
     }
-    
 }

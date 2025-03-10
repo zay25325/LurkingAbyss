@@ -449,6 +449,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HiveMother
       objectReference: {fileID: 0}
+    - target: {fileID: 7916441748645399307, guid: a0b58844626d8284b8c6651558823dd3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -38348,7 +38352,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7875385620765161686, guid: dc89a11edd656174d92d970dfe424f1f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.8731737
+      value: -14.38
       objectReference: {fileID: 0}
     - target: {fileID: 7875385620765161686, guid: dc89a11edd656174d92d970dfe424f1f, type: 3}
       propertyPath: m_LocalPosition.z
