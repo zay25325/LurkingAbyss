@@ -8,13 +8,14 @@ public class ScavengerScavengeState : ScavengerBaseState
 {
     private float searchRadius = 5f; // Radius to search for items
     private float pickupRange = 1f;  // Range at which items can be picked up
+    private float wanderRadius = 10f; // Radius to wander
     private LayerMask itemLayer;
     private LayerMask monsterLayer;
     private LayerMask playerLayer;
     private NavMeshAgent navMeshAgent;
     private bool isAngry = false; // Flag to track if the scavenger is angry
 
-    private float wanderCooldown = 2f;  // Time between each wander attempt
+    private float wanderCooldown = 1f;  // Time between each wander attempt
     private float wanderTime = 0f;      // Timer to track wander cooldown
 
     new protected void OnEnable()
@@ -91,32 +92,54 @@ public class ScavengerScavengeState : ScavengerBaseState
             return;
         }
 
-        // Generate a random direction
-        Vector2 randomDirection = Random.insideUnitCircle * searchRadius;
-        Vector3 destination = controller.transform.position + new Vector3(randomDirection.x, randomDirection.y, 0);
-
-        // Attempt to find a valid position on the NavMesh
-        NavMeshHit hit;
-        int attempts = 0;
-
-        while (attempts < 5) // Limit number of attempts to avoid infinite loops
+        // Check if the scavenger has reached its destination
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
-            if (NavMesh.SamplePosition(destination, out hit, searchRadius, NavMesh.AllAreas))
+            if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f)
             {
-                // Set the destination if a valid position is found
-                navMeshAgent.SetDestination(hit.position);
-                wanderTime = wanderCooldown;  // Reset the cooldown
-                return;
+                // Generate a new random direction and set a new destination
+                Vector2 randomDirection = Random.insideUnitCircle * wanderRadius;
+                Vector3 destination = controller.transform.position + new Vector3(randomDirection.x, randomDirection.y, 0);
+
+                // Attempt to find a valid position on the NavMesh
+                NavMeshHit hit;
+                int attempts = 0;
+
+                while (attempts < 5) // Limit number of attempts to avoid infinite loops
+                {
+                    if (NavMesh.SamplePosition(destination, out hit, wanderRadius, NavMesh.AllAreas))
+                    {
+                        // Check if the position is colliding with any walls
+                        Collider2D[] colliders = Physics2D.OverlapCircleAll(hit.position, 0.5f);
+                        bool isCollidingWithWall = false;
+                        foreach (Collider2D collider in colliders)
+                        {
+                            if (collider.CompareTag("Walls"))
+                            {
+                                isCollidingWithWall = true;
+                                break;
+                            }
+                        }
+
+                        if (!isCollidingWithWall)
+                        {
+                            // Set the destination if a valid position is found and not colliding with walls
+                            navMeshAgent.SetDestination(hit.position);
+                            wanderTime = wanderCooldown;  // Reset the cooldown
+                            return;
+                        }
+                    }
+
+                    // Otherwise, try another random direction
+                    randomDirection = Random.insideUnitCircle * wanderRadius;
+                    destination = controller.transform.position + new Vector3(randomDirection.x, randomDirection.y, 0);
+                    attempts++;
+                }
+
+                // If no valid position is found after several attempts, wait before trying again
+                wanderTime = wanderCooldown;
             }
-
-            // Otherwise, try another random direction
-            randomDirection = Random.insideUnitCircle * searchRadius;
-            destination = controller.transform.position + new Vector3(randomDirection.x, randomDirection.y, 0);
-            attempts++;
         }
-
-        // If no valid position is found after several attempts, wait before trying again
-        wanderTime = wanderCooldown; 
     }
 
     private Item FindBestItem(Collider2D[] foundItems)
