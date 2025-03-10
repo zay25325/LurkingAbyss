@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
 
     private PlayerStats playerStats; // Player stats component
 
+    private HUD playerHUD; // Players health bar and ItemSlots
+
     private Vector2 movementInput = Vector2.zero;   // Input from the player
     private Rigidbody2D playerRigidBody;    // Rigidbody2D component of the player
     private PlayerInputControls playerInputControls;    // Input system controls
@@ -157,6 +159,14 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("Child GameObject named 'Sprite' is missing!");
         }
+
+        playerHUD = GetComponent<HUD>();
+
+        if (playerHUD != null)
+        {
+            playerHUD.Start();
+        }
+
     }
 
     /*

@@ -18,21 +18,31 @@ public class HUD : MonoBehaviour
     //[SerializeField] private RectTransform selectionIndicator;
     //private int itemIndex;
 
-
-
     public void Start()
     {
         items = new List<Item>();
         intSlider.value = 17.4f;
-        //itemIndex = 0;
+
+        if (intSlider == null)
+        {
+            intSlider = GetComponentInChildren<Slider>();
+        }
+
+        if (intSlider != null)
+            Debug.LogError("HUD: intSlider is NULL, is it assigned?");
+        else 
+        {
+            intSlider.value = 17.4f;
+            Debug.LogError("HUD: intSlider is not assigned");
+        }
     }
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            AdjustHealthBar(false, 3.1f);
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    AdjustHealthBar(false, 3.1f);
+        //}
 
         //if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
         //{
@@ -68,11 +78,11 @@ public class HUD : MonoBehaviour
                 }
                 break;
             case false:
-                if (intSlider.value != 5)
-                {
+                //if (intSlider.value != 5)
+                //{
                     intSlider.value -= health;
                     // change color here somehow
-                }
+                //}
                 break;
         }
     }

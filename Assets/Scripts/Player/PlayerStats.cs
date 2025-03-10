@@ -36,6 +36,7 @@ public class PlayerStats : MonoBehaviour
     private OnHitEvents hitEvents;
     private PlayerController playerController;
 
+
     public float Health 
     { 
         get => health; 
@@ -144,6 +145,11 @@ public class PlayerStats : MonoBehaviour
                 
             }
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("spaced");
+            TakeDamage(3.1f);
+        }
     }
 
     public void TakeDamage(float damage)
@@ -167,6 +173,17 @@ public class PlayerStats : MonoBehaviour
         {
             health -= damage;
         }
+
+        HUD hud = FindObjectOfType<HUD>();
+        if (hud.intSlider != null)
+        {
+            hud.AdjustHealthBar(false, 3.1f);
+            Debug.Log($"New health bar value: {hud.intSlider.value}");
+        }
+        else
+        {
+            Debug.LogError("hud reference isnt working in PlayerStats :c");
+        }
     }
 
     public void StunPlayer(float stunDuration)
@@ -183,6 +200,4 @@ public class PlayerStats : MonoBehaviour
         yield return new WaitForSeconds(stunDuration);
         playerController.isParalyzed = false;
     }
-
-
 }
