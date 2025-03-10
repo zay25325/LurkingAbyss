@@ -18,6 +18,8 @@ public class HUD : MonoBehaviour
     //[SerializeField] private RectTransform selectionIndicator;
     //private int itemIndex;
 
+
+
     public void Start()
     {
         items = new List<Item>();
