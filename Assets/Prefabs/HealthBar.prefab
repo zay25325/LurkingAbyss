@@ -253,3 +253,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intSlider: {fileID: 185265930905831075}
+  fillColor: {fileID: 2014821715837883816}

@@ -159,14 +159,6 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("Child GameObject named 'Sprite' is missing!");
         }
-
-        playerHUD = GetComponent<HUD>();
-
-        if (playerHUD != null)
-        {
-            playerHUD.Start();
-        }
-
     }
 
     /*

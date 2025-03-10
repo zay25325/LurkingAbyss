@@ -154,6 +154,18 @@ public class PlayerStats : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        HUD hud = FindObjectOfType<HUD>();
+        if (hud.intSlider != null)
+        {
+            hud.AdjustHealthBar(false, 3.1f);
+            Debug.Log($"New health bar value: {hud.intSlider.value}");
+        }
+        else
+        {
+            Debug.LogError("hud reference isnt working in PlayerStats :c");
+        }
+
+
         if (playerController != null && playerController.isInvincible)
         {
             Debug.Log("Player is invincible and did not take damage.");
@@ -172,17 +184,6 @@ public class PlayerStats : MonoBehaviour
         else
         {
             health -= damage;
-        }
-
-        HUD hud = FindObjectOfType<HUD>();
-        if (hud.intSlider != null)
-        {
-            hud.AdjustHealthBar(false, 3.1f);
-            Debug.Log($"New health bar value: {hud.intSlider.value}");
-        }
-        else
-        {
-            Debug.LogError("hud reference isnt working in PlayerStats :c");
         }
     }
 

@@ -13,6 +13,7 @@ public class HUD : MonoBehaviour
     private List<Item> items;
     private Item currentItem;
 
+
     // item hud hotbar 
     //[SerializeField] private RectTransform[] itemSlots;
     //[SerializeField] private RectTransform selectionIndicator;
@@ -37,26 +38,7 @@ public class HUD : MonoBehaviour
         }
     }
 
-    public void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    AdjustHealthBar(false, 3.1f);
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
-        //{
-
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
-        //{
-
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
-        //{
-
-        //}
-    }
+    public void Update() { }
 
     //private void SelectItem(int itemIndex)
     //{
@@ -68,6 +50,7 @@ public class HUD : MonoBehaviour
 
     public void AdjustHealthBar(bool isHealing, float health)
     {
+        
         switch (isHealing)
         {
             case true:
@@ -78,11 +61,11 @@ public class HUD : MonoBehaviour
                 }
                 break;
             case false:
-                //if (intSlider.value != 5)
-                //{
+                if (intSlider.value != 5)
+                {
                     intSlider.value -= health;
                     // change color here somehow
-                //}
+                }
                 break;
         }
     }
