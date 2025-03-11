@@ -64,24 +64,19 @@ public class HUD : MonoBehaviour
 
     public void AdjustHealthBar(bool isHealing, float health)
     {
-        
-        switch (isHealing)
+        if (intSlider.value > 5)
         {
-            case true:
-                if (intSlider.value != 8.1f)
-                {
+            switch (isHealing)
+            {
+                case true:
                     intSlider.value += health;
-                    // change color here somehow
-                    UpdateHealthBarColor(intSlider.value);
-                }
-                break;
-            case false:
-                if (intSlider.value != 8.1f)
-                {
+                    UpdateHealthBarColor(intSlider.value); // change color
+                    break;
+                case false:
                     intSlider.value -= health;
                     UpdateHealthBarColor(intSlider.value);
-                }
-                break;
+                    break;
+            }
         }
     }
 

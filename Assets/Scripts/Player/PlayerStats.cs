@@ -149,7 +149,7 @@ public class PlayerStats : MonoBehaviour
         // WE GET ON HIT DETECTION WORKING
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("spaced");
+            Debug.Log("damaged the player");
             TakeDamage(3.1f);
         }
     }
