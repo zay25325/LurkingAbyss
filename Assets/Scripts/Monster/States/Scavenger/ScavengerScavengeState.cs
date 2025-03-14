@@ -31,6 +31,9 @@ public class ScavengerScavengeState : ScavengerBaseState
         {
             navMeshAgent.enabled = true;
         }
+
+        // Add listener for OnHarmedWithInfo event
+        GetComponent<OnHitEvents>().OnHarmedWithInfo.AddListener(OnHarmedWithInfo);
     }
 
     void Update()
@@ -223,9 +226,13 @@ public class ScavengerScavengeState : ScavengerBaseState
         return nearbyPlayers.Length > 0;
     }
 
-    // Method to handle being hit by the player
-    public void OnHitByPlayer()
+    protected void OnHarmedWithInfo (EntityInfo attackerInfo)
     {
-        isAngry = true;
+            if (attackerInfo != null && attackerInfo.CompareTag("Player"))
+            {
+                Debug.Log($"Entity was hit by {attackerInfo.name}");
+                // Additional logic when the entity is harmed
+                isAngry = true;
+            }
     }
 }

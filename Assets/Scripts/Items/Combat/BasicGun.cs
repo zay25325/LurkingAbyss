@@ -94,6 +94,13 @@ public class BasicGun : Item
             Debug.LogError("Projectile is missing a Rigidbody2D!");
         }
 
+        // Set the damage modifier for the projectile
+        ProjectileDamageModifier damageModifier = projectile.GetComponent<ProjectileDamageModifier>();
+        if (damageModifier != null)
+        {
+            damageModifier.attackingEntityInfo = player.GetComponent<EntityInfo>();
+        }
+
         // Ignore collision with the player
         Collider2D playerCollider = player.GetComponent<Collider2D>();
         Collider2D projectileCollider = projectile.GetComponent<Collider2D>();
