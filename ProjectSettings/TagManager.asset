@@ -17,7 +17,7 @@ TagManager:
   - VisionBlockers
   - 
   - Player
-  - 
+  - GhostEntity
   - Entities
   - Projectiles
   - Vision Area
@@ -49,6 +49,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 603423773
+    locked: 0
   - name: Darkness
     uniqueID: 2038318623
     locked: 0
