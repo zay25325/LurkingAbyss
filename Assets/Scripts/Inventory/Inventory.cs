@@ -5,6 +5,7 @@ Description: This class is responsible for managing the player's inventory.
              It contains the properties and methods to add, remove, and select items in the inventory.
 */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class Inventory : MonoBehaviour
     private int maxItems = 3; // Maximum number of items
     private Item activeItem; // Currently active item
     private int currentActiveIndex = 0;
+
+    public Action OnInventoryChanged;
 
     /*
         FUNCTION : AddItem
@@ -45,7 +48,7 @@ public class Inventory : MonoBehaviour
                 {
                     ActiveItem(0);
                 }
-
+                OnInventoryChanged?.Invoke();
                 return true; // Item added successfully
             }
             else
@@ -328,5 +331,10 @@ public class Inventory : MonoBehaviour
         }
 
         return itemAddRemove;
+    }
+
+    internal int GetActiveItemIndex()
+    {
+        throw new NotImplementedException();
     }
 }

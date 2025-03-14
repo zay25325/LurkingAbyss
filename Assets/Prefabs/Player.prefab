@@ -911,6 +911,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sightMeshController: {fileID: 9165364671979620256}
+  itemBarHUD: {fileID: 0}
+  itemSlotPrefab: {fileID: 0}
   isParalyzed: 0
 --- !u!114 &2027305539459633839
 MonoBehaviour:
@@ -1215,6 +1217,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1339978770136006912, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
   m_PrefabInstance: {fileID: 1612137414884674213}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &787632750277334270 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2067519189944360539, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
+  m_PrefabInstance: {fileID: 1612137414884674213}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9131854505694253212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9131854505694253212 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7558635727817644601, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
@@ -1232,6 +1245,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bded998530635574aa9dd79538be912e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemBarHUD: {fileID: 787632750277334270}
+  itemSlotPrefab: {fileID: 0}
 --- !u!1001 &3415643835021662362
 PrefabInstance:
   m_ObjectHideFlags: 0

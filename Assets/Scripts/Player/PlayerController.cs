@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class PlayerController : MonoBehaviour
     const float DASH_COOLDOWN = 0.5f; // Cooldown of the dash
 
     private PlayerStats playerStats; // Player stats component
+
+    // item bar
+    [SerializeField] private HorizontalLayoutGroup itemBarHUD;
+    [SerializeField] private GameObject itemSlotPrefab; // Prefab for each item slot
+
 
     //private HUD playerHUD; // Players health bar and ItemSlots
 
@@ -513,4 +519,7 @@ public class PlayerController : MonoBehaviour
         // Reset color to original when no longer paralyzed
         spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
     }
+
+
+    //private void UpdateInventoryUI()
 }
