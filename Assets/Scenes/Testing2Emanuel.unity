@@ -510,6 +510,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Warper (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8786005308923651583, guid: c3336ed8c0d83a943a0765bb75244f44, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -593,7 +597,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8786005308923651583, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -651,6 +655,10 @@ PrefabInstance:
     - target: {fileID: 8786005308923651583, guid: ceec8c526cb4f5d4faf9149731661976, type: 3}
       propertyPath: m_Name
       value: Revivor
+      objectReference: {fileID: 0}
+    - target: {fileID: 8786005308923651583, guid: ceec8c526cb4f5d4faf9149731661976, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12061,6 +12069,10 @@ PrefabInstance:
     - target: {fileID: 8786005308923651583, guid: 503db0d653620e64da4eed1abf57cd2a, type: 3}
       propertyPath: m_Layer
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8786005308923651583, guid: 503db0d653620e64da4eed1abf57cd2a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -38065,7 +38077,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5749638377805226640, guid: ba7ad057acdca5d43962a5b7b18bbe7f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.4354231
+      value: 4.02
       objectReference: {fileID: 0}
     - target: {fileID: 5749638377805226640, guid: ba7ad057acdca5d43962a5b7b18bbe7f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -38106,6 +38118,10 @@ PrefabInstance:
     - target: {fileID: 8786005308923651583, guid: ba7ad057acdca5d43962a5b7b18bbe7f, type: 3}
       propertyPath: m_Name
       value: BasicGun
+      objectReference: {fileID: 0}
+    - target: {fileID: 8786005308923651583, guid: ba7ad057acdca5d43962a5b7b18bbe7f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -38183,11 +38199,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5749638377805226640, guid: 2af902657e816f24a96ffd41779a1e49, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.2844968
+      value: 4.47
       objectReference: {fileID: 0}
     - target: {fileID: 5749638377805226640, guid: 2af902657e816f24a96ffd41779a1e49, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.8031805
+      value: -1.25
       objectReference: {fileID: 0}
     - target: {fileID: 5749638377805226640, guid: 2af902657e816f24a96ffd41779a1e49, type: 3}
       propertyPath: m_LocalPosition.z
@@ -38328,6 +38344,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rock
       objectReference: {fileID: 0}
+    - target: {fileID: 8786005308923651583, guid: 043f49fcf5a6ab0438c81946366556e5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
     m_RemovedGameObjects: []
@@ -38356,7 +38376,7 @@ PrefabInstance:
       objectReference: {fileID: 2129659596}
     - target: {fileID: 7875385620765161686, guid: dc89a11edd656174d92d970dfe424f1f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.9991641
+      value: -3.1
       objectReference: {fileID: 0}
     - target: {fileID: 7875385620765161686, guid: dc89a11edd656174d92d970dfe424f1f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -38397,6 +38417,10 @@ PrefabInstance:
     - target: {fileID: 7916441748645399307, guid: dc89a11edd656174d92d970dfe424f1f, type: 3}
       propertyPath: m_Name
       value: Scavenger
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916441748645399307, guid: dc89a11edd656174d92d970dfe424f1f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -38454,6 +38478,10 @@ PrefabInstance:
     - target: {fileID: 8786005308923651583, guid: da96a0dcd3041c94288b85b3b11dfb37, type: 3}
       propertyPath: m_Name
       value: DashBooster
+      objectReference: {fileID: 0}
+    - target: {fileID: 8786005308923651583, guid: da96a0dcd3041c94288b85b3b11dfb37, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

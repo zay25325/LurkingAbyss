@@ -4,9 +4,92 @@ using UnityEngine;
 
 public class ScavengerAngeredState : ScavengerBaseState
 {
+    public float switchDistance = 10f;
+    private Transform playerTarget;
+    private ScavengerController scavengerController;
     new protected void OnEnable()
     {
         base.OnEnable();
+
+        playerTarget = GameObject.FindGameObjectWithTag("Player").transform;
+        scavengerController = controller as ScavengerController;
+    }
+
+    void Update()
+    {
+        if (playerTarget == null)
+        {
+            return;
+        }
+
+        if (Vector3.Distance(playerTarget.position, controller.transform.position) > switchDistance)
+        {
+            controller.SwitchState<ScavengerScavengeState>();
+        }
+        else
+        {
+            UseCombatItem();
+        }
+    }
+
+    private void SwitchToScavengingState()
+    {
+        controller.SwitchState<ScavengerScavengeState>();
+    }
+
+    private void UseCombatItem()
+    {
+        List<Item> items = scavengerController.GetItems();
+        List<Item> combatItems = new List<Item>();
+
+        // Check for Grenade and BasicGun in the inventory
+        foreach (Item item in items)
+        {
+            if (item is Grenade || item is BasicGun)
+            {
+                combatItems.Add(item);
+            }
+        }
+
+        // Determine which item to use
+        if (combatItems.Count > 0)
+        {
+            Item selectedItem;
+            if (combatItems.Count == 1)
+            {
+                selectedItem = combatItems[0];
+            }
+            else
+            {
+                selectedItem = combatItems[Random.Range(0, combatItems.Count)];
+            }
+
+            scavengerController.SetItem(selectedItem);
+
+            // Use the active item
+            Item activeItem = scavengerController.GetActiveItem();
+            if (activeItem != null)
+            {
+                activeItem.Use();
+                if (!activeItem.CanUseItem())
+                {
+                    scavengerController.RemoveItem(activeItem);
+                }
+            }
+            else
+            {
+                Scream();
+            }
+        }
+        else
+        {
+            Scream();
+        }
+    }
+
+    private void Scream()
+    {
+        return;
     }
 
 }

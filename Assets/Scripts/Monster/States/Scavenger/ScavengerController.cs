@@ -24,7 +24,17 @@ public class ScavengerController : MonsterController
 
     public void RemoveItem(Item item)
     {
+        if (items.Contains(item))
+        {
+            // Place the item in front of the player
+            items.Remove(item);
+            if (item.ItemObject != null)
+            {
+                //AddRemoveGameworld(activeItem, true);
+                item.ItemObject.SetActive(true); // Activate the item so it is added back to the scene
+            }
         items.Remove(item);
+        }   
     }
 
     public void AddItem(Item item)
