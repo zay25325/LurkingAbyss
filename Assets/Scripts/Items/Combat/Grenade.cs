@@ -113,5 +113,16 @@ public class Grenade : Item
         Physics2D.IgnoreLayerCollision(projectileLayer, entitiesLayer, false);
         Physics2D.IgnoreLayerCollision(projectileLayer, visionBlockersLayer, false);
         Physics2D.IgnoreLayerCollision(projectileLayer, itemLayer, true);
+
+        // Set the AttackingEntityInfo for the ExplosionProjectile
+        ProjectileSpawnOnEndModifier spawnOnEndModifier = grenade.GetComponent<ProjectileSpawnOnEndModifier>();
+        if (spawnOnEndModifier != null)
+        {
+            spawnOnEndModifier.SetAttackingEntityInfo(player.GetComponent<EntityInfo>());
+        }
+        else
+        {
+            Debug.LogError("Grenade is missing a ProjectileSpawnOnEndModifier!");
+        }
     }
 }
