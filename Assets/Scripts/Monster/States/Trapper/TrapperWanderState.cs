@@ -25,6 +25,10 @@ public class TrapperWanderState : TrapperBaseState
 
     private void Update()
     {
+        if (controller.Targets.Count > 0)
+        {
+            controller.SwitchState<TrapperHuntingState>();
+        }
         if (controller.Agent.remainingDistance < .5f)
         {
             navigationPoints.Remove(currentNavPoint.Value); 
@@ -34,24 +38,12 @@ public class TrapperWanderState : TrapperBaseState
 
     public override void OnSeeingEntityEnter(Collider2D collider)
     {
-        EntityInfo info = collider.GetComponent<EntityInfo>();
-        if (info != null)
+        base.OnSeeingEntityEnter(collider);
+        if (controller.Targets.Count > 0)
         {
-            if (info.Tags.Contains(EntityTags.Creature) && info.Tags.Contains(EntityTags.Wanderer))
-            {
-                SetHuntingTarget(info.transform.position, info.Tags);
-            }
+            controller.SwitchState<TrapperHuntingState>();
         }
     }
-
-    public override void OnNoiseDetection(Vector2 pos, float volume, List<EntityTags> tags)
-    {
-        if (tags.Contains(EntityTags.Creature) && tags.Contains(EntityTags.Wanderer))
-        {
-            SetHuntingTarget(pos, tags);
-        }
-    }
-
 
     private void SetNextPoint()
     {
@@ -64,10 +56,8 @@ public class TrapperWanderState : TrapperBaseState
         controller.Agent.SetDestination(currentNavPoint.Value);
     }
 
-    private void SetHuntingTarget(Vector2 targetPos, List<EntityTags> tags)
+    public override void OnTrapTriggered(TrapperBulbController bulb, Vector3 targetPos)
     {
-        controller.LastTargetLocation = targetPos;
-        controller.TargetTags = tags;
-        controller.SwitchState<TrapperHuntingState>();
+        controller.TeleportToBulb(bulb, targetPos);
     }
 }

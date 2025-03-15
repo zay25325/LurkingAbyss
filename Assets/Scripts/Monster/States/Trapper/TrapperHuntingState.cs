@@ -12,59 +12,85 @@ using UnityEngine.AI;
 
 public class TrapperHuntingState : TrapperBaseState
 {
-    [Header("Traps")]
-    [SerializeField] int maxTrapCount = 7;
-    [SerializeField] float trapCooldown = 2.5f;
-    [SerializeField] GameObject trapPrefab; // maybe make a list later
-    private float trapTimer;
-
-    [Header("Navigation")]
-    [SerializeField] float followDistance = 6;
-    [SerializeField] float maxSamplePosDistance = 3;
-
     [Header("Interest")] // return to wander if losing the target
-    [SerializeField] float interestDuration = 5f; // 5 seconds
+    [SerializeField] float interestDuration = 3f; // 3 seconds
     float interestTimer;
 
+
+    [SerializeField] GameObject SwarmlingProjectile;
+
+    [SerializeField] float fireRateDelay = 1.25f;
+    float fireRateTimer = 0f;
+
+    [SerializeField] float positionUpdateDelay = .5f;
+    float positionUpdateTimer = 0f;
+    List<ProjectileController> projectiles = new List<ProjectileController>();
+
+
+    [SerializeField] float combatDistance = 3f; // the distance which the hive mother will attempt to maintain from the target
 
 
     private void OnEnable()
     {
-        //Require tags and last point being set from wander state
-        trapTimer = trapCooldown;
         interestTimer = interestDuration;
     }
 
     protected void Update()
     {
-        trapTimer -= Time.deltaTime;
-        if (trapTimer <= 0)
+        if (controller.Targets.Count == 0)
         {
-            Instantiate(trapPrefab, transform.position, new Quaternion());
-            trapTimer = trapCooldown;
+            interestTimer -= Time.deltaTime;
+            if (interestTimer <= 0)
+            {
+                controller.SwitchState<TrapperWanderState>();
+            }
         }
-
-        interestTimer -= Time.deltaTime;
-        if (interestTimer <= 0)
+        else
         {
-            controller.SwitchState<TrapperWanderState>();
+            interestTimer = interestDuration;
+
+            // projectile attack
+            fireRateTimer += Time.deltaTime;
+            if (fireRateTimer > fireRateDelay)
+            {
+                fireRateTimer -= fireRateDelay;
+                FireProjectile(controller.Targets[0].transform.position);
+            }
+
+            Vector3 direction = (controller.Targets[0].transform.position - transform.position).normalized;
+
+            // vision
+            controller.SightController.LookDirection = SimpleSightMeshController.GetAngleFromVectorFloat(direction) + 90;
+
+            // navigation
+            positionUpdateTimer += Time.deltaTime;
+            if (positionUpdateTimer > positionUpdateDelay)
+            {
+                positionUpdateTimer = 0f;
+                UpdatePosition(controller.Targets[0].transform.position);
+            }
         }
     }
 
 
-    public override void OnNoiseDetection(Vector2 pos, float volume, List<EntityInfo.EntityTags> tags)
+    private void FireProjectile(Vector3 target)
     {
-        if (Vector2.Distance(pos, controller.LastTargetLocation) > controller.MaxDistanceFromPrevious)
-        {
-            Vector2 direction = (controller.LastTargetLocation - pos).normalized;
-            Vector2 navPos = pos - (direction * followDistance); // follow the target from a distance;
-            if (NavMesh.SamplePosition(navPos, out NavMeshHit hit, maxSamplePosDistance, 2))
-            {
-                controller.Agent.destination = hit.position;
-            }
+        Vector3 direction = (target - transform.position).normalized;
+        GameObject projectileObj = Instantiate(SwarmlingProjectile, transform.position + direction, new Quaternion());
+        ProjectileController projectile = projectileObj.GetComponent<ProjectileController>();
+        projectile.Target = target;
+        ProjectileEventModifier eventMod = projectile.GetComponent<ProjectileEventModifier>();
 
-            controller.LastTargetLocation = pos;
-            interestTimer = interestDuration;
-        } 
+        projectiles.Add(projectile);
+    }
+
+    private void UpdatePosition(Vector3 target)
+    {
+        Vector3 direction = (target - transform.position).normalized;
+        Vector3 rawNavPoint = target - direction * combatDistance;
+        if (NavMesh.SamplePosition(rawNavPoint, out NavMeshHit hit, 5, 1))
+        {
+            controller.Agent.destination = hit.position;
+        }
     }
 }

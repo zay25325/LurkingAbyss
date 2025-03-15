@@ -13,11 +13,48 @@ using static EntityInfo;
 
 public class TrapperController : MonsterController
 {
-    private float maxDistanceFromPrevious = 5f; // ignore matching sounds if they are not in the correct location. when tracking one swarmling, ignore other swarmlings
-    private Vector2 lastTargetLocation = Vector2.zero;
-    private List<EntityTags> targetTags = new List<EntityTags>();
+    public List<EntityInfo> Targets = new List<EntityInfo>();
+    public List<TrapperBulbController> ActiveBulbs = new List<TrapperBulbController>();
+    public List<TrapperBulbController> DestroyedBulbs = new List<TrapperBulbController>();
 
-    public float MaxDistanceFromPrevious { get => maxDistanceFromPrevious; }
-    public Vector2 LastTargetLocation { get => lastTargetLocation; set => lastTargetLocation = value; }
-    public List<EntityTags> TargetTags { get => targetTags; set => targetTags = value; }
+    private void Start()
+    {
+        GameObject[] bulbObjs = GameObject.FindGameObjectsWithTag("TrapperBulb");
+
+        foreach(GameObject bulbObj in bulbObjs)
+        {
+            TrapperBulbController bulb = bulbObj.GetComponent<TrapperBulbController>();
+            bulb.SetTrapper(this);
+            ActiveBulbs.Add(bulb);
+        }
+    }
+
+    public void TeleportToBulb(TrapperBulbController bulb, Vector3 targetPos)
+    {
+        bulb.TriggerTrapDestroyed();
+        Agent.Warp(bulb.transform.position);
+        Agent.destination = targetPos;
+        SightController.LookDirection = SimpleSightMeshController.GetAngleFromVectorFloat(bulb.transform.position - targetPos) - 90;
+    }
+
+
+
+    public void OnTrapTriggered(TrapperBulbController bulb, Vector3 TargetPos)
+    {
+        (state as TrapperBaseState).OnTrapTriggered(bulb, TargetPos);
+    }
+
+    public void OnTrapDestroyed(TrapperBulbController bulb)
+    {
+        ActiveBulbs.Remove(bulb);
+        DestroyedBulbs.Add(bulb);
+
+        (state as TrapperBaseState).OnTrapDestroyed(bulb);
+    }
+
+    public void OnTrapRestored(TrapperBulbController bulb)
+    {
+        DestroyedBulbs.Remove(bulb);
+        ActiveBulbs.Add(bulb);
+    }
 }
