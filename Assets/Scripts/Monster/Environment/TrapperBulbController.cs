@@ -6,9 +6,33 @@ public class TrapperBulbController : MonoBehaviour
 {
     [SerializeField] OnHitEvents onHitEvents;
     [SerializeField] GameObject ColliderObj;
+    [SerializeField] Animator animator;
 
     TrapperController trapper;
     bool isBulbActive = true;
+
+    public bool IsBulbActive
+    {
+        get => isBulbActive;
+        set
+        {
+            if (value != isBulbActive) // only trigger on change
+            {
+                isBulbActive = value;
+                if (isBulbActive == true)
+                {
+                    trapper.OnTrapRestored(this);
+                }
+                else
+                {
+                    trapper.OnTrapDestroyed(this);
+                }
+
+                ColliderObj.SetActive(isBulbActive);
+                animator.SetBool("IsActive", isBulbActive);
+            }
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -45,13 +69,11 @@ public class TrapperBulbController : MonoBehaviour
 
     public void TriggerTrapDestroyed()
     {
-        trapper.OnTrapDestroyed(this);
-        ColliderObj.SetActive(false);
+        IsBulbActive = false;
     }
 
     public void TriggerTrapRestored()
     {
-        trapper.OnTrapRestored(this);
-        ColliderObj.SetActive(true);
+        IsBulbActive = true;
     }
 }
