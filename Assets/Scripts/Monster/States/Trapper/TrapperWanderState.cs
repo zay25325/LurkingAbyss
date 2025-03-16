@@ -29,7 +29,11 @@ public class TrapperWanderState : TrapperBaseState
         {
             controller.SwitchState<TrapperHuntingState>();
         }
-        if (controller.Agent.remainingDistance < .5f)
+        else if (controller.DestroyedBulbs.Count > 0)
+        {
+            controller.SwitchState<TrapperRestoreState>();
+        }
+        else if (controller.Agent.remainingDistance < .5f)
         {
             navigationPoints.Remove(currentNavPoint.Value); 
             SetNextPoint();

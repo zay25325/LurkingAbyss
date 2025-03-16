@@ -179,6 +179,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2314743256799170260}
+    - targetCorrespondingSourceObject: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1934198182781398723}
   m_SourcePrefab: {fileID: 100100000, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
 --- !u!114 &387319608501545902 stripped
 MonoBehaviour:
@@ -257,6 +260,19 @@ MonoBehaviour:
   fireRateDelay: 1.25
   positionUpdateDelay: 0.2
   combatDistance: 3
+--- !u!114 &1934198182781398723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931839527684933961}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a719cd1d0204a84ab95625311fd1add, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 0}
 --- !u!114 &2499859143331102793 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3965241064990638695, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
