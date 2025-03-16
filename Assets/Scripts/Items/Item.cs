@@ -69,7 +69,7 @@ public abstract class Item : MonoBehaviour
         PARAMETERS : NONE
         RETURNS : NONE
     */
-    public abstract void Use();
+    public abstract void Use(EntityInfo entityInfo);
 
     /*
         FUNCTION : CanDestroy()

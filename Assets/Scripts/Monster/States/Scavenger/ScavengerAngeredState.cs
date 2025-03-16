@@ -41,6 +41,7 @@ public class ScavengerAngeredState : ScavengerBaseState
     {
         List<Item> items = scavengerController.GetItems();
         List<Item> combatItems = new List<Item>();
+        EntityInfo entityInfo = scavengerController.GetComponent<EntityInfo>();
 
         // Check for Grenade and BasicGun in the inventory
         foreach (Item item in items)
@@ -68,9 +69,9 @@ public class ScavengerAngeredState : ScavengerBaseState
 
             // Use the active item
             Item activeItem = scavengerController.GetActiveItem();
-            if (activeItem != null)
+            if (activeItem != null && entityInfo != null)
             {
-                activeItem.Use();
+                activeItem.Use(entityInfo);
                 if (!activeItem.CanUseItem())
                 {
                     scavengerController.RemoveItem(activeItem);

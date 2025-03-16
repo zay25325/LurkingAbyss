@@ -29,7 +29,7 @@ public class GravitonSurgePlate : Item
         ItemObject = gravitonSurgePlatePrefab;
     }
 
-    public override void Use()
+    public override void Use(EntityInfo entityInfo)
     {
         if (CanUseItem())
         {

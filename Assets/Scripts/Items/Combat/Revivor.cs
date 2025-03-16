@@ -42,7 +42,7 @@ public class Revivor : Item
     Parameters : NONE
     Returns : NONE
 */
-    public override void Use()
+    public override void Use(EntityInfo entityInfo)
     {
         if (CanUseItem())
         {
