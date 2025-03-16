@@ -911,7 +911,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sightMeshController: {fileID: 9165364671979620256}
-  itemBarHUD: {fileID: 0}
+  itemBarHUD: {fileID: 2067519189944360539, guid: cb78b8b9770538d49923436b08683fa8, type: 3}
   itemSlotPrefab: {fileID: 0}
   isParalyzed: 0
 --- !u!114 &2027305539459633839

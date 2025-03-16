@@ -98,6 +98,7 @@ public class Inventory : MonoBehaviour
                     ActiveItem(0);
                 }
             }
+            OnInventoryChanged?.Invoke();
             return true;
         }
         return false; // Item not found in inventory

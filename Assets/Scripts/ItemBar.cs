@@ -20,7 +20,7 @@ public class ItemBar : MonoBehaviour
 
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null)
+        if (player != null)
         {
             playerInventory = player.GetComponent<Inventory>();
             if (playerInventory != null)
@@ -34,7 +34,7 @@ public class ItemBar : MonoBehaviour
         else
             Debug.Log("Player inventory component wasnt found");
 
-        if (itemPrefab != null)
+        if (itemPrefab == null)
         {
             Debug.LogError("ItemPrefab is not assigned in Itembar");
         }
@@ -50,8 +50,11 @@ public class ItemBar : MonoBehaviour
         }
 
         // delete prev items/images
-        foreach (Transform child in itemBarHUD.transform)
+        if (playerInventory.GetItems().Count > 0)
+        {
+            foreach (Transform child in itemBarHUD.transform)
             Destroy(child.gameObject);
+        }
 
         List<Item> items = playerInventory.GetItems();
 
@@ -61,25 +64,43 @@ public class ItemBar : MonoBehaviour
         if (items.Count == 3)
             Debug.Log("All slots used");
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < items.Count; i++)
         {
-            GameObject slot = Instantiate(itemPrefab, itemBarHUD.transform);
+            //GameObject slot = Instantiate(items[i].gameObject, itemBarHUD.transform);
 
-            //Image itemImage = slot.GetComponent<Image>(); // 'Image' keyword wasnt being recognized
-            UnityEngine.UI.Image itemImage = slot.GetComponentInChildren<UnityEngine.UI.Image>();
+            GameObject slot = new GameObject(items[i].name + "_Slot", typeof(RectTransform), typeof(CanvasRenderer), typeof(UnityEngine.UI.Image));
+            slot.transform.SetParent(itemBarHUD.transform);
+            RectTransform rectTransform = slot.GetComponent<RectTransform>();
+                    rectTransform.localScale = Vector3.one;
+                    rectTransform.sizeDelta = new Vector2(100, 100); // Adjust size as needed
+
+            UnityEngine.UI.Image itemImage = slot.GetComponent<UnityEngine.UI.Image>();
+            Debug.Log("Item Image: " + itemImage);
             Debug.Log("About to add images to HUD");
-            if (i < items.Count)
+            SpriteRenderer itemSpriteRenderer = null;
+
+            GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
+            foreach (GameObject obj in allObjects)
             {
-                if (items[i].ItemIcon != null)
+                if (obj.name == items[i].name)
                 {
-                    itemImage.sprite = items[i].ItemIcon;
-                    Debug.Log($"Added sprite image for item: {items[i].ItemName}");
+                    itemSpriteRenderer = obj.GetComponent<SpriteRenderer>();
+                    if (itemSpriteRenderer != null)
+                    {
+                        Debug.Log("Found item in scene: " + items[i].name);
+                        break;
+                    }
                 }
-                else
-                    Debug.Log($"item: {items[i].name} does not have a sprite attached");
+            }
+            Debug.Log("Item Sprite Renderer: " + itemSpriteRenderer);
+            if (itemSpriteRenderer != null && itemSpriteRenderer.sprite != null)
+            {
+                itemImage.sprite = itemSpriteRenderer.sprite;
+                Debug.Log($"Added sprite image for item: {items[i].ItemName}");
             }
             else
-                Debug.Log("Could not find items");
+                Debug.Log($"item: {items[i].name} does not have a sprite attached");
+        
         }
     }
 }
