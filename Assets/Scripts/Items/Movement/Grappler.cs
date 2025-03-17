@@ -7,6 +7,7 @@ Description: This class is a child of the Item class and represents a grappler i
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Grappler : Item
 {
@@ -70,7 +71,15 @@ public class Grappler : Item
     {
         if (CanUseItem())
         {
-            Grapple();
+            if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
+            {
+                Grapple();
+            }
+            else if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
+            {
+                Debug.Log("Scavenger used " + ItemName);
+                ScavengerGrapple();
+            }
         }
         else
         {
@@ -276,5 +285,179 @@ public class Grappler : Item
 
         ReduceItemCharge();
         DestroyItem(ItemObject);
+    }
+
+    private void ScavengerGrapple()
+    {
+        Debug.Log("Scavenger grapple with: " + ItemName);
+
+        // Temporarily activate the Grappler GameObject
+        bool wasActive = gameObject.activeSelf;
+        gameObject.SetActive(true);
+
+        // Disable renderer components to make the Grappler invisible
+        Renderer[] renderers = gameObject.GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.enabled = false;
+        }
+
+        // Find the scavenger GameObject by name
+        GameObject scavenger = GameObject.Find("Scavenger");
+
+        if (scavenger != null)
+        {
+            // Get the scavenger's NavMeshAgent component
+            NavMeshAgent scavengerAgent = scavenger.GetComponent<NavMeshAgent>();
+
+            if (scavengerAgent != null)
+            {
+                // Define the target position for the scavenger to grapple to
+                Vector3 targetPosition = GetScavengerTargetPosition();
+
+                // Perform a raycast from the scavenger's position towards the target position
+                Vector3 scavengerPosition = scavengerAgent.transform.position;
+                Vector3 direction = (targetPosition - scavengerPosition).normalized;
+                float distanceToTarget = Vector3.Distance(scavengerPosition, targetPosition);
+
+                // Raycast from the scavenger's position towards the target position
+                RaycastHit hit;
+                if (Physics.Raycast(scavengerPosition, direction, out hit, distanceToTarget, LayerMask.GetMask("VisionBlockers")))
+                {
+                    if (hit.collider.CompareTag(grappleTagWalls))
+                    {
+                        Debug.Log("Scavenger grappled to a wall: " + hit.collider.name);
+
+                        // Use NavMesh to find the closest valid position
+                        UnityEngine.AI.NavMeshHit navHit;
+                        if (UnityEngine.AI.NavMesh.SamplePosition(hit.point, out navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
+                        {
+                            lineRenderer.SetPosition(0, scavengerPosition);
+                            lineRenderer.SetPosition(1, scavengerPosition);
+
+                            // Start the grapple coroutine
+                            StartCoroutine(GrappleScavengerToTarget(scavengerAgent, navHit.position, wasActive, renderers));
+                        }
+                        else
+                        {
+                            Debug.LogError("No valid position found on the NavMesh!");
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Hit object is not a valid grapple target.");
+                    }
+                }
+                else
+                {
+                    Debug.Log("No object to grapple to in that direction.");
+                }
+            }
+            else
+            {
+                Debug.Log("Scavenger NavMeshAgent not found");
+            }
+        }
+    }
+
+    private IEnumerator GrappleScavengerToTarget(NavMeshAgent scavengerAgent, Vector3 target, bool wasActive, Renderer[] renderers)
+    {
+        lineRenderer.enabled = true;
+        Vector3 startPosition = scavengerAgent.transform.position;
+
+        // Ensure the rope starts at the scavenger's position
+        lineRenderer.SetPosition(0, startPosition);
+        lineRenderer.SetPosition(1, startPosition);
+
+        // Extend the rope first before pulling
+        float extendTime = 0.2f;
+        float elapsedTime = 0f;
+
+        // Extend the rope to the target
+        while (elapsedTime < extendTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / extendTime;
+            Vector3 currentEndPoint = Vector3.Lerp(startPosition, target, t);
+
+            lineRenderer.SetPosition(0, startPosition);  // Always stays at scavenger's original position
+            lineRenderer.SetPosition(1, currentEndPoint); // Move towards target
+
+            yield return null;
+        }
+
+        lineRenderer.SetPosition(1, target);
+
+        yield return new WaitForSeconds(0.1f); // Short delay before pulling
+
+        // Move the scavenger towards the target
+        float distance = Vector3.Distance(startPosition, target);
+        float startTime = Time.time;
+
+        // Pull the scavenger towards the target
+        while (Vector3.Distance(scavengerAgent.transform.position, target) > 0.1f)
+        {
+            float coveredDistance = (Time.time - startTime) * grappleSpeed;
+            float fractionOfJourney = coveredDistance / distance;
+            Vector3 newPosition = Vector3.Lerp(startPosition, target, fractionOfJourney);
+
+            // Cast a ray to detect collision with walls during movement
+            Vector3 direction = (target - scavengerAgent.transform.position).normalized;
+            float distanceToCheck = Vector3.Distance(scavengerAgent.transform.position, target);
+            RaycastHit hit;
+            if (Physics.Raycast(newPosition, direction, out hit, distanceToCheck, LayerMask.GetMask("VisionBlockers")))
+            {
+                // Wall collision detected
+                Debug.Log("Collision detected at: " + hit.point);
+
+                // Stop movement and adjust position
+                Vector3 collisionPoint = hit.point;
+                Vector3 offset = direction * 1f; // Adjust this value as needed
+                scavengerAgent.transform.position = collisionPoint - offset; // Move scavenger to just before the collision point
+                lineRenderer.enabled = false; // Disable the rope
+                ReduceItemCharge();
+                DestroyItem(ItemObject);
+                yield break; // Exit the grappling process
+            }
+
+            // Move the scavenger to the new position
+            scavengerAgent.transform.position = newPosition;
+
+            // Update LineRenderer to follow scavenger
+            lineRenderer.SetPosition(0, scavengerAgent.transform.position); // Scavenger position updated
+            lineRenderer.SetPosition(1, target); // Keep rope attached to the target
+
+            yield return null;
+        }
+
+        // Ensure scavenger reaches the target exactly
+        scavengerAgent.transform.position = target;
+
+        // Disable the rope after reaching the target
+        lineRenderer.enabled = false;
+
+        // Re-enable renderer components to make the Grappler visible again
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.enabled = true;
+        }
+
+        // Restore the Grappler GameObject's active state
+        gameObject.SetActive(wasActive);
+
+        ReduceItemCharge();
+        DestroyItem(ItemObject);
+    }
+
+    private Vector3 GetScavengerTargetPosition()
+    {
+        // Generate a random position within a certain range
+        float range = 10.0f;
+        Vector3 randomPosition = new Vector3(
+            Random.Range(-range, range),
+            Random.Range(-range, range),
+            Random.Range(-range, range)
+        );
+        return randomPosition;
     }
 }
