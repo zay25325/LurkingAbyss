@@ -150,6 +150,10 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4733366595748055650, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: raycastLayers.m_Bits
+      value: 1345
+      objectReference: {fileID: 0}
     - target: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6
@@ -338,3 +342,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  switchDistance: 10

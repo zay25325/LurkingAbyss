@@ -15,23 +15,6 @@ public class ScavengerAngeredState : ScavengerBaseState
         scavengerController = controller as ScavengerController;
     }
 
-    void Update()
-    {
-        if (playerTarget == null)
-        {
-            return;
-        }
-
-        if (Vector3.Distance(playerTarget.position, controller.transform.position) > switchDistance)
-        {
-            controller.SwitchState<ScavengerScavengeState>();
-        }
-        else
-        {
-            UseCombatItem();
-        }
-    }
-
     private void SwitchToScavengingState()
     {
         controller.SwitchState<ScavengerScavengeState>();
@@ -91,6 +74,32 @@ public class ScavengerAngeredState : ScavengerBaseState
     private void Scream()
     {
         return;
+    }
+
+    public override void OnSeeingEntityEnter(Collider2D collider)
+    {
+        EntityInfo info = collider.GetComponent<EntityInfo>();
+        if (info != null)
+        {
+            if (info.Tags.Contains(EntityInfo.EntityTags.Player))
+            {
+                Debug.Log("Scavenger sees entity");
+                UseCombatItem();
+            }
+        }
+    }
+
+    public override void OnSeeingEntityExit(Collider2D collider)
+    {
+        EntityInfo info = collider.GetComponent<EntityInfo>();
+        if (info != null)
+        {
+            if (info.Tags.Contains(EntityInfo.EntityTags.Player))
+            {
+                Debug.Log("Scavenger no longer sees entity");
+                controller.SwitchState<ScavengerScavengeState>();
+            }
+        }
     }
 
 }
