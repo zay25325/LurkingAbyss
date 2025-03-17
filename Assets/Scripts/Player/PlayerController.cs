@@ -12,6 +12,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
     [SerializeField] SightMeshController sightMeshController;
 
     //constants
@@ -23,7 +25,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 movementInput = Vector2.zero;   // Input from the player
     private Rigidbody2D playerRigidBody;    // Rigidbody2D component of the player
     private PlayerInputControls playerInputControls;    // Input system controls
-    private Camera mainCamera; // Main camera for screen-to-world calculations
     private readonly HUD hud = new();
 
     private bool canDash = true; // Flag to check if player can dash
@@ -46,30 +47,33 @@ public class PlayerController : MonoBehaviour
     */
     private void Awake()
     {
-        // Initialize input controls
-        playerInputControls = new PlayerInputControls();
-        
-        //Get main camera
-        mainCamera = Camera.main;
-        if (mainCamera == null)
+        if (instance == null)
         {
-            Debug.LogError("Main camera not found!");
-        }
+            instance = this;
+            DontDestroyOnLoad(gameObject);
 
-        // Subscribe to input events
-        playerInputControls.Player.Move.performed += ctx => Move(ctx.ReadValue<Vector2>()); // Subscribe to move event
-        playerInputControls.Player.Move.canceled += ctx => StopMoving();                    // Subscribe to stop moving event
-        playerInputControls.Player.Look.performed += ctx => Look(ctx.ReadValue<Vector2>()); // Subscribe to look event
-        playerInputControls.Player.Sneak.performed += ctx => OnSneak(ctx);                  // Subscribe to sneak event
-        playerInputControls.Player.Sneak.canceled += ctx => OnSneak(ctx);                   // Subscribe to stop sneaking event
-        playerInputControls.Player.Dash.performed += ctx => Dash(ctx);                      // Subscribe to dash event
-        playerInputControls.Player.Interact.performed += ctx => DoInteraction(ctx);         // Subscribe to interact event
-        playerInputControls.Player.Drop.performed += ctx => DropItem(ctx);                  // Subscribe to Drop event
-        playerInputControls.Player.Scroll.performed += OnScroll;                            // Subscribe to scroll event                         
-        playerInputControls.Player.Slot1.performed += OnSlot1Pressed;                       // Subscribe to slot 1 event
-        playerInputControls.Player.Slot2.performed += OnSlot2Pressed;                       // Subscribe to slot 2 event
-        playerInputControls.Player.Slot3.performed += OnSlot3Pressed;                       // Subscribe to slot 3 event
-        playerInputControls.Player.Fire.performed += Fire;                                  // Subscribe to fire event  
+            // Initialize input controls
+            playerInputControls = new PlayerInputControls();
+
+            // Subscribe to input events
+            playerInputControls.Player.Move.performed += ctx => Move(ctx.ReadValue<Vector2>()); // Subscribe to move event
+            playerInputControls.Player.Move.canceled += ctx => StopMoving();                    // Subscribe to stop moving event
+            playerInputControls.Player.Look.performed += ctx => Look(ctx.ReadValue<Vector2>()); // Subscribe to look event
+            playerInputControls.Player.Sneak.performed += ctx => OnSneak(ctx);                  // Subscribe to sneak event
+            playerInputControls.Player.Sneak.canceled += ctx => OnSneak(ctx);                   // Subscribe to stop sneaking event
+            playerInputControls.Player.Dash.performed += ctx => Dash(ctx);                      // Subscribe to dash event
+            playerInputControls.Player.Interact.performed += ctx => DoInteraction(ctx);         // Subscribe to interact event
+            playerInputControls.Player.Drop.performed += ctx => DropItem(ctx);                  // Subscribe to Drop event
+            playerInputControls.Player.Scroll.performed += OnScroll;                            // Subscribe to scroll event                         
+            playerInputControls.Player.Slot1.performed += OnSlot1Pressed;                       // Subscribe to slot 1 event
+            playerInputControls.Player.Slot2.performed += OnSlot2Pressed;                       // Subscribe to slot 2 event
+            playerInputControls.Player.Slot3.performed += OnSlot3Pressed;                       // Subscribe to slot 3 event
+            playerInputControls.Player.Fire.performed += Fire;                                  // Subscribe to fire event  
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     /*
@@ -239,7 +243,7 @@ public class PlayerController : MonoBehaviour
     {
         // Get mouse position in world space
         Vector3 mousePosition = Mouse.current.position.ReadValue(); // Mouse position in screen space
-        mousePosition = mainCamera.ScreenToWorldPoint(mousePosition); // Convert to world space
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition); // Convert to world space
         mousePosition.z = 0; // Ensure Z is 0 for 2D
 
         // Calculate direction to face the mouse

@@ -2639,9 +2639,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3926fb4dd1f825243835eee0163713bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  smoothSpeed: 0.125
-  offset: {x: 0, y: 0, z: 0}
+  FollowTransform: {fileID: 0}
+  SmoothSpeed: 0.125
+  Offset: {x: 0, y: 0, z: 0}
 --- !u!1001 &1496847156
 PrefabInstance:
   m_ObjectHideFlags: 0

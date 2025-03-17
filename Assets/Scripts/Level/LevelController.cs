@@ -224,7 +224,16 @@ public class LevelController : MonoBehaviour
         }
 
         //Spawn Player
-        GameObject playerObj = SpawnItem(playerPrefab);
+        GameObject playerObj;
+        if (PlayerController.instance != null)
+        {
+            playerObj = SpawnExistingPlayer(PlayerController.instance.gameObject);
+        }
+        else
+        {
+            playerObj = SpawnItem(playerPrefab);
+        }
+
         CameraController cameraController = Camera.main.GetComponent<CameraController>();
         cameraController.FollowTransform = playerObj.transform;
     }
@@ -239,6 +248,16 @@ public class LevelController : MonoBehaviour
 
         spawners.RemoveAt(index);
         return obj;
+    }
+
+    private GameObject SpawnExistingPlayer(GameObject player)
+    {
+        int index = Random.Range(0, spawners.Count);
+        Vector3 spawnPoint = spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0);
+        player.transform.position = spawnPoint;
+
+        spawners.RemoveAt(index);
+        return player;
     }
 
     public void DestroySpawners()
