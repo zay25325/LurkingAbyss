@@ -7,17 +7,25 @@ public class ScavengerAngeredState : ScavengerBaseState
     public float switchDistance = 10f;
     private Transform playerTarget;
     private ScavengerController scavengerController;
+    private float combatItemTimer = 0f;
+    private float combatItemInterval = 1f;
     new protected void OnEnable()
     {
         base.OnEnable();
 
         playerTarget = GameObject.FindGameObjectWithTag("Player").transform;
         scavengerController = controller as ScavengerController;
+        UseCombatItem();
     }
 
-    private void SwitchToScavengingState()
+    private void Update()
     {
-        controller.SwitchState<ScavengerScavengeState>();
+        combatItemTimer += Time.deltaTime;
+        if (combatItemTimer >= combatItemInterval)
+        {
+            UseCombatItem();
+            combatItemTimer = 0f;
+        }
     }
 
     private void UseCombatItem()
@@ -76,19 +84,6 @@ public class ScavengerAngeredState : ScavengerBaseState
         return;
     }
 
-    public override void OnSeeingEntityEnter(Collider2D collider)
-    {
-        EntityInfo info = collider.GetComponent<EntityInfo>();
-        if (info != null)
-        {
-            if (info.Tags.Contains(EntityInfo.EntityTags.Player))
-            {
-                Debug.Log("Scavenger sees entity");
-                UseCombatItem();
-            }
-        }
-    }
-
     public override void OnSeeingEntityExit(Collider2D collider)
     {
         EntityInfo info = collider.GetComponent<EntityInfo>();
@@ -101,5 +96,4 @@ public class ScavengerAngeredState : ScavengerBaseState
             }
         }
     }
-
 }

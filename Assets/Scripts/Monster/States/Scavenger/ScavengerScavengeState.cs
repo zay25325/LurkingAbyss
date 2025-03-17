@@ -54,30 +54,6 @@ public class ScavengerScavengeState : ScavengerBaseState
         }
     }
 
-    // private void SearchForItems()
-    // {
-    //     Debug.Log("Searching for items");
-    //     Collider2D[] foundItems = Physics2D.OverlapCircleAll(controller.transform.position, searchRadius, itemLayer);
-
-    //     if (controller.GetItems().Count >= 3)
-    //     {
-    //         Wander();
-    //         return;
-    //     }
-    //     else if (foundItems.Length > 0)
-    //     {
-    //         Item bestItem = FindBestItem(foundItems);
-    //         if (bestItem != null)
-    //         {
-    //             MoveToItem(bestItem);
-    //         }
-    //     }
-    //     else
-    //     {
-    //         Wander();
-    //     }
-    // }
-
     private void Wander()
     {
         // Only attempt to wander after the cooldown period
@@ -143,35 +119,6 @@ public class ScavengerScavengeState : ScavengerBaseState
         }
     }
 
-    // private Item FindBestItem(Collider2D[] foundItems)
-    // {
-    //     Item bestItem = null;
-
-    //     // Check inventory for missing item types
-    //     bool hasCombatItem = false, hasMovementItem = false, hasEnvironmentItem = false;
-    //     foreach (Item item in controller.GetItems())
-    //     {
-    //         if (item.ItemSubtype == Subtype.Combat) hasCombatItem = true;
-    //         if (item.ItemSubtype == Subtype.Movement) hasMovementItem = true;
-    //         if (item.ItemSubtype == Subtype.Environment) hasEnvironmentItem = true;
-    //     }
-
-    //     // Prioritize missing item types
-    //     foreach (Collider2D col in foundItems)
-    //     {
-    //         Item item = col.GetComponent<Item>();
-    //         if (item == null) continue;
-
-    //         if (!hasCombatItem && item.ItemSubtype == Subtype.Combat) return item;
-    //         if (!hasMovementItem && item.ItemSubtype == Subtype.Movement) return item;
-    //         if (!hasEnvironmentItem && item.ItemSubtype == Subtype.Environment) return item;
-
-    //         bestItem = item; // Fallback if no priority match is found
-    //     }
-        
-    //     return bestItem;
-    // }
-
     private void MoveToItem(Item item)
     {
         if (navMeshAgent == null || !navMeshAgent.enabled)
@@ -194,38 +141,11 @@ public class ScavengerScavengeState : ScavengerBaseState
         targetItem = null; // Reset the target item
     }
 
-    // private bool IsThreatened()
-    // {
-    //     Collider2D[] nearbyMonsters = Physics2D.OverlapCircleAll(controller.transform.position, searchRadius, monsterLayer);
-    //     foreach (Collider2D col in nearbyMonsters)
-    //     {
-    //         // Ignore the scavenger's own collider
-    //         if (col.gameObject == controller.gameObject)
-    //         {
-    //             continue;
-    //         }
-
-    //         // Check if the nearby entity is a threat
-    //         if (col.gameObject.layer == LayerMask.NameToLayer("Entities"))
-    //         {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
-
-    // private bool IsPlayerNearby()
-    // {
-    //     Collider2D[] nearbyPlayers = Physics2D.OverlapCircleAll(controller.transform.position, searchRadius, playerLayer);
-    //     return nearbyPlayers.Length > 0;
-    // }
-
     protected void OnHarmedWithInfo (EntityInfo attackerInfo)
     {
             if (attackerInfo != null && attackerInfo.CompareTag("Player"))
             {
                 Debug.Log($"Entity was hit by {attackerInfo.name}");
-                // Additional logic when the entity is harmed
                 isAngry = true;
             }
     }
@@ -253,11 +173,6 @@ public class ScavengerScavengeState : ScavengerBaseState
                     MoveToItem(item);
                 }
             }
-            // else if (info.Tags.Contains(EntityInfo.EntityTags.Entities))
-            // {
-            //     Debug.Log("Scavenger sees a monster");
-            //     controller.SwitchState<ScavengerThreatenedState>();
-            // }
         }
     }
 
@@ -274,7 +189,6 @@ public class ScavengerScavengeState : ScavengerBaseState
             else if (info.Tags.Contains(EntityInfo.EntityTags.Item))
             {
                 Debug.Log("Scavenger picked up an item");
-                // Optionally, you can add logic to handle what happens when the scavenger no longer sees the item
             }
         }
     }
