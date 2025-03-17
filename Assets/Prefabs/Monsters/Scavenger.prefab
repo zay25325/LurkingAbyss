@@ -152,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4733366595748055650, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: raycastLayers.m_Bits
-      value: 1345
+      value: 17729
       objectReference: {fileID: 0}
     - target: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_LocalScale.x

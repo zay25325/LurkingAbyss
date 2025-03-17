@@ -6,7 +6,6 @@ using UnityEngine.AI;
 
 public class ScavengerScavengeState : ScavengerBaseState
 {
-    private float searchRadius = 5f; // Radius to search for items
     private float pickupRange = 1f;  // Range at which items can be picked up
     private float wanderRadius = 10f; // Radius to wander
     private LayerMask itemLayer;
@@ -17,6 +16,8 @@ public class ScavengerScavengeState : ScavengerBaseState
 
     private float wanderCooldown = 1f;  // Time between each wander attempt
     private float wanderTime = 0f;      // Timer to track wander cooldown
+
+    private Item targetItem = null; // The current item the scavenger is moving towards
 
     new protected void OnEnable()
     {
@@ -38,47 +39,44 @@ public class ScavengerScavengeState : ScavengerBaseState
 
     void Update()
     {
-        // Check if the scavenger is angry
-        if (isAngry && IsPlayerNearby())
-        {
-            controller.SwitchState<ScavengerAngeredState>();
-            return;
-        }
-
-        // Check for nearby monsters, switch to ThreatenedState if necessary
-        if (IsThreatened())
-        {
-            controller.SwitchState<ScavengerThreatenedState>();
-            return;
-        }
-
-        // Search for items
-        SearchForItems();
-    }
-
-    private void SearchForItems()
-    {
-        Debug.Log("Searching for items");
-        Collider2D[] foundItems = Physics2D.OverlapCircleAll(controller.transform.position, searchRadius, itemLayer);
-
-        if (controller.GetItems().Count >= 3)
+        // Continue wandering if not currently targeting an item
+        if (targetItem == null)
         {
             Wander();
-            return;
-        }
-        else if (foundItems.Length > 0)
-        {
-            Item bestItem = FindBestItem(foundItems);
-            if (bestItem != null)
-            {
-                MoveToItem(bestItem);
-            }
         }
         else
         {
-            Wander();
+            // Check if the scavenger is close enough to the item to pick it up
+            if (Vector3.Distance(controller.transform.position, targetItem.transform.position) <= pickupRange)
+            {
+                PickUpItem(targetItem);
+            }
         }
     }
+
+    // private void SearchForItems()
+    // {
+    //     Debug.Log("Searching for items");
+    //     Collider2D[] foundItems = Physics2D.OverlapCircleAll(controller.transform.position, searchRadius, itemLayer);
+
+    //     if (controller.GetItems().Count >= 3)
+    //     {
+    //         Wander();
+    //         return;
+    //     }
+    //     else if (foundItems.Length > 0)
+    //     {
+    //         Item bestItem = FindBestItem(foundItems);
+    //         if (bestItem != null)
+    //         {
+    //             MoveToItem(bestItem);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         Wander();
+    //     }
+    // }
 
     private void Wander()
     {
@@ -145,34 +143,34 @@ public class ScavengerScavengeState : ScavengerBaseState
         }
     }
 
-    private Item FindBestItem(Collider2D[] foundItems)
-    {
-        Item bestItem = null;
+    // private Item FindBestItem(Collider2D[] foundItems)
+    // {
+    //     Item bestItem = null;
 
-        // Check inventory for missing item types
-        bool hasCombatItem = false, hasMovementItem = false, hasEnvironmentItem = false;
-        foreach (Item item in controller.GetItems())
-        {
-            if (item.ItemSubtype == Subtype.Combat) hasCombatItem = true;
-            if (item.ItemSubtype == Subtype.Movement) hasMovementItem = true;
-            if (item.ItemSubtype == Subtype.Environment) hasEnvironmentItem = true;
-        }
+    //     // Check inventory for missing item types
+    //     bool hasCombatItem = false, hasMovementItem = false, hasEnvironmentItem = false;
+    //     foreach (Item item in controller.GetItems())
+    //     {
+    //         if (item.ItemSubtype == Subtype.Combat) hasCombatItem = true;
+    //         if (item.ItemSubtype == Subtype.Movement) hasMovementItem = true;
+    //         if (item.ItemSubtype == Subtype.Environment) hasEnvironmentItem = true;
+    //     }
 
-        // Prioritize missing item types
-        foreach (Collider2D col in foundItems)
-        {
-            Item item = col.GetComponent<Item>();
-            if (item == null) continue;
+    //     // Prioritize missing item types
+    //     foreach (Collider2D col in foundItems)
+    //     {
+    //         Item item = col.GetComponent<Item>();
+    //         if (item == null) continue;
 
-            if (!hasCombatItem && item.ItemSubtype == Subtype.Combat) return item;
-            if (!hasMovementItem && item.ItemSubtype == Subtype.Movement) return item;
-            if (!hasEnvironmentItem && item.ItemSubtype == Subtype.Environment) return item;
+    //         if (!hasCombatItem && item.ItemSubtype == Subtype.Combat) return item;
+    //         if (!hasMovementItem && item.ItemSubtype == Subtype.Movement) return item;
+    //         if (!hasEnvironmentItem && item.ItemSubtype == Subtype.Environment) return item;
 
-            bestItem = item; // Fallback if no priority match is found
-        }
+    //         bestItem = item; // Fallback if no priority match is found
+    //     }
         
-        return bestItem;
-    }
+    //     return bestItem;
+    // }
 
     private void MoveToItem(Item item)
     {
@@ -182,49 +180,45 @@ public class ScavengerScavengeState : ScavengerBaseState
             return;
         }
 
-        if (navMeshAgent.pathPending) // If the agent is calculating a path
-            return;
-
-        if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance) 
-        {
-            // If the agent is close enough to the item
-            if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f)
-            {
-                // Pick up the item if close enough
-                controller.AddItem(item);
-                item.ItemObject.SetActive(false);
-            }
-        }
+        targetItem = item;
 
         // Set a destination to move towards the item
         navMeshAgent.SetDestination(item.transform.position);
     }
 
-    private bool IsThreatened()
+    private void PickUpItem(Item item)
     {
-        Collider2D[] nearbyMonsters = Physics2D.OverlapCircleAll(controller.transform.position, searchRadius, monsterLayer);
-        foreach (Collider2D col in nearbyMonsters)
-        {
-            // Ignore the scavenger's own collider
-            if (col.gameObject == controller.gameObject)
-            {
-                continue;
-            }
-
-            // Check if the nearby entity is a threat
-            if (col.gameObject.layer == LayerMask.NameToLayer("Entities"))
-            {
-                return true;
-            }
-        }
-        return false;
+        // Pick up the item if close enough
+        controller.AddItem(item);
+        item.ItemObject.SetActive(false);
+        targetItem = null; // Reset the target item
     }
 
-    private bool IsPlayerNearby()
-    {
-        Collider2D[] nearbyPlayers = Physics2D.OverlapCircleAll(controller.transform.position, searchRadius, playerLayer);
-        return nearbyPlayers.Length > 0;
-    }
+    // private bool IsThreatened()
+    // {
+    //     Collider2D[] nearbyMonsters = Physics2D.OverlapCircleAll(controller.transform.position, searchRadius, monsterLayer);
+    //     foreach (Collider2D col in nearbyMonsters)
+    //     {
+    //         // Ignore the scavenger's own collider
+    //         if (col.gameObject == controller.gameObject)
+    //         {
+    //             continue;
+    //         }
+
+    //         // Check if the nearby entity is a threat
+    //         if (col.gameObject.layer == LayerMask.NameToLayer("Entities"))
+    //         {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+
+    // private bool IsPlayerNearby()
+    // {
+    //     Collider2D[] nearbyPlayers = Physics2D.OverlapCircleAll(controller.transform.position, searchRadius, playerLayer);
+    //     return nearbyPlayers.Length > 0;
+    // }
 
     protected void OnHarmedWithInfo (EntityInfo attackerInfo)
     {
@@ -234,5 +228,54 @@ public class ScavengerScavengeState : ScavengerBaseState
                 // Additional logic when the entity is harmed
                 isAngry = true;
             }
+    }
+
+    public override void OnSeeingEntityEnter(Collider2D collider)
+    {
+        EntityInfo info = collider.GetComponent<EntityInfo>();
+        if (info != null)
+        {
+            if (info.Tags.Contains(EntityInfo.EntityTags.Player))
+            {
+                Debug.Log("Scavenger sees Player");
+
+                if (isAngry)
+                {
+                    controller.SwitchState<ScavengerAngeredState>();
+                }
+            }
+            else if (info.Tags.Contains(EntityInfo.EntityTags.Item))
+            {
+                Debug.Log("Scavenger sees an item");
+                Item item = collider.GetComponent<Item>();
+                if (item != null)
+                {
+                    MoveToItem(item);
+                }
+            }
+            // else if (info.Tags.Contains(EntityInfo.EntityTags.Entities))
+            // {
+            //     Debug.Log("Scavenger sees a monster");
+            //     controller.SwitchState<ScavengerThreatenedState>();
+            // }
+        }
+    }
+
+    public override void OnSeeingEntityExit(Collider2D collider)
+    {
+        EntityInfo info = collider.GetComponent<EntityInfo>();
+        if (info != null)
+        {
+            if (info.Tags.Contains(EntityInfo.EntityTags.Player))
+            {
+                Debug.Log("Scavenger no longer sees entity");  
+            }
+
+            else if (info.Tags.Contains(EntityInfo.EntityTags.Item))
+            {
+                Debug.Log("Scavenger picked up an item");
+                // Optionally, you can add logic to handle what happens when the scavenger no longer sees the item
+            }
+        }
     }
 }
