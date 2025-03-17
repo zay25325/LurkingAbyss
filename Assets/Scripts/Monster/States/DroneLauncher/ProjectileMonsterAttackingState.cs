@@ -61,10 +61,24 @@ public class ProjectileMonsterAttackingState : MonsterState
 
     private void FireProjectile()
     {
-        GameObject projectile = Instantiate(projectilePrefab, controller.transform.position, Quaternion.identity);
-        ProjectileController projectileScript = projectile.GetComponent<ProjectileController>();
-        projectileScript.Target = controller.Target.transform.position;
+        if (controller.Target == null) return;
 
-        Debug.Log("Firing tracking projectile at " + controller.Target.name);
+        Vector3 directionToTarget = (controller.Target.transform.position - controller.transform.position).normalized;
+        Vector3 spawnPosition = controller.transform.position + (directionToTarget * 1.5f);
+        GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
+
+        int projectileLayer = LayerMask.NameToLayer("Projectiles");
+        projectile.layer = projectileLayer;
+        int monsterLayer = controller.gameObject.layer;
+        Physics.IgnoreLayerCollision(projectileLayer, monsterLayer, true);
+
+        ProjectileController projectileScript = projectile.GetComponent<ProjectileController>();
+        if (projectileScript != null)
+        {
+            projectileScript.SetTarget(controller.Target.transform.position);
+        }
+
+        Debug.Log("Firing projectile at " + controller.Target.name);
     }
+
 }

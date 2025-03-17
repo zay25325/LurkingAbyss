@@ -1,4 +1,3 @@
-
 // FileName:     ProjectileMonsterController.cs
 // Assignment:   Capstone Project
 // Author:       Rhys McCash
@@ -13,12 +12,11 @@ using UnityEngine.AI;
 public class ProjectileMonsterController : MonsterController
 {
     [Header("Combat")]
-    [SerializeField] float attackChargeTime = 2f;  
-    [SerializeField] float fleeDistance = 5f;     
-    [SerializeField] float stalkingDistance = 10f;
-    [SerializeField] float maxChaseDistance = 20f; 
-    [SerializeField] float attackSpeed = 1.5f;
-
+    [SerializeField] private float attackChargeTime = 2f;  
+    [SerializeField] private float fleeDistance = 5f;     
+    [SerializeField] private float stalkingDistance = 10f;
+    [SerializeField] private float maxChaseDistance = 20f; 
+    [SerializeField] private float attackSpeed = 1.5f;
 
     public float AttackSpeed => attackSpeed;
     public float MaxChaseDistance => maxChaseDistance;
