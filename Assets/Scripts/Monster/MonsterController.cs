@@ -22,6 +22,9 @@ public class MonsterController : MonoBehaviour
 
     [Header("Stats")]
     public float HearingAmplificaiton = 1f;
+    public float VisionTurnRate = 90f; // degrees / sec
+    public bool useVisionSmoothing = false;
+
 
     [SerializeField] protected float hp;
     [SerializeField] protected float maxHP;
@@ -33,6 +36,7 @@ public class MonsterController : MonoBehaviour
 
     protected List<GameObject> objectsInView = new List<GameObject>();
     protected bool overrideSightDirection = false;
+    protected float TargetLookDir = -90f;
 
     protected const float RESPAWN_DELAY = 30f;
 
@@ -108,6 +112,9 @@ public class MonsterController : MonoBehaviour
         {
             LookTowardsPath();
         }
+        if(stunDuration <= 0 && useVisionSmoothing) {
+            TurnVision();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision) // OnTouchEnter
@@ -181,10 +188,33 @@ public class MonsterController : MonoBehaviour
     protected void LookTowardsPath()
     {
         // look at the next point in the navigation path, which is index 1
-        if (sightController != null && agent.path.corners.Length > 1) 
+        if(agent.path.corners.Length > 1) {
+            LookAt(agent.path.corners[1]);
+        }
+    }
+
+    public void LookAt(Vector3 pos) {
+        if (sightController != null) 
         {
-            Vector3 direction = agent.path.corners[1] - transform.position;
-            sightController.LookDirection = SightMeshController.GetAngleFromVectorFloat(direction) + 90f;
+            Vector3 direction = pos - transform.position;
+            if(useVisionSmoothing) {
+                TargetLookDir = SightMeshController.GetAngleFromVectorFloat(direction) + 90f;
+            } else {
+                sightController.LookDirection = SightMeshController.GetAngleFromVectorFloat(direction) + 90f;
+            }
+        }
+    }
+
+    // turn towards target vision
+    protected void TurnVision() {
+        var turnStep = VisionTurnRate*Time.deltaTime;
+        if (sightController != null) 
+        {
+            if(sightController.LookDirection <= TargetLookDir-turnStep) {
+                sightController.LookDirection += turnStep;
+            } else if(sightController.LookDirection >= TargetLookDir+turnStep) {
+                sightController.LookDirection -= turnStep;
+            }
         }
     }
 
