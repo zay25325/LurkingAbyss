@@ -480,10 +480,11 @@ public class PlayerController : MonoBehaviour
     private void Fire(InputAction.CallbackContext context)
     {
         activeItem = inventory.GetActiveItem();
+        EntityInfo entityInfo = GetComponent<EntityInfo>();
         // activeItem.Use();
-        if (activeItem != null && !activeItem.IsInUse)
+        if (activeItem != null && !activeItem.IsInUse && entityInfo != null)
         {
-            activeItem.Use();
+            activeItem.Use(entityInfo);
         }
     }
 
