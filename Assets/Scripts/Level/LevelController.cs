@@ -84,7 +84,7 @@ public class LevelController : MonoBehaviour
         yield return null;
         BuildNavMesh();
         yield return null;
-        tileManager.GenerateShadows();
+        GenerateShadows();
         yield return null;
         CreateSpawnList();
         yield return null;
@@ -148,7 +148,7 @@ public class LevelController : MonoBehaviour
                         // then pos points to a wall
                         // then perp points to a spot on that wall
                         tileManager.ClearTile(TileMapLayer.LayerClass.Wall, (Vector2Int)tileManager.grid.WorldToCell(roompos+dir*(halfwidth)+perp*doorpos));
-                        Instantiate(doorPrefab, roompos+dir*(halfwidth)+perp*doorpos+(Vector2.one*0.5f), Quaternion.identity);
+                        //Instantiate(doorPrefab, roompos+dir*(halfwidth)+perp*doorpos+(Vector2.one*0.5f), Quaternion.identity);
                         break;
                     case 2: // open
                         for(int j = (int)(-halfwidth)+1; j < halfwidth; j++) {
@@ -190,6 +190,12 @@ public class LevelController : MonoBehaviour
             nav.UpdateMesh();
         }
     }
+
+    public void GenerateShadows()
+    {
+        tileManager.GenerateShadows();
+    }
+
     public IEnumerable WaitBuildNavMesh()
     {
         foreach (var nav in monsterNavs)
@@ -202,7 +208,7 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    private void CreateSpawnList()
+    public void CreateSpawnList()
     {
         // TODO: Add logic for number of each type
         spawnListPrefabs = spawnPoolManager.GenerateSpawnList(8, 2, 2);
@@ -282,15 +288,22 @@ public class LevelControllerEditor : Editor
             myScript.BuildNavMesh();
         }
 
-        if(GUILayout.Button("Destroy Map"))
+        if (GUILayout.Button("Generate Shadows"))
         {
-            myScript.DestroyLevel();
+            myScript.GenerateShadows();
         }
 
         if (GUILayout.Button("Spawn List"))
         {
+            myScript.CreateSpawnList();
             myScript.SpawnList();
         }
+
+        if (GUILayout.Button("Destroy Map"))
+        {
+            myScript.DestroyLevel();
+        }
+
     }
 }
 

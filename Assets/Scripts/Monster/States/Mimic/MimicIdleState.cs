@@ -6,8 +6,21 @@ public class MimicIdleState : MonsterState
 {
     new private MimicController controller { get => base.controller as MimicController; }
 
+
     private void OnEnable()
     {
+        // Enable the Circle Collider 2D
+        CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
+        if (circleCollider != null)
+        {
+            circleCollider.isTrigger = true;
+            Debug.Log("Circle Collider 2D enabled.");
+        }
+        else
+        {
+            Debug.LogWarning("CircleCollider2D component not found on the controller.");
+        }
+        
         StartCoroutine(SetRandomItemSpriteAfterDelay(0.1f)); // Adjust the delay as needed
     }
 
@@ -46,24 +59,5 @@ public class MimicIdleState : MonsterState
             Debug.Log($"Total items available: {itemSprites.Count}");
             Debug.Log($"Selected item sprite: {randomItemSprite.name}");
         }
-
-        SetSpriteRendererSortingLayerToItem();
-    }
-
-    private void SetSpriteRendererSortingLayerToItem()
-    {
-        SpriteRenderer spriteRenderer = controller.GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.sortingLayerName = "Item";
-            spriteRenderer.gameObject.layer = LayerMask.NameToLayer("Item");
-            Debug.Log($"Sprite Renderer sorting layer set to: {spriteRenderer.sortingLayerName}");
-            Debug.Log($"GameObject layer set to: {LayerMask.LayerToName(spriteRenderer.gameObject.layer)}");
-        }
-        else
-        {
-            Debug.LogWarning("SpriteRenderer component not found on the controller.");
-        }
     }
 }
-

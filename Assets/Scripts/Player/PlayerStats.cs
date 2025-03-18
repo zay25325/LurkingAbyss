@@ -33,6 +33,8 @@ public class PlayerStats : MonoBehaviour
     private int ichorSamples = 0;    // Number of ichor samples the player has
 
     private int playerNoise = 0;    // Noise level of the player
+    private OnHitEvents hitEvents;
+    private PlayerController playerController;
 
     public float Health 
     { 
@@ -93,16 +95,33 @@ public class PlayerStats : MonoBehaviour
         set => ichorSamples = value; 
     }
 
+    private void Start()
+    {
+        hitEvents = GetComponent<OnHitEvents>();
+        if (hitEvents != null)
+        {
+            hitEvents.OnHarmed.AddListener(TakeDamage);
+            hitEvents.OnStunned.AddListener(StunPlayer);
+        }
+
+        playerController = GetComponent<PlayerController>();
+        if (playerController == null)
+        {
+            Debug.LogError("PlayerController component is missing!");
+        }
+    }
+
     private void RevivePlayer()
     {
         Inventory inventory = GetComponent<Inventory>();
-        if (inventory != null)
+        EntityInfo entityInfo = GetComponent<EntityInfo>();
+        if (inventory != null && entityInfo != null)
         {
             foreach (Item item in inventory.GetItems())
             {
-                if (item.name == "Revivor" && item.CanUseItem())
+                if (item != null && item.name == "Revivor" && item.CanUseItem())
                 {
-                    item.Use();
+                    item.Use(entityInfo);
                     health = 1f; // Revive player with 1 health
                     Debug.Log("Player revived with Revivor item.");
                     break;
@@ -116,12 +135,27 @@ public class PlayerStats : MonoBehaviour
         if (health <= 0)
         {
             RevivePlayer();
+
+            if (health <= 0)
+            {
+                Debug.Log("Player has died.");
+                Destroy(gameObject);
+
+                //probably have code how to different menu upon player death
+                
+            }
         }
     }
 
     public void TakeDamage(float damage)
     {
-        if (shields > 0)
+        if (playerController != null && playerController.isInvincible)
+        {
+            Debug.Log("Player is invincible and did not take damage.");
+            return;
+        }
+
+        else if (shields > 0)
         {
             shields -= damage;
             if (shields < 0)
@@ -134,6 +168,21 @@ public class PlayerStats : MonoBehaviour
         {
             health -= damage;
         }
+    }
+
+    public void StunPlayer(float stunDuration)
+    {
+        if (playerController != null)
+        {
+            StartCoroutine(StunCoroutine(stunDuration));
+        }
+    }
+
+    private IEnumerator StunCoroutine(float stunDuration)
+    {
+        playerController.isParalyzed = true;
+        yield return new WaitForSeconds(stunDuration);
+        playerController.isParalyzed = false;
     }
 
 

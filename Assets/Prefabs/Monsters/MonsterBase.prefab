@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6530052823025671122}
   - component: {fileID: 4524818832650360445}
   - component: {fileID: 1213188183882951040}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MonsterBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -466,7 +466,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5600947923156965847}
   - component: {fileID: 3856134141650529558}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CharacterSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
