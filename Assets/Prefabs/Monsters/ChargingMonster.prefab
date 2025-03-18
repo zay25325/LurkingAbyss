@@ -172,6 +172,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 932385296378493390, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_PointLightOuterAngle
+      value: 90.10811
+      objectReference: {fileID: 0}
     - target: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_Name
       value: ChargingMonster
@@ -240,6 +244,14 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3965241064990638695, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: fov
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3965241064990638695, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: visionRange
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_LocalScale.x
       value: 5
@@ -297,19 +309,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6703753257167121688}
+      addedObject: {fileID: 2982124590730186401}
     - targetCorrespondingSourceObject: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 43556223004357966}
+      addedObject: {fileID: 4550206603971030900}
     - targetCorrespondingSourceObject: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5828694431674182879}
-    - targetCorrespondingSourceObject: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7278458534937545298}
-    - targetCorrespondingSourceObject: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5622947812734633421}
+      addedObject: {fileID: 905302138972760523}
   m_SourcePrefab: {fileID: 100100000, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
 --- !u!195 &2428206962176744105 stripped
 NavMeshAgent:
@@ -370,7 +376,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
   m_PrefabInstance: {fileID: 8395910195201212524}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6703753257167121688
+--- !u!114 &2982124590730186401
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -379,7 +385,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7916441748645399307}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f196c4631410b643b1b839609cc5214, type: 3}
+  m_Script: {fileID: 11500000, guid: 6bdffe6eec4c12048a0dbf5156baa18f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hitEvents: {fileID: 5354534868763268625}
@@ -387,16 +393,11 @@ MonoBehaviour:
   sightEvents: {fileID: 3833697987151776270}
   sightController: {fileID: 4864765470227792395}
   agent: {fileID: 2428206962176744105}
-  state: {fileID: 43556223004357966}
-  HearingAmplificaiton: 1
-  hp: 10
-  maxHP: 10
-  callDistance: 25
-  navigationPointDistance: 20
-  RequiredSwarmlingsForCombat: 4
-  collectedSwarmlings: 0
-  passiveHealingPerSwarmling: 0.125
---- !u!114 &43556223004357966
+  state: {fileID: 905302138972760523}
+  HearingAmplificaiton: 10
+  hp: 100
+  maxHP: 100
+--- !u!114 &4550206603971030900
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -405,53 +406,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 7916441748645399307}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97f44ee6ce251d64ea1b447a4a9d8926, type: 3}
+  m_Script: {fileID: 11500000, guid: 14e0e987dc4e73346948d4a6cebb6a32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
---- !u!114 &5828694431674182879
+--- !u!114 &905302138972760523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7916441748645399307}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b129082dd1e0b364e9023b464f5f2877, type: 3}
+  m_Script: {fileID: 11500000, guid: f585e5e183834a34cad2db7e5d00d4d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
-  sightScanSpeed: 90
-  waitDuration: 2
---- !u!114 &7278458534937545298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7916441748645399307}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f049a147390fb2042ad052805b611ebd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 0}
---- !u!114 &5622947812734633421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7916441748645399307}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68b9ce03cba9f3241890717e3303f287, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 0}
-  SwarmlingProjectile: {fileID: 3646233433960996345, guid: d42105ad2b98f4e4e9ef099e32ddb436, type: 3}
-  fireRateDelay: 0.75
-  fireRateReductionPerSwarmling: 0.125
-  positionUpdateDelay: 0.5
-  combatDistance: 3
