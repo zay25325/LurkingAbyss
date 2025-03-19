@@ -40,7 +40,7 @@ public class LevelTransitionManagerEditor : Editor
         DrawDefaultInspector();
 
         LevelTransitionManager levelTransitionManager = (LevelTransitionManager)target;
-        if (GUILayout.Button("Build Layout"))
+        if (GUILayout.Button("Next Level"))
         {
             levelTransitionManager.NextLevel();
         }

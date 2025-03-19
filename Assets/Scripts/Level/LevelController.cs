@@ -210,8 +210,12 @@ public class LevelController : MonoBehaviour
 
     public void CreateSpawnList()
     {
-        // TODO: Add logic for number of each type
-        spawnListPrefabs = spawnPoolManager.GenerateSpawnList(8, 2, 2);
+        spawnListPrefabs = spawnPoolManager.GenerateSpawnList(
+            itemCount: 8, 
+            monsterCount: 2 + LevelTransitionManager.Instance.LevelNumber, 
+            environmentCount: 2, 
+            teleShardCount: 1
+            );
     }
 
     public void SpawnList()
