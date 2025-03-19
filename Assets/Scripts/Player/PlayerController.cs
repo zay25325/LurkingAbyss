@@ -409,6 +409,18 @@ public class PlayerController : MonoBehaviour
                     hitCollider.GetComponent<StairController>().TriggerLevelTransision();
                 }
 
+                // Check if the object is a teleportation shard
+                if (hitCollider.CompareTag("TeleportationShard"))
+                {
+                    Destroy(hitCollider.gameObject);
+                    playerStats.TeleportationShardCount++;
+                    if (playerStats.TeleportationShardCount >= 3)
+                    {
+                        playerStats.TeleportationShardCount -= 3;
+                        //Instantiate escape tele item
+                    }
+                }
+
                 // Check for interactions with a Mimic
                 EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
                 if (entityInfo != null && entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
