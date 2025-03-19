@@ -225,9 +225,9 @@ public class LevelController : MonoBehaviour
 
         //Spawn Player
         GameObject playerObj;
-        if (PlayerController.instance != null)
+        if (PlayerController.Instance != null)
         {
-            playerObj = SpawnExistingPlayer(PlayerController.instance.gameObject);
+            playerObj = SpawnExistingPlayer(PlayerController.Instance.gameObject);
         }
         else
         {

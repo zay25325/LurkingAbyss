@@ -6,6 +6,6 @@ public class StairController : MonoBehaviour
 {
     public void TriggerLevelTransision()
     {
-
+        LevelTransitionManager.Instance.NextLevel();
     }
 }

@@ -5,13 +5,15 @@ using UnityEditor;
 
 public class LevelTransitionManager : MonoBehaviour
 {
-    static LevelTransitionManager instance;
+    public static LevelTransitionManager Instance;
+
+    public int LevelNumber { get; set; } = 0;
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -22,6 +24,8 @@ public class LevelTransitionManager : MonoBehaviour
 
     public void NextLevel()
     {
+        // Trigger level transition animation later.
+        LevelNumber++;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Week9Demo");
     }
 

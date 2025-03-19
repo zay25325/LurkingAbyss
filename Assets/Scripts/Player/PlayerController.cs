@@ -12,7 +12,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController instance;
+    public static PlayerController Instance;
 
     [SerializeField] SightMeshController sightMeshController;
 
@@ -47,9 +47,9 @@ public class PlayerController : MonoBehaviour
     */
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
 
             // Initialize input controls
@@ -365,59 +365,64 @@ public class PlayerController : MonoBehaviour
         PARAMETERS : InputAction.CallbackContext context - Input context for the interaction action.
         RETURNS : NONE
     */
- private void DoInteraction(InputAction.CallbackContext context)
-{
-
-    // Get the mouse position in world coordinates
-    Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    private void DoInteraction(InputAction.CallbackContext context)
+    {
+        // Get the mouse position in world coordinates
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     
-    float detectionRadius = 0.5f; // Default radius for left, right, and down
-    Vector2 direction = (mousePosition - (Vector2)transform.position).normalized;
+        float detectionRadius = 0.5f; // Default radius for left, right, and down
+        Vector2 direction = (mousePosition - (Vector2)transform.position).normalized;
 
-    if (direction.y > 0.5f) // If the direction is mostly upward
-    {
-        detectionRadius = 1.5f; // Increase radius when interacting above
-    }
-
-    // Detect all colliders within a radius of 1 unit around the player
-    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
-
-    foreach (var hitCollider in hitColliders)
-    {
-        // Ensure the mouse is over the object
-        if (hitCollider.OverlapPoint(mousePosition))  // Check if the mouse is over this collider
+        if (direction.y > 0.5f) // If the direction is mostly upward
         {
-            // Check if the object has an Item script attached
-            Item item = hitCollider.GetComponentInChildren<Item>();
-            if (item != null)
-            {
-                inventory.AddItem(hitCollider.gameObject);
-                Debug.Log("Picked up item: " + item.name);
-                return;
-            }
+            detectionRadius = 1.5f; // Increase radius when interacting above
+        }
 
-            // Check if the object is an Ichor
-            if (hitCollider.CompareTag("Ichor"))
-            {
-                playerStats.IchorSamples++;
-                Debug.Log("Picked up Ichor Sample");
-                return;
-            }
+        // Detect all colliders within a radius of 1 unit around the player
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
 
-            // Check for interactions with a Mimic
-            EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
-            if (entityInfo != null && entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
+        foreach (var hitCollider in hitColliders)
+        {
+            // Ensure the mouse is over the object
+            if (hitCollider.OverlapPoint(mousePosition))  // Check if the mouse is over this collider
             {
-                Debug.Log("Interacted with a Mimic!");
-                MimicController mimicController = hitCollider.GetComponent<MimicController>();
-                //playerStats.TakeDamage(mimicController.AttackDamage);
-                mimicController.SwitchState<MimicRevealState>();
-                Debug.Log("Player Shield: " + playerStats.Shields);
-                return;
+                // Check if the object has an Item script attached
+                Item item = hitCollider.GetComponentInChildren<Item>();
+                if (item != null)
+                {
+                    inventory.AddItem(hitCollider.gameObject);
+                    Debug.Log("Picked up item: " + item.name);
+                    return;
+                }
+
+                // Check if the object is an Ichor
+                if (hitCollider.CompareTag("Ichor"))
+                {
+                    playerStats.IchorSamples++;
+                    Debug.Log("Picked up Ichor Sample");
+                    return;
+                }
+
+                // Check if the object is the stairs
+                if (hitCollider.CompareTag("Stairs"))
+                {
+                    hitCollider.GetComponent<StairController>().TriggerLevelTransision();
+                }
+
+                // Check for interactions with a Mimic
+                EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
+                if (entityInfo != null && entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
+                {
+                    Debug.Log("Interacted with a Mimic!");
+                    MimicController mimicController = hitCollider.GetComponent<MimicController>();
+                    //playerStats.TakeDamage(mimicController.AttackDamage);
+                    mimicController.SwitchState<MimicRevealState>();
+                    Debug.Log("Player Shield: " + playerStats.Shields);
+                    return;
+                }
             }
         }
     }
-}
 
     /*
         FUNCTION : DropItem
