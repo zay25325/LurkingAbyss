@@ -129,7 +129,7 @@ public class LevelController : MonoBehaviour
                 new Vector2Int(STATIC_ROOM_SIZE, STATIC_ROOM_SIZE)
             );
 
-            // place doors
+            // place doorways
             for(int i = 0; i < room.connections.Length; i++) {
                 
                 var dir = Directions.IntToVec(i);
@@ -178,7 +178,10 @@ public class LevelController : MonoBehaviour
                 var instance = Instantiate(obj, room.transform.position+obj.transform.localPosition, Quaternion.identity, spawnPointParent);
                 spawners.Add(instance.GetComponent<SpawnController>());
             }
-            // TODO place other spawns relative to room origin
+
+            // place floor
+            var floorTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette,new Vector2Int(0,0));
+            tileManager.SetRect(TileMapLayer.LayerClass.Floor, roompos-(roomsize/2), roompos+(roomsize/2), floorTile);
 
         }
     }
