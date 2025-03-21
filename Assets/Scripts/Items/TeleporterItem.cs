@@ -87,7 +87,6 @@ public class TeleporterItem : Item
     private IEnumerator EndingAnimation()
     {
         yield return new WaitForSeconds(4f);
-        ClearPlayer.Clear();
         SceneManager.LoadScene("EndingScene");
     }
 }

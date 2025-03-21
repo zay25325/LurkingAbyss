@@ -24,9 +24,12 @@ public class SpawnPoolManager : MonoBehaviour
     [SerializeField] SpawnPool ItemSpawnPool;
     [SerializeField] SpawnPool MonsterSpawnPool;
     [SerializeField] SpawnPool EnironmentSpawnPool;
-    [SerializeField] GameObject ShardPrefab; // No reason to make an entire pool for a single object
 
-    public List<GameObject> GenerateSpawnList(int itemCount = 0, int monsterCount = 0, int environmentCount = 0, int teleShardCount = 0)
+    // No reason to make an entire pool for single objects
+    [SerializeField] GameObject ShardPrefab;
+    [SerializeField] GameObject exitPrefab; 
+
+    public List<GameObject> GenerateSpawnList(int itemCount = 0, int monsterCount = 0, int environmentCount = 0, int teleShardCount = 0, int exitCount = 1)
     {
         List<GameObject> prefabs = new List<GameObject>();
 
@@ -35,6 +38,7 @@ public class SpawnPoolManager : MonoBehaviour
         AddRandomSelectionFromPool(prefabs, EnironmentSpawnPool, environmentCount, true);
 
         prefabs.AddRange(Enumerable.Repeat(ShardPrefab, teleShardCount));
+        prefabs.AddRange(Enumerable.Repeat(exitPrefab, exitCount));
 
         return prefabs;
     }

@@ -19168,6 +19168,7 @@ MonoBehaviour:
       - Prefab: {fileID: 4180606748510892699, guid: 7556aa2d950028f4fbe3a507725564d7, type: 3}
         Count: 3
   ShardPrefab: {fileID: 20772291986002995, guid: 73127facc584cfc46b961f39ea71d0dc, type: 3}
+  exitPrefab: {fileID: 2527956901971547463, guid: 0f413f5353f4f844fa2db2be11293137, type: 3}
 --- !u!4 &8421360772882914671 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 85182555282323185, guid: 0a98b4062075adf4eac0519cf6f23666, type: 3}

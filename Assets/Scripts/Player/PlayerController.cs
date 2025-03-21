@@ -545,9 +545,12 @@ public class PlayerController : MonoBehaviour
     public void DestroyInventory()
     {
         List<Item> items = inventory.GetItems();
-        foreach (Item item in items)
+        for (int i = items.Count-1; i >= 0; i--)
         {
-            Destroy(item.gameObject);
+            if (items[i] != null)
+            {
+                Destroy(items[i].gameObject);
+            }
         }
         items.Clear();
     }
