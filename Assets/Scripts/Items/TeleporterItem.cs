@@ -11,6 +11,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
+/*
+Class Name: TeleporterItem
+Description: This class is a child of the Item class and represents a Escape Teleporter item in the game. 
+             Once the player uses the item, it will begin the ending animation, allowing the player to win the game.
+*/
 public class TeleporterItem : Item
 {
     public Sprite teleporterIcon = null;  // Icon for the teleporter
@@ -82,6 +87,7 @@ public class TeleporterItem : Item
     private IEnumerator EndingAnimation()
     {
         yield return new WaitForSeconds(4f);
+        ClearPlayer.Clear();
         SceneManager.LoadScene("EndingScene");
     }
 }

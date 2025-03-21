@@ -533,4 +533,22 @@ public class PlayerController : MonoBehaviour
         // Reset color to original when no longer paralyzed
         spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
     }
+
+
+    /*
+        FUNCTION : DestroyInventory
+        DESCRIPTION : The player's inventory needs to be destoryed when going back to the main menu or ending cutscene.
+                      instead of making the inventory variable public, the function is stored in the player controller.
+        PARAMETERS : NONE
+        RETURNS : NONE
+    */
+    public void DestroyInventory()
+    {
+        List<Item> items = inventory.GetItems();
+        foreach (Item item in items)
+        {
+            Destroy(item.gameObject);
+        }
+        items.Clear();
+    }
 }
