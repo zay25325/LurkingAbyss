@@ -62,5 +62,7 @@ public class EntityInfo : MonoBehaviour
         Rock,
         Warper,
 
+
+        TrapperBulb,
     }
 }

@@ -123,13 +123,14 @@ public class PlayerStats : MonoBehaviour
     private void RevivePlayer()
     {
         Inventory inventory = GetComponent<Inventory>();
-        if (inventory != null)
+        EntityInfo entityInfo = GetComponent<EntityInfo>();
+        if (inventory != null && entityInfo != null)
         {
             foreach (Item item in inventory.GetItems())
             {
                 if (item != null && item.name == "Revivor" && item.CanUseItem())
                 {
-                    item.Use();
+                    item.Use(entityInfo);
                     health = 1f; // Revive player with 1 health
                     Debug.Log("Player revived with Revivor item.");
                     break;
