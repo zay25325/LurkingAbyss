@@ -12,7 +12,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
+
     [SerializeField] SightMeshController sightMeshController;
+    [SerializeField] GameObject teleporterItemPrefab;
 
     //constants
     const float DASH_DURATION = 0.2f; // Duration of the dash
@@ -23,7 +26,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 movementInput = Vector2.zero;   // Input from the player
     private Rigidbody2D playerRigidBody;    // Rigidbody2D component of the player
     private PlayerInputControls playerInputControls;    // Input system controls
-    private Camera mainCamera; // Main camera for screen-to-world calculations
     private readonly HUD hud = new();
 
     private bool canDash = true; // Flag to check if player can dash
@@ -46,30 +48,33 @@ public class PlayerController : MonoBehaviour
     */
     private void Awake()
     {
-        // Initialize input controls
-        playerInputControls = new PlayerInputControls();
-        
-        //Get main camera
-        mainCamera = Camera.main;
-        if (mainCamera == null)
+        if (Instance == null)
         {
-            Debug.LogError("Main camera not found!");
-        }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
 
-        // Subscribe to input events
-        playerInputControls.Player.Move.performed += ctx => Move(ctx.ReadValue<Vector2>()); // Subscribe to move event
-        playerInputControls.Player.Move.canceled += ctx => StopMoving();                    // Subscribe to stop moving event
-        playerInputControls.Player.Look.performed += ctx => Look(ctx.ReadValue<Vector2>()); // Subscribe to look event
-        playerInputControls.Player.Sneak.performed += ctx => OnSneak(ctx);                  // Subscribe to sneak event
-        playerInputControls.Player.Sneak.canceled += ctx => OnSneak(ctx);                   // Subscribe to stop sneaking event
-        playerInputControls.Player.Dash.performed += ctx => Dash(ctx);                      // Subscribe to dash event
-        playerInputControls.Player.Interact.performed += ctx => DoInteraction(ctx);         // Subscribe to interact event
-        playerInputControls.Player.Drop.performed += ctx => DropItem(ctx);                  // Subscribe to Drop event
-        playerInputControls.Player.Scroll.performed += OnScroll;                            // Subscribe to scroll event                         
-        playerInputControls.Player.Slot1.performed += OnSlot1Pressed;                       // Subscribe to slot 1 event
-        playerInputControls.Player.Slot2.performed += OnSlot2Pressed;                       // Subscribe to slot 2 event
-        playerInputControls.Player.Slot3.performed += OnSlot3Pressed;                       // Subscribe to slot 3 event
-        playerInputControls.Player.Fire.performed += Fire;                                  // Subscribe to fire event  
+            // Initialize input controls
+            playerInputControls = new PlayerInputControls();
+
+            // Subscribe to input events
+            playerInputControls.Player.Move.performed += ctx => Move(ctx.ReadValue<Vector2>()); // Subscribe to move event
+            playerInputControls.Player.Move.canceled += ctx => StopMoving();                    // Subscribe to stop moving event
+            playerInputControls.Player.Look.performed += ctx => Look(ctx.ReadValue<Vector2>()); // Subscribe to look event
+            playerInputControls.Player.Sneak.performed += ctx => OnSneak(ctx);                  // Subscribe to sneak event
+            playerInputControls.Player.Sneak.canceled += ctx => OnSneak(ctx);                   // Subscribe to stop sneaking event
+            playerInputControls.Player.Dash.performed += ctx => Dash(ctx);                      // Subscribe to dash event
+            playerInputControls.Player.Interact.performed += ctx => DoInteraction(ctx);         // Subscribe to interact event
+            playerInputControls.Player.Drop.performed += ctx => DropItem(ctx);                  // Subscribe to Drop event
+            playerInputControls.Player.Scroll.performed += OnScroll;                            // Subscribe to scroll event                         
+            playerInputControls.Player.Slot1.performed += OnSlot1Pressed;                       // Subscribe to slot 1 event
+            playerInputControls.Player.Slot2.performed += OnSlot2Pressed;                       // Subscribe to slot 2 event
+            playerInputControls.Player.Slot3.performed += OnSlot3Pressed;                       // Subscribe to slot 3 event
+            playerInputControls.Player.Fire.performed += Fire;                                  // Subscribe to fire event  
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     /*
@@ -239,7 +244,7 @@ public class PlayerController : MonoBehaviour
     {
         // Get mouse position in world space
         Vector3 mousePosition = Mouse.current.position.ReadValue(); // Mouse position in screen space
-        mousePosition = mainCamera.ScreenToWorldPoint(mousePosition); // Convert to world space
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition); // Convert to world space
         mousePosition.z = 0; // Ensure Z is 0 for 2D
 
         // Calculate direction to face the mouse
@@ -361,59 +366,76 @@ public class PlayerController : MonoBehaviour
         PARAMETERS : InputAction.CallbackContext context - Input context for the interaction action.
         RETURNS : NONE
     */
- private void DoInteraction(InputAction.CallbackContext context)
-{
-
-    // Get the mouse position in world coordinates
-    Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    private void DoInteraction(InputAction.CallbackContext context)
+    {
+        // Get the mouse position in world coordinates
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     
-    float detectionRadius = 0.5f; // Default radius for left, right, and down
-    Vector2 direction = (mousePosition - (Vector2)transform.position).normalized;
+        float detectionRadius = 0.5f; // Default radius for left, right, and down
+        Vector2 direction = (mousePosition - (Vector2)transform.position).normalized;
 
-    if (direction.y > 0.5f) // If the direction is mostly upward
-    {
-        detectionRadius = 1.5f; // Increase radius when interacting above
-    }
-
-    // Detect all colliders within a radius of 1 unit around the player
-    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
-
-    foreach (var hitCollider in hitColliders)
-    {
-        // Ensure the mouse is over the object
-        if (hitCollider.OverlapPoint(mousePosition))  // Check if the mouse is over this collider
+        if (direction.y > 0.5f) // If the direction is mostly upward
         {
-            // Check if the object has an Item script attached
-            Item item = hitCollider.GetComponentInChildren<Item>();
-            if (item != null)
-            {
-                inventory.AddItem(hitCollider.gameObject);
-                Debug.Log("Picked up item: " + item.name);
-                return;
-            }
+            detectionRadius = 1.5f; // Increase radius when interacting above
+        }
 
-            // Check if the object is an Ichor
-            if (hitCollider.CompareTag("Ichor"))
-            {
-                playerStats.IchorSamples++;
-                Debug.Log("Picked up Ichor Sample");
-                return;
-            }
+        // Detect all colliders within a radius of 1 unit around the player
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
 
-            // Check for interactions with a Mimic
-            EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
-            if (entityInfo != null && entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
+        foreach (var hitCollider in hitColliders)
+        {
+            // Ensure the mouse is over the object
+            if (hitCollider.OverlapPoint(mousePosition))  // Check if the mouse is over this collider
             {
-                Debug.Log("Interacted with a Mimic!");
-                MimicController mimicController = hitCollider.GetComponent<MimicController>();
-                //playerStats.TakeDamage(mimicController.AttackDamage);
-                mimicController.SwitchState<MimicRevealState>();
-                Debug.Log("Player Shield: " + playerStats.Shields);
-                return;
+                // Check if the object has an Item script attached
+                Item item = hitCollider.GetComponentInChildren<Item>();
+                if (item != null)
+                {
+                    inventory.AddItem(hitCollider.gameObject);
+                    Debug.Log("Picked up item: " + item.name);
+                    return;
+                }
+
+                // Check if the object is an Ichor
+                if (hitCollider.CompareTag("Ichor"))
+                {
+                    playerStats.IchorSamples++;
+                    Debug.Log("Picked up Ichor Sample");
+                    return;
+                }
+
+                // Check if the object is the stairs
+                if (hitCollider.CompareTag("Stairs"))
+                {
+                    hitCollider.GetComponent<StairController>().TriggerLevelTransision();
+                }
+
+                // Check if the object is a teleportation shard
+                if (hitCollider.CompareTag("TeleportationShard"))
+                {
+                    Destroy(hitCollider.gameObject);
+                    playerStats.TeleportationShardCount++;
+                    if (playerStats.TeleportationShardCount >= 3)
+                    {
+                        playerStats.TeleportationShardCount -= 3;
+                        Instantiate(teleporterItemPrefab, transform.position, new Quaternion());
+                    }
+                }
+
+                // Check for interactions with a Mimic
+                EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
+                if (entityInfo != null && entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
+                {
+                    Debug.Log("Interacted with a Mimic!");
+                    MimicController mimicController = hitCollider.GetComponent<MimicController>();
+                    //playerStats.TakeDamage(mimicController.AttackDamage);
+                    mimicController.SwitchState<MimicRevealState>();
+                    Debug.Log("Player Shield: " + playerStats.Shields);
+                    return;
+                }
             }
         }
     }
-}
 
     /*
         FUNCTION : DropItem
@@ -511,5 +533,26 @@ public class PlayerController : MonoBehaviour
 
         // Reset color to original when no longer paralyzed
         spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+    }
+
+
+    /*
+        FUNCTION : DestroyInventory
+        DESCRIPTION : The player's inventory needs to be destoryed when going back to the main menu or ending cutscene.
+                      instead of making the inventory variable public, the function is stored in the player controller.
+        PARAMETERS : NONE
+        RETURNS : NONE
+    */
+    public void DestroyInventory()
+    {
+        List<Item> items = inventory.GetItems();
+        for (int i = items.Count-1; i >= 0; i--)
+        {
+            if (items[i] != null)
+            {
+                Destroy(items[i].gameObject);
+            }
+        }
+        items.Clear();
     }
 }

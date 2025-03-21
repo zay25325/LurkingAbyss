@@ -7,6 +7,8 @@ TagManager:
   - Walls
   - Ichor
   - Item
+  - Stairs
+  - TeleportationShard
   - TrapperBulb
   layers:
   - Default
