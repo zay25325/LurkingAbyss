@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance;
 
     [SerializeField] SightMeshController sightMeshController;
+    [SerializeField] GameObject teleporterItemPrefab;
 
     //constants
     const float DASH_DURATION = 0.2f; // Duration of the dash
@@ -417,7 +418,7 @@ public class PlayerController : MonoBehaviour
                     if (playerStats.TeleportationShardCount >= 3)
                     {
                         playerStats.TeleportationShardCount -= 3;
-                        //Instantiate escape tele item
+                        Instantiate(teleporterItemPrefab, transform.position, new Quaternion());
                     }
                 }
 

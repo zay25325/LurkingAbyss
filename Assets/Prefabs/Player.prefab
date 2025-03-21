@@ -731,6 +731,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sightMeshController: {fileID: 9165364671979620256}
+  teleporterItemPrefab: {fileID: 3453154787702978214, guid: 9ec6af05688a90e45bab6b3f8b360792, type: 3}
+  isParalyzed: 0
 --- !u!114 &2027305539459633839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -762,6 +764,7 @@ MonoBehaviour:
   dashSpeed: 3
   originalSpeed: 0
   ichorSamples: 0
+  teleporterShardCount: 0
 --- !u!50 &2194229061092642432
 Rigidbody2D:
   serializedVersion: 4
