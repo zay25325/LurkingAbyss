@@ -58,7 +58,7 @@ public class TeleporterItem : Item
         PARAMETERS : NONE
         RETURNS : NONE
     */
-    public override void Use()
+    public override void Use(EntityInfo info)
     {
         // Ignore charge count
         StartEndingAnimation();
