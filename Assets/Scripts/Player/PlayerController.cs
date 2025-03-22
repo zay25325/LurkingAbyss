@@ -504,6 +504,10 @@ public class PlayerController : MonoBehaviour
 
     private void Fire(InputAction.CallbackContext context)
     {
+        if(isParalyzed)
+        {
+            return;
+        }
         activeItem = inventory.GetActiveItem();
         EntityInfo entityInfo = GetComponent<EntityInfo>();
         // activeItem.Use();
