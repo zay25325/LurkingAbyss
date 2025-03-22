@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Threading.Tasks;
 
+[DefaultExecutionOrder(-5)]
 public class MonsterController : MonoBehaviour
 {
     [SerializeField] OnHitEvents hitEvents;
@@ -20,6 +21,7 @@ public class MonsterController : MonoBehaviour
     [SerializeField] NavMeshAgent agent;
     [SerializeField] protected Animator animator;
     [SerializeField] protected Transform spriteTransform;
+    [SerializeField] protected bool facesRight = false;
     [SerializeField] protected MonsterState state;
 
     [Header("Stats")]
@@ -124,15 +126,16 @@ public class MonsterController : MonoBehaviour
             animator.SetBool("isMoving", agent.velocity.magnitude > 0);
         }
 
-        // All sprites are facing left. So if moving right, flip the x axis
         if (spriteTransform != null)
         {
-            if (agent.velocity.x > 0)
+            // mirror x
+            if ((agent.velocity.x > 0 && facesRight == false) || // going right and default left
+                (agent.velocity.x < 0 && facesRight == true)) // going left and default right
             {
                 spriteTransform.localPosition = new Vector3(-baseSpritePos.x, baseSpritePos.y, baseSpritePos.z);
                 spriteTransform.localScale = new Vector3(-baseSpriteScale.x, baseSpriteScale.y, baseSpriteScale.z);
             }
-            else
+            else // original x
             {
                 spriteTransform.localPosition = baseSpritePos;
                 spriteTransform.localScale = baseSpriteScale;

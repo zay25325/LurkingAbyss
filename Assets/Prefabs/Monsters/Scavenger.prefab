@@ -48,7 +48,7 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.3019608, g: 0, b: 0.30980393, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_Intensity: 3
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
@@ -90,6 +90,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 932385296378493390, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 932385296378493390, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_Intensity
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_Name
       value: Scavenger
@@ -145,7 +153,7 @@ PrefabInstance:
     - target: {fileID: 3856134141650529558, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1614670643, guid: 1525eaa0f3446fb44aafa8e233110a8e, type: 3}
+      objectReference: {fileID: -1197995324, guid: f49279c31be92c944912f5e532b96021, type: 3}
     - target: {fileID: 3856134141650529558, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -156,19 +164,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.6
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.6
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.6
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_Speed
@@ -218,7 +234,36 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6064978426990258503}
+    - targetCorrespondingSourceObject: {fileID: 7379953167154361014, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7681236220170319851}
   m_SourcePrefab: {fileID: 100100000, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+--- !u!1 &1364203215617110746 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7379953167154361014, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+  m_PrefabInstance: {fileID: 8395910195201212524}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7681236220170319851
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364203215617110746}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 035a136db52b760479d3ca0dd1fabd2b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!195 &2428206962176744105 stripped
 NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
@@ -235,6 +280,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08cde8788270dbf4e83392906f63bc4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &4124966996258789819 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+  m_PrefabInstance: {fileID: 8395910195201212524}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4864765470227792395 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3965241064990638695, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
@@ -295,6 +345,9 @@ MonoBehaviour:
   sightEvents: {fileID: 3833697987151776270}
   sightController: {fileID: 4864765470227792395}
   agent: {fileID: 2428206962176744105}
+  animator: {fileID: 7681236220170319851}
+  spriteTransform: {fileID: 4124966996258789819}
+  facesRight: 1
   state: {fileID: 1944555696769571615}
   HearingAmplificaiton: 1
   hp: 5
@@ -329,6 +382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  safeDistance: 20
 --- !u!114 &6064978426990258503
 MonoBehaviour:
   m_ObjectHideFlags: 0
