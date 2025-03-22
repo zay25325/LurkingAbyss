@@ -173,9 +173,9 @@ public class ScavengerScavengeState : ScavengerBaseState
                     MoveToItem(item);
                 }
             }
-            else if (info.Tags.Contains(EntityInfo.EntityTags.Wanderer) || info.Tags.Contains(EntityInfo.EntityTags.Territorial) || info.Tags.Contains(EntityInfo.EntityTags.Hunter))
+            else if (info.Tags.Contains(EntityInfo.EntityTags.Hunter))
             {
-                Debug.Log("Scavenger sees a monster");
+                Debug.Log("Scavenger sees a Hunter Monster");
                 controller.SwitchState<ScavengerThreatenedState>();
             }
         }
