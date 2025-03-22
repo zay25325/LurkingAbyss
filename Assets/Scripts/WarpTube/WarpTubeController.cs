@@ -61,18 +61,37 @@ public class WarpTubeController : MonoBehaviour
                 Debug.Log("Player teleported to valid position: " + dir);
                 break;
             }
+            else
+            {
+                // If blocked, move further in the same direction until clear of walls and WarpTubes
+                Vector3 newDir = MoveFurtherAway(dir);
+                if (IsValidTeleportPosition(newDir))
+                {
+                    player.transform.position = newDir;
+                    foundValidPosition = true;
+                    Debug.Log("Player teleported to valid position: " + newDir);
+                    break;
+                }
+            }
         }
 
         // If no valid position was found, log an error
         if (!foundValidPosition)
         {
-            Debug.LogError("No valid teleport position found!");
+            Debug.LogError("No valid teleport position found after checking nearby spaces!");
         }
 
         // Small delay after teleporting
         yield return new WaitForSeconds(0.2f);
 
         isTeleporting = false;
+    }
+
+    private Vector3 MoveFurtherAway(Vector3 direction)
+    {
+        // Move further away in the same direction by a certain distance
+        float moveDistance = 0.1f; // Move 1 unit further in the same direction
+        return direction + direction.normalized * moveDistance;
     }
 
     // Check if the target position is valid (not colliding with walls, vision blockers, or warp tubes)
@@ -82,19 +101,18 @@ public class WarpTubeController : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapCircleAll(position, 0.5f); // Adjust radius as needed
         foreach (var collider in colliders)
         {
+            // Check if it's a wall or vision blocker
             if (collider.CompareTag("Walls") || collider.gameObject.layer == LayerMask.NameToLayer("VisionBlockers"))
             {
+                Debug.Log("Invalid position detected for Walls and Vision Blockers: " + position);
                 return false; // Invalid position, don't place player here
             }
-        }
 
-        // Now make sure the player is not colliding with WarpTubes after teleportation
-        Collider2D[] postTeleportColliders = Physics2D.OverlapCircleAll(position, 0.5f); // Adjust radius as needed
-        foreach (var collider in postTeleportColliders)
-        {
+            // Check if it's a WarpTube
             if (collider.CompareTag("WarpTube"))
             {
-                return false; // Invalid position, player can't land on a WarpTube
+                Debug.Log("Invalid position detected for WarpTube: " + position);
+                return false; // Invalid position, don't place player here
             }
         }
 
