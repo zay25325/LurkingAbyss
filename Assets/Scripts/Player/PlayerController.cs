@@ -205,9 +205,11 @@ public class PlayerController : MonoBehaviour
                 StopCoroutine(FlashBlue(spriteRenderer));
                 spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Original color
             }
-        }
         // Update velocity based on input
         playerRigidBody.velocity = movementInput * playerStats.PlayerSpeed;
+        }
+        // // Update velocity based on input
+        // playerRigidBody.velocity = movementInput * playerStats.PlayerSpeed;
     }
 
     /*
@@ -218,8 +220,15 @@ public class PlayerController : MonoBehaviour
     */
     private void Move(Vector2 direction)
     {
-        movementInput = direction;
-        MovingNoise();
+        if (isParalyzed)
+        {
+            StopMoving();
+        }
+        else
+        {
+            movementInput = direction;
+            MovingNoise();
+        }
     }
 
     /*
