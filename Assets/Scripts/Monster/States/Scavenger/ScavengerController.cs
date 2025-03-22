@@ -42,9 +42,12 @@ public class ScavengerController : MonsterController
         if (items.Count >= 3)
         {
             Debug.LogWarning("Inventory is full. Cannot add more items.");
-            return;
         }
-        items.Add(item);
+        else
+        {
+            items.Add(item);
+            item.ItemObject.SetActive(false);
+        }
     }
 
     public Item GetActiveItem()

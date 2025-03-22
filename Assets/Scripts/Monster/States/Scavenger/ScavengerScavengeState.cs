@@ -18,6 +18,9 @@ public class ScavengerScavengeState : ScavengerBaseState
     private float wanderTime = 0f;      // Timer to track wander cooldown
 
     private Item targetItem = null; // The current item the scavenger is moving towards
+    private Vector3 lastPosition;
+    private float stuckTimer = 0f;
+    private float stuckThreshold = 2f; // Time before considering it stuck
 
     new protected void OnEnable()
     {
@@ -69,54 +72,72 @@ public class ScavengerScavengeState : ScavengerBaseState
             return;
         }
 
-        // Check if the scavenger has reached its destination
-        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+        // Check if the scavenger is stuck (not moving for too long)
+        if (Vector3.Distance(controller.transform.position, lastPosition) < 0.1f)
         {
-            if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f)
+            stuckTimer += Time.deltaTime;
+            if (stuckTimer >= stuckThreshold)
             {
-                // Generate a new random direction and set a new destination
-                Vector2 randomDirection = Random.insideUnitCircle * wanderRadius;
-                Vector3 destination = controller.transform.position + new Vector3(randomDirection.x, randomDirection.y, 0);
-
-                // Attempt to find a valid position on the NavMesh
-                NavMeshHit hit;
-                int attempts = 0;
-
-                while (attempts < 5) // Limit number of attempts to avoid infinite loops
-                {
-                    if (NavMesh.SamplePosition(destination, out hit, wanderRadius, NavMesh.AllAreas))
-                    {
-                        // Check if the position is colliding with any walls
-                        Collider2D[] colliders = Physics2D.OverlapCircleAll(hit.position, 0.5f);
-                        bool isCollidingWithWall = false;
-                        foreach (Collider2D collider in colliders)
-                        {
-                            if (collider.CompareTag("Walls"))
-                            {
-                                isCollidingWithWall = true;
-                                break;
-                            }
-                        }
-
-                        if (!isCollidingWithWall)
-                        {
-                            // Set the destination if a valid position is found and not colliding with walls
-                            navMeshAgent.SetDestination(hit.position);
-                            wanderTime = wanderCooldown;  // Reset the cooldown
-                            return;
-                        }
-                    }
-
-                    // Otherwise, try another random direction
-                    randomDirection = Random.insideUnitCircle * wanderRadius;
-                    destination = controller.transform.position + new Vector3(randomDirection.x, randomDirection.y, 0);
-                    attempts++;
-                }
-
-                // If no valid position is found after several attempts, wait before trying again
-                wanderTime = wanderCooldown;
+                Debug.LogWarning("Scavenger is stuck! Finding a new path.");
+                ForceNewPath();
+                stuckTimer = 0f; // Reset stuck timer after attempting to fix
             }
         }
+        else
+        {
+            stuckTimer = 0f; // Reset timer if it's moving
+        }
+
+        lastPosition = controller.transform.position; // Update last known position
+
+        // Check if the scavenger has reached its destination or is truly stuck
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+        {
+            if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude < 0.1f) // If not moving
+            {
+                ForceNewPath();
+            }
+        }
+    }
+
+    private void ForceNewPath()
+    {
+        int attempts = 0;
+        bool foundValidPosition = false;
+        Vector3 destination = Vector3.zero;
+
+        while (attempts < 5) // Limit to avoid infinite loops
+        {
+            // Generate a new random direction away from the last stuck position
+            Vector2 randomDirection = Random.insideUnitCircle.normalized * wanderRadius;
+            destination = controller.transform.position + new Vector3(randomDirection.x, 0, randomDirection.y);
+
+            // Check if the position is valid on the NavMesh
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(destination, out hit, wanderRadius, NavMesh.AllAreas))
+            {
+                NavMeshPath path = new NavMeshPath();
+                navMeshAgent.CalculatePath(hit.position, path);
+
+                if (path.status == NavMeshPathStatus.PathComplete)
+                {
+                    foundValidPosition = true;
+                    navMeshAgent.SetDestination(hit.position);
+                    Debug.Log($"New valid path found at {hit.position}");
+                    break;
+                }
+            }
+
+            attempts++;
+        }
+
+        if (!foundValidPosition)
+        {
+            Debug.LogError("Scavenger couldn't find a valid position. Attempting emergency unstuck.");
+            controller.transform.position += new Vector3(1f, 0, 1f); // Move slightly to force unstuck
+        }
+
+        wanderTime = wanderCooldown; // Reset cooldown
     }
 
     private void MoveToItem(Item item)
@@ -137,7 +158,6 @@ public class ScavengerScavengeState : ScavengerBaseState
     {
         // Pick up the item if close enough
         controller.AddItem(item);
-        item.ItemObject.SetActive(false);
         targetItem = null; // Reset the target item
     }
 
@@ -173,9 +193,9 @@ public class ScavengerScavengeState : ScavengerBaseState
                     MoveToItem(item);
                 }
             }
-            else if (info.Tags.Contains(EntityInfo.EntityTags.Hunter))
+            else if (info.Tags.Contains(EntityInfo.EntityTags.Wanderer) || info.Tags.Contains(EntityInfo.EntityTags.Territorial) || info.Tags.Contains(EntityInfo.EntityTags.Hunter))
             {
-                Debug.Log("Scavenger sees a Hunter Monster");
+                Debug.Log("Scavenger sees a monster");
                 controller.SwitchState<ScavengerThreatenedState>();
             }
         }
