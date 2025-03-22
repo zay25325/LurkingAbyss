@@ -37,50 +37,69 @@ public class WarpTubeController : MonoBehaviour
         isTeleporting = true;
 
         // Small delay before teleporting
-        yield return new WaitForSeconds(0.2f); // Adjust for timing
+        yield return new WaitForSeconds(teleportDelay);
 
-        // Move the player to the paired tube
-        Debug.Log("Teleporting player to tube ID: " + pairedTube.tubeID);
-        Vector3 targetPosition = pairedTube.transform.position + Vector3.up * 1.5f;
+        // Determine the base target position (paired tube's position)
+        Vector3 basePosition = pairedTube.transform.position;
 
-        // Perform an overlap circle check to ensure no walls or colliders at the new position
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(targetPosition, 0.5f); // Adjust the radius as needed
+        // Check the four possible directions around the paired tube (no upward modification)
+        Vector3[] directions = {
+            basePosition + Vector3.up,
+            basePosition + Vector3.down,
+            basePosition + Vector3.left,
+            basePosition + Vector3.right
+        };
 
-        bool isCollision = false;
-        foreach (var collider in colliders)
+        bool foundValidPosition = false;
+        foreach (var dir in directions)
         {
-            if (collider.CompareTag("Walls")) // Check if the collider is a wall
+            // Check if the position is valid and clear of walls and vision blockers
+            if (IsValidTeleportPosition(dir))
             {
-                isCollision = true;
+                player.transform.position = dir;  // Teleport the player
+                foundValidPosition = true;
+                Debug.Log("Player teleported to valid position: " + dir);
                 break;
             }
         }
 
-        if (isCollision)
+        // If no valid position was found, log an error
+        if (!foundValidPosition)
         {
-            Debug.Log("Collision detected at target position. Finding nearest valid position.");
-            // Find the nearest valid position within the NavMesh
-            UnityEngine.AI.NavMeshHit hit;
-            if (UnityEngine.AI.NavMesh.SamplePosition(targetPosition, out hit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
-            {
-                player.transform.position = hit.position;
-                Debug.Log("Player teleported to nearest valid position: " + hit.position);
-            }
-            else
-            {
-                Debug.LogError("No valid position found near the target position!");
-            }
-        }
-        else
-        {
-            // Set the player's position to the target position
-            player.transform.position = targetPosition;
-            Debug.Log("Player teleported to: " + targetPosition);
+            Debug.LogError("No valid teleport position found!");
         }
 
         // Small delay after teleporting
-        yield return new WaitForSeconds(0.2f); // Adjust for timing
+        yield return new WaitForSeconds(0.2f);
 
         isTeleporting = false;
     }
+
+    // Check if the target position is valid (not colliding with walls, vision blockers, or warp tubes)
+    private bool IsValidTeleportPosition(Vector3 position)
+    {
+        // Make sure the position is not within or touching anything with tag "Walls" or layer "VisionBlockers"
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, 0.5f); // Adjust radius as needed
+        foreach (var collider in colliders)
+        {
+            if (collider.CompareTag("Walls") || collider.gameObject.layer == LayerMask.NameToLayer("VisionBlockers"))
+            {
+                return false; // Invalid position, don't place player here
+            }
+        }
+
+        // Now make sure the player is not colliding with WarpTubes after teleportation
+        Collider2D[] postTeleportColliders = Physics2D.OverlapCircleAll(position, 0.5f); // Adjust radius as needed
+        foreach (var collider in postTeleportColliders)
+        {
+            if (collider.CompareTag("WarpTube"))
+            {
+                return false; // Invalid position, player can't land on a WarpTube
+            }
+        }
+
+        return true; // Valid position
+    }
 }
+
+
