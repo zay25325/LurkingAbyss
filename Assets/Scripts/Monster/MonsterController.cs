@@ -22,6 +22,7 @@ public class MonsterController : MonoBehaviour
     [SerializeField] protected Animator animator;
     [SerializeField] protected Transform spriteTransform;
     [SerializeField] protected bool facesRight = false;
+    [SerializeField] protected bool hasDeathAnimation = false;
     [SerializeField] protected MonsterState state;
 
     [Header("Stats")]
@@ -236,7 +237,14 @@ public class MonsterController : MonoBehaviour
         hp -= damage;
         if (hp <= 0)
         {
-            OnDeath();
+            if (hasDeathAnimation)
+            {
+                animator.SetTrigger("death");
+            }
+            else
+            {
+                OnDeath();
+            }
         }
         else
         {
@@ -259,7 +267,7 @@ public class MonsterController : MonoBehaviour
         agent.speed = baseSpeed;
     }
 
-    protected void OnDeath()
+    public void OnDeath()
     {
         OnStunStart();
         gameObject.SetActive(false);

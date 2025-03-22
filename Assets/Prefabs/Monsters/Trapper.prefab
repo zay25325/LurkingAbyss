@@ -185,6 +185,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7379953167154361014, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       insertIndex: -1
       addedObject: {fileID: 406866742674164463}
+    - targetCorrespondingSourceObject: {fileID: 7379953167154361014, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8250300723651045297}
   m_SourcePrefab: {fileID: 100100000, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
 --- !u!114 &387319608501545902 stripped
 MonoBehaviour:
@@ -226,6 +229,8 @@ MonoBehaviour:
   agent: {fileID: 4647978230755367147}
   animator: {fileID: 406866742674164463}
   spriteTransform: {fileID: 6344592682558938105}
+  facesRight: 0
+  hasDeathAnimation: 1
   state: {fileID: 1547963109588384514}
   HearingAmplificaiton: 1
   hp: 10
@@ -348,3 +353,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8250300723651045297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8348769180678189208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34e57655f1072c43928a1f23f4b48be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 4812661201475143052}

@@ -237,6 +237,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7379953167154361014, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7681236220170319851}
+    - targetCorrespondingSourceObject: {fileID: 7379953167154361014, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 272776452021351123}
   m_SourcePrefab: {fileID: 100100000, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
 --- !u!1 &1364203215617110746 stripped
 GameObject:
@@ -264,6 +267,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &272776452021351123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364203215617110746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34e57655f1072c43928a1f23f4b48be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 2943252993939056968}
 --- !u!195 &2428206962176744105 stripped
 NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
@@ -348,6 +364,7 @@ MonoBehaviour:
   animator: {fileID: 7681236220170319851}
   spriteTransform: {fileID: 4124966996258789819}
   facesRight: 1
+  hasDeathAnimation: 1
   state: {fileID: 1944555696769571615}
   HearingAmplificaiton: 1
   hp: 5
