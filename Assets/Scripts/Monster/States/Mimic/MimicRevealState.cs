@@ -32,8 +32,9 @@ public class MimicRevealState : MonsterState
             CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
             if (circleCollider != null)
             {
-                circleCollider.isTrigger = false;
-                Debug.Log("Circle Collider 2D enabled.");
+                //circleCollider.isTrigger = false;
+                gameObject.layer = LayerMask.NameToLayer("Entities");
+                //Debug.Log("Circle Collider 2D enabled.");
             }
             else
             {
