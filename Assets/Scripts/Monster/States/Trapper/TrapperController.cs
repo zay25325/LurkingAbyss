@@ -34,6 +34,7 @@ public class TrapperController : MonsterController
         bulb.TriggerTrapDestroyed();
         Agent.Warp(bulb.transform.position);
         Agent.destination = targetPos;
+        animator.SetTrigger("Teleport");
         SightController.LookDirection = SimpleSightMeshController.GetAngleFromVectorFloat(bulb.transform.position - targetPos) - 90;
     }
 

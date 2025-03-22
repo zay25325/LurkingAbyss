@@ -182,6 +182,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1934198182781398723}
+    - targetCorrespondingSourceObject: {fileID: 7379953167154361014, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 406866742674164463}
   m_SourcePrefab: {fileID: 100100000, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
 --- !u!114 &387319608501545902 stripped
 MonoBehaviour:
@@ -221,6 +224,8 @@ MonoBehaviour:
   sightEvents: {fileID: 6054630992835971148}
   sightController: {fileID: 2499859143331102793}
   agent: {fileID: 4647978230755367147}
+  animator: {fileID: 406866742674164463}
+  spriteTransform: {fileID: 6344592682558938105}
   state: {fileID: 1547963109588384514}
   HearingAmplificaiton: 1
   hp: 10
@@ -273,6 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  restoreDelay: 1.5
 --- !u!114 &2499859143331102793 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3965241064990638695, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
@@ -311,3 +317,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08cde8788270dbf4e83392906f63bc4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &6344592682558938105 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+  m_PrefabInstance: {fileID: 1564461113470108206}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8348769180678189208 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7379953167154361014, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+  m_PrefabInstance: {fileID: 1564461113470108206}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &406866742674164463
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8348769180678189208}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bcef2692c759ab74b8707456d3a3e93c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
