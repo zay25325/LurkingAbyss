@@ -18,6 +18,8 @@ public class MonsterController : MonoBehaviour
     [SerializeField] MonsterSightEvents sightEvents;
     [SerializeField] SimpleSightMeshController sightController;
     [SerializeField] NavMeshAgent agent;
+    [SerializeField] protected Animator animator;
+    [SerializeField] protected Transform spriteTransform;
     [SerializeField] protected MonsterState state;
 
     [Header("Stats")]
@@ -35,6 +37,9 @@ public class MonsterController : MonoBehaviour
     protected bool overrideSightDirection = false;
 
     protected const float RESPAWN_DELAY = 30f;
+
+    protected Vector3 baseSpritePos;
+    protected Vector3 baseSpriteScale;
 
     public NavMeshAgent Agent { get => agent; }
     public List<GameObject> ObjectsInView { get => objectsInView; }
@@ -57,6 +62,12 @@ public class MonsterController : MonoBehaviour
         baseSpeed = Agent.speed; // grab our speed before the state changes it
         baseState = state;
         spawnPoint = transform.position;
+
+        if (spriteTransform != null)
+        {
+            baseSpritePos = spriteTransform.localPosition;
+            baseSpriteScale = spriteTransform.localScale;
+        }
     }
 
     private void OnEnable()
@@ -107,6 +118,25 @@ public class MonsterController : MonoBehaviour
         if (overrideSightDirection == false)
         {
             LookTowardsPath();
+        }
+        if (animator != null)
+        {
+            animator.SetBool("isMoving", agent.velocity.magnitude > 0);
+        }
+
+        // All sprites are facing left. So if moving right, flip the x axis
+        if (spriteTransform != null)
+        {
+            if (agent.velocity.x > 0)
+            {
+                spriteTransform.localPosition = new Vector3(-baseSpritePos.x, baseSpritePos.y, baseSpritePos.z);
+                spriteTransform.localScale = new Vector3(-baseSpriteScale.x, baseSpriteScale.y, baseSpriteScale.z);
+            }
+            else
+            {
+                spriteTransform.localPosition = baseSpritePos;
+                spriteTransform.localScale = baseSpriteScale;
+            }
         }
     }
 

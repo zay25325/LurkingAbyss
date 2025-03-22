@@ -253,12 +253,46 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1565157953933650709}
+    - targetCorrespondingSourceObject: {fileID: 7379953167154361014, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1117645681472900721}
   m_SourcePrefab: {fileID: 100100000, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+--- !u!4 &624218018081438998 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5600947923156965847, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+  m_PrefabInstance: {fileID: 4977386390089098433}
+  m_PrefabAsset: {fileID: 0}
 --- !u!195 &1163547218427231748 stripped
 NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
   m_PrefabInstance: {fileID: 4977386390089098433}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2556327988171822711 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7379953167154361014, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+  m_PrefabInstance: {fileID: 4977386390089098433}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1117645681472900721
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2556327988171822711}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 011d9bdcaa0d39f45a412a9a01a9a632, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &6180388623827111233 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1213188183882951040, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
@@ -292,6 +326,8 @@ MonoBehaviour:
   sightEvents: {fileID: 0}
   sightController: {fileID: 0}
   agent: {fileID: 1163547218427231748}
+  animator: {fileID: 1117645681472900721}
+  spriteTransform: {fileID: 624218018081438998}
   state: {fileID: 4400905094261621928}
   HearingAmplificaiton: 1
   hp: 0
