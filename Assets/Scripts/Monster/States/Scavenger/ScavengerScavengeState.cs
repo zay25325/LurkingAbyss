@@ -58,123 +58,123 @@ public class ScavengerScavengeState : ScavengerBaseState
         }
     }
 
-private void Wander()
-{
-    if (wanderTime > 0f)
+    private void Wander()
     {
-        wanderTime -= Time.deltaTime;
-        return;
-    }
-
-    if (navMeshAgent == null || !navMeshAgent.enabled)
-    {
-        Debug.LogWarning("NavMeshAgent is not enabled or not found.");
-        return;
-    }
-
-    // Check if the scavenger is really close to the target position
-    float targetDistance = Vector3.Distance(controller.transform.position, targetPosition);  // Use targetPosition here
-
-    // If the scavenger is within a small threshold (close to target but stuck)
-    if (targetDistance < 1f)  // You can adjust this threshold as needed
-    {
-        // The scavenger is close to its target but unable to progress (stuck or blocked)
-        Debug.Log("Scavenger is close to target but stuck. Finding new path.");
-        ForceNewPath();  // Force a new destination if stuck
-        return;  // Skip further processing
-    }
-
-    // Check if the scavenger is touching a wall or vision blocker
-    RaycastHit hit;
-    if (Physics.Raycast(controller.transform.position, controller.transform.forward, out hit, 0.5f, LayerMask.GetMask("VisionBlockers")) && hit.collider.CompareTag("Walls"))
-    {
-        stuckTimer += Time.deltaTime;
-        if (stuckTimer >= stuckThreshold)
+        if (wanderTime > 0f)
         {
-            Debug.LogWarning("Scavenger is stuck against a wall or vision blocker! Finding new path.");
-            ForceNewPath();
-            stuckTimer = 0f;  // Reset stuck timer
+            wanderTime -= Time.deltaTime;
+            return;
         }
-    }
-    else
-    {
-        stuckTimer = 0f;  // Reset stuck timer if not touching a wall or vision blocker
-    }
 
-    lastPosition = controller.transform.position;  // Update last position
-
-    // Check if the scavenger is near its destination and stuck
-    if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
-    {
-        if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude < 0.1f)
+        if (navMeshAgent == null || !navMeshAgent.enabled)
         {
-            ForceNewPath();  // Force new path if it's stuck at the destination
+            Debug.LogWarning("NavMeshAgent is not enabled or not found.");
+            return;
         }
-    }
 
-    // Perform forward raycast to avoid walls blocking the path
-    RaycastHit hitCheck;
-    if (Physics.Raycast(controller.transform.position, controller.transform.forward, out hitCheck, 0.1f, LayerMask.GetMask("VisionBlockers")) && hit.collider.CompareTag("Walls"))
-    {
-        ForceNewPath();  // Force new path if there's an obstacle ahead
-    }
-}
+        // Check if the scavenger is really close to the target position
+        float targetDistance = Vector3.Distance(controller.transform.position, targetPosition);  // Use targetPosition here
 
-private void ForceNewPath()
-{
-    int attempts = 0;
-    bool foundValidPosition = false;
-    Vector3 destination = Vector3.zero;
-
-    while (attempts < 5 && !foundValidPosition)
-    {
-        // Randomize the target location in both X and Z directions with proper randomness
-        float randomDistance = Random.Range(50f, 500f);  // Randomize the target distance
-        Vector2 randomDirection = Random.insideUnitCircle.normalized * randomDistance;
-
-        // Ensure randomness for X and Z values
-        destination = controller.transform.position + new Vector3(randomDirection.x, 0, randomDirection.y);
-
-        // Check for obstacles in the area
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(destination, 2f, LayerMask.GetMask("VisionBlockers"));
-        bool isNearWall = false;
-        foreach (var collider in colliders)
+        // If the scavenger is within a small threshold (close to target but stuck)
+        if (targetDistance < 1f)  // You can adjust this threshold as needed
         {
-            if (collider.CompareTag("Walls"))
+            // The scavenger is close to its target but unable to progress (stuck or blocked)
+            Debug.Log("Scavenger is close to target but stuck. Finding new path.");
+            ForceNewPath();  // Force a new destination if stuck
+            return;  // Skip further processing
+        }
+
+        // Check if the scavenger is touching a wall or vision blocker
+        RaycastHit hit;
+        if (Physics.Raycast(controller.transform.position, controller.transform.forward, out hit, 0.5f, LayerMask.GetMask("VisionBlockers")) && hit.collider.CompareTag("Walls"))
+        {
+            stuckTimer += Time.deltaTime;
+            if (stuckTimer >= stuckThreshold)
             {
-                isNearWall = true;
-                break;
+                Debug.LogWarning("Scavenger is stuck against a wall or vision blocker! Finding new path.");
+                ForceNewPath();
+                stuckTimer = 0f;  // Reset stuck timer
+            }
+        }
+        else
+        {
+            stuckTimer = 0f;  // Reset stuck timer if not touching a wall or vision blocker
+        }
+
+        lastPosition = controller.transform.position;  // Update last position
+
+        // Check if the scavenger is near its destination and stuck
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+        {
+            if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude < 0.1f)
+            {
+                ForceNewPath();  // Force new path if it's stuck at the destination
             }
         }
 
-        if (!isNearWall && NavMesh.SamplePosition(destination, out NavMeshHit hit, randomDistance, NavMesh.AllAreas))
+        // Perform forward raycast to avoid walls blocking the path
+        RaycastHit hitCheck;
+        if (Physics.Raycast(controller.transform.position, controller.transform.forward, out hitCheck, 0.1f, LayerMask.GetMask("VisionBlockers")) && hit.collider.CompareTag("Walls"))
         {
-            NavMeshPath path = new NavMeshPath();
-            navMeshAgent.CalculatePath(hit.position, path);
+            ForceNewPath();  // Force new path if there's an obstacle ahead
+        }
+    }
 
-            if (path.status == NavMeshPathStatus.PathComplete)
+    private void ForceNewPath()
+    {
+        int attempts = 0;
+        bool foundValidPosition = false;
+        Vector3 destination = Vector3.zero;
+
+        while (attempts < 5 && !foundValidPosition)
+        {
+            // Randomize the target location in both X and Z directions with proper randomness
+            float randomDistance = Random.Range(50f, 500f);  // Randomize the target distance
+            Vector2 randomDirection = Random.insideUnitCircle.normalized * randomDistance;
+
+            // Ensure randomness for X and Z values
+            destination = controller.transform.position + new Vector3(randomDirection.x, 0, randomDirection.y);
+
+            // Check for obstacles in the area
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(destination, 2f, LayerMask.GetMask("VisionBlockers"));
+            bool isNearWall = false;
+            foreach (var collider in colliders)
             {
-                foundValidPosition = true;
-                navMeshAgent.SetDestination(hit.position);
-                targetPosition = hit.position;  // Set the targetPosition here
-                Debug.Log($"New valid wander path found at {hit.position}");
-                break;
+                if (collider.CompareTag("Walls"))
+                {
+                    isNearWall = true;
+                    break;
+                }
             }
+
+            if (!isNearWall && NavMesh.SamplePosition(destination, out NavMeshHit hit, randomDistance, NavMesh.AllAreas))
+            {
+                NavMeshPath path = new NavMeshPath();
+                navMeshAgent.CalculatePath(hit.position, path);
+
+                if (path.status == NavMeshPathStatus.PathComplete)
+                {
+                    foundValidPosition = true;
+                    navMeshAgent.SetDestination(hit.position);
+                    targetPosition = hit.position;  // Set the targetPosition here
+                    Debug.Log($"New valid wander path found at {hit.position}");
+                    break;
+                }
+            }
+
+            attempts++;
         }
 
-        attempts++;
-    }
+        // If no valid position found after several attempts, force movement to escape the area
+        if (!foundValidPosition)
+        {
+            Debug.LogWarning("No valid path found. Forcing movement.");
+            controller.transform.position += new Vector3(5f, 0, 5f);
+            targetPosition = controller.transform.position; // Update the targetPosition to current position
+        }
 
-    // If no valid position found after several attempts, force movement to escape the area
-    if (!foundValidPosition)
-    {
-        Debug.LogWarning("No valid path found. Forcing movement.");
-        controller.transform.position += new Vector3(5f, 0, 5f);
-        targetPosition = controller.transform.position; // Update the targetPosition to current position
+        wanderTime = wanderCooldown;  // Reset cooldown
     }
-
-    wanderTime = wanderCooldown;  // Reset cooldown
-}
 
     private void MoveToItem(Item item)
     {
