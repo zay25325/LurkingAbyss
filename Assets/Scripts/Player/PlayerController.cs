@@ -202,8 +202,8 @@ public class PlayerController : MonoBehaviour
                 }
 
                 // Stop flashing and reset color to normal
-                StopCoroutine(FlashBlue(spriteRenderer));
-                spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Original color
+                //StopCoroutine(FlashBlue(spriteRenderer));
+                isParalyzed = false;
             }
         }
         // Update velocity based on input

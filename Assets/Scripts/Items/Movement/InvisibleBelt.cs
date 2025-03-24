@@ -60,7 +60,23 @@ public class InvisibleBelt : Item
         SetPlayerVisibility(player, false);
         Debug.Log("Player is now invisible.");
 
+        EntityInfo entityInfo = player.GetComponent<EntityInfo>();
+        // Store the tags to restore later
+        List<EntityInfo.EntityTags> originalTags = new List<EntityInfo.EntityTags>(entityInfo.Tags);
+
+        if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
+        {
+            // Remove elements 1-3
+            entityInfo.Tags.Remove(EntityInfo.EntityTags.Wanderer);
+            entityInfo.Tags.Remove(EntityInfo.EntityTags.Player);
+            entityInfo.Tags.Remove(EntityInfo.EntityTags.CanOpenDoors);
+        }
+
         yield return new WaitForSeconds(invisibilityDuration);
+
+        // Restore the original tags
+        entityInfo.Tags.Clear();
+        entityInfo.Tags.AddRange(originalTags);
 
         // Make the player visible again
         SetPlayerVisibility(player, true);
@@ -72,31 +88,31 @@ public class InvisibleBelt : Item
 
     private void SetPlayerVisibility(GameObject player, bool isVisible)
     {
-    // Assuming the player has a SpriteRenderer component
-    SpriteRenderer spriteRenderer = player.GetComponent<SpriteRenderer>();
-    if (spriteRenderer != null)
-    {
-        if (isVisible)
-        {
-            // Restore the original color
-            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
-        }
-        else
-        {
-            // Set the color to semi-transparent
-            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.3f);
-        }
-    }
+        // Assuming the player has a SpriteRenderer component
+        GameObject spriteObject = player.transform.Find("Sprite").gameObject;
+        SpriteRenderer spriteRenderer = spriteObject.GetComponent<SpriteRenderer>();
 
-    // Assuming the player has a Collider2D component
-    Collider2D collider = player.GetComponent<Collider2D>();
-    if (collider != null)
-    {
-        collider.enabled = isVisible;
-    }
+        if (spriteRenderer == null)
+        {
+            Debug.LogError("SpriteRenderer not found on the Sprite object!");
+            return;
+        }
 
-        // Add any additional logic to handle enemy detection here
-        // For example, you can disable enemy AI targeting the player
+        if (spriteRenderer != null)
+        {
+            if (isVisible)
+            {
+                // Restore the original color
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
+                Debug.Log("Setting player visible: Alpha = " + spriteRenderer.color.a);
+            }
+            else
+            {
+                // Set the color to semi-transparent
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.3f);
+                Debug.Log("Setting player invisible: Alpha = " + spriteRenderer.color.a);
+            }
+        }
     }
 }
 
