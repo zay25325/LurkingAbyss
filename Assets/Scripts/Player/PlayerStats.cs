@@ -132,6 +132,8 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
+        MenuStates deathMenu = GetComponent<MenuStates>();
+
         if (health <= 0)
         {
             RevivePlayer();
@@ -140,7 +142,7 @@ public class PlayerStats : MonoBehaviour
             {
                 Debug.Log("Player has died.");
                 Destroy(gameObject);
-
+                deathMenu.ShowDeathMenu();
                 //probably have code how to different menu upon player death
                 
             }

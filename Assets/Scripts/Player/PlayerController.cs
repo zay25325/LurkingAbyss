@@ -317,7 +317,6 @@ public class PlayerController : MonoBehaviour
     */
     private void Dash(InputAction.CallbackContext context)
     {
-        //hud.SetHealth(3.1f);
         // Dash action is performed once upon button press
         if (context.performed && canDash)
         {
@@ -519,7 +518,4 @@ public class PlayerController : MonoBehaviour
         // Reset color to original when no longer paralyzed
         spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
     }
-
-
-    //private void UpdateInventoryUI()
 }

@@ -4,18 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+public class MenuStates : MonoBehaviour
 {
 
-    public GameObject pauseMenu; // the canvas refernce
+    public GameObject pauseMenu; // pause menu canvas refernce
+    public GameObject deathMenu; // death menu canvas reference
 
-    public Button resumeBtn, quitBtn;
+    public Button resumeBtn, deathResumeBtn, quitBtn;
 
     public bool isPaused;
 
     void Start()
     {
+        // set both menus off
         pauseMenu.SetActive(false);
+        deathMenu.SetActive(false);
 
         // event listeners in the pause menu
         resumeBtn.onClick.AddListener(ResumeGame);
@@ -31,6 +34,12 @@ public class PauseMenu : MonoBehaviour
             else
                 PauseGame();
         }
+    }
+
+    public void ShowDeathMenu()
+    {
+        deathMenu.SetActive(true);
+
     }
 
     public void PauseGame()
