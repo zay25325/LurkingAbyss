@@ -6,5 +6,7 @@ public enum Subtype
 {
     Combat,
     Movement,
-    Environment
+    Environment,
+
+    Story
 }

@@ -54,7 +54,7 @@ public class Warper : Item
         PARAMETERS : NONE
         RETURNS : NONE
     */
-    public override void Use()
+    public override void Use(EntityInfo entityInfo)
     {
         if(CanUseItem())
         {
@@ -152,7 +152,7 @@ public class Warper : Item
         }
         else
         {
-            Debug.LogError("No valid position found on the NavMesh!");
+            Debug.LogWarning("No valid position found on the NavMesh!");
             didTeleport = false;
         }
     }

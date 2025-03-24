@@ -1,9 +1,17 @@
+/*
+File: MonsterController.cs
+Project: Capstone Project
+Programmer: Isaiah Bartlett
+First Version: 
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Threading.Tasks;
 
+[DefaultExecutionOrder(-5)]
 public class MonsterController : MonoBehaviour
 {
     [SerializeField] OnHitEvents hitEvents;
@@ -11,6 +19,10 @@ public class MonsterController : MonoBehaviour
     [SerializeField] MonsterSightEvents sightEvents;
     [SerializeField] SimpleSightMeshController sightController;
     [SerializeField] NavMeshAgent agent;
+    [SerializeField] protected Animator animator;
+    [SerializeField] protected Transform spriteTransform;
+    [SerializeField] protected bool facesRight = false;
+    [SerializeField] protected bool hasDeathAnimation = false;
     [SerializeField] protected MonsterState state;
 
     [Header("Stats")]
@@ -28,6 +40,9 @@ public class MonsterController : MonoBehaviour
     protected bool overrideSightDirection = false;
 
     protected const float RESPAWN_DELAY = 30f;
+
+    protected Vector3 baseSpritePos;
+    protected Vector3 baseSpriteScale;
 
     public NavMeshAgent Agent { get => agent; }
     public List<GameObject> ObjectsInView { get => objectsInView; }
@@ -50,6 +65,12 @@ public class MonsterController : MonoBehaviour
         baseSpeed = Agent.speed; // grab our speed before the state changes it
         baseState = state;
         spawnPoint = transform.position;
+
+        if (spriteTransform != null)
+        {
+            baseSpritePos = spriteTransform.localPosition;
+            baseSpriteScale = spriteTransform.localScale;
+        }
     }
 
     private void OnEnable()
@@ -100,6 +121,26 @@ public class MonsterController : MonoBehaviour
         if (overrideSightDirection == false)
         {
             LookTowardsPath();
+        }
+        if (animator != null)
+        {
+            animator.SetBool("isMoving", agent.velocity.magnitude > 0);
+        }
+
+        if (spriteTransform != null)
+        {
+            // mirror x
+            if ((agent.velocity.x > 0 && facesRight == false) || // going right and default left
+                (agent.velocity.x < 0 && facesRight == true)) // going left and default right
+            {
+                spriteTransform.localPosition = new Vector3(-baseSpritePos.x, baseSpritePos.y, baseSpritePos.z);
+                spriteTransform.localScale = new Vector3(-baseSpriteScale.x, baseSpriteScale.y, baseSpriteScale.z);
+            }
+            else // original x
+            {
+                spriteTransform.localPosition = baseSpritePos;
+                spriteTransform.localScale = baseSpriteScale;
+            }
         }
     }
 
@@ -196,7 +237,14 @@ public class MonsterController : MonoBehaviour
         hp -= damage;
         if (hp <= 0)
         {
-            OnDeath();
+            if (hasDeathAnimation)
+            {
+                animator.SetTrigger("death");
+            }
+            else
+            {
+                OnDeath();
+            }
         }
         else
         {
@@ -219,7 +267,7 @@ public class MonsterController : MonoBehaviour
         agent.speed = baseSpeed;
     }
 
-    protected void OnDeath()
+    public void OnDeath()
     {
         OnStunStart();
         gameObject.SetActive(false);
@@ -240,5 +288,37 @@ public class MonsterController : MonoBehaviour
     protected void OnInteract(GameObject other)
     {
         state.OnInteract(other);
+    }
+
+
+
+
+
+
+    public static List<Vector3> GenerateNavigationPoints(float navigationPointDistance)
+    {
+        List<Vector3> navigationPoints = new List<Vector3>();
+        NavMeshPlus.Components.NavMeshSurface navSurface = GameObject.FindFirstObjectByType<NavMeshPlus.Components.NavMeshSurface>();
+        // Make points spread out evenly across the entire navmesh 
+        Bounds bounds = navSurface.navMeshData.sourceBounds;
+        int xPoints = Mathf.CeilToInt(bounds.size.x / navigationPointDistance);
+        int yPoints = Mathf.CeilToInt(bounds.size.z / navigationPointDistance); // navmesh needs to be rotated, so this needs to be z, not y
+
+        float xDifference = bounds.size.x / (xPoints + 1);
+        float yDifference = bounds.size.z / (yPoints + 1);
+
+        for (int x = 0; x <= xPoints; x++)
+        {
+            for (int y = 0; y <= yPoints; y++)
+            {
+                Vector3 rawNavPoint = new Vector3(bounds.min.x, bounds.min.z, 0) + new Vector3(xDifference / 2 + xDifference * x, yDifference / 2 + yDifference * y, 0);
+                if (NavMesh.SamplePosition(rawNavPoint, out NavMeshHit hit, navigationPointDistance, 1))
+                {
+                    navigationPoints.Add(hit.position);
+                }
+            }
+        }
+
+        return navigationPoints;
     }
 }

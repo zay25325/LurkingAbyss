@@ -38,7 +38,7 @@ public class MainMenuUI : MonoBehaviour
         StartButton.clicked += () =>
         {
             Debug.Log("Start Button Clicked");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Week9Demo");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("IntroLevel");
         };
 
         LogsButton.clicked += () =>

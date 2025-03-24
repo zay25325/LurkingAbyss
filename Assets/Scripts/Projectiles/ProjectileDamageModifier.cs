@@ -8,12 +8,14 @@ public class ProjectileDamageModifier : ProjectileModifier
     [SerializeField] private float damage;
     [SerializeField] private float structuralDamage;
 
+    public EntityInfo attackingEntityInfo = null;
+
     public override void OnHit(Collider2D collision)
     {
         OnHitEvents onHit = collision.GetComponent<OnHitEvents>();
         if (onHit != null)
         {
-            onHit.ApplyHit(stunDuration, damage, structuralDamage);
+            onHit.ApplyHit(stunDuration, damage, structuralDamage, attackingEntityInfo);
         }
     }
 }

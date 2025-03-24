@@ -53,7 +53,7 @@ public class Rock : Item
         PARAMETERS : NONE
         RETURNS : NONE
     */
-    public override void Use()
+    public override void Use(EntityInfo entityInfo)
     {
         if (CanUseItem())
         {

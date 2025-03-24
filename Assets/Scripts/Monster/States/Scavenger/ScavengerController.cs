@@ -24,11 +24,26 @@ public class ScavengerController : MonsterController
 
     public void RemoveItem(Item item)
     {
+        if (items.Contains(item))
+        {
+            // Place the item in front of the player
+            items.Remove(item);
+            if (item.ItemObject != null)
+            {
+                //AddRemoveGameworld(activeItem, true);
+                item.ItemObject.SetActive(true); // Activate the item so it is added back to the scene
+            }
         items.Remove(item);
+        }   
     }
 
     public void AddItem(Item item)
     {
+        if (items.Count >= 3)
+        {
+            Debug.LogWarning("Inventory is full. Cannot add more items.");
+            return;
+        }
         items.Add(item);
     }
 
@@ -40,5 +55,10 @@ public class ScavengerController : MonsterController
     public List<Item> GetItems()
     {
         return items;
+    }
+
+    new protected void Update()
+    {
+        base.Update();
     }
 }

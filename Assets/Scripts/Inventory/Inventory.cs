@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Inventory : MonoBehaviour
 {
@@ -39,6 +40,7 @@ public class Inventory : MonoBehaviour
                 Debug.Log("Item added to inventory");
                 items.Add(item);
                 itemObject.SetActive(false); // Deactivate the item so it is removed from the scene
+                DontDestroyOnLoad(itemObject);
 
                 // Set the first instance of the new item to be the active item
                 if (items.Count == 1)
@@ -85,7 +87,9 @@ public class Inventory : MonoBehaviour
             {
                 AddRemoveGameworld(activeItem, true);
                 item.ItemObject.SetActive(true); // Activate the item so it is added back to the scene
+                DestroyOnLoad(item.ItemObject);
             }
+
             // Update the active item if necessary
             if (activeItem == item)
             {
@@ -328,5 +332,11 @@ public class Inventory : MonoBehaviour
         }
 
         return itemAddRemove;
+    }
+
+
+    private void DestroyOnLoad(GameObject TargetGo)
+    {
+        SceneManager.MoveGameObjectToScene(TargetGo, SceneManager.GetActiveScene());
     }
 }
