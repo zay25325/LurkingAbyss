@@ -33,7 +33,7 @@ public class InvisibleBelt : Item
     {
         if(CanUseItem())
         {
-            StartCoroutine(MakePlayerInvisible());
+            StartCoroutine(MakePlayerInvisible(entityInfo));
             ReduceItemCharge();
             DestroyItem(ItemObject);
         }
@@ -43,13 +43,32 @@ public class InvisibleBelt : Item
         }
     }
 
-    private IEnumerator MakePlayerInvisible()
+    private IEnumerator MakePlayerInvisible(EntityInfo entityInfo)
     {
-        // Get the player object
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player == null)
+        GameObject entity = null;
+        if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
+            {
+            // Get the player object
+            entity = GameObject.FindWithTag("Player");
+            if (entity == null)
+            {
+                Debug.LogError("Player not found!");
+                yield break;
+            }
+        }
+        else if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
         {
-            Debug.LogError("Player not found!");
+            // Get the scavenger object
+            entity = GameObject.FindWithTag("Scavenger");
+            if (entity == null)
+            {
+                Debug.LogError("Scavenger not found!");
+                yield break;
+            }
+        }
+        else
+        {
+            Debug.LogError("Entity not found!");
             yield break;
         }
 
@@ -57,10 +76,9 @@ public class InvisibleBelt : Item
         IsInUse = true;
 
         // Make the player invisible
-        SetPlayerVisibility(player, false);
-        Debug.Log("Player is now invisible.");
+        SetPlayerVisibility(entity, false, entityInfo);
+        Debug.Log(entity.name + " is now invisible.");
 
-        EntityInfo entityInfo = player.GetComponent<EntityInfo>();
         // Store the tags to restore later
         List<EntityInfo.EntityTags> originalTags = new List<EntityInfo.EntityTags>(entityInfo.Tags);
 
@@ -72,6 +90,14 @@ public class InvisibleBelt : Item
             entityInfo.Tags.Remove(EntityInfo.EntityTags.CanOpenDoors);
         }
 
+        if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
+        {
+            // Remove elements 1-3
+            entityInfo.Tags.Remove(EntityInfo.EntityTags.Wanderer);
+            entityInfo.Tags.Remove(EntityInfo.EntityTags.Scavenger);
+            entityInfo.Tags.Remove(EntityInfo.EntityTags.CanOpenDoors);
+        }
+
         yield return new WaitForSeconds(invisibilityDuration);
 
         // Restore the original tags
@@ -79,18 +105,31 @@ public class InvisibleBelt : Item
         entityInfo.Tags.AddRange(originalTags);
 
         // Make the player visible again
-        SetPlayerVisibility(player, true);
+        SetPlayerVisibility(entity, true, entityInfo);
         Debug.Log("Player is now visible again.");
 
         // Set the item as not in use
         IsInUse = false;
     }
 
-    private void SetPlayerVisibility(GameObject player, bool isVisible)
+    private void SetPlayerVisibility(GameObject player, bool isVisible, EntityInfo entityInfo)
     {
-        // Assuming the player has a SpriteRenderer component
-        GameObject spriteObject = player.transform.Find("Sprite").gameObject;
-        SpriteRenderer spriteRenderer = spriteObject.GetComponent<SpriteRenderer>();
+        
+        GameObject spriteObject = null;
+        SpriteRenderer spriteRenderer = null;
+        if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
+        {
+            // Assuming the player has a SpriteRenderer component
+            spriteObject = player.transform.Find("Sprite").gameObject;
+            spriteRenderer = spriteObject.GetComponent<SpriteRenderer>();
+        }
+
+        if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
+        {
+            // Assuming the scavenger has a SpriteRenderer component
+            spriteObject = player.transform.Find("CharacterSprite").gameObject;
+            spriteRenderer = spriteObject.GetComponent<SpriteRenderer>();
+        }
 
         if (spriteRenderer == null)
         {
