@@ -13,6 +13,7 @@ public class MenuStates : MonoBehaviour
     public Button resumeBtn, deathResumeBtn, quitBtn;
 
     public bool isPaused;
+    public bool isDead;
 
     void Start()
     {
@@ -23,6 +24,9 @@ public class MenuStates : MonoBehaviour
         // event listeners in the pause menu
         resumeBtn.onClick.AddListener(ResumeGame);
         quitBtn.onClick.AddListener(SendToMainMenu);
+
+        // death menu buttons
+        deathResumeBtn.onClick.AddListener(ResumeAfterDeath);
     }
 
     void Update()
@@ -33,13 +37,24 @@ public class MenuStates : MonoBehaviour
                 ResumeGame();
             else
                 PauseGame();
+                //ShowDeathMenu(); // testing
         }
     }
 
     public void ShowDeathMenu()
     {
         deathMenu.SetActive(true);
+        // add other stuff here
+        Time.timeScale = 0f; // stops all animations and what not
+        isDead = true;
+    }
 
+    public void ResumeAfterDeath()
+    {
+        deathMenu.SetActive(false);
+        isDead = false;
+        Time.timeScale = 1f;
+        // somehow restart game
     }
 
     public void PauseGame()

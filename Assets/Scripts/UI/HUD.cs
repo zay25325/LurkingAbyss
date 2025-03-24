@@ -19,10 +19,6 @@ public class HUD : MonoBehaviour
     private Color lowHealth = Color.red;
     private const float lowHealthThreshold = 8.1f;
 
-    // item hud hotbar 
-    //[SerializeField] private RectTransform[] itemSlots;
-    //[SerializeField] private RectTransform selectionIndicator;
-    //private int itemIndex;
 
     public void Start()
     {

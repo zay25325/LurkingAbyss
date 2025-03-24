@@ -132,7 +132,10 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
-        MenuStates deathMenu = GetComponent<MenuStates>();
+        MenuStates deathMenu = FindObjectOfType<MenuStates>();
+
+        if (deathMenu == null)
+            Debug.Log("Coudl not find death menu");
 
         if (health <= 0)
         {
@@ -142,7 +145,8 @@ public class PlayerStats : MonoBehaviour
             {
                 Debug.Log("Player has died.");
                 Destroy(gameObject);
-                deathMenu.ShowDeathMenu();
+                if (deathMenu != null)
+                    deathMenu.ShowDeathMenu();
                 //probably have code how to different menu upon player death
                 
             }
