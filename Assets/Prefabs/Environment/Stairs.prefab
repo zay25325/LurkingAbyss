@@ -18,7 +18,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3779872202247712557, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
       propertyPath: m_Name
-      value: Stairs Variant
+      value: Stairs
+      objectReference: {fileID: 0}
+    - target: {fileID: 3779872202247712557, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 3779872202247712557, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
       propertyPath: m_TagString
@@ -66,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7016021614670292111, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
