@@ -11,22 +11,18 @@ PrefabInstance:
     - target: {fileID: 1829315437515683778, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 267643022, guid: 4cc24323be925d940a9ac88fbdc8dee9, type: 3}
+      objectReference: {fileID: 1422546027, guid: 20e28d7a7e2d6b045be541ee1741b152, type: 3}
     - target: {fileID: 3471882195386301209, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
       propertyPath: m_BodyType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3779872202247712557, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
       propertyPath: m_Name
-      value: Stairs
-      objectReference: {fileID: 0}
-    - target: {fileID: 3779872202247712557, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
-      propertyPath: m_Layer
-      value: 14
+      value: WarpTube
       objectReference: {fileID: 0}
     - target: {fileID: 3779872202247712557, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
       propertyPath: m_TagString
-      value: Stairs
+      value: WarpTube
       objectReference: {fileID: 0}
     - target: {fileID: 5143986198894981818, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -70,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7016021614670292111, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -78,14 +74,17 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3779872202247712557, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4974994717358036666}
+      addedObject: {fileID: 2183439310052258256}
+    - targetCorrespondingSourceObject: {fileID: 3779872202247712557, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -635276420421593278}
   m_SourcePrefab: {fileID: 100100000, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
 --- !u!1 &2527956901971547463 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3779872202247712557, guid: 0f299a7b2d52cd642aa8737f978c10bd, type: 3}
   m_PrefabInstance: {fileID: 1684863947454020202}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4974994717358036666
+--- !u!114 &2183439310052258256
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,6 +93,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 2527956901971547463}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5328031cd84d1049b34d46cd653647a, type: 3}
+  m_Script: {fileID: 11500000, guid: fa9cdfd8e24c5f943827df64b78e4098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-635276420421593278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2527956901971547463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 046fd586fe766e84c9550278075b3325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tubeID: 0
+  pairedTube: {fileID: 0}
+  teleportDelay: 0.5

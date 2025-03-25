@@ -182,6 +182,8 @@ public class PlayerController : MonoBehaviour
     {
         if (isParalyzed)
         {
+            StopMoving();
+            playerRigidBody.velocity = Vector2.zero;
             // Disable Player Animation Script in the child GameObject "Sprite"
             Transform spriteTransform = transform.Find("Sprite");
             if (spriteTransform != null)
@@ -213,6 +215,7 @@ public class PlayerController : MonoBehaviour
                 StopCoroutine(FlashBlue(spriteRenderer));
                 spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Original color
             }
+       
         }
         // Update velocity based on input
         playerRigidBody.velocity = movementInput * playerStats.PlayerSpeed;
@@ -508,6 +511,10 @@ public class PlayerController : MonoBehaviour
 
     private void Fire(InputAction.CallbackContext context)
     {
+        if(isParalyzed)
+        {
+            return;
+        }
         activeItem = inventory.GetActiveItem();
         EntityInfo entityInfo = GetComponent<EntityInfo>();
         // activeItem.Use();
