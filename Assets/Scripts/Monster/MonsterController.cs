@@ -122,7 +122,7 @@ public class MonsterController : MonoBehaviour
     protected void Update()
     {
         UpdateStunDuration();
-        if (overrideSightDirection == false)
+        if (overrideSightDirection == false) //e
         {
             LookTowardsPath();
         }
