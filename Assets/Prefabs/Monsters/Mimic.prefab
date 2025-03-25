@@ -155,7 +155,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 0.8057697, g: 0.010914873, b: 0.82641506, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.5
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 00000000
@@ -176,8 +176,8 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 0.36
-  m_PointLightOuterRadius: 0.36
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 0.2
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
@@ -348,6 +348,9 @@ MonoBehaviour:
   OnStructuralDamaged:
     m_PersistentCalls:
       m_Calls: []
+  OnHarmedWithInfo:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5517479017984198804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,6 +383,8 @@ MonoBehaviour:
   sightEvents: {fileID: 0}
   sightController: {fileID: 0}
   agent: {fileID: 6093060040795274798}
+  animator: {fileID: 0}
+  spriteTransform: {fileID: 0}
   state: {fileID: 653323243950043545}
   HearingAmplificaiton: 1
   hp: 2

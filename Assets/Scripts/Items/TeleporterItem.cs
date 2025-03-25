@@ -78,7 +78,7 @@ public class TeleporterItem : Item
         PlayerController controller = playerTransform.GetComponent<PlayerController>();
         controller.isParalyzed = true;
         GameObject.Instantiate(TeleporterLevelAnimation, playerPosition, new Quaternion());
-
+        MusicManager.Instance.SwitchState(MusicManager.MusicState.Escape);
 
         StartCoroutine(EndingAnimation());
     }
