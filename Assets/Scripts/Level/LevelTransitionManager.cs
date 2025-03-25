@@ -31,6 +31,7 @@ public class LevelTransitionManager : MonoBehaviour
 
 }
 
+#if UNITY_EDITOR
 
 [CustomEditor(typeof(LevelTransitionManager))]
 public class LevelTransitionManagerEditor : Editor
@@ -47,3 +48,5 @@ public class LevelTransitionManagerEditor : Editor
 
     }
 }
+
+#endif
