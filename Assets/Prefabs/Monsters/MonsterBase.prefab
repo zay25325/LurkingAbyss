@@ -179,6 +179,9 @@ MonoBehaviour:
   OnStructuralDamaged:
     m_PersistentCalls:
       m_Calls: []
+  OnHarmedWithInfo:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1213188183882951040
 MonoBehaviour:
   m_ObjectHideFlags: 0

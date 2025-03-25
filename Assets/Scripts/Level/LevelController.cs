@@ -129,7 +129,7 @@ public class LevelController : MonoBehaviour
                 new Vector2Int(STATIC_ROOM_SIZE, STATIC_ROOM_SIZE)
             );
 
-            // place doors
+            // place doorways
             for(int i = 0; i < room.connections.Length; i++) {
                 
                 var dir = Directions.IntToVec(i);
@@ -178,7 +178,10 @@ public class LevelController : MonoBehaviour
                 var instance = Instantiate(obj, room.transform.position+obj.transform.localPosition, Quaternion.identity, spawnPointParent);
                 spawners.Add(instance.GetComponent<SpawnController>());
             }
-            // TODO place other spawns relative to room origin
+
+            // place floor
+            var floorTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette,new Vector2Int(0,0));
+            tileManager.SetRect(TileMapLayer.LayerClass.Floor, roompos-(roomsize/2), roompos+(roomsize/2), floorTile);
 
         }
     }
@@ -210,8 +213,12 @@ public class LevelController : MonoBehaviour
 
     public void CreateSpawnList()
     {
-        // TODO: Add logic for number of each type
-        spawnListPrefabs = spawnPoolManager.GenerateSpawnList(8, 2, 2);
+        spawnListPrefabs = spawnPoolManager.GenerateSpawnList(
+            itemCount: 8, 
+            monsterCount: 2 + LevelTransitionManager.Instance.LevelNumber, 
+            environmentCount: 2, 
+            teleShardCount: 1
+            );
     }
 
     public void SpawnList()
@@ -224,7 +231,16 @@ public class LevelController : MonoBehaviour
         }
 
         //Spawn Player
-        GameObject playerObj = SpawnItem(playerPrefab);
+        GameObject playerObj;
+        if (PlayerController.Instance != null)
+        {
+            playerObj = SpawnExistingPlayer(PlayerController.Instance.gameObject);
+        }
+        else
+        {
+            playerObj = SpawnItem(playerPrefab);
+        }
+
         CameraController cameraController = Camera.main.GetComponent<CameraController>();
         cameraController.FollowTransform = playerObj.transform;
     }
@@ -239,6 +255,16 @@ public class LevelController : MonoBehaviour
 
         spawners.RemoveAt(index);
         return obj;
+    }
+
+    private GameObject SpawnExistingPlayer(GameObject player)
+    {
+        int index = Random.Range(0, spawners.Count);
+        Vector3 spawnPoint = spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0);
+        player.transform.position = spawnPoint;
+
+        spawners.RemoveAt(index);
+        return player;
     }
 
     public void DestroySpawners()

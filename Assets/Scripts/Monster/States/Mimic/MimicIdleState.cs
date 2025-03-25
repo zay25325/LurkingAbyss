@@ -13,7 +13,8 @@ public class MimicIdleState : MonsterState
         CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
         if (circleCollider != null)
         {
-            circleCollider.isTrigger = true;
+            //circleCollider.isTrigger = true;
+            circleCollider.gameObject.layer = LayerMask.NameToLayer("Item");
             Debug.Log("Circle Collider 2D enabled.");
         }
         else
