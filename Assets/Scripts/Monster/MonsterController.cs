@@ -122,13 +122,15 @@ public class MonsterController : MonoBehaviour
     protected void Update()
     {
         UpdateStunDuration();
-        if (overrideSightDirection == false)
+        if (overrideSightDirection == false) //e
         {
             LookTowardsPath();
         }
         
-        if(stunDuration <= 0 && useVisionSmoothing) {
+        if(stunDuration <= 0 && useVisionSmoothing)
+        {
             TurnVision();
+        }
             
         if (animator != null)
         {
