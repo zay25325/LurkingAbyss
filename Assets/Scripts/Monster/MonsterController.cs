@@ -127,8 +127,10 @@ public class MonsterController : MonoBehaviour
             LookTowardsPath();
         }
         
-        if(stunDuration <= 0 && useVisionSmoothing) {
+        if(stunDuration <= 0 && useVisionSmoothing)
+        {
             TurnVision();
+        }
             
         if (animator != null)
         {
