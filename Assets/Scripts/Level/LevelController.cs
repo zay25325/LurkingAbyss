@@ -213,8 +213,12 @@ public class LevelController : MonoBehaviour
 
     public void CreateSpawnList()
     {
-        // TODO: Add logic for number of each type
-        spawnListPrefabs = spawnPoolManager.GenerateSpawnList(8, 2, 2);
+        spawnListPrefabs = spawnPoolManager.GenerateSpawnList(
+            itemCount: 8, 
+            monsterCount: 2 + LevelTransitionManager.Instance.LevelNumber, 
+            environmentCount: 2, 
+            teleShardCount: 1
+            );
     }
 
     public void SpawnList()
@@ -227,7 +231,16 @@ public class LevelController : MonoBehaviour
         }
 
         //Spawn Player
-        GameObject playerObj = SpawnItem(playerPrefab);
+        GameObject playerObj;
+        if (PlayerController.Instance != null)
+        {
+            playerObj = SpawnExistingPlayer(PlayerController.Instance.gameObject);
+        }
+        else
+        {
+            playerObj = SpawnItem(playerPrefab);
+        }
+
         CameraController cameraController = Camera.main.GetComponent<CameraController>();
         cameraController.FollowTransform = playerObj.transform;
     }
@@ -242,6 +255,16 @@ public class LevelController : MonoBehaviour
 
         spawners.RemoveAt(index);
         return obj;
+    }
+
+    private GameObject SpawnExistingPlayer(GameObject player)
+    {
+        int index = Random.Range(0, spawners.Count);
+        Vector3 spawnPoint = spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0);
+        player.transform.position = spawnPoint;
+
+        spawners.RemoveAt(index);
+        return player;
     }
 
     public void DestroySpawners()

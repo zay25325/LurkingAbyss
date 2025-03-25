@@ -32,6 +32,9 @@ public class PlayerStats : MonoBehaviour
     [SerializeField]
     private int ichorSamples = 0;    // Number of ichor samples the player has
 
+    [SerializeField]
+    private int teleporterShardCount = 0;    // Number of teleportation shards the player has
+
     private int playerNoise = 0;    // Noise level of the player
     private OnHitEvents hitEvents;
     private PlayerController playerController;
@@ -92,7 +95,13 @@ public class PlayerStats : MonoBehaviour
     public int IchorSamples 
     { 
         get => ichorSamples; 
-        set => ichorSamples = value; 
+        set => ichorSamples = value;
+    }
+
+    public int TeleportationShardCount
+    {
+        get => teleporterShardCount;
+        set => teleporterShardCount = value;
     }
 
     private void Start()

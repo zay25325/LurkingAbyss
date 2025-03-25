@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Threading.Tasks;
 
+[DefaultExecutionOrder(-5)]
 public class MonsterController : MonoBehaviour
 {
     [SerializeField] OnHitEvents hitEvents;
@@ -18,6 +19,10 @@ public class MonsterController : MonoBehaviour
     [SerializeField] MonsterSightEvents sightEvents;
     [SerializeField] SimpleSightMeshController sightController;
     [SerializeField] NavMeshAgent agent;
+    [SerializeField] protected Animator animator;
+    [SerializeField] protected Transform spriteTransform;
+    [SerializeField] protected bool facesRight = false;
+    [SerializeField] protected bool hasDeathAnimation = false;
     [SerializeField] protected MonsterState state;
 
     [Header("Stats")]
@@ -35,6 +40,9 @@ public class MonsterController : MonoBehaviour
     protected bool overrideSightDirection = false;
 
     protected const float RESPAWN_DELAY = 30f;
+
+    protected Vector3 baseSpritePos;
+    protected Vector3 baseSpriteScale;
 
     public NavMeshAgent Agent { get => agent; }
     public List<GameObject> ObjectsInView { get => objectsInView; }
@@ -57,6 +65,12 @@ public class MonsterController : MonoBehaviour
         baseSpeed = Agent.speed; // grab our speed before the state changes it
         baseState = state;
         spawnPoint = transform.position;
+
+        if (spriteTransform != null)
+        {
+            baseSpritePos = spriteTransform.localPosition;
+            baseSpriteScale = spriteTransform.localScale;
+        }
     }
 
     private void OnEnable()
@@ -107,6 +121,26 @@ public class MonsterController : MonoBehaviour
         if (overrideSightDirection == false)
         {
             LookTowardsPath();
+        }
+        if (animator != null)
+        {
+            animator.SetBool("isMoving", agent.velocity.magnitude > 0);
+        }
+
+        if (spriteTransform != null)
+        {
+            // mirror x
+            if ((agent.velocity.x > 0 && facesRight == false) || // going right and default left
+                (agent.velocity.x < 0 && facesRight == true)) // going left and default right
+            {
+                spriteTransform.localPosition = new Vector3(-baseSpritePos.x, baseSpritePos.y, baseSpritePos.z);
+                spriteTransform.localScale = new Vector3(-baseSpriteScale.x, baseSpriteScale.y, baseSpriteScale.z);
+            }
+            else // original x
+            {
+                spriteTransform.localPosition = baseSpritePos;
+                spriteTransform.localScale = baseSpriteScale;
+            }
         }
     }
 
@@ -203,7 +237,14 @@ public class MonsterController : MonoBehaviour
         hp -= damage;
         if (hp <= 0)
         {
-            OnDeath();
+            if (hasDeathAnimation)
+            {
+                animator.SetTrigger("death");
+            }
+            else
+            {
+                OnDeath();
+            }
         }
         else
         {
@@ -226,7 +267,7 @@ public class MonsterController : MonoBehaviour
         agent.speed = baseSpeed;
     }
 
-    protected void OnDeath()
+    public void OnDeath()
     {
         OnStunStart();
         gameObject.SetActive(false);
