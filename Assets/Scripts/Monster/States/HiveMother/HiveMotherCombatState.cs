@@ -45,10 +45,8 @@ public class HiveMotherCombatState : HiveMotherBaseState
             }
         }
 
-        Vector3 direction = (controller.CombatTarget.transform.position - transform.position).normalized;
-
         // vision
-        controller.SightController.LookDirection = SimpleSightMeshController.GetAngleFromVectorFloat(direction) + 90;
+        controller.LookAt(controller.CombatTarget.transform.position);
 
         // navigation
         positionUpdateTimer += Time.deltaTime;
