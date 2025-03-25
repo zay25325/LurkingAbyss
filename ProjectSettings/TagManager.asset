@@ -10,6 +10,7 @@ TagManager:
   - Stairs
   - TeleportationShard
   - TrapperBulb
+  - WarpTube
   layers:
   - Default
   - TransparentFX
