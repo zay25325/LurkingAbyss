@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DashBooster : Item
 {
@@ -30,11 +31,18 @@ public class DashBooster : Item
         ItemObject = dashBoosterPrefab;
     }
 
-    public override void Use()
+    public override void Use(EntityInfo entityInfo)
     {
         if (CanUseItem() && !isCooldown)
         {
-            BoostDash();
+            if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
+            {
+                BoostDash();
+            }
+            else if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
+            {
+                ScavengerBoostDash();
+            }
             ReduceItemCharge();
             DestroyItem(ItemObject);
         }
@@ -79,5 +87,72 @@ public class DashBooster : Item
 
         playerMovement.PlayerSpeed = playerMovement.OriginalSpeed;
         isCooldown = false;
+    }
+
+    private void ScavengerBoostDash()
+    {
+        Debug.Log("Boosting dash for scavenger with: " + ItemName);
+        float scavengerBoost = 2.0f;
+
+        // Temporarily activate the DashBooster GameObject
+        bool wasActive = gameObject.activeSelf;
+        gameObject.SetActive(true);
+
+        // Disable renderer components to make the DashBooster invisible
+        Renderer[] renderers = gameObject.GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.enabled = false;
+        }
+
+        // Find the scavenger GameObject by name
+        GameObject scavenger = GameObject.Find("Scavenger");
+
+        if (scavenger != null)
+        {
+            // Get the scavenger's NavMeshAgent component
+            NavMeshAgent scavengerAgent = scavenger.GetComponent<NavMeshAgent>();
+
+            if (scavengerAgent != null)
+            {
+                float originalSpeed = scavengerAgent.speed;
+                StartCoroutine(TemporaryScavengerBoost(scavengerAgent, scavengerBoost, originalSpeed, wasActive, renderers));
+            }
+            else
+            {
+                Debug.Log("Scavenger NavMeshAgent not found");
+            }
+        }
+        else
+        {
+            Debug.Log("Scavenger GameObject not found");
+        }
+
+        // Re-enable renderer components to make the DashBooster visible again
+        // foreach (Renderer renderer in renderers)
+        // {
+        //     renderer.enabled = true;
+        // }
+
+        // Restore the DashBooster GameObject's active state
+        // gameObject.SetActive(wasActive);
+    }
+
+    private IEnumerator TemporaryScavengerBoost(NavMeshAgent scavengerAgent, float boost, float originalSpeed, bool wasActive, Renderer[] renderers)
+    {
+        isCooldown = true;
+        scavengerAgent.speed = scavengerAgent.speed * boost;
+
+        yield return new WaitForSeconds(1.0f);
+
+        scavengerAgent.speed = originalSpeed;
+        isCooldown = false;
+
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.enabled = true;
+        }
+
+        gameObject.SetActive(wasActive);
     }
 }

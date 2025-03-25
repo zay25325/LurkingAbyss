@@ -7,6 +7,9 @@ TagManager:
   - Walls
   - Ichor
   - Item
+  - Stairs
+  - TeleportationShard
+  - TrapperBulb
   layers:
   - Default
   - TransparentFX
@@ -24,7 +27,7 @@ TagManager:
   - Floor
   - Item
   - 
-  - 
+  - Environment
   - 
   - 
   - 
@@ -49,6 +52,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 603423773
+    locked: 0
   - name: Darkness
     uniqueID: 2038318623
     locked: 0
