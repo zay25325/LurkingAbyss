@@ -338,6 +338,11 @@ public class Inventory : MonoBehaviour
         return itemAddRemove;
     }
 
+    private void DestroyOnLoad(GameObject itemObject)
+    {
+        SceneManager.MoveGameObjectToScene(itemObject, SceneManager.GetActiveScene());
+    }
+
     internal int GetActiveItemIndex()
     {
         throw new NotImplementedException();

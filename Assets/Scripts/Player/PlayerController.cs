@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
 
     public bool isParalyzed = false;
 
+    MenuStates menuStates;
+
     /*
         FUNCTION : Awake()
         DESCRIPTION : called when the script instance is being loaded. Currently handles input control initialization, camera reference and input event subscription
@@ -170,6 +172,12 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("Child GameObject named 'Sprite' is missing!");
         }
+
+        menuStates = FindObjectOfType<MenuStates>();
+        if (menuStates != null)
+            Debug.Log("found object MenuStates");
+        else
+            Debug.Log("could not find object MenuStates");
     }
 
     /*
@@ -515,6 +523,10 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+
+        if (menuStates.isPaused == true)
+            return;
+
         activeItem = inventory.GetActiveItem();
         EntityInfo entityInfo = GetComponent<EntityInfo>();
         // activeItem.Use();
