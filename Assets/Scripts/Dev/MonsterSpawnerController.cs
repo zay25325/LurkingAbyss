@@ -12,6 +12,7 @@ public class MonsterSpawnerController : MonoBehaviour
 
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(MonsterSpawnerController))]
 public class MonsterSpawnerControllerEditor : Editor
 {
@@ -26,3 +27,4 @@ public class MonsterSpawnerControllerEditor : Editor
         }
     }
 }
+#endif

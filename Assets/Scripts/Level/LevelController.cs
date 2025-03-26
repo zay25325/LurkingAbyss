@@ -290,7 +290,7 @@ public class LevelController : MonoBehaviour
     }
 }
 
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(LevelController))]
 public class LevelControllerEditor : Editor
 {
@@ -332,5 +332,6 @@ public class LevelControllerEditor : Editor
 
     }
 }
+#endif
 
 
