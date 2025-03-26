@@ -3526,8 +3526,9 @@ MonoBehaviour:
   pauseMenu: {fileID: 1517944141}
   deathMenu: {fileID: 632645850}
   resumeBtn: {fileID: 360186196}
+  resumeQuitBtn: {fileID: 1444687221}
   deathResumeBtn: {fileID: 1362386973}
-  quitBtn: {fileID: 1444687221}
+  deathQuitBtn: {fileID: 1926116592}
   isPaused: 0
   isDead: 0
 --- !u!1 &1362386971

@@ -10,7 +10,7 @@ public class MenuStates : MonoBehaviour
     public GameObject pauseMenu; // pause menu canvas refernce
     public GameObject deathMenu; // death menu canvas reference
 
-    public Button resumeBtn, deathResumeBtn, quitBtn;
+    public Button resumeBtn, resumeQuitBtn, deathResumeBtn, deathQuitBtn;
 
     public bool isPaused;
     public bool isDead;
@@ -23,10 +23,11 @@ public class MenuStates : MonoBehaviour
 
         // event listeners in the pause menu
         resumeBtn.onClick.AddListener(ResumeGame);
-        quitBtn.onClick.AddListener(SendToMainMenu);
+        resumeQuitBtn.onClick.AddListener(SendToMainMenu);
 
         // death menu buttons
         deathResumeBtn.onClick.AddListener(ResumeAfterDeath);
+        deathQuitBtn.onClick.AddListener(SendToMainMenu);
     }
 
     void Update()
@@ -37,7 +38,6 @@ public class MenuStates : MonoBehaviour
                 ResumeGame();
             else
                 PauseGame();
-                //ShowDeathMenu(); // testing
         }
     }
 
@@ -49,30 +49,31 @@ public class MenuStates : MonoBehaviour
         isDead = true;
     }
 
-    public void ResumeAfterDeath()
+    private void ResumeAfterDeath()
     {
         deathMenu.SetActive(false);
         isDead = false;
         Time.timeScale = 1f;
         // somehow restart game
         LevelTransitionManager.Instance.NextLevel();
+        Debug.Log("restarted");
     }
 
-    public void PauseGame()
+    private void PauseGame()
     {
         pauseMenu.SetActive(true);
         Time.timeScale = 0f; // stops all animations and what not
         isPaused = true;
     }
 
-    public void ResumeGame()
+    private void ResumeGame()
     {
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
     }
 
-    public void SendToMainMenu()
+    private void SendToMainMenu()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
