@@ -22,6 +22,7 @@ Purpose: Given the number for each item type (monsters/items/environmental objec
 public class SpawnPoolManager : MonoBehaviour
 {
     [SerializeField] SpawnPool ItemSpawnPool;
+    [SerializeField] SpawnPool HuntingMonsterSpawnPool;
     [SerializeField] SpawnPool MonsterSpawnPool;
     [SerializeField] SpawnPool EnironmentSpawnPool;
 
@@ -29,12 +30,13 @@ public class SpawnPoolManager : MonoBehaviour
     [SerializeField] GameObject ShardPrefab;
     [SerializeField] GameObject exitPrefab; 
 
-    public List<GameObject> GenerateSpawnList(int itemCount = 0, int monsterCount = 0, int environmentCount = 0, int teleShardCount = 0, int exitCount = 1)
+    public List<GameObject> GenerateSpawnList(int itemCount = 0, int primaryMonsterCount = 0, int secondaryMonsterCount = 0, int environmentCount = 0, int teleShardCount = 0, int exitCount = 1)
     {
         List<GameObject> prefabs = new List<GameObject>();
 
         AddRandomSelectionFromPool(prefabs, ItemSpawnPool, itemCount);
-        AddRandomSelectionFromPool(prefabs, MonsterSpawnPool, monsterCount);
+        AddRandomSelectionFromPool(prefabs, HuntingMonsterSpawnPool, primaryMonsterCount);
+        AddRandomSelectionFromPool(prefabs, MonsterSpawnPool, secondaryMonsterCount);
         AddRandomSelectionFromPool(prefabs, EnironmentSpawnPool, environmentCount, true);
 
         prefabs.AddRange(Enumerable.Repeat(ShardPrefab, teleShardCount));
