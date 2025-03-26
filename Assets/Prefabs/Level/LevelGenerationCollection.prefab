@@ -983,15 +983,15 @@ PrefabInstance:
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_TileAssetArray.Array.data[9].m_Data
       value: 
-      objectReference: {fileID: 11400000, guid: 5f1685c2f6ca5a44aa9e15581217603e, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_TileAssetArray.Array.data[10].m_Data
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 63530aa63a8a5304593ecd255629f6a6, type: 2}
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_TileAssetArray.Array.data[11].m_Data
       value: 
-      objectReference: {fileID: 11400000, guid: 5826e399e761be541b50dc9bb84f4350, type: 2}
+      objectReference: {fileID: 11400000, guid: c661ee37fe043d44ca4093eb8f6c7d96, type: 2}
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_TileAssetArray.Array.data[12].m_Data
       value: 
@@ -1055,7 +1055,7 @@ PrefabInstance:
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[10].m_Data
       value: 
-      objectReference: {fileID: 1591843858, guid: 557ea1119b6eeef4f809c6085b69f3bd, type: 3}
+      objectReference: {fileID: -5762376758660941832, guid: 5e9283484ceb98349bc2aa8b7591d157, type: 3}
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[11].m_Data
       value: 
@@ -1063,10 +1063,10 @@ PrefabInstance:
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[12].m_Data
       value: 
-      objectReference: {fileID: 280504304, guid: 557ea1119b6eeef4f809c6085b69f3bd, type: 3}
+      objectReference: {fileID: 7175339039495034078, guid: 5e9283484ceb98349bc2aa8b7591d157, type: 3}
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_Tiles.Array.data[0].second.m_TileIndex
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_Tiles.Array.data[1].second.m_TileIndex
@@ -1142,7 +1142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_TileAssetArray.Array.data[9].m_RefCount
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_TileColorArray.Array.data[0].m_RefCount
@@ -1410,7 +1410,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_TileAssetArray.Array.data[10].m_RefCount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1725422709925949941, guid: 61d5603475e254e4fbfaafbb315d0840, type: 3}
       propertyPath: m_TileAssetArray.Array.data[11].m_RefCount
@@ -19613,20 +19613,40 @@ MonoBehaviour:
       SpawnItems:
       - Prefab: {fileID: 8786005308923651583, guid: 8237d177a123a75479e5e59702af2c0e, type: 3}
         Count: 1
-  MonsterSpawnPool:
+  HuntingMonsterSpawnPool:
     Entries:
     - SpawnTag: 18
       SpawnItems:
       - Prefab: {fileID: 7916441748645399307, guid: a0b58844626d8284b8c6651558823dd3, type: 3}
         Count: 1
       - Prefab: {fileID: 6650585788990336934, guid: 331ae2e9bcd1add44858d2b7ffb1e00f, type: 3}
-        Count: 5
+        Count: 6
+    - SpawnTag: 16
+      SpawnItems:
+      - Prefab: {fileID: 931839527684933961, guid: 57658198f803ff34eb269bde1547afbf, type: 3}
+        Count: 1
+      - Prefab: {fileID: 4180606748510892699, guid: 28e953cf8d8050f4483055f1911d0a57, type: 3}
+        Count: 7
+  MonsterSpawnPool:
+    Entries:
+    - SpawnTag: 17
+      SpawnItems:
+      - Prefab: {fileID: 7916441748645399307, guid: dc89a11edd656174d92d970dfe424f1f, type: 3}
+        Count: 1
+    - SpawnTag: 15
+      SpawnItems:
+      - Prefab: {fileID: 6946657031299846838, guid: 3ed8e1c8568b9c54dbae9afb6748c7c7, type: 3}
+        Count: 3
   EnironmentSpawnPool:
     Entries:
     - SpawnTag: 20
       SpawnItems:
       - Prefab: {fileID: 4180606748510892699, guid: 7556aa2d950028f4fbe3a507725564d7, type: 3}
         Count: 3
+    - SpawnTag: 40
+      SpawnItems:
+      - Prefab: {fileID: 2527956901971547463, guid: 3428dcfdcd6f8a74d88a3d6fbc52b4ab, type: 3}
+        Count: 2
   ShardPrefab: {fileID: 20772291986002995, guid: 73127facc584cfc46b961f39ea71d0dc, type: 3}
   exitPrefab: {fileID: 2527956901971547463, guid: 0f413f5353f4f844fa2db2be11293137, type: 3}
 --- !u!4 &8421360772882914671 stripped
