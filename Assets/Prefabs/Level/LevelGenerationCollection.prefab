@@ -19585,10 +19585,6 @@ MonoBehaviour:
       SpawnItems:
       - Prefab: {fileID: 8786005308923651583, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
         Count: 1
-    - SpawnTag: 31
-      SpawnItems:
-      - Prefab: {fileID: 8786005308923651583, guid: 20bb1909b1bcfaf4d92d8012f89096c0, type: 3}
-        Count: 1
     - SpawnTag: 32
       SpawnItems:
       - Prefab: {fileID: 8786005308923651583, guid: 2af902657e816f24a96ffd41779a1e49, type: 3}
@@ -19601,10 +19597,6 @@ MonoBehaviour:
       SpawnItems:
       - Prefab: {fileID: 8786005308923651583, guid: e1fb7aac7a892d94eb04fbd4004fb5f2, type: 3}
         Count: 1
-    - SpawnTag: 35
-      SpawnItems:
-      - Prefab: {fileID: 8786005308923651583, guid: 8237d177a123a75479e5e59702af2c0e, type: 3}
-        Count: 1
     - SpawnTag: 36
       SpawnItems:
       - Prefab: {fileID: 8786005308923651583, guid: ceec8c526cb4f5d4faf9149731661976, type: 3}
@@ -19616,6 +19608,10 @@ MonoBehaviour:
     - SpawnTag: 38
       SpawnItems:
       - Prefab: {fileID: 8786005308923651583, guid: c3336ed8c0d83a943a0765bb75244f44, type: 3}
+        Count: 1
+    - SpawnTag: 35
+      SpawnItems:
+      - Prefab: {fileID: 8786005308923651583, guid: 8237d177a123a75479e5e59702af2c0e, type: 3}
         Count: 1
   MonsterSpawnPool:
     Entries:
