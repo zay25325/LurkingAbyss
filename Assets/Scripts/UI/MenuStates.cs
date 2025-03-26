@@ -55,6 +55,7 @@ public class MenuStates : MonoBehaviour
         isDead = false;
         Time.timeScale = 1f;
         // somehow restart game
+        LevelTransitionManager.Instance.NextLevel();
     }
 
     public void PauseGame()
