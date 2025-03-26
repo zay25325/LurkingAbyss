@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEditor;
 
 public class LevelTransitionManager : MonoBehaviour
@@ -27,6 +28,17 @@ public class LevelTransitionManager : MonoBehaviour
         // Trigger level transition animation later.
         LevelNumber++;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Week9Demo");
+    }
+
+    public void StartEndingDelay()
+    {
+        StartCoroutine(EndingAnimation());
+    }
+
+    private IEnumerator EndingAnimation()
+    {
+        yield return new WaitForSeconds(4f);
+        SceneManager.LoadScene("EndingScene");
     }
 
 }

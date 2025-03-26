@@ -76,17 +76,14 @@ public class TeleporterItem : Item
         Transform playerTransform = GameObject.FindWithTag("Player").transform;
         Vector3 playerPosition = playerTransform.position;
         PlayerController controller = playerTransform.GetComponent<PlayerController>();
+        controller.isInvincible = true;
         controller.isParalyzed = true;
         GameObject.Instantiate(TeleporterLevelAnimation, playerPosition, new Quaternion());
-        MusicManager.Instance.SwitchState(MusicManager.MusicState.Escape);
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.SwitchState(MusicManager.MusicState.Escape);
+        }
 
-        StartCoroutine(EndingAnimation());
-    }
-
-
-    private IEnumerator EndingAnimation()
-    {
-        yield return new WaitForSeconds(4f);
-        SceneManager.LoadScene("EndingScene");
+        LevelTransitionManager.Instance.StartEndingDelay();
     }
 }
