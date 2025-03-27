@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static EntityInfo;
 
 public class PlayerController : MonoBehaviour
 {
@@ -211,6 +212,7 @@ public class PlayerController : MonoBehaviour
         }
         // Update velocity based on input
         playerRigidBody.velocity = movementInput * playerStats.PlayerSpeed;
+        MovingNoise();
     }
 
     /*
@@ -222,7 +224,7 @@ public class PlayerController : MonoBehaviour
     private void Move(Vector2 direction)
     {
         movementInput = direction;
-        MovingNoise();
+        //MovingNoise();
     }
 
     /*
@@ -520,7 +522,7 @@ public class PlayerController : MonoBehaviour
     private void MovingNoise()
     {
         playerStats.PlayerNoise = (int)(movementInput.magnitude * playerStats.PlayerSpeed); // Calculate noise level based on movement and speed
-        //NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise);
+        NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise, new List<EntityTags> { EntityTags.Player });
 
         Debug.Log("Player noise level: " + playerStats.PlayerNoise);
     }
