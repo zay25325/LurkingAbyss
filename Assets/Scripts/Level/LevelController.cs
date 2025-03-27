@@ -165,13 +165,18 @@ public class LevelController : MonoBehaviour
             // Get a random room variant
             RoomVariantData roomVariant = this.roomVariants[Random.Range(0,roomVariants.Count)];
 
+            // rotate the room variant at random
+            int randir = Random.Range(0,3);
+
             // place internal walls
             var wallTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette, new Vector2Int(1,0));
             foreach(var pos in roomVariant.walls)
             {
-                tileManager.SetTile(TileMapLayer.LayerClass.Wall, roompos+pos, wallTile);
+                tileManager.SetTile(TileMapLayer.LayerClass.Wall, roompos+Directions.Rotate2DInt(pos, randir), wallTile);
             }
+
             // place item spawns relative to room origin
+            room.transform.Rotate(new Vector3(90*randir,0, 0));
             foreach(var obj in roomVariant.SpawnPoints)
             {
                 // We need to intentionally duplicate spawn points as we are never actually instantiating the room prefab
