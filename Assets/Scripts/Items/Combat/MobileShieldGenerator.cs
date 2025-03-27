@@ -54,8 +54,16 @@ public class MobileShieldGenerator : Item
     {
         if(CanUseItem())
         {
-            increaseShieldCharge();
-            Debug.Log("shield generated. 2");
+            if(entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
+            {
+                increaseShieldCharge();
+                Debug.Log("Player Shield generated.");
+            }
+            else if(entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
+            {
+                scavengerIncreaseShieldCharge();
+                Debug.Log("Scavenger Shield generated.");
+            }
         }
 
         else
@@ -77,6 +85,24 @@ public class MobileShieldGenerator : Item
         if (playerStats != null && playerStats.Shields < playerStats.MaxShields)
         {
             playerStats.Shields += 1;
+            ReduceItemCharge();
+            DestroyItem(ItemObject);
+            Debug.Log("Shield generated.");
+        }
+        else
+        {
+            Debug.Log("Cannot use item.");
+        }
+    }
+
+    private void scavengerIncreaseShieldCharge()
+    {
+        // Increase the charge of scavenger shield
+        ScavengerController scavengerController = GameObject.FindObjectOfType<ScavengerController>();
+
+        if (scavengerController != null && scavengerController.Shield < scavengerController.MaxShield)
+        {
+            scavengerController.Shield += 1;
             ReduceItemCharge();
             DestroyItem(ItemObject);
             Debug.Log("Shield generated.");

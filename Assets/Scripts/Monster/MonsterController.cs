@@ -265,7 +265,7 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    protected void OnHarmed(float damage)
+    protected virtual void OnHarmed(float damage)
     {
         hp -= damage;
         if (hp <= 0)
