@@ -141,8 +141,14 @@ MonoBehaviour:
   sightEvents: {fileID: 4733366595748055650}
   sightController: {fileID: 3965241064990638695}
   agent: {fileID: 6140370617454582469}
+  animator: {fileID: 0}
+  spriteTransform: {fileID: 0}
+  facesRight: 0
+  hasDeathAnimation: 0
   state: {fileID: 0}
   HearingAmplificaiton: 1
+  VisionTurnRate: 90
+  useVisionSmoothing: 0
   hp: 10
   maxHP: 10
 --- !u!114 &6530052823025671122
@@ -358,7 +364,7 @@ MonoBehaviour:
       m_Calls: []
   raycastLayers:
     serializedVersion: 2
-    m_Bits: 1089
+    m_Bits: 1345
 --- !u!33 &1289978413882350417
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEditor;
 
 public class LevelTransitionManager : MonoBehaviour
@@ -29,8 +30,20 @@ public class LevelTransitionManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene("Week9Demo");
     }
 
+    public void StartEndingDelay()
+    {
+        StartCoroutine(EndingAnimation());
+    }
+
+    private IEnumerator EndingAnimation()
+    {
+        yield return new WaitForSeconds(4f);
+        SceneManager.LoadScene("EndingScene");
+    }
+
 }
 
+#if UNITY_EDITOR
 
 [CustomEditor(typeof(LevelTransitionManager))]
 public class LevelTransitionManagerEditor : Editor
@@ -47,3 +60,5 @@ public class LevelTransitionManagerEditor : Editor
 
     }
 }
+
+#endif
