@@ -28,7 +28,7 @@ public class HiveMotherCollectState : HiveMotherBaseState
                 if (info != null && info.Tags.Contains(EntityInfo.EntityTags.Swarmling))
                 {
                     Vector3 direction = (obj.transform.position - transform.position).normalized;
-                    controller.Agent.SetDestination(obj.transform.position + direction); // agents slow down when reaching their destination, so intentionally overshoot
+                    controller.Agent.SetDestination(obj.transform.position);
                     NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, Vector3.Distance(transform.position, obj.transform.position) + 1, GetComponent<EntityInfo>().Tags); ;
                     break;
                 }

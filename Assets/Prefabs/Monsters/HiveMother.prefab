@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_AgentTypeID
       value: -1372625422
       objectReference: {fileID: 0}
+    - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: avoidancePriority
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6530052823025671122, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: tags.Array.size
       value: 4
@@ -350,6 +354,8 @@ MonoBehaviour:
   hasDeathAnimation: 1
   state: {fileID: 43556223004357966}
   HearingAmplificaiton: 1
+  VisionTurnRate: 90
+  useVisionSmoothing: 0
   hp: 10
   maxHP: 10
   callDistance: 25
