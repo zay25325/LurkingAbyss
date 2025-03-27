@@ -47,14 +47,4 @@ public class HiveMotherCollectState : HiveMotherBaseState
         base.OnEnable();
         navTimer = 0f;
     }
-
-    public override void OnSeeingEntityEnter(Collider2D collider)
-    {
-        EntityInfo info = collider.GetComponent<EntityInfo>();
-        if (info != null && info.Tags.Contains(EntityInfo.EntityTags.Swarmling))
-        {
-        }
-    }
-
-    
 }
