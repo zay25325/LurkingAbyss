@@ -236,7 +236,7 @@ public class PlayerController : MonoBehaviour
     private void StopMoving()
     {
         movementInput = Vector2.zero;
-        MovingNoise();
+        //MovingNoise();
     }
 
     /*
@@ -522,7 +522,7 @@ public class PlayerController : MonoBehaviour
     private void MovingNoise()
     {
         playerStats.PlayerNoise = (int)(movementInput.magnitude * playerStats.PlayerSpeed); // Calculate noise level based on movement and speed
-        NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise, new List<EntityTags> { EntityTags.Player });
+        NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise, GetComponent<EntityInfo>().Tags);
 
         Debug.Log("Player noise level: " + playerStats.PlayerNoise);
     }
