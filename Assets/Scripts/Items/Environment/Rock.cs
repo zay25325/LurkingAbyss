@@ -58,7 +58,7 @@ public class Rock : Item
         if (CanUseItem())
         {
             StartCoroutine(Throw());
-            //ReduceItemCharge();
+            ReduceItemCharge();
             DestroyItem(ItemObject);
         }
         else
