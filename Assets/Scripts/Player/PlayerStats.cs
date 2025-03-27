@@ -189,9 +189,12 @@ public class PlayerStats : MonoBehaviour
 
     private IEnumerator StunCoroutine(float stunDuration)
     {
-        playerController.isParalyzed = true;
-        yield return new WaitForSeconds(stunDuration);
-        playerController.isParalyzed = false;
+        if (playerController.isInvincible != true)
+        {
+            playerController.isParalyzed = true;
+            yield return new WaitForSeconds(stunDuration);
+            playerController.isParalyzed = false;
+        }
     }
 
 
