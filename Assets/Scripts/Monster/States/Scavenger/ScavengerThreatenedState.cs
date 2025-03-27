@@ -64,11 +64,86 @@ public class ScavengerThreatenedState : ScavengerBaseState
                 activeItem.Use(entityInfo);
                 if (!activeItem.CanUseItem())
                 {
-                    scavengerController.RemoveItem(activeItem);
+                    // List<Item> items = scavengerController.GetItems();
+                    Item battery = items.Find(item => item is Battery);
+                    if (battery != null)
+                    {
+                        scavengerController.SetItem(battery);
+                        Item activeBattery = scavengerController.GetActiveItem();
+                        if (activeBattery != null && entityInfo != null)
+                        {
+                            activeBattery.Use(entityInfo);
+                        }
+                    }
+                    else
+                    {
+                        activeItem.ItemObject.transform.position = transform.position; // Place at scavenger's position
+                        activeItem.ItemObject.SetActive(true); // Activate the item in the game world
+                        scavengerController.RemoveItem(activeItem);
+                    }
                 }
             }
         }
     }
+
+    private void UseEnvironmentItem()
+    {
+        List<Item> items = scavengerController.GetItems();
+        EntityInfo entityInfo = scavengerController.GetComponent<EntityInfo>();
+        List<Item> environmentItems = new List<Item>();
+
+        // Check for environment items in the inventory
+        foreach (Item item in items)
+        {
+            if (item.ItemSubtype == Subtype.Movement)
+            {
+                environmentItems.Add(item);
+            }
+        }
+
+        // Determine which item to use
+        if (environmentItems.Count > 0)
+        {
+            Item selectedItem;
+            if (environmentItems.Count == 1)
+            {
+                selectedItem = environmentItems[0];
+            }
+            else
+            {
+                selectedItem = environmentItems[Random.Range(0, environmentItems.Count)];
+            }
+
+            scavengerController.SetItem(selectedItem);
+
+            // Use the active item
+            Item activeItem = scavengerController.GetActiveItem();
+            if (activeItem != null && entityInfo != null)
+            {
+                activeItem.Use(entityInfo);
+                if (!activeItem.CanUseItem())
+                {
+                    // List<Item> items = scavengerController.GetItems();
+                    Item battery = items.Find(item => item is Battery);
+                    if (battery != null)
+                    {
+                        scavengerController.SetItem(battery);
+                        Item activeBattery = scavengerController.GetActiveItem();
+                        if (activeBattery != null && entityInfo != null)
+                        {
+                            activeBattery.Use(entityInfo);
+                        }
+                    }
+                    else
+                    {
+                        activeItem.ItemObject.transform.position = transform.position; // Place at scavenger's position
+                        activeItem.ItemObject.SetActive(true); // Activate the item in the game world
+                        scavengerController.RemoveItem(activeItem);
+                    }
+                }
+            }
+        }
+    }    
 
 private void RunAway(Vector3 targetLocation)
 {
@@ -110,6 +185,7 @@ private void RunAway(Vector3 targetLocation)
     {
         if (Time.time - lastMovementItemTime >= movementItemCooldown)
         {
+            UseEnvironmentItem();
             UseMovementItem();
             lastMovementItemTime = Time.time;
 

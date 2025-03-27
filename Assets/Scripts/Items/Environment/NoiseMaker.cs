@@ -58,9 +58,21 @@ public class NoiseMaker : Item
     {
         if (CanUseItem())
         {
-            Place();
-            ReduceItemCharge();
-            DestroyItem(ItemObject);
+            if(entityInfo.Tags.Contains(EntityTags.Player))
+            {
+                Place(entityInfo);
+                ReduceItemCharge();
+                DestroyItem(ItemObject);
+            }
+            else if(entityInfo.Tags.Contains(EntityTags.Scavenger))
+            {
+                ScavengerPlace(entityInfo);
+                ReduceItemCharge();
+                DestroyItem(ItemObject);
+            }
+            // Place();
+            // ReduceItemCharge();
+            // DestroyItem(ItemObject);
         }
         else
         {
@@ -75,7 +87,7 @@ public class NoiseMaker : Item
         PARAMETERS : NONE
         RETURNS : NONE
     */
-    private void Place()
+    private void Place(EntityInfo entityInfo)
     {
         inventoryManager = FindObjectOfType<Inventory>();
 
@@ -83,11 +95,24 @@ public class NoiseMaker : Item
         {
             inventoryManager.DropActiveItem(new InputAction.CallbackContext());
             
-            StartCoroutine(GenerateNoise());
+            StartCoroutine(GenerateNoise(entityInfo));
 
             Debug.Log("Placing the noise maker.");
         }
 
+    }
+
+    private void ScavengerPlace(EntityInfo entityInfo)
+    {
+        ScavengerController scavengerController = GameObject.FindObjectOfType<ScavengerController>();
+        List<Item> itemList = scavengerController.GetItems();
+
+        if (scavengerController != null && itemList.Contains(this))
+        {
+            transform.position = scavengerController.transform.position;
+            StartCoroutine(GenerateNoise(entityInfo));
+            Debug.Log("Scavenger placed the noise maker.");
+        }
     }
 
     /*
@@ -96,15 +121,14 @@ public class NoiseMaker : Item
         PARAMETERS : NONE
         RETURNS : IEnumerator
     */
-    private IEnumerator GenerateNoise()
+    private IEnumerator GenerateNoise(EntityInfo entityInfo)
     {
         int noiseCounter = noiseLevel;
         while (noiseCounter > 0)
         {
-            //MOST LIKELY NEEDS TO BE REFACTORED TO INCLUDE ENEMIES WITHIN ENTITY TAGS LIST
-            NoiseDetectionManager.Instance.NoiseEvent.Invoke(this.transform.position, noiseLevel, GetComponent<EntityInfo>().Tags);
+            NoiseDetectionManager.Instance.NoiseEvent.Invoke(this.transform.position, noiseLevel, entityInfo.Tags);
             noiseCounter--;
-            Debug.Log("Noise Counter: " + noiseCounter);
+            Debug.Log($"Noise Level: {noiseLevel}, Noise Counter: {noiseCounter}");
             yield return new WaitForSeconds(1f);
         }
     }
