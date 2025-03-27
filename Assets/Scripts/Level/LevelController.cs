@@ -166,7 +166,7 @@ public class LevelController : MonoBehaviour
             RoomVariantData roomVariant = this.roomVariants[Random.Range(0,roomVariants.Count)];
 
             // rotate the room variant at random
-            int randir = Random.Range(0,3);
+            int randir = Random.Range(0,4);
 
             // place internal walls
             var wallTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette, new Vector2Int(1,0));
@@ -255,7 +255,7 @@ public class LevelController : MonoBehaviour
     {
         int index = Random.Range(0, spawners.Count);
         GameObject obj = Instantiate(prefab, spawners[index].transform);
-        Vector3 spawnPoint = spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0);
+        Vector3 spawnPoint = spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0); //Todo: remove the need for this offset
         obj.transform.position = spawnPoint;
         obj.transform.parent = null;
 
