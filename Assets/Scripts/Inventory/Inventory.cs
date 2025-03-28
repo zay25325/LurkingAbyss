@@ -345,6 +345,7 @@ public class Inventory : MonoBehaviour
 
     internal int GetActiveItemIndex()
     {
-        throw new NotImplementedException();
+        return currentActiveIndex;
+        //throw new NotImplementedException();
     }
 }

@@ -12,6 +12,11 @@ public class ItemBar : MonoBehaviour
     public HorizontalLayoutGroup itemBarHUD; // for displayting the images of the childs
     public GameObject itemPrefab;
 
+
+    // store the images
+    UnityEngine.UI.Image[] images;
+    public UnityEngine.UI.Image activeItemHighlight; // transparent square
+
     private void Start()
     {
         itemBarHUD = GetComponent<HorizontalLayoutGroup>();
@@ -57,6 +62,7 @@ public class ItemBar : MonoBehaviour
         }
 
         List<Item> items = playerInventory.GetItems();
+        images = new UnityEngine.UI.Image[items.Count];
 
         foreach(Item item in items) // debug
             Debug.Log($"Item in inventory: {item}");
@@ -75,6 +81,13 @@ public class ItemBar : MonoBehaviour
                     rectTransform.sizeDelta = new Vector2(100, 100); // Adjust size as needed
 
             UnityEngine.UI.Image itemImage = slot.GetComponent<UnityEngine.UI.Image>();
+
+            // make sure no null images are inserted
+            if (itemImage != null)
+            {
+                images[i] = itemImage; // store the image
+                Debug.Log("Line 88: Added image to temp list");
+            }
             Debug.Log("Item Image: " + itemImage);
             Debug.Log("About to add images to HUD");
             SpriteRenderer itemSpriteRenderer = null;
@@ -100,7 +113,27 @@ public class ItemBar : MonoBehaviour
             }
             else
                 Debug.Log($"item: {items[i].name} does not have a sprite attached");
-        
+
+            // finally highlight the active item in hand
+            HighlightActiveItem();
+        }
+    }
+
+    private void HighlightActiveItem()
+    {
+        Debug.Log("Got here! line 124"); // testing
+
+        if (activeItemHighlight == null || images == null || images.Length == 0)
+        {
+            Debug.Log("Error everyrthing is null or something");
+            return;
+        }
+
+        int activeItemIndex = playerInventory.GetActiveItemIndex();
+
+        if (activeItemIndex >= 0 && activeItemIndex < images.Length)
+        { // put the transparent square on top of the image
+            activeItemHighlight.transform.position = images[activeItemIndex].transform.position;
         }
     }
 }
