@@ -13226,7 +13226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6778809293174336508, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
       propertyPath: tags.Array.data[2]
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7419464304183977446, guid: d63d469db44f27d45a6bebbfeab5845b, type: 3}
       propertyPath: m_Name
