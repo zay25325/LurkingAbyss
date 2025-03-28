@@ -65,7 +65,7 @@ public class Rock : Item
             }
             else if (entityInfo.Tags.Contains(EntityTags.Scavenger))
             {
-                StartCoroutine(Throw(entityInfo));
+                StartCoroutine(ScavengerThrow(entityInfo));
                 ReduceItemCharge();
                 DestroyItem(ItemObject);
             }
@@ -210,6 +210,15 @@ public class Rock : Item
         {
             Debug.LogError("Rock projectile is missing a Rigidbody2D!");
             yield break;
+        }
+
+        // Ignore collision with the player
+        Collider2D scavengerCollider = scavengerController.GetComponent<Collider2D>();
+        Collider2D projectileCollider = rock.GetComponent<Collider2D>();
+        if (scavengerCollider != null && projectileCollider != null)
+        {
+            Physics2D.IgnoreCollision(scavengerCollider, projectileCollider);
+            Debug.Log("Ignoring collision between player and projectile.");
         }
 
         // Set rock projectile layer and collision rules

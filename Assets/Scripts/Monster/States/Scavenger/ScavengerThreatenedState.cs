@@ -11,6 +11,9 @@ public class ScavengerThreatenedState : ScavengerBaseState
     private float movementItemCooldown = 5f; // Cooldown duration in seconds
     private float lastMovementItemTime;
 
+    private float environmentItemCooldown = 5f; // Cooldown duration in seconds
+    private float lastEnvironmentItemTime;
+
     new protected void OnEnable()
     {
         base.OnEnable();
@@ -25,6 +28,7 @@ public class ScavengerThreatenedState : ScavengerBaseState
         }
 
         lastMovementItemTime = -movementItemCooldown; // Initialize to allow immediate use of movement item
+        lastEnvironmentItemTime = -environmentItemCooldown; // Initialize to allow immediate use of environment item
     }
 
     private void UseMovementItem()
@@ -167,10 +171,10 @@ public class ScavengerThreatenedState : ScavengerBaseState
                 activeItem.Use(entityInfo);
 
                 // After using the item, deactivate it again
-                // if (activeItem.ItemObject != null)
-                // {
-                //     activeItem.ItemObject.SetActive(false); // Deactivate the GameObject
-                // }
+                if (activeItem is Rock)
+                {
+                    activeItem.ItemObject.SetActive(false); // Deactivate the GameObject
+                }
 
                 // If the item cannot be used anymore, handle it
                 if (!activeItem.CanUseItem())
@@ -235,9 +239,14 @@ private void RunAway(Vector3 targetLocation)
 
     private void Update()
     {
-        if (Time.time - lastMovementItemTime >= movementItemCooldown)
+        if(Time.time - lastEnvironmentItemTime >= environmentItemCooldown)
         {
             UseEnvironmentItem();
+            lastEnvironmentItemTime = Time.time;
+        }
+
+        if (Time.time - lastMovementItemTime >= movementItemCooldown)
+        {
             UseMovementItem();
             lastMovementItemTime = Time.time;
 
