@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
-  interestDuration: 5
+  interestDuration: 2
   SwarmlingProjectile: {fileID: 3646233433960996345, guid: 9dcff3faeb9c5a54fa7025571d3e56de, type: 3}
   fireRateDelay: 1.25
   positionUpdateDelay: 0.2
