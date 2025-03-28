@@ -33,9 +33,16 @@ public class InvisibleBelt : Item
     {
         if(CanUseItem())
         {
-            StartCoroutine(MakePlayerInvisible(entityInfo));
-            ReduceItemCharge();
-            DestroyItem(ItemObject);
+            if (!IsInUse)
+            {
+                StartCoroutine(MakePlayerInvisible(entityInfo));
+                ReduceItemCharge();
+                DestroyItem(ItemObject);
+            }
+            else
+            {
+                Debug.Log("The invisibility effect is still active. Cannot use the item again.");
+            }
         }
         else
         {
@@ -46,8 +53,8 @@ public class InvisibleBelt : Item
     private IEnumerator MakePlayerInvisible(EntityInfo entityInfo)
     {
         GameObject entity = null;
-        if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
-            {
+        if (entityInfo.gameObject.CompareTag("Player"))
+        {
             // Get the player object
             entity = GameObject.FindWithTag("Player");
             if (entity == null)
@@ -56,8 +63,9 @@ public class InvisibleBelt : Item
                 yield break;
             }
         }
-        else if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
+        else if (entityInfo.gameObject.CompareTag("Scavenger"))
         {
+            Debug.Log("Scavenger Says Hellur");
             // Get the scavenger object
             entity = GameObject.FindWithTag("Scavenger");
             if (entity == null)
@@ -117,14 +125,14 @@ public class InvisibleBelt : Item
         
         GameObject spriteObject = null;
         SpriteRenderer spriteRenderer = null;
-        if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
+        if (entityInfo.gameObject.CompareTag("Player"))
         {
             // Assuming the player has a SpriteRenderer component
             spriteObject = player.transform.Find("Sprite").gameObject;
             spriteRenderer = spriteObject.GetComponent<SpriteRenderer>();
         }
 
-        if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
+        if (entityInfo.gameObject.CompareTag("Scavenger"))
         {
             // Assuming the scavenger has a SpriteRenderer component
             spriteObject = player.transform.Find("CharacterSprite").gameObject;

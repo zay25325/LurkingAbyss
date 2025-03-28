@@ -61,10 +61,40 @@ public class ScavengerThreatenedState : ScavengerBaseState
             Item activeItem = scavengerController.GetActiveItem();
             if (activeItem != null && entityInfo != null)
             {
+                // Ensure the GameObject is active before using it
+                if (activeItem.ItemObject != null)
+                {
+                    // Hide the sprite or visual representation
+                    SpriteRenderer spriteRenderer = activeItem.ItemObject.GetComponent<SpriteRenderer>();
+                    if (spriteRenderer != null)
+                    {
+                        spriteRenderer.enabled = false; // Disable the sprite
+                    }
+
+                    activeItem.ItemObject.SetActive(true); // Activate the GameObject
+                }
+
                 activeItem.Use(entityInfo);
+
+                // After using the item, deactivate it again
+                if (activeItem.ItemObject != null)
+                {
+                    if (activeItem is InvisibleBelt)
+                    {
+                        if (!activeItem.IsInUse)
+                        {
+                            activeItem.ItemObject.SetActive(false); // Deactivate the GameObject
+                        }
+                    }
+                    else
+                    {
+                        activeItem.ItemObject.SetActive(false); // Deactivate the GameObject
+                    }
+                }
+
+                // If the item cannot be used anymore, handle it
                 if (!activeItem.CanUseItem())
                 {
-                    // List<Item> items = scavengerController.GetItems();
                     Item battery = items.Find(item => item is Battery);
                     if (battery != null)
                     {
@@ -77,6 +107,7 @@ public class ScavengerThreatenedState : ScavengerBaseState
                     }
                     else
                     {
+                        // Drop the item if no battery is available
                         activeItem.ItemObject.transform.position = transform.position; // Place at scavenger's position
                         activeItem.ItemObject.SetActive(true); // Activate the item in the game world
                         scavengerController.RemoveItem(activeItem);
@@ -95,7 +126,7 @@ public class ScavengerThreatenedState : ScavengerBaseState
         // Check for environment items in the inventory
         foreach (Item item in items)
         {
-            if (item.ItemSubtype == Subtype.Movement)
+            if (item.ItemSubtype == Subtype.Environment)
             {
                 environmentItems.Add(item);
             }
@@ -120,10 +151,30 @@ public class ScavengerThreatenedState : ScavengerBaseState
             Item activeItem = scavengerController.GetActiveItem();
             if (activeItem != null && entityInfo != null)
             {
+                // Ensure the GameObject is active before using it
+                if (activeItem.ItemObject != null)
+                {
+                    // Hide the sprite or visual representation
+                    SpriteRenderer spriteRenderer = activeItem.ItemObject.GetComponent<SpriteRenderer>();
+                    if (spriteRenderer != null)
+                    {
+                        spriteRenderer.enabled = false; // Disable the sprite
+                    }
+
+                    activeItem.ItemObject.SetActive(true); // Activate the GameObject
+                }
+
                 activeItem.Use(entityInfo);
+
+                // After using the item, deactivate it again
+                // if (activeItem.ItemObject != null)
+                // {
+                //     activeItem.ItemObject.SetActive(false); // Deactivate the GameObject
+                // }
+
+                // If the item cannot be used anymore, handle it
                 if (!activeItem.CanUseItem())
                 {
-                    // List<Item> items = scavengerController.GetItems();
                     Item battery = items.Find(item => item is Battery);
                     if (battery != null)
                     {
@@ -136,6 +187,7 @@ public class ScavengerThreatenedState : ScavengerBaseState
                     }
                     else
                     {
+                        // Drop the item if no battery is available
                         activeItem.ItemObject.transform.position = transform.position; // Place at scavenger's position
                         activeItem.ItemObject.SetActive(true); // Activate the item in the game world
                         scavengerController.RemoveItem(activeItem);
