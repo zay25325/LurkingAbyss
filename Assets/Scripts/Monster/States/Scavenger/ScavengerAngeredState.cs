@@ -78,11 +78,11 @@ public class ScavengerAngeredState : ScavengerBaseState
                     }
                     else
                     {
-                        activeItem.ItemObject.transform.position = transform.position + transform.forward; // Place in front of scavenger
+                        activeItem.ItemObject.transform.position = transform.position; // Place at scavenger's position
                         activeItem.ItemObject.SetActive(true); // Activate the item in the game world
                         scavengerController.RemoveItem(activeItem);
                     }
-                    
+
                     //scavengerController.RemoveItem(activeItem);
                 }
             }
