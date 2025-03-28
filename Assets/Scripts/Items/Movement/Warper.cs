@@ -58,13 +58,33 @@ public class Warper : Item
     {
         if(CanUseItem())
         {
-            Teleport();
-            if(didTeleport)
+            if(entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
             {
-                ReduceItemCharge();
-                didTeleport = false;
-                DestroyItem(ItemObject);
+                Teleport();
+                if(didTeleport)
+                {
+                    ReduceItemCharge();
+                    didTeleport = false;
+                    DestroyItem(ItemObject);
+                }
             }
+            else if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
+            {
+                ScavengerTeleport();
+                if(didTeleport)
+                {
+                    ReduceItemCharge();
+                    didTeleport = false;
+                    DestroyItem(ItemObject);
+                }
+            }
+            // Teleport();
+            // if(didTeleport)
+            // {
+            //     ReduceItemCharge();
+            //     didTeleport = false;
+            //     DestroyItem(ItemObject);
+            // }
         }
         else
         {
@@ -147,6 +167,70 @@ public class Warper : Item
                 // Set the player's position to the closest valid position on the NavMesh
                 playerTransform.position = hit.position;
                 Debug.Log("Player teleported to: " + hit.position);
+                didTeleport = true;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No valid position found on the NavMesh!");
+            didTeleport = false;
+        }
+    }
+
+    private void ScavengerTeleport()
+    {
+        // Get the scavenger's current position
+        Transform scavengerTransform = GameObject.FindWithTag("Scavenger").transform;
+        Vector3 scavengerPosition = scavengerTransform.position;
+
+        // Generate a random angle behind the scavenger (180 to 360 degrees)
+        float randomAngle = Random.Range(180f, 360f);
+        Vector3 direction = new Vector3(Mathf.Cos(randomAngle * Mathf.Deg2Rad), Mathf.Sin(randomAngle * Mathf.Deg2Rad), 0).normalized;
+
+        // Calculate a random distance within the max teleport distance
+        float randomDistance = Random.Range(1f, maxTeleportDistance);
+
+        // Calculate the target position
+        Vector3 targetPosition = scavengerPosition + direction * randomDistance;
+
+        // Use NavMesh to find the closest valid position
+        UnityEngine.AI.NavMeshHit hit;
+        if (UnityEngine.AI.NavMesh.SamplePosition(targetPosition, out hit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
+        {
+            // Perform an overlap circle check to ensure no walls or colliders at the new position
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(hit.position, 0.5f); // Adjust the radius as needed
+
+            bool isCollision = false;
+            foreach (var collider in colliders)
+            {
+                if (collider.CompareTag("Walls")) // Check if the collider is a wall
+                {
+                    isCollision = true;
+                    break;
+                }
+            }
+
+            if (isCollision)
+            {
+                Debug.Log("Collision detected at target position. Finding nearest valid position.");
+                // Find the nearest valid position within the NavMesh
+                if (UnityEngine.AI.NavMesh.SamplePosition(hit.position, out UnityEngine.AI.NavMeshHit nearestHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
+                {
+                    scavengerTransform.position = nearestHit.position;
+                    Debug.Log("Scavenger teleported to nearest valid position: " + nearestHit.position);
+                    didTeleport = true;
+                }
+                else
+                {
+                    Debug.LogError("No valid position found near the target position!");
+                    didTeleport = false;
+                }
+            }
+            else
+            {
+                // Set the scavenger's position to the closest valid position on the NavMesh
+                scavengerTransform.position = hit.position;
+                Debug.Log("Scavenger teleported to: " + hit.position);
                 didTeleport = true;
             }
         }
