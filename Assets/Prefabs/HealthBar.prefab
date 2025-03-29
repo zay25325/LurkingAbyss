@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 8345292412060031351}
   - component: {fileID: 7871680873219683221}
   m_Layer: 0
-  m_Name: spritesheet_15
+  m_Name: ECG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -286,8 +286,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f614a24798da90c4184166f2ba5de409, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intSlider: {fileID: 0}
-  ECGImage: {fileID: 0}
+  intSlider: {fileID: 5448860186675017503}
+  ECGImage: {fileID: 7871680873219683221}
 --- !u!114 &5448860186675017503
 MonoBehaviour:
   m_ObjectHideFlags: 0
