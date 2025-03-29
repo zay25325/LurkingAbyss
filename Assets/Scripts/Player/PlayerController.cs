@@ -376,13 +376,13 @@ public class PlayerController : MonoBehaviour
         // Get the mouse position in world coordinates
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     
-        float detectionRadius = 0.5f; // Default radius for left, right, and down
+        float detectionRadius = 1f; // Default radius for left, right, and down
         Vector2 direction = (mousePosition - (Vector2)transform.position).normalized;
 
-        if (direction.y > 0.5f) // If the direction is mostly upward
-        {
-            detectionRadius = 1.5f; // Increase radius when interacting above
-        }
+        // if (direction.y > 0.5f) // If the direction is mostly upward
+        // {
+        //     detectionRadius = 1.5f; // Increase radius when interacting above
+        // }
 
         // Detect all colliders within a radius of 1 unit around the player
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
