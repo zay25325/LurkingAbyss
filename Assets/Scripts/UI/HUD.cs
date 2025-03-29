@@ -10,7 +10,7 @@ public class HUD : MonoBehaviour
 {
 
     public Slider intSlider;
-    public SpriteRenderer ECGImage;
+    public Image ECGImage;
     private List<Item> items;
     private Item currentItem;
 
