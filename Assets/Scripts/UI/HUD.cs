@@ -10,7 +10,7 @@ public class HUD : MonoBehaviour
 {
 
     public Slider intSlider;
-    public Image ECGImage;
+    [SerializeField] public Image ECGImage;
     private List<Item> items;
     private Item currentItem;
 
