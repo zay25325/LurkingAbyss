@@ -376,7 +376,7 @@ MonoBehaviour:
   state: {fileID: 1944555696769571615}
   HearingAmplificaiton: 1
   VisionTurnRate: 90
-  useVisionSmoothing: 0
+  useVisionSmoothing: 1
   hp: 5
   maxHP: 5
   attackDistance: 2
