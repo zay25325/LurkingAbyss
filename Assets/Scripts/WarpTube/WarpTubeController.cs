@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI; // Add this for NavMesh support
 
 public class WarpTubeController : MonoBehaviour
 {
@@ -53,23 +54,27 @@ public class WarpTubeController : MonoBehaviour
         bool foundValidPosition = false;
         foreach (var dir in directions)
         {
+            // Use NavMesh sampling to find a valid position
+            Vector3 validPosition = GetValidNavMeshPosition(dir);
+
             // Check if the position is valid and clear of walls and vision blockers
-            if (IsValidTeleportPosition(dir))
+            if (IsValidTeleportPosition(validPosition))
             {
-                player.transform.position = dir;  // Teleport the player
+                player.transform.position = validPosition;  // Teleport the player
                 foundValidPosition = true;
-                Debug.Log("Player teleported to valid position: " + dir);
+                Debug.Log("Player teleported to valid position: " + validPosition);
                 break;
             }
             else
             {
                 // If blocked, move further in the same direction until clear of walls and WarpTubes
                 Vector3 newDir = MoveFurtherAway(dir);
-                if (IsValidTeleportPosition(newDir))
+                validPosition = GetValidNavMeshPosition(newDir);
+                if (IsValidTeleportPosition(validPosition))
                 {
-                    player.transform.position = newDir;
+                    player.transform.position = validPosition;
                     foundValidPosition = true;
-                    Debug.Log("Player teleported to valid position: " + newDir);
+                    Debug.Log("Player teleported to valid position: " + validPosition);
                     break;
                 }
             }
@@ -90,15 +95,15 @@ public class WarpTubeController : MonoBehaviour
     private Vector3 MoveFurtherAway(Vector3 direction)
     {
         // Move further away in the same direction by a certain distance
-        float moveDistance = 0.1f; // Move 1 unit further in the same direction
+        float moveDistance = 0.1f; // Move 0.1 units further in the same direction
         return direction + direction.normalized * moveDistance;
     }
 
-    // Check if the target position is valid (not colliding with walls, vision blockers, or warp tubes)
     private bool IsValidTeleportPosition(Vector3 position)
     {
         // Make sure the position is not within or touching anything with tag "Walls" or layer "VisionBlockers"
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, 0.5f); // Adjust radius as needed
+        float checkRadius = 0.5f; // Adjust radius as needed
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, checkRadius);
         foreach (var collider in colliders)
         {
             // Check if it's a wall or vision blocker
@@ -116,8 +121,27 @@ public class WarpTubeController : MonoBehaviour
             }
         }
 
+        // Additional check: Ensure the position is not inside any collider
+        if (Physics2D.OverlapPoint(position))
+        {
+            Debug.Log("Position is inside a collider: " + position);
+            return false;
+        }
+
         return true; // Valid position
     }
+
+    private Vector3 GetValidNavMeshPosition(Vector3 targetPosition)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(targetPosition, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            return hit.position; // Return the closest valid NavMesh position
+        }
+        else
+        {
+            Debug.LogError("No valid NavMesh position found near: " + targetPosition);
+            return targetPosition; // Fallback to the original position
+        }
+    }
 }
-
-
