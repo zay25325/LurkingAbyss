@@ -208,7 +208,7 @@ public class PlayerStats : MonoBehaviour
 
     public void RechargeShields(float charges)
     {
-        shields += charges/4; // shields has 4 segments
+        shields += charges*maxShields/4; // shields has 4 segments
 
         if (healthbarController.intSlider != null)
         {
