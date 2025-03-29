@@ -165,17 +165,21 @@ public class LevelController : MonoBehaviour
             // Get a random room variant
             RoomVariantData roomVariant = this.roomVariants[Random.Range(0,roomVariants.Count)];
 
+            // rotate the room variant at random
+            int randir = Random.Range(0,4);
             // place internal walls
             var wallTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette, new Vector2Int(1,0));
             foreach(var pos in roomVariant.walls)
             {
-                tileManager.SetTile(TileMapLayer.LayerClass.Wall, roompos+pos, wallTile);
+                tileManager.SetTile(TileMapLayer.LayerClass.Wall, roompos+Directions.Rotate2DInt(pos, randir), wallTile);
             }
-            // place item spawns relative to room origin
+
+            // Rotate Spawnpoints (translate to account for 0.5 offset)
             foreach(var obj in roomVariant.SpawnPoints)
             {
                 // We need to intentionally duplicate spawn points as we are never actually instantiating the room prefab
                 var instance = Instantiate(obj, room.transform.position+obj.transform.localPosition, Quaternion.identity, spawnPointParent);
+                instance.transform.RotateAround(new Vector3(room.transform.position.x,room.transform.position.y,0), new Vector3(0,0,1), 90*randir);
                 spawners.Add(instance.GetComponent<SpawnController>());
             }
 
@@ -250,7 +254,7 @@ public class LevelController : MonoBehaviour
     {
         int index = Random.Range(0, spawners.Count);
         GameObject obj = Instantiate(prefab, spawners[index].transform);
-        Vector3 spawnPoint = spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0);
+        Vector3 spawnPoint = spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0); //Todo: remove the need for this offset
         obj.transform.position = spawnPoint;
         obj.transform.parent = null;
 
