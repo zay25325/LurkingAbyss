@@ -43,12 +43,12 @@ public class PlayerStats : MonoBehaviour
     public float Health 
     { 
         get => health; 
-        set => health = value; 
+        set => health = Mathf.Min(value, maxHealth); 
     }
     public float Shields 
     { 
         get => shields; 
-        set => shields = value; 
+        set => shields = Mathf.Min(value, maxShields); 
     }
 
     public float MaxHealth 
@@ -119,6 +119,8 @@ public class PlayerStats : MonoBehaviour
         {
             Debug.LogError("PlayerController component is missing!");
         }
+
+
     }
 
     private void RevivePlayer()
@@ -174,19 +176,19 @@ public class PlayerStats : MonoBehaviour
     {
         if (playerController != null && !playerController.isInvincible)
         {
-            if (shields > 0)
+            if (Shields > 0)
             {
-                shields -= Mathf.Min(damage,shields); //so the shield will save player from fatal damage
+                Shields -= Mathf.Min(damage,shields); //so the shield will save player from fatal damage
             }
             else
             {
-                health -= damage; // damage to the player
+                Health -= damage; // damage to the player
             }
 
             HUD hud = FindObjectOfType<HUD>();
             if (hud.intSlider != null)
             {
-                hud.SetHealthBar(shields);
+                hud.SetHealthBar(shields/maxShields);
                 Debug.Log($"New health bar value: {hud.intSlider.value}");
             }
             else
@@ -199,6 +201,22 @@ public class PlayerStats : MonoBehaviour
         {
             Debug.Log("Player is invincible and did not take damage.");
             return;
+        }
+    }
+
+    public void RechargeShields(float charges)
+    {
+        shields += charges/4; // shields has 4 segments
+
+        HUD hud = FindObjectOfType<HUD>();
+        if (hud.intSlider != null)
+        {
+            hud.SetHealthBar(Shields/maxShields);
+            Debug.Log($"New health bar value: {hud.intSlider.value}");
+        }
+        else
+        {
+            Debug.LogError("hud reference isnt working in PlayerStats :c");
         }
     }
 

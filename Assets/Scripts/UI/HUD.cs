@@ -22,9 +22,6 @@ public class HUD : MonoBehaviour
     
     private const float lowHealthThreshold = 26f;
 
-    // this is to make updating the health bar less of a headache
-    // the size of the shield bar divided by the player's hp
-    private float ShieldBarScaleFactor = 100f / 4f;
 
     public void Start()
     {
@@ -68,7 +65,7 @@ public class HUD : MonoBehaviour
     {
         if (intSlider.value > 5)
         {
-            intSlider.value += amount*ShieldBarScaleFactor; //specific amount to show player health sectors properly
+            intSlider.value += amount; //specific amount to show player health sectors properly
             UpdateHealthBarColor(intSlider.value);
         }
     }
@@ -76,7 +73,7 @@ public class HUD : MonoBehaviour
     public void SetHealthBar(float shieldamount)
     {
         {
-            intSlider.value = (shieldamount)*ShieldBarScaleFactor; // (+1 is the red square I guess)
+            intSlider.value = (shieldamount); // (+1 is the red square I guess)
             UpdateHealthBarColor(intSlider.value);
         }
     }
