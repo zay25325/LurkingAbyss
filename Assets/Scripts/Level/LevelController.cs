@@ -175,13 +175,11 @@ public class LevelController : MonoBehaviour
             }
 
             // Rotate Spawnpoints (translate to account for 0.5 offset)
-            room.transform.Translate(new Vector3(0.5f,0.5f,0f));
-            room.transform.RotateAround(new Vector3(0,0,1), new Vector3(0,0,0), 90*randir);
-            room.transform.Translate(new Vector3(-0.5f,-0.5f,0f));
             foreach(var obj in roomVariant.SpawnPoints)
             {
                 // We need to intentionally duplicate spawn points as we are never actually instantiating the room prefab
                 var instance = Instantiate(obj, room.transform.position+obj.transform.localPosition, Quaternion.identity, spawnPointParent);
+                instance.transform.RotateAround(new Vector3(room.transform.position.x,room.transform.position.y,0), new Vector3(0,0,1), 90*randir);
                 spawners.Add(instance.GetComponent<SpawnController>());
             }
 
