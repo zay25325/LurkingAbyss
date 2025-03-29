@@ -17,13 +17,20 @@ public class HUD : MonoBehaviour
     //private Color normalHealth = new(47f, 243f, 237f);
     private Color normalHealth = new(47f / 255f, 243f / 255f, 237f / 255f);
     private Color lowHealth = Color.red;
-    private const float lowHealthThreshold = 8.1f;
 
+    
+    private const float lowHealthThreshold = 8.1f;
+    private const float BarMax = 17.4f;
+    private const float ECGWidth = 5f; // width of the filled box on the left
+
+    // this is to make updating the health bar less of a headache
+    // the size of the shield bar divided by the player's hp
+    private float ShieldBarScaleFactor = BarMax-ECGWidth / 4f;
 
     public void Start()
     {
         items = new List<Item>();
-        intSlider.value = 17.4f;
+        intSlider.value = BarMax;
 
         if (intSlider == null)
         {
@@ -33,7 +40,7 @@ public class HUD : MonoBehaviour
                 Debug.LogError("HUD: intSlider is null and couldn't be found");
             }
         }
-        intSlider.value = 17.4f;
+        intSlider.value = BarMax;
 
         // fill image component
         fillImage = intSlider.fillRect.GetComponent<Image>();
@@ -58,27 +65,26 @@ public class HUD : MonoBehaviour
     //    }
     //}
 
-    public void AdjustHealthBar(bool isHealing, float health)
+    public void AdjustHealthBar(float amount)
     {
         if (intSlider.value > 5)
         {
-            switch (isHealing)
-            {
-                case true:
-                    intSlider.value += health;
-                    UpdateHealthBarColor(intSlider.value); // change color
-                    break;
-                case false:
-                    intSlider.value -= health;
-                    UpdateHealthBarColor(intSlider.value);
-                    break;
-            }
+            intSlider.value += amount*ShieldBarScaleFactor; //specific amount to show player health sectors properly
+            UpdateHealthBarColor(intSlider.value);
+        }
+    }
+
+    public void SetHealthBar(float shieldamount)
+    {
+        {
+            intSlider.value = (shieldamount)*ShieldBarScaleFactor+ECGWidth; // (+1 is the red square I guess)
+            UpdateHealthBarColor(intSlider.value);
         }
     }
 
     public void UpdateHealthBarColor(float health)
     {
-        if (intSlider.value < 8.1f)
+        if (intSlider.value < lowHealthThreshold)
         {
             fillImage.color = lowHealth;
         }
