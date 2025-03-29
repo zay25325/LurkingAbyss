@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class HUD : MonoBehaviour
+public class HealthBarController : MonoBehaviour
 {
 
     public Slider intSlider;
@@ -20,7 +20,7 @@ public class HUD : MonoBehaviour
     private Color lowHealth = Color.red;
 
     
-    private const float lowHealthThreshold = 26f;
+    private const float lowHealthThreshold = 0.26f;
 
 
     public void Start()
@@ -94,30 +94,30 @@ public class HUD : MonoBehaviour
         }
     }
 
-    public void InsertItem(Item item)
-    {
-        try
-        {
-            items.Add(item);
-        }
-        catch (Exception error)
-        {
-            Debug.Log("Error inserting items into item bar inventory | Unity Error: " + error.Message);
-        }
-    }
+    //public void InsertItem(Item item)
+    //{
+    //    try
+    //    {
+    //        items.Add(item);
+    //    }
+    //    catch (Exception error)
+    //    {
+    //        Debug.Log("Error inserting items into item bar inventory | Unity Error: " + error.Message);
+    //    }
+    //}
 
-    public void DisplayItems()
-    {
-        try
-        {
-            foreach (Item item in items)
-            {
+    //public void DisplayItems()
+    //{
+    //    try
+    //    {
+    //        foreach (Item item in items)
+    //        {
 
-            }
-        }
-        catch (Exception error)
-        {
-            Debug.Log("Error adding items into display bar | Unity Error: " + error.Message);
-        }
-    }
+    //        }
+    //    }
+    //    catch (Exception error)
+    //    {
+    //        Debug.Log("Error adding items into display bar | Unity Error: " + error.Message);
+    //    }
+    //}
 }

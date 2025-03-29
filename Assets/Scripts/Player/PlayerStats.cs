@@ -10,6 +10,8 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
+    [SerializeField] HealthBarController healthbarController;
+
     [SerializeField] private float health = 1f;
     [SerializeField] private float shields = 4f;
 
@@ -120,10 +122,10 @@ public class PlayerStats : MonoBehaviour
             Debug.LogError("PlayerController component is missing!");
         }
 
-
+        //this.hudController = GetComponentInChildren<HUD>();
     }
 
-    private void RevivePlayer()
+    private void TryRevivePlayer()
     {
         Inventory inventory = GetComponent<Inventory>();
         EntityInfo entityInfo = GetComponent<EntityInfo>();
@@ -144,14 +146,14 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
-        MenuStates deathMenu = FindObjectOfType<MenuStates>();
-
-        if (deathMenu == null)
-            Debug.Log("Coudl not find death menu");
 
         if (health <= 0)
         {
-            RevivePlayer();
+            MenuStates deathMenu = FindObjectOfType<MenuStates>();
+            if (deathMenu == null)
+                Debug.Log("Coudl not find death menu");
+
+            TryRevivePlayer();
 
             if (health <= 0)
             {
@@ -165,7 +167,7 @@ public class PlayerStats : MonoBehaviour
         }
         // THIS IS TESTING, THIS CAN BE REMOVED ONCE
         // WE GET ON HIT DETECTION WORKING
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.J))
         {
             Debug.Log("damaged the player");
             TakeDamage(1f);
@@ -185,11 +187,11 @@ public class PlayerStats : MonoBehaviour
                 Health -= damage; // damage to the player
             }
 
-            HUD hud = FindObjectOfType<HUD>();
-            if (hud.intSlider != null)
+            
+            if (healthbarController.intSlider != null)
             {
-                hud.SetHealthBar(shields/maxShields);
-                Debug.Log($"New health bar value: {hud.intSlider.value}");
+                healthbarController.SetHealthBar(shields/maxShields);
+                Debug.Log($"New health bar value: {healthbarController.intSlider.value}");
             }
             else
             {
@@ -208,11 +210,10 @@ public class PlayerStats : MonoBehaviour
     {
         shields += charges/4; // shields has 4 segments
 
-        HUD hud = FindObjectOfType<HUD>();
-        if (hud.intSlider != null)
+        if (healthbarController.intSlider != null)
         {
-            hud.SetHealthBar(Shields/maxShields);
-            Debug.Log($"New health bar value: {hud.intSlider.value}");
+            healthbarController.SetHealthBar(Shields/maxShields);
+            Debug.Log($"New health bar value: {healthbarController.intSlider.value}");
         }
         else
         {
