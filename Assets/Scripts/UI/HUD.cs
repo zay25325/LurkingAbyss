@@ -45,7 +45,7 @@ public class HUD : MonoBehaviour
         fillImage = intSlider.fillRect.GetComponent<Image>();
         if (fillImage != null)
         {
-            fillImage.color = normalHealth;
+            UpdateHealthBarColor(intSlider.value);
         }
         else
         {
