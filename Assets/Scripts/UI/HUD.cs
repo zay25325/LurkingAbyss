@@ -10,6 +10,7 @@ public class HUD : MonoBehaviour
 {
 
     public Slider intSlider;
+    public SpriteRenderer ECGImage;
     private List<Item> items;
     private Item currentItem;
 
@@ -19,18 +20,16 @@ public class HUD : MonoBehaviour
     private Color lowHealth = Color.red;
 
     
-    private const float lowHealthThreshold = 8.1f;
-    private const float BarMax = 17.4f;
-    private const float ECGWidth = 5f; // width of the filled box on the left
+    private const float lowHealthThreshold = 26f;
 
     // this is to make updating the health bar less of a headache
     // the size of the shield bar divided by the player's hp
-    private float ShieldBarScaleFactor = BarMax-ECGWidth / 4f;
+    private float ShieldBarScaleFactor = 100f / 4f;
 
     public void Start()
     {
         items = new List<Item>();
-        intSlider.value = BarMax;
+        intSlider.value = intSlider.maxValue;
 
         if (intSlider == null)
         {
@@ -40,7 +39,7 @@ public class HUD : MonoBehaviour
                 Debug.LogError("HUD: intSlider is null and couldn't be found");
             }
         }
-        intSlider.value = BarMax;
+        intSlider.value = intSlider.maxValue;
 
         // fill image component
         fillImage = intSlider.fillRect.GetComponent<Image>();
@@ -77,7 +76,7 @@ public class HUD : MonoBehaviour
     public void SetHealthBar(float shieldamount)
     {
         {
-            intSlider.value = (shieldamount)*ShieldBarScaleFactor+ECGWidth; // (+1 is the red square I guess)
+            intSlider.value = (shieldamount)*ShieldBarScaleFactor; // (+1 is the red square I guess)
             UpdateHealthBarColor(intSlider.value);
         }
     }
@@ -87,6 +86,14 @@ public class HUD : MonoBehaviour
         if (intSlider.value < lowHealthThreshold)
         {
             fillImage.color = lowHealth;
+        } else {
+            fillImage.color = normalHealth;
+        }
+
+        if(intSlider.value <= 0) {
+            ECGImage.color = lowHealth;
+        } else {
+            ECGImage.color = normalHealth;
         }
     }
 
