@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
     private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer component
 
-    public bool isInvincible { get; private set; } // Flag to check if player is invincible
+    public bool isInvincible { get; set; } // Flag to check if player is invincible
 
     public bool isParalyzed = false;
 

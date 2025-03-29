@@ -64,5 +64,6 @@ public class EntityInfo : MonoBehaviour
 
 
         TrapperBulb,
+        WarpTube,
     }
 }

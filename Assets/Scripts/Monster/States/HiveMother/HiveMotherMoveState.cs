@@ -52,7 +52,7 @@ public class HiveMotherMoveState : HiveMotherBaseState
         EntityInfo info = collider.GetComponent<EntityInfo>();
         if (info != null)
         {
-            if ((info.Tags.Contains(EntityInfo.EntityTags.Hunter) || info.Tags.Contains(EntityInfo.EntityTags.Territorial))
+            if ((info.Tags.Contains(EntityInfo.EntityTags.Hunter) || info.Tags.Contains(EntityInfo.EntityTags.Territorial) || info.Tags.Contains(EntityInfo.EntityTags.Player))
             && controller.CollectedSwarmlings >= controller.RequiredSwarmlingsForCombat)
             {
                 controller.CombatTarget = info.gameObject;
