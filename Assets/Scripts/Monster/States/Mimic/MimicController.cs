@@ -48,11 +48,24 @@ public class MimicController : MonsterController
             Debug.Log("Setting item sprite");
             spriteRenderer.sprite = itemSprite;
             spriteRenderer.drawMode = SpriteDrawMode.Simple;
+
+            if (spriteRenderer.sprite != null && spriteRenderer.sprite.name == "battery")
+            {
+                spriteRenderer.transform.localScale = new Vector3(0.5f, 0.5f, 1);
+            }
             // spriteRenderer.transform.localScale = new Vector3(2, 2, 2);
 
             if (circleCollider != null)
             {
-                circleCollider.radius = Mathf.Max(itemSprite.bounds.size.x, itemSprite.bounds.size.y) / 2;
+                if (spriteRenderer.sprite.name == "battery")
+                {
+                    circleCollider.radius = 0.09f;
+                }
+
+                else
+                {
+                    circleCollider.radius = Mathf.Max(itemSprite.bounds.size.x, itemSprite.bounds.size.y) / 2;
+                }
             }
         }
     }

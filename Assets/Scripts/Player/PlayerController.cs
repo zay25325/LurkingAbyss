@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static EntityInfo;
 
 public class PlayerController : MonoBehaviour
 {
@@ -204,13 +205,14 @@ public class PlayerController : MonoBehaviour
                 }
 
                 // Stop flashing and reset color to normal
-                StopCoroutine(FlashBlue(spriteRenderer));
-                spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Original color
+                //StopCoroutine(FlashBlue(spriteRenderer));
+                isParalyzed = false;
             }
        
         }
         // Update velocity based on input
         playerRigidBody.velocity = movementInput * playerStats.PlayerSpeed;
+        MovingNoise();
     }
 
     /*
@@ -222,7 +224,7 @@ public class PlayerController : MonoBehaviour
     private void Move(Vector2 direction)
     {
         movementInput = direction;
-        MovingNoise();
+        //MovingNoise();
     }
 
     /*
@@ -234,7 +236,7 @@ public class PlayerController : MonoBehaviour
     private void StopMoving()
     {
         movementInput = Vector2.zero;
-        MovingNoise();
+        //MovingNoise();
     }
 
     /*
@@ -520,7 +522,7 @@ public class PlayerController : MonoBehaviour
     private void MovingNoise()
     {
         playerStats.PlayerNoise = (int)(movementInput.magnitude * playerStats.PlayerSpeed); // Calculate noise level based on movement and speed
-        //NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise);
+        NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise, GetComponent<EntityInfo>().Tags);
 
         Debug.Log("Player noise level: " + playerStats.PlayerNoise);
     }

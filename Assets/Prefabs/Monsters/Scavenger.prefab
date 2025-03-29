@@ -102,6 +102,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Scavenger
       objectReference: {fileID: 0}
+    - target: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_TagString
+      value: Scavenger
+      objectReference: {fileID: 0}
     - target: {fileID: 1859633332797683898, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -379,6 +383,9 @@ MonoBehaviour:
   attackCooldown: 1
   attackDuration: 0.5
   attackDamage: 1
+  items: []
+  activeItem: {fileID: 0}
+  shield: 5
 --- !u!114 &1944555696769571615
 MonoBehaviour:
   m_ObjectHideFlags: 0

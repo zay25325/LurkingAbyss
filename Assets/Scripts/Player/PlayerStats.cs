@@ -39,6 +39,8 @@ public class PlayerStats : MonoBehaviour
     private OnHitEvents hitEvents;
     private PlayerController playerController;
 
+    private Coroutine stunCoroutine;
+
     public float Health 
     { 
         get => health; 
@@ -183,16 +185,23 @@ public class PlayerStats : MonoBehaviour
     {
         if (playerController != null)
         {
-            StartCoroutine(StunCoroutine(stunDuration));
+            if (stunCoroutine != null)
+            {
+                StopCoroutine(stunCoroutine);
+                playerController.isParalyzed = false;
+            }
+            stunCoroutine = StartCoroutine(StunCoroutine(stunDuration));
         }
     }
 
     private IEnumerator StunCoroutine(float stunDuration)
     {
-        playerController.isParalyzed = true;
-        yield return new WaitForSeconds(stunDuration);
-        playerController.isParalyzed = false;
+        if (playerController.isInvincible != true)
+        {
+            playerController.isParalyzed = true;
+            yield return new WaitForSeconds(stunDuration);
+            playerController.isParalyzed = false;
+            stunCoroutine = null;
+        }
     }
-
-
 }

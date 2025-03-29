@@ -11,6 +11,7 @@ TagManager:
   - TeleportationShard
   - TrapperBulb
   - WarpTube
+  - Scavenger
   layers:
   - Default
   - TransparentFX

@@ -57,9 +57,21 @@ public class Rock : Item
     {
         if (CanUseItem())
         {
-            StartCoroutine(Throw());
-            //ReduceItemCharge();
-            DestroyItem(ItemObject);
+            if (entityInfo.Tags.Contains(EntityTags.Player))
+            {
+                StartCoroutine(Throw(entityInfo));
+                ReduceItemCharge();
+                DestroyItem(ItemObject);
+            }
+            else if (entityInfo.Tags.Contains(EntityTags.Scavenger))
+            {
+                StartCoroutine(ScavengerThrow(entityInfo));
+                ReduceItemCharge();
+                DestroyItem(ItemObject);
+            }
+            // StartCoroutine(Throw());
+            // ReduceItemCharge();
+            // DestroyItem(ItemObject);
         }
         else
         {
@@ -74,7 +86,7 @@ public class Rock : Item
         PARAMETERS : NONE
         RETURNS : NONE
     */
-    private IEnumerator Throw()
+    private IEnumerator Throw(EntityInfo entityInfo)
     {
         if (Camera.main == null) yield break;
 
@@ -155,7 +167,85 @@ public class Rock : Item
         Debug.Log("Rock Position: " + initialPosition);
         // Call NoiseDetectionManager before the rock gets destroyed
         NoiseDetectionManager.Instance.NoiseEvent.Invoke(
-            initialPosition, noiseLevel, GetComponent<EntityInfo>().Tags
+            initialPosition, noiseLevel, entityInfo.Tags
+        );
+    }
+
+    private IEnumerator ScavengerThrow(EntityInfo entityInfo)
+    {
+        ScavengerController scavengerController = FindObjectOfType<ScavengerController>();
+        if (scavengerController == null)
+        {
+            Debug.LogError("Scavenger not found!");
+            yield break;
+        }
+
+        // Spawn the rock projectile at the Scavenger's position
+        GameObject rock = Instantiate(rockprojectilePrefab, scavengerController.transform.position, Quaternion.identity);
+
+        // Generate a random direction in front of the Scavenger
+        Vector2 randomDirection = (Vector2)transform.right + Random.insideUnitCircle * 0.5f;
+        randomDirection.Normalize();
+
+        // Set the target for the ProjectileController to handle the movement
+        ProjectileController projectileController = rock.GetComponent<ProjectileController>();
+        if (projectileController != null)
+        {
+            Vector2 targetPosition = (Vector2)transform.position + randomDirection * 5f; // Adjust distance as needed
+            projectileController.Target = targetPosition; // Set target to the random position
+        }
+        else
+        {
+            Debug.LogError("Rock is missing a ProjectileController!");
+        }
+
+        // Set projectile movement with velocity
+        Rigidbody2D rb = rock.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            float rockSpeed = projectileController.Speed; // Adjust as needed
+            rb.velocity = randomDirection * rockSpeed; // Apply velocity in the desired direction
+        }
+        else
+        {
+            Debug.LogError("Rock projectile is missing a Rigidbody2D!");
+            yield break;
+        }
+
+        // Ignore collision with the player
+        Collider2D scavengerCollider = scavengerController.GetComponent<Collider2D>();
+        Collider2D projectileCollider = rock.GetComponent<Collider2D>();
+        if (scavengerCollider != null && projectileCollider != null)
+        {
+            Physics2D.IgnoreCollision(scavengerCollider, projectileCollider);
+            Debug.Log("Ignoring collision between player and projectile.");
+        }
+
+        // Set rock projectile layer and collision rules
+        int projectileLayer = LayerMask.NameToLayer("Projectiles");
+        rock.layer = projectileLayer;
+
+        int scavengerLayer = LayerMask.NameToLayer("Entities");
+        int visionBlockersLayer = LayerMask.NameToLayer("VisionBlockers");
+        int itemLayer = LayerMask.NameToLayer("Item");
+
+        Physics2D.IgnoreLayerCollision(projectileLayer, scavengerLayer, false);
+        Physics2D.IgnoreLayerCollision(projectileLayer, visionBlockersLayer, false);
+        Physics2D.IgnoreLayerCollision(projectileLayer, itemLayer, true);
+
+        // Store the initial position of the rock in 2D space
+        Vector2 initialPosition = rock.transform.position;
+        // Wait until the rock is destroyed
+        while (rock != null && rock.activeInHierarchy)
+        {
+            initialPosition = rock.transform.position;
+            yield return null; // Wait for the next frame before checking again
+        }
+
+        Debug.Log("Rock Position: " + initialPosition);
+        // Call NoiseDetectionManager before the rock gets destroyed
+        NoiseDetectionManager.Instance.NoiseEvent.Invoke(
+            initialPosition, noiseLevel, entityInfo.Tags
         );
     }
 }
