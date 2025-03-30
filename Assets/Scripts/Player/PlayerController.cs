@@ -373,73 +373,104 @@ public class PlayerController : MonoBehaviour
     */
     private void DoInteraction(InputAction.CallbackContext context)
     {
-        // Get the mouse position in world coordinates
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    
-        float detectionRadius = 0.5f; // Default radius for left, right, and down
-        Vector2 direction = (mousePosition - (Vector2)transform.position).normalized;
-
-        if (direction.y > 0.5f) // If the direction is mostly upward
+        if (isParalyzed == false)
         {
-            detectionRadius = 1.5f; // Increase radius when interacting above
-        }
+            // Get the mouse position in world coordinates
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        // Detect all colliders within a radius of 1 unit around the player
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
+            float detectionRadius = 0.75f; // Default radius for left, right, and down
+            Vector2 direction = (mousePosition - (Vector2)transform.position).normalized;
 
-        foreach (var hitCollider in hitColliders)
-        {
-            // Ensure the mouse is over the object
-            if (hitCollider.OverlapPoint(mousePosition))  // Check if the mouse is over this collider
+            if (direction.y > 0.5f) // If the direction is mostly upward
             {
-                // Check if the object has an Item script attached
-                Item item = hitCollider.GetComponentInChildren<Item>();
-                if (item != null)
-                {
-                    inventory.AddItem(hitCollider.gameObject);
-                    Debug.Log("Picked up item: " + item.name);
-                    return;
-                }
+                detectionRadius = 1.5f; // Increase radius when interacting above
+            }
 
-                // Check if the object is an Ichor
-                if (hitCollider.CompareTag("Ichor"))
+            // Detect all colliders within a radius of 0.75 unit around the player // this will ensure that the player is not interacting with something far away
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
+            foreach (Collider2D hitCollider in hitColliders)
+            {
+                // Ensure the mouse is over the object
+                if (hitCollider.OverlapPoint(mousePosition))  // Check if the mouse is over this collider
                 {
-                    playerStats.IchorSamples++;
-                    Debug.Log("Picked up Ichor Sample");
-                    return;
-                }
-
-                // Check if the object is the stairs
-                if (hitCollider.CompareTag("Stairs"))
-                {
-                    hitCollider.GetComponent<StairController>().TriggerLevelTransision();
-                }
-
-                // Check if the object is a teleportation shard
-                if (hitCollider.CompareTag("TeleportationShard"))
-                {
-                    Destroy(hitCollider.gameObject);
-                    playerStats.TeleportationShardCount++;
-                    if (playerStats.TeleportationShardCount >= 3)
+                    if(ObjectInteract(hitCollider))
                     {
-                        playerStats.TeleportationShardCount -= 3;
-                        Instantiate(teleporterItemPrefab, transform.position, new Quaternion());
+                        return;
                     }
                 }
+            }
 
-                // Check for interactions with a Mimic
-                EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
-                if (entityInfo != null && entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
+            // If there was nothing under the mouse pos, check for things under the player
+            hitColliders = Physics2D.OverlapCircleAll(transform.position, .15f);
+            foreach (Collider2D hitCollider in hitColliders)
+            {
+                if (ObjectInteract(hitCollider))
                 {
-                    Debug.Log("Interacted with a Mimic!");
-                    MimicController mimicController = hitCollider.GetComponent<MimicController>();
-                    //playerStats.TakeDamage(mimicController.AttackDamage);
-                    mimicController.SwitchState<MimicRevealState>();
-                    Debug.Log("Player Shield: " + playerStats.Shields);
                     return;
                 }
             }
+
         }
+    }
+
+    /*
+        FUNCTION : ObjectInteract
+        DESCRIPTION : Attempt to interact with a collider, checking the list of potential interactions.
+        PARAMETERS : Collider2D hitCollider - the collider we are checking.
+        RETURNS : bool : if the object was something that could be interacted with.
+    */
+    private bool ObjectInteract(Collider2D hitCollider)
+    {
+        // Check if the object has an Item script attached
+        Item item = hitCollider.GetComponentInChildren<Item>();
+        if (item != null)
+        {
+            inventory.AddItem(hitCollider.gameObject);
+            Debug.Log("Picked up item: " + item.name);
+            return true;
+        }
+
+        // Check if the object is an Ichor
+        if (hitCollider.CompareTag("Ichor"))
+        {
+            playerStats.IchorSamples++;
+            Debug.Log("Picked up Ichor Sample");
+            return true;
+        }
+
+        // Check if the object is the stairs
+        if (hitCollider.CompareTag("Stairs"))
+        {
+            hitCollider.GetComponent<StairController>().TriggerLevelTransision();
+            return true;
+        }
+
+        // Check if the object is a teleportation shard
+        if (hitCollider.CompareTag("TeleportationShard"))
+        {
+            Destroy(hitCollider.gameObject);
+            playerStats.TeleportationShardCount++;
+            if (playerStats.TeleportationShardCount >= 3)
+            {
+                playerStats.TeleportationShardCount -= 3;
+                Instantiate(teleporterItemPrefab, transform.position, new Quaternion());
+            }
+            return true;
+        }
+
+        // Check for interactions with a Mimic
+        EntityInfo entityInfo = hitCollider.GetComponent<EntityInfo>();
+        if (entityInfo != null && entityInfo.Tags.Contains(EntityInfo.EntityTags.Mimic))
+        {
+            Debug.Log("Interacted with a Mimic!");
+            MimicController mimicController = hitCollider.GetComponent<MimicController>();
+            //playerStats.TakeDamage(mimicController.AttackDamage);
+            mimicController.SwitchState<MimicRevealState>();
+            Debug.Log("Player Shield: " + playerStats.Shields);
+            return true;
+        }
+
+        return false;
     }
 
     /*
