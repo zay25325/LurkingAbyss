@@ -7,6 +7,7 @@ Description: This class is a component of the player game object and represents 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -40,6 +41,8 @@ public class PlayerStats : MonoBehaviour
     private PlayerController playerController;
 
     private Coroutine stunCoroutine;
+
+    public UnityEvent<float> OnShieldsChanged;
 
     public float Health 
     { 
@@ -174,6 +177,7 @@ public class PlayerStats : MonoBehaviour
                 health += shields;
                 shields = 0;
             }
+            OnShieldsChanged.Invoke(shields);
         }
         else
         {
