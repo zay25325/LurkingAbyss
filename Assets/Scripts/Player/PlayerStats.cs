@@ -181,7 +181,7 @@ public class PlayerStats : MonoBehaviour
 
     public void RechargeShields(float charges)
     {
-        shields += bars * maxShields/4;
+        shields += charges * maxShields/4;
         shields = Mathf.Max(shields, maxShields);
         OnShieldsChanged.Invoke(shields);
     }
