@@ -253,9 +253,7 @@ public class LevelController : MonoBehaviour
     private GameObject SpawnItem(GameObject prefab)
     {
         int index = Random.Range(0, spawners.Count);
-        GameObject obj = Instantiate(prefab, spawners[index].transform);
-        Vector3 spawnPoint = spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0); //Todo: remove the need for this offset
-        obj.transform.position = spawnPoint;
+        GameObject obj = Instantiate(prefab, spawners[index].transform.position + new Vector3(0.5f, 0.5f, 0), new Quaternion());
         obj.transform.parent = null;
 
         spawners.RemoveAt(index);
