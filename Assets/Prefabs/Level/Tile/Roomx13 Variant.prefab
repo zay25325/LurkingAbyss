@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roomx13 Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 7315036449734556477, guid: be15689c650eabf479c5d0d22df0e507, type: 3}
+      propertyPath: id
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8787788960237239055, guid: be15689c650eabf479c5d0d22df0e507, type: 3}
       propertyPath: m_Size.y
       value: 13

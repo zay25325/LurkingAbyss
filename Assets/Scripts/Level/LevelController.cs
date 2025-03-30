@@ -101,8 +101,12 @@ public class LevelController : MonoBehaviour
 
     public void BuildLevelFromMap() {
 
-        // Place Level Bounds
+        // Pick Tiles
         var boundsTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette,new Vector2Int(2,0));
+        var wallTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette, new Vector2Int(1,0));
+        var floorTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette,new Vector2Int(0,0));
+
+        // Place Level Bounds
         foreach(var pair in levelMap.RoomGrid) {
             RoomController room = pair.Value;
             Vector2Int roompos = (Vector2Int)tileManager.grid.WorldToCell(room.transform.position);
@@ -124,6 +128,12 @@ public class LevelController : MonoBehaviour
                 TileMapLayer.LayerClass.Wall,
                 roompos-(roomsize/2)
             );
+
+            // add corners to a separate layer. URP shadow caster doesn't like closed shapes
+            tileManager.SetTile(TileMapLayer.LayerClass.WallCorners, new Vector2Int(-(STATIC_ROOM_SIZE/2),-(STATIC_ROOM_SIZE/2))+roompos, wallTile);
+            tileManager.SetTile(TileMapLayer.LayerClass.WallCorners, new Vector2Int((STATIC_ROOM_SIZE/2),-(STATIC_ROOM_SIZE/2))+roompos, wallTile);
+            tileManager.SetTile(TileMapLayer.LayerClass.WallCorners, new Vector2Int(-(STATIC_ROOM_SIZE/2),(STATIC_ROOM_SIZE/2))+roompos, wallTile);
+            tileManager.SetTile(TileMapLayer.LayerClass.WallCorners, new Vector2Int((STATIC_ROOM_SIZE/2),(STATIC_ROOM_SIZE/2))+roompos, wallTile);
 
             //carve out level bounds 
             tileManager.ClearRect(
@@ -171,7 +181,6 @@ public class LevelController : MonoBehaviour
             // rotate the room variant at random
             int randir = Random.Range(0,4);
             // place internal walls
-            var wallTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette, new Vector2Int(1,0));
             foreach(var pos in roomVariant.walls)
             {
                 tileManager.SetTile(TileMapLayer.LayerClass.Wall, roompos+Directions.Rotate2DInt(pos, randir), wallTile);
@@ -187,7 +196,6 @@ public class LevelController : MonoBehaviour
             }
 
             // place floor
-            var floorTile = tileManager.PickTile(TileMapLayer.LayerClass.Palette,new Vector2Int(0,0));
             tileManager.SetRect(TileMapLayer.LayerClass.Floor, roompos-(roomsize/2), roompos+(roomsize/2), floorTile);
 
         }

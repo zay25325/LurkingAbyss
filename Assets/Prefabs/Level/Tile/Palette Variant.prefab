@@ -130,7 +130,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1232085657058263651, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
       propertyPath: id
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1232085657058263651, guid: 518b9e62901fdd24181bc71ed4140156, type: 3}
       propertyPath: IsWorld
