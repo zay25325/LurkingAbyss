@@ -10,6 +10,8 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
+    [SerializeField] HealthBarController healthbarController;
+
     [SerializeField] private float health = 1f;
     [SerializeField] private float shields = 4f;
 
@@ -43,12 +45,12 @@ public class PlayerStats : MonoBehaviour
     public float Health 
     { 
         get => health; 
-        set => health = value; 
+        set => health = Mathf.Min(value, maxHealth); 
     }
     public float Shields 
     { 
         get => shields; 
-        set => shields = value; 
+        set => shields = Mathf.Min(value, maxShields); 
     }
 
     public float MaxHealth 
@@ -119,9 +121,11 @@ public class PlayerStats : MonoBehaviour
         {
             Debug.LogError("PlayerController component is missing!");
         }
+
+        //this.hudController = GetComponentInChildren<HUD>();
     }
 
-    private void RevivePlayer()
+    private void TryRevivePlayer()
     {
         Inventory inventory = GetComponent<Inventory>();
         EntityInfo entityInfo = GetComponent<EntityInfo>();
@@ -142,14 +146,14 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
-        MenuStates deathMenu = FindObjectOfType<MenuStates>();
-
-        if (deathMenu == null)
-            Debug.Log("Coudl not find death menu");
 
         if (health <= 0)
         {
-            RevivePlayer();
+            MenuStates deathMenu = FindObjectOfType<MenuStates>();
+            if (deathMenu == null)
+                Debug.Log("Coudl not find death menu");
+
+            TryRevivePlayer();
 
             if (health <= 0)
             {
@@ -163,43 +167,57 @@ public class PlayerStats : MonoBehaviour
         }
         // THIS IS TESTING, THIS CAN BE REMOVED ONCE
         // WE GET ON HIT DETECTION WORKING
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.J))
         {
             Debug.Log("damaged the player");
-            TakeDamage(3.1f);
+            TakeDamage(1f);
         }
     }
 
     public void TakeDamage(float damage)
     {
-        HUD hud = FindObjectOfType<HUD>();
-        if (hud.intSlider != null)
+        if (playerController != null && !playerController.isInvincible)
         {
-            hud.AdjustHealthBar(false, 3.1f);
-            Debug.Log($"New health bar value: {hud.intSlider.value}");
-            hud.UpdateHealthBarColor(hud.intSlider.value);
+            if (Shields > 0)
+            {
+                Shields -= Mathf.Min(damage,shields); //so the shield will save player from fatal damage
+            }
+            else
+            {
+                Health -= damage; // damage to the player
+            }
+
+            
+            if (healthbarController.intSlider != null)
+            {
+                healthbarController.SetHealthBar(shields/maxShields);
+                Debug.Log($"New health bar value: {healthbarController.intSlider.value}");
+            }
+            else
+            {
+                Debug.LogError("hud reference isnt working in PlayerStats :c");
+            }
+
         }
         else
-            Debug.LogError("hud reference isnt working in PlayerStats :c");
-
-
-        if (playerController != null && playerController.isInvincible)
         {
             Debug.Log("Player is invincible and did not take damage.");
             return;
         }
-        else if (shields > 0)
+    }
+
+    public void RechargeShields(float charges)
+    {
+        shields += charges*maxShields/4; // shields has 4 segments
+
+        if (healthbarController.intSlider != null)
         {
-            shields -= damage;
-            if (shields < 0)
-            {
-                health += shields;
-                shields = 0;
-            }
+            healthbarController.SetHealthBar(Shields/maxShields);
+            Debug.Log($"New health bar value: {healthbarController.intSlider.value}");
         }
         else
         {
-            health -= damage;
+            Debug.LogError("hud reference isnt working in PlayerStats :c");
         }
     }
 

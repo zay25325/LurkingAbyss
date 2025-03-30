@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 movementInput = Vector2.zero;   // Input from the player
     private Rigidbody2D playerRigidBody;    // Rigidbody2D component of the player
     private PlayerInputControls playerInputControls;    // Input system controls
-    private readonly HUD hud = new();
+    //private readonly HUD hud = new();
 
     private bool canDash = true; // Flag to check if player can dash
 
