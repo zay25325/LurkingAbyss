@@ -33,9 +33,16 @@ public class InvisibleBelt : Item
     {
         if(CanUseItem())
         {
-            StartCoroutine(MakePlayerInvisible());
-            ReduceItemCharge();
-            DestroyItem(ItemObject);
+            if (!IsInUse)
+            {
+                StartCoroutine(MakePlayerInvisible(entityInfo));
+                ReduceItemCharge();
+                DestroyItem(ItemObject);
+            }
+            else
+            {
+                Debug.Log("The invisibility effect is still active. Cannot use the item again.");
+            }
         }
         else
         {
@@ -43,13 +50,33 @@ public class InvisibleBelt : Item
         }
     }
 
-    private IEnumerator MakePlayerInvisible()
+    private IEnumerator MakePlayerInvisible(EntityInfo entityInfo)
     {
-        // Get the player object
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player == null)
+        GameObject entity = null;
+        if (entityInfo.gameObject.CompareTag("Player"))
         {
-            Debug.LogError("Player not found!");
+            // Get the player object
+            entity = GameObject.FindWithTag("Player");
+            if (entity == null)
+            {
+                Debug.LogError("Player not found!");
+                yield break;
+            }
+        }
+        else if (entityInfo.gameObject.CompareTag("Scavenger"))
+        {
+            Debug.Log("Scavenger Says Hellur");
+            // Get the scavenger object
+            entity = GameObject.FindWithTag("Scavenger");
+            if (entity == null)
+            {
+                Debug.LogError("Scavenger not found!");
+                yield break;
+            }
+        }
+        else
+        {
+            Debug.LogError("Entity not found!");
             yield break;
         }
 
@@ -57,46 +84,82 @@ public class InvisibleBelt : Item
         IsInUse = true;
 
         // Make the player invisible
-        SetPlayerVisibility(player, false);
-        Debug.Log("Player is now invisible.");
+        SetPlayerVisibility(entity, false, entityInfo);
+        Debug.Log(entity.name + " is now invisible.");
+
+        // Store the tags to restore later
+        List<EntityInfo.EntityTags> originalTags = new List<EntityInfo.EntityTags>(entityInfo.Tags);
+
+        if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
+        {
+            // Remove elements 1-3
+            entityInfo.Tags.Remove(EntityInfo.EntityTags.Wanderer);
+            entityInfo.Tags.Remove(EntityInfo.EntityTags.Player);
+            entityInfo.Tags.Remove(EntityInfo.EntityTags.CanOpenDoors);
+        }
+
+        if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
+        {
+            // Remove elements 1-3
+            entityInfo.Tags.Remove(EntityInfo.EntityTags.Wanderer);
+            entityInfo.Tags.Remove(EntityInfo.EntityTags.Scavenger);
+            entityInfo.Tags.Remove(EntityInfo.EntityTags.CanOpenDoors);
+        }
 
         yield return new WaitForSeconds(invisibilityDuration);
 
+        // Restore the original tags
+        entityInfo.Tags.Clear();
+        entityInfo.Tags.AddRange(originalTags);
+
         // Make the player visible again
-        SetPlayerVisibility(player, true);
+        SetPlayerVisibility(entity, true, entityInfo);
         Debug.Log("Player is now visible again.");
 
         // Set the item as not in use
         IsInUse = false;
     }
 
-    private void SetPlayerVisibility(GameObject player, bool isVisible)
+    private void SetPlayerVisibility(GameObject player, bool isVisible, EntityInfo entityInfo)
     {
-    // Assuming the player has a SpriteRenderer component
-    SpriteRenderer spriteRenderer = player.GetComponent<SpriteRenderer>();
-    if (spriteRenderer != null)
-    {
-        if (isVisible)
+        
+        GameObject spriteObject = null;
+        SpriteRenderer spriteRenderer = null;
+        if (entityInfo.gameObject.CompareTag("Player"))
         {
-            // Restore the original color
-            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
+            // Assuming the player has a SpriteRenderer component
+            spriteObject = player.transform.Find("Sprite").gameObject;
+            spriteRenderer = spriteObject.GetComponent<SpriteRenderer>();
         }
-        else
+
+        if (entityInfo.gameObject.CompareTag("Scavenger"))
         {
-            // Set the color to semi-transparent
-            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.3f);
+            // Assuming the scavenger has a SpriteRenderer component
+            spriteObject = player.transform.Find("CharacterSprite").gameObject;
+            spriteRenderer = spriteObject.GetComponent<SpriteRenderer>();
         }
-    }
 
-    // Assuming the player has a Collider2D component
-    Collider2D collider = player.GetComponent<Collider2D>();
-    if (collider != null)
-    {
-        collider.enabled = isVisible;
-    }
+        if (spriteRenderer == null)
+        {
+            Debug.LogError("SpriteRenderer not found on the Sprite object!");
+            return;
+        }
 
-        // Add any additional logic to handle enemy detection here
-        // For example, you can disable enemy AI targeting the player
+        if (spriteRenderer != null)
+        {
+            if (isVisible)
+            {
+                // Restore the original color
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
+                Debug.Log("Setting player visible: Alpha = " + spriteRenderer.color.a);
+            }
+            else
+            {
+                // Set the color to semi-transparent
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.3f);
+                Debug.Log("Setting player invisible: Alpha = " + spriteRenderer.color.a);
+            }
+        }
     }
 }
 

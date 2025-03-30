@@ -32,8 +32,9 @@ public class MimicRevealState : MonsterState
             CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
             if (circleCollider != null)
             {
-                circleCollider.isTrigger = false;
-                Debug.Log("Circle Collider 2D enabled.");
+                //circleCollider.isTrigger = false;
+                gameObject.layer = LayerMask.NameToLayer("Entities");
+                //Debug.Log("Circle Collider 2D enabled.");
             }
             else
             {
@@ -41,7 +42,17 @@ public class MimicRevealState : MonsterState
             }
             Debug.Log("Mimic is revealing itself.");
             controller.spriteRenderer.sprite = controller.OriginalSprite;
-            controller.transform.localScale = new Vector3(3, 3, 1);
+            GameObject characterSprite = controller.transform.Find("CharacterSprite").gameObject;
+            if (characterSprite != null)
+            {
+                controller.transform.localScale = new Vector3(3, 3, 1);
+                characterSprite.transform.localScale = new Vector3(1, 1, 1);
+            }
+            else
+            {
+                Debug.LogWarning("CharacterSprite GameObject not found.");
+            }
+
             reachedDestination = false;
 
             // Find the player reference

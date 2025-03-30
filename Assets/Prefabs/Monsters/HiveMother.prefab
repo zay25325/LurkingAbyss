@@ -90,6 +90,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 932385296378493390, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_Color.b
+      value: 0.30980393
+      objectReference: {fileID: 0}
+    - target: {fileID: 932385296378493390, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_Color.r
+      value: 0.3019608
+      objectReference: {fileID: 0}
     - target: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_Name
       value: HiveMother
@@ -177,6 +185,10 @@ PrefabInstance:
     - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_AgentTypeID
       value: -1372625422
+      objectReference: {fileID: 0}
+    - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: avoidancePriority
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6530052823025671122, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: tags.Array.size
@@ -350,8 +362,13 @@ MonoBehaviour:
   hasDeathAnimation: 1
   state: {fileID: 43556223004357966}
   HearingAmplificaiton: 1
+  VisionTurnRate: 90
+  useVisionSmoothing: 0
   hp: 10
   maxHP: 10
+  lights:
+  - {fileID: 8679629084829120930}
+  - {fileID: 1250309640175622237}
   callDistance: 25
   navigationPointDistance: 20
   RequiredSwarmlingsForCombat: 4
@@ -412,7 +429,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   SwarmlingProjectile: {fileID: 3646233433960996345, guid: d42105ad2b98f4e4e9ef099e32ddb436, type: 3}
-  fireRateDelay: 0.75
-  fireRateReductionPerSwarmling: 0.125
-  positionUpdateDelay: 0.5
+  fireRateDelay: 1.25
+  fireRateReductionPerSwarmling: 0.1
+  positionUpdateDelay: 0.25
   combatDistance: 3
+--- !u!114 &8679629084829120930 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 932385296378493390, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+  m_PrefabInstance: {fileID: 8395910195201212524}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

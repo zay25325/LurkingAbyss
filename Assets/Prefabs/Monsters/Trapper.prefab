@@ -146,6 +146,10 @@ PrefabInstance:
       propertyPath: m_Speed
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: avoidancePriority
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 6530052823025671122, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: tags.Array.size
       value: 4
@@ -233,6 +237,8 @@ MonoBehaviour:
   hasDeathAnimation: 1
   state: {fileID: 1547963109588384514}
   HearingAmplificaiton: 1
+  VisionTurnRate: 90
+  useVisionSmoothing: 0
   hp: 10
   maxHP: 10
   Targets: []
@@ -265,7 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
-  interestDuration: 5
+  interestDuration: 2
   SwarmlingProjectile: {fileID: 3646233433960996345, guid: 9dcff3faeb9c5a54fa7025571d3e56de, type: 3}
   fireRateDelay: 1.25
   positionUpdateDelay: 0.2

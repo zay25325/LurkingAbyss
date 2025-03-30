@@ -25,6 +25,7 @@ public class Battery : Item
     public Sprite batteryIcon = null;  // Icon for the battery
     private GameObject batteryPrefab = null;    // Prefab for the battery
 
+    private ScavengerController scavengerItems = null;
 
     /*
         FUNCTION : Awake()
@@ -61,7 +62,14 @@ public class Battery : Item
     {
         if (CanUseItem())
         {
-            IncreaseItemsCharge();
+            if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
+            {
+                IncreaseItemsCharge();
+            }
+            else if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
+            {
+                ScavengerIncreaseItemsCharge();
+            }
         }
         else
         {
@@ -123,5 +131,46 @@ public class Battery : Item
             Debug.Log("Inventory not found");
         }
     }
-    
+
+    public void ScavengerIncreaseItemsCharge()
+    {
+        scavengerItems = GameObject.FindObjectOfType<ScavengerController>();
+        List<Item> items = scavengerItems.GetItems();
+        bool allItemsFull = true;
+
+        // Check if all items are full
+        foreach (Item item in items)
+        {
+            if (item != this && item.ItemCharge < item.maxItemCharge)
+            {
+                allItemsFull = false;
+                break;
+            }
+        }
+
+        // If not all items are full, increase the charge
+        if (!allItemsFull)
+        {
+            foreach (Item item in items)
+            {
+                // Increase the charge of all items except the battery
+                if (item != this && item.ItemCharge < item.maxItemCharge)
+                {
+                    item.ItemCharge++;
+                }
+            }
+            // Reduce the charge of the battery
+            ReduceItemCharge();
+
+            // Check to destroy the battery if the charge is zero and it is destroyable
+            if (ItemCharge <= 0)
+            {
+                DestroyItem(ItemObject);
+            }
+        }
+        else
+        {
+            Debug.Log("All items are fully charged");
+        }
+    }  
 }

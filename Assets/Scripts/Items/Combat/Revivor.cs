@@ -15,6 +15,8 @@ public class Revivor : Item
 
     private PlayerStats playerHealthStat = null;
 
+    private ScavengerController scavengerHealthState = null;
+
     private void Awake()
     {
         // Set the prefab reference here
@@ -46,7 +48,19 @@ public class Revivor : Item
     {
         if (CanUseItem())
         {
-            RevivePlayer();
+            if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
+            {
+                RevivePlayer();
+                ReduceItemCharge();
+                DestroyItem(ItemObject);
+            }
+
+            else if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
+            {
+                ReviveScavenger();
+                //ReduceItemCharge();
+                //DestroyItem(ItemObject);
+            }
         }
         else
         {
@@ -79,6 +93,23 @@ public class Revivor : Item
         else
         {
             Debug.Log("Player is not down or already has health.");
+        }
+    }
+
+    private void ReviveScavenger()
+    {
+        scavengerHealthState = GameObject.FindObjectOfType<ScavengerController>();
+
+        if(scavengerHealthState != null && scavengerHealthState.HP == 0)
+        {
+            scavengerHealthState.HP = 1;
+            Debug.Log("Scavenger revived with 1 health.");
+            ReduceItemCharge();
+            DestroyItem(ItemObject);
+        }
+        else
+        {
+            Debug.Log("Scavenger is not down or already has health.");
         }
     }
 }

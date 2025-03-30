@@ -65,7 +65,25 @@ public class ScavengerAngeredState : ScavengerBaseState
                 activeItem.Use(entityInfo);
                 if (!activeItem.CanUseItem())
                 {
-                    scavengerController.RemoveItem(activeItem);
+                    // List<Item> items = scavengerController.GetItems();
+                    Item battery = items.Find(item => item is Battery);
+                    if (battery != null)
+                    {
+                        scavengerController.SetItem(battery);
+                        Item activeBattery = scavengerController.GetActiveItem();
+                        if (activeBattery != null && entityInfo != null)
+                        {
+                            activeBattery.Use(entityInfo);
+                        }
+                    }
+                    else
+                    {
+                        activeItem.ItemObject.transform.position = transform.position; // Place at scavenger's position
+                        activeItem.ItemObject.SetActive(true); // Activate the item in the game world
+                        scavengerController.RemoveItem(activeItem);
+                    }
+
+                    //scavengerController.RemoveItem(activeItem);
                 }
             }
             else

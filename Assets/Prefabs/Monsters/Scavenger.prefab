@@ -102,6 +102,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Scavenger
       objectReference: {fileID: 0}
+    - target: {fileID: 1826378995266505575, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: m_TagString
+      value: Scavenger
+      objectReference: {fileID: 0}
     - target: {fileID: 1859633332797683898, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -197,6 +201,10 @@ PrefabInstance:
     - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: m_AgentTypeID
       value: -1372625422
+      objectReference: {fileID: 0}
+    - target: {fileID: 6140370617454582469, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
+      propertyPath: avoidancePriority
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 6530052823025671122, guid: 84c90163b356b6f42876f739f88e9a16, type: 3}
       propertyPath: tags.Array.size
@@ -367,12 +375,17 @@ MonoBehaviour:
   hasDeathAnimation: 1
   state: {fileID: 1944555696769571615}
   HearingAmplificaiton: 1
+  VisionTurnRate: 90
+  useVisionSmoothing: 0
   hp: 5
   maxHP: 5
   attackDistance: 2
   attackCooldown: 1
   attackDuration: 0.5
   attackDamage: 1
+  items: []
+  activeItem: {fileID: 0}
+  shield: 5
 --- !u!114 &1944555696769571615
 MonoBehaviour:
   m_ObjectHideFlags: 0

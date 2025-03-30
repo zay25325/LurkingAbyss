@@ -155,7 +155,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 0.8057697, g: 0.010914873, b: 0.82641506, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.5
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 00000000
@@ -176,8 +176,8 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 0.36
-  m_PointLightOuterRadius: 0.36
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 0.2
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
@@ -301,17 +301,17 @@ NavMeshAgent:
   m_GameObject: {fileID: 6946657031299846838}
   m_Enabled: 1
   m_AgentTypeID: -1372625422
-  m_Radius: 0.3
+  m_Radius: 0.12
   m_Speed: 4
   m_Acceleration: 20
-  avoidancePriority: 50
+  avoidancePriority: 70
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 0.00001
-  m_BaseOffset: 0.5
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &1239343718460257959
@@ -348,6 +348,9 @@ MonoBehaviour:
   OnStructuralDamaged:
     m_PersistentCalls:
       m_Calls: []
+  OnHarmedWithInfo:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5517479017984198804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,8 +383,14 @@ MonoBehaviour:
   sightEvents: {fileID: 0}
   sightController: {fileID: 0}
   agent: {fileID: 6093060040795274798}
+  animator: {fileID: 0}
+  spriteTransform: {fileID: 0}
+  facesRight: 0
+  hasDeathAnimation: 0
   state: {fileID: 653323243950043545}
   HearingAmplificaiton: 1
+  VisionTurnRate: 90
+  useVisionSmoothing: 0
   hp: 2
   maxHP: 2
   attackDistance: 1
@@ -392,7 +401,6 @@ MonoBehaviour:
   OriginalSprite: {fileID: 51963613, guid: 175202ee100b8d74ca842d5d642b5272, type: 3}
   items:
   - {fileID: -1416942402890891063, guid: ba7ad057acdca5d43962a5b7b18bbe7f, type: 3}
-  - {fileID: 6971442123878740020, guid: f9a6b87c81bfa7c4fb6c5934048985a3, type: 3}
   - {fileID: 2067228028070481044, guid: da96a0dcd3041c94288b85b3b11dfb37, type: 3}
   - {fileID: 8310893879551385108, guid: 0fc0221dd53272848a35c48e75545ca9, type: 3}
   - {fileID: -1786313548333909381, guid: 2af902657e816f24a96ffd41779a1e49, type: 3}
@@ -401,6 +409,7 @@ MonoBehaviour:
   - {fileID: 1387739841180143927, guid: ceec8c526cb4f5d4faf9149731661976, type: 3}
   - {fileID: 6386562194984417603, guid: 043f49fcf5a6ab0438c81946366556e5, type: 3}
   - {fileID: 2256273917066218283, guid: c3336ed8c0d83a943a0765bb75244f44, type: 3}
+  - {fileID: 6971442123878740020, guid: f9a6b87c81bfa7c4fb6c5934048985a3, type: 3}
 --- !u!114 &653323243950043545
 MonoBehaviour:
   m_ObjectHideFlags: 0

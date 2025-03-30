@@ -27,4 +27,38 @@ public class Directions
         }
         throw new ArgumentOutOfRangeException();
     }
+
+    public static Vector2 Rotate2D(Vector2 v, float angle) {
+        return new Vector2(
+            v.x * Mathf.Cos(angle) - v.y * Mathf.Sin(angle),
+            v.x * Mathf.Sin(angle) + v.y * Mathf.Cos(angle)
+        );
+    }
+
+    // vector2 ints are kinda dumb
+    public static Vector2Int Rotate2DInt(Vector2Int v, float turns) {
+        int sina;
+        int cosa;
+        switch(turns%4) {
+            case 1:
+                sina = 1;
+                cosa = 0;
+                break;
+            case 2:
+                sina = 0;
+                cosa = -1;
+                break;
+            case 3:
+                sina = -1;
+                cosa = 0;
+                break;
+            default:
+                return v;
+        }
+
+        return new Vector2Int(
+            v.x * cosa - v.y * sina,
+            v.x * sina + v.y * cosa
+        );
+    }
 }
