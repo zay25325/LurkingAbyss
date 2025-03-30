@@ -8,6 +8,7 @@ public class TileMapLayer : MonoBehaviour
     [SerializeField] public enum LayerClass {
         Floor,
         Wall,
+        Corners,
         Unbreakable,
         Palette,
         Roomx9,

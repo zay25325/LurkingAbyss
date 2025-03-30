@@ -171,6 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 2
+  IsWorld: 1
 --- !u!114 &3836921161496206752
 MonoBehaviour:
   m_ObjectHideFlags: 0
