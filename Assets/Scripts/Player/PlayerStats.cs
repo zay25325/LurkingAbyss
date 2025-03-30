@@ -168,21 +168,22 @@ public class PlayerStats : MonoBehaviour
             Debug.Log("Player is invincible and did not take damage.");
             return;
         }
-
-        else if (shields > 0)
+        else if (Shields > 0)
         {
-            shields -= damage;
-            if (shields < 0)
-            {
-                health += shields;
-                shields = 0;
-            }
-            OnShieldsChanged.Invoke(shields);
+            Shields -= Mathf.Min(damage,shields); //so the shield will save player from fatal damage
         }
         else
         {
-            health -= damage;
+            Health -= damage; // damage to the player
         }
+        OnShieldsChanged.Invoke(shields);
+    }
+
+    public void RechargeShields(float charges)
+    {
+        shields += bars * maxShields/4;
+        shields = Mathf.Max(shields, maxShields);
+        OnShieldsChanged.Invoke(shields);
     }
 
     public void StunPlayer(float stunDuration)
