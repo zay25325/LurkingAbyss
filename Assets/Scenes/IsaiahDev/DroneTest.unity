@@ -37890,6 +37890,10 @@ PrefabInstance:
       value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: -1369656147482787558, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
+      propertyPath: facesRight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1369656147482787558, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
       propertyPath: attackSpeed
       value: 3
       objectReference: {fileID: 0}
@@ -37904,6 +37908,10 @@ PrefabInstance:
     - target: {fileID: -1369656147482787558, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
       propertyPath: stalkingDistance
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: -1369656147482787558, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
+      propertyPath: hasDeathAnimation
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6710790479279192983, guid: 922a7d80f45b1cd40a9ca15b5e35e5a5, type: 3}
       propertyPath: m_LocalPosition.x

@@ -35,4 +35,15 @@ public class ProjectileMonsterController : MonsterController
             SwitchState<ProjectileMonsterMoveState>();
         }
     }
+
+    protected override void OnHarmed(float damage)
+    {
+        base.OnHarmed(damage);
+
+        if (HP > 0)
+        {
+            Debug.Log("Projectile Monster is fleeing after taking damage!");
+            SwitchState<ProjectileMonsterFleeState>();
+        }
+    }
 }

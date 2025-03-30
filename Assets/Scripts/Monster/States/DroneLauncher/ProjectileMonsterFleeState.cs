@@ -23,18 +23,46 @@ public class ProjectileMonsterFleeState : MonsterState
         if (controller.Target == null) return;
 
         Vector3 fleeDirection = (controller.transform.position - controller.Target.transform.position).normalized;
-        Vector3 potentialFleePosition = controller.transform.position + fleeDirection * controller.FleeDistance;
+        Vector3 bestFleePosition = Vector3.zero;
+        bool foundValidFleePosition = false;
+        float maxCheckDistance = controller.FleeDistance;
+        int attempts = 5; // Try multiple directions
 
-        if (NavMesh.SamplePosition(potentialFleePosition, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+        for (int i = 0; i < attempts; i++)
         {
-            fleeDestination = hit.position;
+            Vector3 potentialFleePosition = controller.transform.position + fleeDirection * maxCheckDistance;
+
+            if (NavMesh.SamplePosition(potentialFleePosition, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+            {
+                bestFleePosition = hit.position;
+                foundValidFleePosition = true;
+                break; // Found a valid flee position, exit loop
+            }
+            
+            // Rotate flee direction slightly if the first attempt fails
+            fleeDirection = Quaternion.Euler(0, 0, Random.Range(-45f, 45f)) * fleeDirection;
+            maxCheckDistance *= 0.8f; // Reduce distance to avoid getting stuck in walls
+        }
+
+        if (foundValidFleePosition)
+        {
+            fleeDestination = bestFleePosition;
             controller.Agent.SetDestination(fleeDestination);
         }
         else
         {
-            Debug.LogWarning("Failed to find a valid flee position!");
+            Debug.LogWarning("ProjectileMonsterFleeState: Failed to find a valid flee position! Using random movement.");
+
+            // Move in a random direction if stuck
+            Vector3 randomDirection = Random.insideUnitCircle.normalized * controller.FleeDistance;
+            if (NavMesh.SamplePosition(controller.transform.position + randomDirection, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+            {
+                fleeDestination = hit.position;
+                controller.Agent.SetDestination(fleeDestination);
+            }
         }
     }
+
 
     private void Update()
     {

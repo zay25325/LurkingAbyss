@@ -72,13 +72,19 @@ public class ProjectileMonsterAttackingState : MonsterState
         int monsterLayer = controller.gameObject.layer;
         Physics.IgnoreLayerCollision(projectileLayer, monsterLayer, true);
 
+        Collider projectileCollider = projectile.GetComponent<Collider>();
+        Collider monsterCollider = controller.GetComponent<Collider>();
+        if (projectileCollider != null && monsterCollider != null)
+        {
+            Physics.IgnoreCollision(projectileCollider, monsterCollider);
+        }
+
         ProjectileController projectileScript = projectile.GetComponent<ProjectileController>();
         if (projectileScript != null)
         {
-            projectileScript.SetTarget(controller.Target.transform.position);
+            projectileScript.Target = controller.Target.transform.position;
         }
 
         Debug.Log("Firing projectile at " + controller.Target.name);
     }
-
 }
