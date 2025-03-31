@@ -42,8 +42,10 @@ public class PlayerStats : MonoBehaviour
 
     private Coroutine stunCoroutine;
 
-    public UnityEvent<float> OnShieldsChanged;
-    public UnityEvent<int> UpdateTeleShardsUI;
+    [HideInInspector] public UnityEvent<float> OnShieldsChanged;
+    [HideInInspector] public UnityEvent<int> UpdateTeleShardsUI;
+
+    [SerializeField] GameObject deadPlayerPrefab;
 
     public float Health 
     { 
@@ -157,6 +159,7 @@ public class PlayerStats : MonoBehaviour
             if (health <= 0)
             {
                 Debug.Log("Player has died.");
+                Instantiate(deadPlayerPrefab, transform.position, new Quaternion());
                 Destroy(gameObject);
 
                 //probably have code how to different menu upon player death

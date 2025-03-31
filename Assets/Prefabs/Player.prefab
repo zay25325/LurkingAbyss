@@ -1235,6 +1235,7 @@ MonoBehaviour:
   UpdateTeleShardsUI:
     m_PersistentCalls:
       m_Calls: []
+  deadPlayerPrefab: {fileID: 3419042949466744388, guid: 20003a138c62c014f989931017a892eb, type: 3}
 --- !u!50 &2194229061092642432
 Rigidbody2D:
   serializedVersion: 4
