@@ -122,6 +122,7 @@ public class ItemBar : MonoBehaviour
     private void HighlightActiveItem()
     {
         Debug.Log("Got here! line 124"); // testing
+        activeItemHighlight.transform.SetAsLastSibling();
 
         if (activeItemHighlight == null || images == null || images.Length == 0)
         {
@@ -130,10 +131,25 @@ public class ItemBar : MonoBehaviour
         }
 
         int activeItemIndex = playerInventory.GetActiveItemIndex();
+        Debug.Log($"Active item index: {activeItemIndex}");
 
         if (activeItemIndex >= 0 && activeItemIndex < images.Length)
         { // put the transparent square on top of the image
-            activeItemHighlight.transform.position = images[activeItemIndex].transform.position;
+            //activeItemHighlight.transform.position = images[activeItemIndex].transform.position;
+
+            activeItemHighlight.transform.SetParent(itemBarHUD.transform, false);
+
+            // get rect transforms
+            RectTransform highlightRect = activeItemHighlight.rectTransform;
+            RectTransform itemRect = images[activeItemIndex].rectTransform;
+
+            // match the image size and position in the hud bar
+            highlightRect.sizeDelta = itemRect.sizeDelta;
+            highlightRect.anchoredPosition = itemRect.anchoredPosition;
+
+
+
+            // testig after commit above
         }
     }
 }
