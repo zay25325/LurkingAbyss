@@ -43,6 +43,7 @@ public class PlayerStats : MonoBehaviour
     private Coroutine stunCoroutine;
 
     public UnityEvent<float> OnShieldsChanged;
+    public UnityEvent<int> UpdateTeleShardsUI;
 
     public float Health 
     { 
@@ -106,7 +107,10 @@ public class PlayerStats : MonoBehaviour
     public int TeleportationShardCount
     {
         get => teleporterShardCount;
-        set => teleporterShardCount = value;
+        set {
+            teleporterShardCount = value;
+            UpdateTeleShardsUI.Invoke(teleporterShardCount);
+        }
     }
 
     private void Start()

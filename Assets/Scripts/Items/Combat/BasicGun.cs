@@ -15,7 +15,7 @@ public class BasicGun : Item
         // Initialize the item properties manually
 
         // Set the properties of the gun item
-        ItemName = "Default Gun";
+        ItemName = "Gun";
         ItemDescription = "Harms monsters at a distance, makes a lot of noise";
         ItemIcon = gunIcon;
         ItemID = 0;

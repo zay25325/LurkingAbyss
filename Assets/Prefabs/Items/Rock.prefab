@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
-  rockIcon: {fileID: 0}
+  rockIcon: {fileID: -543729071, guid: e798882cb2eeed1429d605149e1e104b, type: 3}
   rockprojectilePrefab: {fileID: 5477511654260802890, guid: 4a64112c3f605664cb30a284ce50ecbc, type: 3}
 --- !u!114 &-1487509218019940127
 MonoBehaviour:

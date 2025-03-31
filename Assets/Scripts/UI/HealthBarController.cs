@@ -11,8 +11,6 @@ public class HealthBarController : MonoBehaviour
     [SerializeField] public PlayerStats playerstats;
     public Slider intSlider;
     [SerializeField] public Image ECGImage;
-    private List<Item> items;
-    private Item currentItem;
 
     private Image fillImage;
     //private Color normalHealth = new(47f, 243f, 237f);
@@ -26,8 +24,6 @@ public class HealthBarController : MonoBehaviour
     public void Start()
     {
         playerstats.OnShieldsChanged.AddListener(SetHealthBar);
-
-        items = new List<Item>();
         intSlider.value = intSlider.maxValue;
 
         if (intSlider == null)
@@ -52,8 +48,6 @@ public class HealthBarController : MonoBehaviour
         }
 
     }
-
-    public void Update() { }
 
     public void AdjustHealthBar(float amount)
     {
