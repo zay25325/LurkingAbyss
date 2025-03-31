@@ -9,6 +9,8 @@ public class InvisibleBelt : Item
 
     private float invisibilityDuration = 5f; // Wait for the invisibility duration
 
+    public bool isInvisible = false; // Flag to check if the player is invisible
+
     private void Awake()
     {
         // Set the prefab reference here
@@ -16,7 +18,7 @@ public class InvisibleBelt : Item
         // Initialize the item properties manually
 
         // Set the properties of the invisible belt item
-        ItemName = "Invisible Belt";
+        ItemName = "Invisible Suit";
         ItemDescription = "Can be worn to make the player invisible. ";
         ItemIcon = invisibleBeltIcon; 
         ItemID = 0;
@@ -80,6 +82,8 @@ public class InvisibleBelt : Item
             yield break;
         }
 
+        isInvisible = true; // Set the invincibility flag to true
+
         // Set the item as in use
         IsInUse = true;
 
@@ -118,6 +122,8 @@ public class InvisibleBelt : Item
 
         // Set the item as not in use
         IsInUse = false;
+
+        isInvisible = false; // Reset the invincibility flag
     }
 
     private void SetPlayerVisibility(GameObject player, bool isVisible, EntityInfo entityInfo)
