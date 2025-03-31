@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 using UnityEditor;
 using Unity.AI.Navigation;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 // TODO:
 // add logic for player start and exit
@@ -25,7 +26,7 @@ public class LevelController : MonoBehaviour
     [SerializeField] int mapGenRoomCount = 30;
 
     //Room Variants
-    [SerializeField] List<RoomVariantData> roomVariants;
+    [DoNotSerialize] List<RoomVariantData> roomVariants = new() {};
 
     //NavMesh
     [SerializeField] public List<MonsterNavController> monsterNavs;
@@ -65,6 +66,8 @@ public class LevelController : MonoBehaviour
 
     private void Start() {
         UpdateNavMesh.AddListener(BuildNavMesh);
+
+        roomVariants.AddRange(GetComponentsInChildren<RoomVariantData>(true));
 
         foreach(var variant in roomVariants) {
             variant.Init();
