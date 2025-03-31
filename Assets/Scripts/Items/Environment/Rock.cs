@@ -61,6 +61,7 @@ public class Rock : Item
             {
                 StartCoroutine(Throw(entityInfo));
                 ReduceItemCharge();
+                entityInfo.GetComponent<Inventory>().RemoveItem(this);
                 DestroyItem(ItemObject);
             }
             else if (entityInfo.Tags.Contains(EntityTags.Scavenger))

@@ -555,7 +555,7 @@ public class PlayerController : MonoBehaviour
         playerStats.PlayerNoise = (int)(movementInput.magnitude * playerStats.PlayerSpeed); // Calculate noise level based on movement and speed
         NoiseDetectionManager.Instance.NoiseEvent.Invoke(transform.position, playerStats.PlayerNoise, GetComponent<EntityInfo>().Tags);
 
-        Debug.Log("Player noise level: " + playerStats.PlayerNoise);
+        //Debug.Log("Player noise level: " + playerStats.PlayerNoise); // this is in an update loop and will probably lag the game
     }
 
     private IEnumerator FlashBlue(SpriteRenderer spriteRenderer)
