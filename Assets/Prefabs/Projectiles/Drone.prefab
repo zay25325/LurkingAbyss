@@ -88,9 +88,17 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 1614670643, guid: 1525eaa0f3446fb44aafa8e233110a8e, type: 3}
+    - target: {fileID: 5070619645803440371, guid: 06ef9ef06cd2b454eab33edb1d74fb23, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 5477511654260802890, guid: 06ef9ef06cd2b454eab33edb1d74fb23, type: 3}
       propertyPath: m_Name
       value: Drone
+      objectReference: {fileID: 0}
+    - target: {fileID: 5477511654260802890, guid: 06ef9ef06cd2b454eab33edb1d74fb23, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5522965490997899681, guid: 06ef9ef06cd2b454eab33edb1d74fb23, type: 3}
       propertyPath: maxFligtTime
@@ -99,5 +107,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5477511654260802890, guid: 06ef9ef06cd2b454eab33edb1d74fb23, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4661083942060023723}
   m_SourcePrefab: {fileID: 100100000, guid: 06ef9ef06cd2b454eab33edb1d74fb23, type: 3}
+--- !u!1 &5385248558190775318 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5477511654260802890, guid: 06ef9ef06cd2b454eab33edb1d74fb23, type: 3}
+  m_PrefabInstance: {fileID: 484199478012823900}
+  m_PrefabAsset: {fileID: 0}
+--- !u!195 &4661083942060023723
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385248558190775318}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
