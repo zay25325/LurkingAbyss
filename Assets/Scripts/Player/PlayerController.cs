@@ -282,9 +282,19 @@ public class PlayerController : MonoBehaviour
     */
     private void OnSneak(InputAction.CallbackContext context)
     {
+            //         if(activeItem is InvisibleBelt invisibleBelt)
+            // {
+            //     if(!invisibleBelt.isInvisible)
         //While the sneak action is performed, reduce the player speed
         if (context.performed)
         {
+            if (activeItem is InvisibleBelt invisibleBelt)
+            {
+                if (invisibleBelt.isInvisible)
+                {
+                    return; // Don't allow sneaking if the player is invisible
+                }
+            }
             playerStats.PlayerSpeed = playerStats.PlayerSpeed / playerStats.SneakSpeed; // Reduce speed for sneaking
             if (spriteRenderer != null)
             {
@@ -295,6 +305,13 @@ public class PlayerController : MonoBehaviour
         //When the sneak action is canceled, reset the player speed
         else if (context.canceled)
         {
+            if (activeItem is InvisibleBelt invisibleBelt)
+            {
+                if (invisibleBelt.isInvisible)
+                {
+                    return; // Don't allow sneaking if the player is invisible
+                }
+            }
             playerStats.PlayerSpeed = playerStats.OriginalSpeed; // Reset speed when not sneaking
             if (spriteRenderer != null)
             {
@@ -323,7 +340,17 @@ public class PlayerController : MonoBehaviour
         // Dash action is performed once upon button press
         if (context.performed && canDash)
         {
-            StartCoroutine(DashCoroutine());
+            if(activeItem is InvisibleBelt invisibleBelt)
+            {
+                if(!invisibleBelt.isInvisible)
+                {
+                    StartCoroutine(DashCoroutine());
+                }
+            }
+            else
+            {
+                StartCoroutine(DashCoroutine());
+            }
         }
     }
 
