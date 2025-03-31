@@ -154,7 +154,15 @@ PrefabInstance:
     m_TransformParent: {fileID: 7624658138652452991}
     m_Modifications:
     - target: {fileID: 970108120352615392, guid: 4e516cae5f2ed284cbe15e02ad82c1e9, type: 3}
+      propertyPath: m_VoxelSize
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 970108120352615392, guid: 4e516cae5f2ed284cbe15e02ad82c1e9, type: 3}
       propertyPath: m_DefaultArea
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 970108120352615392, guid: 4e516cae5f2ed284cbe15e02ad82c1e9, type: 3}
+      propertyPath: m_OverrideVoxelSize
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2537289576703795388, guid: 4e516cae5f2ed284cbe15e02ad82c1e9, type: 3}
@@ -20132,7 +20140,15 @@ PrefabInstance:
       value: DumbMonsterSurface
       objectReference: {fileID: 0}
     - target: {fileID: 3883376570191423631, guid: 5680ef3a471c7b143b9e09a7d2d477fd, type: 3}
+      propertyPath: m_VoxelSize
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 3883376570191423631, guid: 5680ef3a471c7b143b9e09a7d2d477fd, type: 3}
       propertyPath: m_DefaultArea
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3883376570191423631, guid: 5680ef3a471c7b143b9e09a7d2d477fd, type: 3}
+      propertyPath: m_OverrideVoxelSize
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
