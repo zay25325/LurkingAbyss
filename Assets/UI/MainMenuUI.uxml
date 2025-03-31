@@ -6,15 +6,14 @@
                 <ui:Label tabindex="-1" text="Lurking Abyss" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="true" style="top: 20%; left: 25%; color: rgb(255, 255, 255); font-size: 72px; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/CompassFont.asset?fileID=11400000&amp;guid=f93d08faae5745c4fa4cc83cac21f974&amp;type=2#CompassFont&quot;);" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="About" style="flex-grow: 1; align-items: stretch; justify-content: center; align-self: flex-end; flex-direction: row; right: 25%; bottom: 25%;" />
-        <ui:VisualElement name="SettingsButton" style="flex-grow: 1;" />
         <ui:VisualElement style="flex-grow: 1; justify-content: center; align-self: stretch; flex-direction: row;" />
-        <ui:VisualElement name="Buttons" style="flex-grow: 1; bottom: auto; top: 50%; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/CompassFont.asset?fileID=11400000&amp;guid=f93d08faae5745c4fa4cc83cac21f974&amp;type=2#CompassFont&quot;); font-size: 26px;">
-            <ui:Button text="Start" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PlayBtn" style="top: 15%; height: auto; font-size: 26%;" />
-            <ui:Button text="Logs" parse-escape-sequences="true" display-tooltip-when-elided="true" name="LogsBtn" style="top: 15%; font-size: 26%;" />
-            <ui:Button text="Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SettingsBtn" style="top: 15%; font-size: 26%; text-overflow: ellipsis;" />
-            <ui:Button text="Quit" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitBtn" style="top: 21%; font-size: 26%;" />
-            <ui:Button text="About" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AboutBtn" style="left: auto; right: auto; -unity-text-align: middle-center; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/CompassFont.asset?fileID=11400000&amp;guid=f93d08faae5745c4fa4cc83cac21f974&amp;type=2#CompassFont&quot;); font-size: 26px; bottom: auto; top: 10%;" />
+        <ui:VisualElement name="Buttons" style="flex-grow: 1; bottom: auto; top: 70%; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/CompassFont.asset?fileID=11400000&amp;guid=f93d08faae5745c4fa4cc83cac21f974&amp;type=2#CompassFont&quot;); font-size: 26px; height: 269px; justify-content: flex-start; align-self: auto;">
+            <ui:Button text="Start" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PlayBtn" style="top: auto; height: 138px; font-size: 26%;" />
+            <ui:Button text="Logs" parse-escape-sequences="true" display-tooltip-when-elided="true" name="LogsBtn" style="top: auto; font-size: 26%; display: none; background-color: rgb(72, 72, 72);" />
+            <ui:Button text="Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SettingsBtn" style="top: auto; font-size: 26%; text-overflow: ellipsis; display: none; visibility: visible; background-color: rgb(72, 72, 72);" />
+            <ui:VisualElement name="VisualElement" style="flex-grow: 1; height: 175px;" />
+            <ui:Button text="About" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AboutBtn" style="left: auto; right: auto; -unity-text-align: middle-center; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/CompassFont.asset?fileID=11400000&amp;guid=f93d08faae5745c4fa4cc83cac21f974&amp;type=2#CompassFont&quot;); font-size: 26px; bottom: auto; top: auto; overflow: visible; flex-wrap: nowrap; display: flex;" />
+            <ui:Button text="Quit" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitBtn" style="top: auto; font-size: 26%;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
