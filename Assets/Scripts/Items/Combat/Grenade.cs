@@ -34,21 +34,25 @@ public class Grenade : Item
 
     public override void Use(EntityInfo entityInfo)
     {
-        if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
+        if(CanUseItem())
         {
-            ThrowGrenade();
-            ReduceItemCharge();
-            DestroyItem(ItemObject);
-        }
-        else if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
-        {
-            ScavengerThrowGrenade();
-            ReduceItemCharge();
-            DestroyItem(ItemObject);
-        }
-        else
-        {
-            Debug.Log("Not enough charges to use " + ItemName);
+            if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
+            {
+                ThrowGrenade();
+                ReduceItemCharge();
+                DestroyItem(ItemObject);
+                Debug.Log("Pls Reduce");
+            }
+            else if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
+            {
+                ScavengerThrowGrenade();
+                ReduceItemCharge();
+                DestroyItem(ItemObject);
+            }
+            else
+            {
+                Debug.Log("Not enough charges to use " + ItemName);
+            }
         }
     }
 
@@ -130,6 +134,8 @@ public class Grenade : Item
         {
             Debug.LogError("Grenade is missing a ProjectileSpawnOnEndModifier!");
         }
+
+        Debug.Log("Did I make it here?");
     }
 
     private void ScavengerThrowGrenade()
