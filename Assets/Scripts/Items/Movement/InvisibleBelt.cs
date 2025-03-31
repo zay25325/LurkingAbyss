@@ -16,7 +16,7 @@ public class InvisibleBelt : Item
         // Initialize the item properties manually
 
         // Set the properties of the invisible belt item
-        ItemName = "Invisible Belt";
+        ItemName = "Invisible Suit";
         ItemDescription = "Can be worn to make the player invisible. ";
         ItemIcon = invisibleBeltIcon; 
         ItemID = 0;
