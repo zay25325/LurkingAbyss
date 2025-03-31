@@ -7,6 +7,7 @@ Description: This class is a component of the player game object and represents 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -40,6 +41,11 @@ public class PlayerStats : MonoBehaviour
     private PlayerController playerController;
 
     private Coroutine stunCoroutine;
+
+    [HideInInspector] public UnityEvent<float> OnShieldsChanged;
+    [HideInInspector] public UnityEvent<int> UpdateTeleShardsUI;
+
+    [SerializeField] GameObject deadPlayerPrefab;
 
     public float Health 
     { 
@@ -103,7 +109,10 @@ public class PlayerStats : MonoBehaviour
     public int TeleportationShardCount
     {
         get => teleporterShardCount;
-        set => teleporterShardCount = value;
+        set {
+            teleporterShardCount = value;
+            UpdateTeleShardsUI.Invoke(teleporterShardCount);
+        }
     }
 
     private void Start()
@@ -150,6 +159,7 @@ public class PlayerStats : MonoBehaviour
             if (health <= 0)
             {
                 Debug.Log("Player has died.");
+                Instantiate(deadPlayerPrefab, transform.position, new Quaternion());
                 Destroy(gameObject);
 
                 //probably have code how to different menu upon player death
@@ -165,20 +175,22 @@ public class PlayerStats : MonoBehaviour
             Debug.Log("Player is invincible and did not take damage.");
             return;
         }
-
-        else if (shields > 0)
+        else if (Shields > 0)
         {
-            shields -= damage;
-            if (shields < 0)
-            {
-                health += shields;
-                shields = 0;
-            }
+            Shields -= Mathf.Min(damage,shields); //so the shield will save player from fatal damage
         }
         else
         {
-            health -= damage;
+            Health -= damage; // damage to the player
         }
+        OnShieldsChanged.Invoke(shields);
+    }
+
+    public void RechargeShields(float charges)
+    {
+        shields += charges * maxShields/4;
+        shields = Mathf.Max(shields, maxShields);
+        OnShieldsChanged.Invoke(shields);
     }
 
     public void StunPlayer(float stunDuration)

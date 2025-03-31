@@ -33,7 +33,7 @@ public class Rock : Item
         // Initialize the item properties manually
 
         // Set the properties of the rock item
-        ItemName = "Default Rock";
+        ItemName = "Rock";
         ItemDescription = "Can be thrown, making noise on-hit or end of flight. Deals minor damage. ";
         ItemIcon = rockIcon; 
         ItemID = 0;
@@ -61,6 +61,7 @@ public class Rock : Item
             {
                 StartCoroutine(Throw(entityInfo));
                 ReduceItemCharge();
+                entityInfo.GetComponent<Inventory>().RemoveItem(this);
                 DestroyItem(ItemObject);
             }
             else if (entityInfo.Tags.Contains(EntityTags.Scavenger))

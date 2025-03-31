@@ -41,29 +41,13 @@ public class MainMenuUI : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.LoadScene("IntroLevel");
         };
 
-        LogsButton.clicked += () =>
-        {
-            //Debug.Log("Logs Button Clicked");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("LogsMenu");
-        };
-
-        SettingsButton.clicked += () =>
-        {
-            //Debug.Log("Settings Button Clicked");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("SettingsMenu");
-        };
-
-        AboutButton.clicked += () =>
-        {
-            //Debug.Log("Settings Button Clicked");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("AboutMenu");
-        };
-
         QuitButton.clicked += () =>
         {
-            Debug.Log("Quit Button Clicked");
-            // not sure how to quit :p
-            //Application.Quit(); // doesnt work
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #else
+            Application.Quit();
+            #endif
         };
     }
 }

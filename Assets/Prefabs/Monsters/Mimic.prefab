@@ -302,7 +302,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 0.12
-  m_Speed: 4
+  m_Speed: 6
   m_Acceleration: 20
   avoidancePriority: 70
   m_AngularSpeed: 120
@@ -389,7 +389,7 @@ MonoBehaviour:
   hasDeathAnimation: 0
   state: {fileID: 653323243950043545}
   HearingAmplificaiton: 1
-  VisionTurnRate: 90
+  VisionTurnRate: 300
   useVisionSmoothing: 0
   hp: 2
   maxHP: 2

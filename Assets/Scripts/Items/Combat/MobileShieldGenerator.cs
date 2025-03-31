@@ -84,7 +84,7 @@ public class MobileShieldGenerator : Item
         playerStats = GameObject.FindObjectOfType<PlayerStats>();
         if (playerStats != null && playerStats.Shields < playerStats.MaxShields)
         {
-            playerStats.Shields += 1;
+            playerStats.RechargeShields(1);
             ReduceItemCharge();
             DestroyItem(ItemObject);
             Debug.Log("Shield generated.");

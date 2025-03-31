@@ -237,8 +237,8 @@ MonoBehaviour:
   hasDeathAnimation: 1
   state: {fileID: 1547963109588384514}
   HearingAmplificaiton: 1
-  VisionTurnRate: 90
-  useVisionSmoothing: 0
+  VisionTurnRate: 160
+  useVisionSmoothing: 1
   hp: 10
   maxHP: 10
   Targets: []
