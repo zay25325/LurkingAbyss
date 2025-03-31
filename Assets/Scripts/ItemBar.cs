@@ -12,13 +12,15 @@ public class ItemBar : MonoBehaviour
     public HorizontalLayoutGroup itemBarHUD; // for displayting the images of the childs
     public GameObject itemPrefab;
 
+    private int lastActiveIndex = -1;
 
     // store the images
     UnityEngine.UI.Image[] images;
-    public UnityEngine.UI.Image activeItemHighlight; // transparent square
+    //public UnityEngine.UI.Image activeItemHighlight; // transparent square
 
     private void Start()
     {
+
         itemBarHUD = GetComponent<HorizontalLayoutGroup>();
         if (itemBarHUD == null)
             Debug.LogError("ItemBarHUD not found!");
@@ -45,6 +47,17 @@ public class ItemBar : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        // check if the actual item is the current item on update()
+        int currentActiveIndex = playerInventory.GetActiveItemIndex();
+        if (lastActiveIndex != currentActiveIndex)
+        {
+            lastActiveIndex = currentActiveIndex;
+            HighlightActiveItem();
+        }
+    }
+
     private void UpdateInventoryUI()
     {
         //Debug.Log("UpdateInventoryUI called!"); // debugging
@@ -55,11 +68,13 @@ public class ItemBar : MonoBehaviour
         }
 
         // delete prev items/images
-        if (playerInventory.GetItems().Count > 0)
-        {
-            foreach (Transform child in itemBarHUD.transform)
+        //if (playerInventory.GetItems().Count > 0)
+        //{
+        //    foreach (Transform child in itemBarHUD.transform)
+        //        Destroy(child.gameObject);
+        //}
+        foreach (Transform child in itemBarHUD.transform)
             Destroy(child.gameObject);
-        }
 
         List<Item> items = playerInventory.GetItems();
         images = new UnityEngine.UI.Image[items.Count];
@@ -72,8 +87,6 @@ public class ItemBar : MonoBehaviour
 
         for (int i = 0; i < items.Count; i++)
         {
-            //GameObject slot = Instantiate(items[i].gameObject, itemBarHUD.transform);
-
             GameObject slot = new GameObject(items[i].name + "_Slot", typeof(RectTransform), typeof(CanvasRenderer), typeof(UnityEngine.UI.Image));
             slot.transform.SetParent(itemBarHUD.transform);
             RectTransform rectTransform = slot.GetComponent<RectTransform>();
@@ -81,13 +94,9 @@ public class ItemBar : MonoBehaviour
                     rectTransform.sizeDelta = new Vector2(100, 100); // Adjust size as needed
 
             UnityEngine.UI.Image itemImage = slot.GetComponent<UnityEngine.UI.Image>();
-
-            // make sure no null images are inserted
-            if (itemImage != null)
-            {
+            if (itemImage != null)// make sure no null images are inserted
                 images[i] = itemImage; // store the image
-                Debug.Log("Line 88: Added image to temp list");
-            }
+
             Debug.Log("Item Image: " + itemImage);
             Debug.Log("About to add images to HUD");
             SpriteRenderer itemSpriteRenderer = null;
@@ -121,35 +130,66 @@ public class ItemBar : MonoBehaviour
 
     private void HighlightActiveItem()
     {
-        Debug.Log("Got here! line 124"); // testing
-        activeItemHighlight.transform.SetAsLastSibling();
+        //activeItemHighlight.transform.SetAsLastSibling();
 
-        if (activeItemHighlight == null || images == null || images.Length == 0)
+        //if (activeItemHighlight == null || images == null || images.Length == 0)
+        if (images == null || images.Length == 0)
         {
             Debug.Log("Error everyrthing is null or something");
             return;
         }
 
         int activeItemIndex = playerInventory.GetActiveItemIndex();
-        Debug.Log($"Active item index: {activeItemIndex}");
+        Debug.Log($"Active item index: {activeItemIndex}, images count: {images.Length}");
 
-        if (activeItemIndex >= 0 && activeItemIndex < images.Length)
-        { // put the transparent square on top of the image
-            //activeItemHighlight.transform.position = images[activeItemIndex].transform.position;
-
-            activeItemHighlight.transform.SetParent(itemBarHUD.transform, false);
-
-            // get rect transforms
-            RectTransform highlightRect = activeItemHighlight.rectTransform;
-            RectTransform itemRect = images[activeItemIndex].rectTransform;
-
-            // match the image size and position in the hud bar
-            highlightRect.sizeDelta = itemRect.sizeDelta;
-            highlightRect.anchoredPosition = itemRect.anchoredPosition;
-
-
-
-            // testig after commit above
+        // reset everything default
+        for (int i = 0; i < images.Length; i++)
+        {
+            if (images[i] != null)
+            {
+                images[i].color = Color.white;
+                Debug.Log($"reset color for item: {i}");
+            }
         }
+
+        if (activeItemIndex >= 0 && activeItemIndex < images.Length && images[activeItemIndex] != null)
+        {
+            images[activeItemIndex].color = new Color(1f, 0.8f, 0.2f);
+            Debug.Log($"Highlighted item {activeItemIndex} with yellow");
+        }
+
+        //if (activeItemIndex >= 0 && activeItemIndex < images.Length)
+        //{ // put the transparent square on top of the image
+        //    //activeItemHighlight.transform.position = images[activeItemIndex].transform.position;
+
+        //    //activeItemHighlight.transform.SetParent(itemBarHUD.transform, false);
+
+        //    //// get rect transforms
+        //    //RectTransform highlightRect = activeItemHighlight.rectTransform;
+        //    //RectTransform itemRect = images[activeItemIndex].rectTransform;
+
+        //    //// match the image size and position in the hud bar
+        //    //highlightRect.sizeDelta = itemRect.sizeDelta;
+        //    //highlightRect.anchoredPosition = itemRect.anchoredPosition;
+
+
+
+        //    // try changing the color of the image as the active item display
+
+        //    images[activeItemIndex].color = new Color(1f, 0.8f, 0.2f);
+        //    if (activeItemHighlight != null)
+        //    {
+        //        activeItemHighlight.transform.SetParent(itemBarHUD.transform, false);
+
+        //        // get rect transforms
+        //        RectTransform highlightRect = activeItemHighlight.rectTransform;
+        //        RectTransform itemRect = images[activeItemIndex].rectTransform;
+
+        //        // match the image size and position in the hud bar
+        //        highlightRect.sizeDelta = itemRect.sizeDelta;
+        //        highlightRect.anchoredPosition = itemRect.anchoredPosition;
+        //    }
+            
+        //}
     }
 }
