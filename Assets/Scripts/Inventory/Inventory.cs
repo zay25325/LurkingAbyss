@@ -8,6 +8,7 @@ Description: This class is responsible for managing the player's inventory.
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -17,6 +18,18 @@ public class Inventory : MonoBehaviour
     private int maxItems = 3; // Maximum number of items
     private Item activeItem; // Currently active item
     private int currentActiveIndex = 0;
+
+    private int CurrentActiveIndex
+    {
+        get => currentActiveIndex;
+        set
+        {
+            currentActiveIndex = value;
+            UpdateInventoryUI.Invoke(currentActiveIndex, items);
+        }
+    }
+
+    public UnityEvent<int, List<Item>> UpdateInventoryUI = new UnityEvent<int, List<Item>>();
 
     /*
         FUNCTION : AddItem
@@ -48,6 +61,7 @@ public class Inventory : MonoBehaviour
                     ActiveItem(0);
                 }
 
+                UpdateInventoryUI.Invoke(currentActiveIndex, items);
                 return true; // Item added successfully
             }
             else
@@ -62,6 +76,7 @@ public class Inventory : MonoBehaviour
                 // Set the new item as the active item
                 ActiveItem(items.Count - 1);
 
+                UpdateInventoryUI.Invoke(currentActiveIndex, items);
                 return true; // Item added successfully after dropping the held item
             }
         }
@@ -99,6 +114,8 @@ public class Inventory : MonoBehaviour
                     ActiveItem(0);
                 }
             }
+
+            UpdateInventoryUI.Invoke(currentActiveIndex, items);
             return true;
         }
         return false; // Item not found in inventory
@@ -148,8 +165,8 @@ public class Inventory : MonoBehaviour
             // Set next active item if available
             if (items.Count > 0)
             {
-                currentActiveIndex = 0;
-                ActiveItem(currentActiveIndex);
+                CurrentActiveIndex = 0;
+                ActiveItem(CurrentActiveIndex);
             }
         }
     }
@@ -166,6 +183,7 @@ public class Inventory : MonoBehaviour
     private void ActiveItem(int index)
     {
         items.RemoveAll(i => i == null);
+        UpdateInventoryUI.Invoke(currentActiveIndex, items);
         // Check if the index is within the inventory range
         if (index >= 0 && index < items.Count)
         {
@@ -177,7 +195,7 @@ public class Inventory : MonoBehaviour
 
             // Activate the new item
             activeItem = items[index];
-            currentActiveIndex = index;
+            CurrentActiveIndex = index;
             checkActiveItemState();
 
             activeItem.ItemObject.SetActive(true);
@@ -225,6 +243,7 @@ public class Inventory : MonoBehaviour
     {
         // Remove any destroyed items from the inventory
         items.RemoveAll(i => i == null);
+        UpdateInventoryUI.Invoke(currentActiveIndex, items);
         // Get the scroll value
         float scrollValue = context.ReadValue<float>();
 
@@ -236,19 +255,19 @@ public class Inventory : MonoBehaviour
             // If positive, increment the current active index
             if (scrollValue > 0)
             {
-                currentActiveIndex = (currentActiveIndex + 1) % items.Count;
+                CurrentActiveIndex = (CurrentActiveIndex + 1) % items.Count;
             }
 
             // If negative, decrement the current active index
             else if (scrollValue < 0)
             {
-                currentActiveIndex = (currentActiveIndex - 1 + items.Count) % items.Count;
+                CurrentActiveIndex = (CurrentActiveIndex - 1 + items.Count) % items.Count;
             }
 
             // Set the active item based on the current active index
-            ActiveItem(currentActiveIndex);
+            ActiveItem(CurrentActiveIndex);
 
-            Debug.Log($"Current active index: {currentActiveIndex}");
+            Debug.Log($"Current active index: {CurrentActiveIndex}");
             Debug.Log($"Current active item: {activeItem.ItemName}");
         }
     }
@@ -262,13 +281,14 @@ public class Inventory : MonoBehaviour
     */
     public void Slot1Pressed(InputAction.CallbackContext context)
     {
-        if(!activeItem.IsInUse)
+        if(activeItem == null || !activeItem.IsInUse)
         {
             // Remove any destroyed items from the inventory
             items.RemoveAll(i => i == null);
+            UpdateInventoryUI.Invoke(currentActiveIndex, items);
             // set the active item to the first item in the inventory
-            currentActiveIndex = 0; // Slot 1
-            ActiveItem(currentActiveIndex);
+            CurrentActiveIndex = 0; // Slot 1
+            ActiveItem(CurrentActiveIndex);
         }
     }
 
@@ -281,13 +301,14 @@ public class Inventory : MonoBehaviour
     */
     public void Slot2Pressed(InputAction.CallbackContext context)
     {
-        if(!activeItem.IsInUse)
+        if(activeItem == null || !activeItem.IsInUse)
         {
             // Remove any destroyed items from the inventory
             items.RemoveAll(i => i == null);
+            UpdateInventoryUI.Invoke(currentActiveIndex, items);
             // set the active item to the second item in the inventory
-            currentActiveIndex = 1; // Slot 2
-            ActiveItem(currentActiveIndex);
+            CurrentActiveIndex = 1; // Slot 2
+            ActiveItem(CurrentActiveIndex);
         }
     }
 
@@ -300,13 +321,14 @@ public class Inventory : MonoBehaviour
     */
     public void Slot3Pressed(InputAction.CallbackContext context)
     {
-        if(!activeItem.IsInUse)
+        if(activeItem == null || !activeItem.IsInUse)
         {
             // Remove any destroyed items from the inventory
             items.RemoveAll(i => i == null);
+            UpdateInventoryUI.Invoke(currentActiveIndex, items);
             // set the active item to the third item in the inventory
-            currentActiveIndex = 2; // Slot 3
-            ActiveItem(currentActiveIndex);
+            CurrentActiveIndex = 2; // Slot 3
+            ActiveItem(CurrentActiveIndex);
         }
     }
 
