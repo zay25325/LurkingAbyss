@@ -96,6 +96,11 @@ public class LevelController : MonoBehaviour
 
     public void GenerateLevel()
     {
+        switch(LevelTransitionManager.Instance.LevelNumber) {
+            case 0: mapGenRoomCount = 12; break;
+            case 1: mapGenRoomCount = 16; break;
+            default: mapGenRoomCount = 20; break;
+        }
         levelMap.StartRoomGen(mapGenRoomCount);
     }
 
