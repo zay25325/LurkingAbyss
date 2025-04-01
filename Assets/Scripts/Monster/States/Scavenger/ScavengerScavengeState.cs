@@ -123,8 +123,10 @@ public class ScavengerScavengeState : ScavengerBaseState
     private void ForceNewPath()
     {
         int attempts = 0;
+        float searchRadius = 50f; // Start with a smaller radius
         bool foundValidPosition = false;
         Vector3 destination = Vector3.zero;
+        HashSet<Vector3> attemptedPositions = new HashSet<Vector3>(); // Track attempted positions
 
         while (attempts < 5 && !foundValidPosition)
         {
@@ -165,15 +167,51 @@ public class ScavengerScavengeState : ScavengerBaseState
             attempts++;
         }
 
-        // If no valid position found after several attempts, force movement to escape the area
-        if (!foundValidPosition)
+        while (!foundValidPosition)
         {
-            Debug.LogWarning("No valid path found. Forcing movement.");
-            controller.transform.position += new Vector3(5f, 0, 5f);
-            targetPosition = controller.transform.position; // Update the targetPosition to current position
+            // Generate a random direction and distance
+            float randomAngle = Random.Range(0f, 360f); // Random angle in degrees
+            float randomDistance = Random.Range(searchRadius / 2f, searchRadius); // Random distance within the radius
+            Vector3 randomDirection = new Vector3(Mathf.Cos(randomAngle), 0, Mathf.Sin(randomAngle)) * randomDistance;
+
+            // Calculate the destination
+            destination = controller.transform.position + randomDirection;
+
+            // Avoid reusing previously attempted positions or positions too close to the current position
+            if (attemptedPositions.Contains(destination) || Vector3.Distance(controller.transform.position, destination) < 5f)
+            {
+                attempts++;
+                continue;
+            }
+            attemptedPositions.Add(destination);
+
+            // Check if the position is valid
+            if (NavMesh.SamplePosition(destination, out NavMeshHit hit, searchRadius, NavMesh.AllAreas))
+            {
+                NavMeshPath path = new NavMeshPath();
+                navMeshAgent.CalculatePath(hit.position, path);
+
+                if (path.status == NavMeshPathStatus.PathComplete)
+                {
+                    foundValidPosition = true;
+                    navMeshAgent.SetDestination(hit.position);
+                    targetPosition = hit.position; // Set the targetPosition here
+                    Debug.Log($"New valid wander path found at {hit.position}");
+                    break;
+                }
+            }
+
+            attempts++;
+            if (attempts >= 5)
+            {
+                // Expand the search radius and reset attempts
+                searchRadius += 50f;
+                attempts = 0;
+                Debug.LogWarning($"Expanding search radius to {searchRadius}.");
+            }
         }
 
-        wanderTime = wanderCooldown;  // Reset cooldown
+        wanderTime = wanderCooldown; // Reset cooldown
     }
 
     private void MoveToItem(Item item)
