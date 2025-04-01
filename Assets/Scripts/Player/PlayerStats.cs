@@ -143,6 +143,8 @@ public class PlayerStats : MonoBehaviour
                 {
                     item.Use(entityInfo);
                     health = 1f; // Revive player with 1 health
+                    item.ItemCharge = 0; // Set item charge to 0
+                    item.DestroyItem(item.ItemObject); // Destroy the item
                     Debug.Log("Player revived with Revivor item.");
                     break;
                 }
