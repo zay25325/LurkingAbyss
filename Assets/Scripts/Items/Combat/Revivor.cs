@@ -51,8 +51,8 @@ public class Revivor : Item
             if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Player))
             {
                 RevivePlayer();
-                ReduceItemCharge();
-                DestroyItem(ItemObject);
+                // ReduceItemCharge();
+                // DestroyItem(ItemObject);
             }
 
             else if (entityInfo.Tags.Contains(EntityInfo.EntityTags.Scavenger))
