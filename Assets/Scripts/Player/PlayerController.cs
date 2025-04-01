@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     //constants
     const float DASH_DURATION = 0.2f; // Duration of the dash
-    const float DASH_COOLDOWN = 1.5f; // Cooldown of the dash
+    const float DASH_COOLDOWN = 1f; // Cooldown of the dash
 
     private PlayerStats playerStats; // Player stats component
 
