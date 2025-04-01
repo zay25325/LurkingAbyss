@@ -76,7 +76,7 @@ public class ProjectileController : MonoBehaviour
         MovementVector = (target - startingPos).normalized;
     }
 
-    protected void SetTarget(Vector2 target)
+    public void SetTarget(Vector2 target)
     {
         startingPos = transform.position;
         this.target = target;
