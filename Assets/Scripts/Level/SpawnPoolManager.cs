@@ -37,7 +37,7 @@ public class SpawnPoolManager : MonoBehaviour
         AddRandomSelectionFromPool(prefabs, ItemSpawnPool, itemCount);
         AddRandomSelectionFromPool(prefabs, HuntingMonsterSpawnPool, primaryMonsterCount);
         AddRandomSelectionFromPool(prefabs, MonsterSpawnPool, secondaryMonsterCount);
-        AddRandomSelectionFromPool(prefabs, EnironmentSpawnPool, environmentCount, true);
+        AddRandomSelectionFromPool(prefabs, EnironmentSpawnPool, environmentCount);
 
         prefabs.AddRange(Enumerable.Repeat(ShardPrefab, teleShardCount));
         prefabs.AddRange(Enumerable.Repeat(exitPrefab, exitCount));
