@@ -17,7 +17,7 @@ public class InventoryUIController : MonoBehaviour
 
     void UpdateItems(int activeIndex, List<Item> items)
     {
-        for (int i = 0; i < itemSlots.Count; i ++)
+        for (int i = 0; i < itemSlots.Count; i++)
         {
             // active index
             itemSlots[i].SelectedIndicator.gameObject.SetActive(i == activeIndex);
@@ -34,11 +34,22 @@ public class InventoryUIController : MonoBehaviour
                     itemSlots[i].ItemImage.sprite = items[i].GetComponent<SpriteRenderer>().sprite;
                     itemSlots[i].ItemImage.SetNativeSize();
 
+
                     Vector2 size = itemSlots[i].ItemImage.rectTransform.sizeDelta;
                     float iconScale = maxSize / Mathf.Max(size.x, size.y);
 
                     itemSlots[i].ItemImage.rectTransform.localScale = new Vector3(iconScale, iconScale);
                     itemSlots[i].ItemImage.gameObject.SetActive(true);
+
+                    // Change color based on charge
+                    if (items[i].ItemCharge == 0)
+                    {
+                        itemSlots[i].ItemImage.color = Color.blue; // Set to blue if charge is 0
+                    }
+                    else
+                    {
+                        itemSlots[i].ItemImage.color = items[i].GetComponent<SpriteRenderer>().color; // Default color
+                    }
                 }
                 else
                 {

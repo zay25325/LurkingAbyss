@@ -361,4 +361,14 @@ public class Inventory : MonoBehaviour
     {
         SceneManager.MoveGameObjectToScene(TargetGo, SceneManager.GetActiveScene());
     }
+
+    private void Update()
+    {
+        // Check if items list is valid before updating the inventory UI
+        if (items != null)
+        {
+            // Update the inventory UI with the current state of items
+            UpdateInventoryUI.Invoke(currentActiveIndex, items);
+        }
+    }
 }
