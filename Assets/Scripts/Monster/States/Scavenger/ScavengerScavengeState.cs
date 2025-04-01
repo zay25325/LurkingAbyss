@@ -123,31 +123,31 @@ public class ScavengerScavengeState : ScavengerBaseState
     private void ForceNewPath()
     {
         int attempts = 0;
+        float searchRadius = 50f; // Start with a smaller radius
         bool foundValidPosition = false;
         Vector3 destination = Vector3.zero;
+        HashSet<Vector3> attemptedPositions = new HashSet<Vector3>(); // Track attempted positions
 
-        while (attempts < 5 && !foundValidPosition)
+        while (!foundValidPosition)
         {
-            // Randomize the target location in both X and Z directions with proper randomness
-            float randomDistance = Random.Range(50f, 500f);  // Randomize the target distance
-            Vector2 randomDirection = Random.insideUnitCircle.normalized * randomDistance;
+            // Generate a random direction and distance
+            float randomAngle = Random.Range(0f, 360f); // Random angle in degrees
+            float randomDistance = Random.Range(searchRadius / 2f, searchRadius); // Random distance within the radius
+            Vector3 randomDirection = Quaternion.Euler(0, randomAngle, 0) * Vector3.forward * randomDistance;
 
-            // Ensure randomness for X and Z values
-            destination = controller.transform.position + new Vector3(randomDirection.x, 0, randomDirection.y);
+            // Calculate the destination
+            destination = controller.transform.position + randomDirection;
 
-            // Check for obstacles in the area
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(destination, 2f, LayerMask.GetMask("VisionBlockers"));
-            bool isNearWall = false;
-            foreach (var collider in colliders)
+            // Avoid reusing previously attempted positions or positions too close to the current position
+            if (attemptedPositions.Contains(destination) || Vector3.Distance(controller.transform.position, destination) < 5f)
             {
-                if (collider.CompareTag("Walls"))
-                {
-                    isNearWall = true;
-                    break;
-                }
+                attempts++;
+                continue;
             }
+            attemptedPositions.Add(destination);
 
-            if (!isNearWall && NavMesh.SamplePosition(destination, out NavMeshHit hit, randomDistance, NavMesh.AllAreas))
+            // Check if the position is valid
+            if (NavMesh.SamplePosition(destination, out NavMeshHit hit, searchRadius, NavMesh.AllAreas))
             {
                 NavMeshPath path = new NavMeshPath();
                 navMeshAgent.CalculatePath(hit.position, path);
@@ -156,24 +156,23 @@ public class ScavengerScavengeState : ScavengerBaseState
                 {
                     foundValidPosition = true;
                     navMeshAgent.SetDestination(hit.position);
-                    targetPosition = hit.position;  // Set the targetPosition here
+                    targetPosition = hit.position; // Set the targetPosition here
                     Debug.Log($"New valid wander path found at {hit.position}");
                     break;
                 }
             }
 
             attempts++;
+            if (attempts >= 5)
+            {
+                // Expand the search radius and reset attempts
+                searchRadius += 50f;
+                attempts = 0;
+                Debug.LogWarning($"Expanding search radius to {searchRadius}.");
+            }
         }
 
-        // If no valid position found after several attempts, force movement to escape the area
-        if (!foundValidPosition)
-        {
-            Debug.LogWarning("No valid path found. Forcing movement.");
-            controller.transform.position += new Vector3(5f, 0, 5f);
-            targetPosition = controller.transform.position; // Update the targetPosition to current position
-        }
-
-        wanderTime = wanderCooldown;  // Reset cooldown
+        wanderTime = wanderCooldown; // Reset cooldown
     }
 
     private void MoveToItem(Item item)
