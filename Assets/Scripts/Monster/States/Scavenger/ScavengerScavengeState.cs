@@ -128,51 +128,12 @@ public class ScavengerScavengeState : ScavengerBaseState
         Vector3 destination = Vector3.zero;
         HashSet<Vector3> attemptedPositions = new HashSet<Vector3>(); // Track attempted positions
 
-        while (attempts < 5 && !foundValidPosition)
-        {
-            // Randomize the target location in both X and Z directions with proper randomness
-            float randomDistance = Random.Range(50f, 500f);  // Randomize the target distance
-            Vector2 randomDirection = Random.insideUnitCircle.normalized * randomDistance;
-
-            // Ensure randomness for X and Z values
-            destination = controller.transform.position + new Vector3(randomDirection.x, 0, randomDirection.y);
-
-            // Check for obstacles in the area
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(destination, 2f, LayerMask.GetMask("VisionBlockers"));
-            bool isNearWall = false;
-            foreach (var collider in colliders)
-            {
-                if (collider.CompareTag("Walls"))
-                {
-                    isNearWall = true;
-                    break;
-                }
-            }
-
-            if (!isNearWall && NavMesh.SamplePosition(destination, out NavMeshHit hit, randomDistance, NavMesh.AllAreas))
-            {
-                NavMeshPath path = new NavMeshPath();
-                navMeshAgent.CalculatePath(hit.position, path);
-
-                if (path.status == NavMeshPathStatus.PathComplete)
-                {
-                    foundValidPosition = true;
-                    navMeshAgent.SetDestination(hit.position);
-                    targetPosition = hit.position;  // Set the targetPosition here
-                    Debug.Log($"New valid wander path found at {hit.position}");
-                    break;
-                }
-            }
-
-            attempts++;
-        }
-
         while (!foundValidPosition)
         {
             // Generate a random direction and distance
             float randomAngle = Random.Range(0f, 360f); // Random angle in degrees
             float randomDistance = Random.Range(searchRadius / 2f, searchRadius); // Random distance within the radius
-            Vector3 randomDirection = new Vector3(Mathf.Cos(randomAngle), 0, Mathf.Sin(randomAngle)) * randomDistance;
+            Vector3 randomDirection = Quaternion.Euler(0, randomAngle, 0) * Vector3.forward * randomDistance;
 
             // Calculate the destination
             destination = controller.transform.position + randomDirection;
