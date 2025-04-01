@@ -152,7 +152,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6793026361725281791
 Transform:
   m_ObjectHideFlags: 0
@@ -1327,6 +1327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sightMeshController: {fileID: 9165364671979620256}
+  teleporterItemPrefab: {fileID: 3453154787702978214, guid: 9ec6af05688a90e45bab6b3f8b360792, type: 3}
   isParalyzed: 0
 --- !u!114 &2027305539459633839
 MonoBehaviour:
