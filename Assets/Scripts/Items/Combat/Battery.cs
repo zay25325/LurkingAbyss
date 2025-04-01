@@ -109,7 +109,7 @@ public class Battery : Item
                     // Increase the charge of all items except the battery
                     if (item != this && item.ItemCharge < item.maxItemCharge)
                     {
-                        item.ItemCharge++;
+                        item.ItemCharge = item.maxItemCharge;
                     }
                 }
                 // Reduce the charge of the battery
@@ -156,7 +156,7 @@ public class Battery : Item
                 // Increase the charge of all items except the battery
                 if (item != this && item.ItemCharge < item.maxItemCharge)
                 {
-                    item.ItemCharge++;
+                    item.ItemCharge = item.maxItemCharge;
                 }
             }
             // Reduce the charge of the battery
